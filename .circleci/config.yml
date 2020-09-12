@@ -30,8 +30,12 @@ jobs:
             - v1-dependencies-
 
       - run:
-          name: "Install Dependencies"
+          name: "Install Backend Dependencies"
           command: composer install -n --prefer-dist
+
+      - run: 
+          name: "Install Frontend Dependencies"
+          command: npm ci
 
       - save_cache:
           key: v1-dependencies-{{ checksum "composer.json" }}
@@ -46,3 +50,7 @@ jobs:
       - run:
           name: "Run Unit Tests"
           command: ./vendor/bin/phpunit tests
+
+      - run: 
+          name: "Build Frontend Assets"
+          command: npm run prod

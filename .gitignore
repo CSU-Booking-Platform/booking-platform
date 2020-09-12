@@ -10,3 +10,12 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
+
+# Extra rules
+/.idea
+/.vscode
+/.vagrant
+.DS_Store
+.php_cs.cache
+.phpstorm.meta.php
+_ide_helper*.php

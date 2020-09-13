@@ -7,7 +7,7 @@ jobs:
   build:
     docker:
       # Specify the version you desire here
-      - image: circleci/php:7.3-node-browsers
+      - image: circleci/php:7.4-node-browsers
 
     steps:
       - checkout
@@ -46,10 +46,9 @@ jobs:
           name: "Generate App key"
           command: php artisan key:generate
 
-      # run tests with phpunit
       - run:
           name: "Run Unit Tests"
-          command: ./vendor/bin/phpunit tests
+          command: php artisan test
 
       - run: 
           name: "Build Frontend Assets"

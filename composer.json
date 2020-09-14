@@ -16,15 +16,15 @@
         "laravel/tinker": "^2.0"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.5",
+        "barryvdh/laravel-ide-helper": "^2.8",
         "facade/ignition": "^2.3.6",
         "fzaninotto/faker": "^1.9.1",
+        "laravel/telescope": "^4.0",
         "mockery/mockery": "^1.3.1",
         "nunomaduro/collision": "^5.0",
-        "phpunit/phpunit": "^9.3",
-        "laravel/telescope": "^4.0",
         "nunomaduro/phpinsights": "^1.14",
-        "barryvdh/laravel-debugbar": "^3.3",
-        "barryvdh/laravel-ide-helper": "^2.7"
+        "phpunit/phpunit": "^9.3"
     },
     "config": {
         "optimize-autoloader": true,
@@ -61,7 +61,8 @@
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
         ],
         "keygen": [
-            "@php artisan key:generate --ansi"
+            "@php artisan key:generate --ansi",
+            "node -e \"require('node-notifier').notify({title: 'Crypto Key Changed!', message: 'Ran artisan key:generate, watch out if you plan to use an existing db.', sound: true})\""
         ],
         "post-root-package-install": [
             "@check:env"
@@ -70,13 +71,17 @@
             "@keygen"
         ],
         "post-install-cmd": [
-            "Illuminate\\Foundation\\ComposerScripts::postInstall"
+            "Illuminate\\Foundation\\ComposerScripts::postInstall",
+            "@check:env",
+            "[ $COMPOSER_DEV_MODE -eq 0 ] || php artisan telescope:publish --ansi"
         ],
         "post-update-cmd": [
-            "Illuminate\\Foundation\\ComposerScripts::postUpdate"
+            "Illuminate\\Foundation\\ComposerScripts::postUpdate",
+            "@check:env",
+            "[ $COMPOSER_DEV_MODE -eq 0 ] || php artisan telescope:publish --ansi"
         ],
         "notify": [
-            "node -e \\\"require('node-notifier').notify({title: 'The cake was a lie!', message: 'I am cross-platform notification', icon: path.join(__dirname, 'resources/img/success.jpg'), sound: true})\\\""
+            "node -e \"require('node-notifier').notify({title: 'The cake was a lie!', message: 'I am cross-platform notification', icon: path.join(__dirname, 'resources/img/success.jpg'), sound: true})\""
         ],
         "reset:composer": [
             "rm -rf vendor/*/"
@@ -95,16 +100,13 @@
             "@reset:composer",
             "@reset:npm",
             "@reset:locks",
-            "composer install",
-            "@npm",
-            "@ide",
+            "@composer install",
             "node -e \"require('node-notifier').notify({title: 'Reset Complete!', message: 'Your local project setup was fully reset', icon: path.join(__dirname, 'resources/img/success.jpg'), sound: true})\""
         ],
         "fresh": [
-            "@check:env",
-            "@keygen",
-            "node -e \"require('node-notifier').notify({title: 'Crypto Key Changed!', message: 'Ran artisan key:generate, watch out if you plan to use an existing db.', sound: true})\"",
             "@reset",
+            "@keygen",
+            "@ide",
             "@mfs"
         ],
         "mfs": [

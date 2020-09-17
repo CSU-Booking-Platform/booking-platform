@@ -1,7 +1,6 @@
 #!/bin/bash
 
-sudo rm -rf /var/www/html && sudo ln -s /workspace/public /var/www/html
-sudo apache2ctl start
+sudo service nginx start
 composer install
 npm install
 php artisan key:generate

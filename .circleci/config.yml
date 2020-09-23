@@ -2,7 +2,10 @@
 #
 # Check https://circleci.com/docs/2.0/language-php/ for more details
 #
-version: 2
+
+version: 2.1
+orbs:
+  sonarcloud: sonarsource/sonarcloud@1.0.2
 jobs:
   build:
     docker:
@@ -33,7 +36,7 @@ jobs:
           name: "Install Backend Dependencies"
           command: composer install -n --prefer-dist
 
-      - run: 
+      - run:
           name: "Install Frontend Dependencies"
           command: npm ci
 
@@ -50,6 +53,13 @@ jobs:
           name: "Run Unit Tests"
           command: php artisan test
 
-      - run: 
+      - sonarcloud/scan
+
+      - run:
           name: "Build Frontend Assets"
           command: npm run prod
+
+workflows:
+  build:
+    jobs:
+      - build

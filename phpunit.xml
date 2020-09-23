@@ -3,6 +3,11 @@
          xsi:noNamespaceSchemaLocation="./vendor/phpunit/phpunit/phpunit.xsd"
          bootstrap="vendor/autoload.php"
          colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnFailure="false"
 >
     <testsuites>
         <testsuite name="Unit">
@@ -16,7 +21,14 @@
         <include>
             <directory suffix=".php">./app</directory>
         </include>
+        <report>
+            <clover outputFile="reports/clover.xml"/>
+        </report>
     </coverage>
+    <logging>
+        <junit outputFile="reports/junit.xml"/>
+    </logging>
+
     <php>
         <server name="APP_ENV" value="testing"/>
         <server name="BCRYPT_ROUNDS" value="4"/>

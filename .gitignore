@@ -10,6 +10,7 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
+/reports
 
 # Extra rules
 /.idea

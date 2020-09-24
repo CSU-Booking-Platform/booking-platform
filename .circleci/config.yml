@@ -8,6 +8,38 @@ orbs:
   sonarcloud: sonarsource/sonarcloud@1.0.2
   slack: circleci/slack@3.4.2
 jobs:
+  tag-and-release:
+    docker:
+      - image: cimg/base:2020.01
+    environment:
+      TAG_FORMAT: "{Major}.{Minor}.{Patch}"
+      GITHUB_OWNER: csu-booking-platform
+      GITHUB_REPO: application
+    steps:
+      - run:
+          name: Get next version
+          command: |
+            curl -L https://github.com/idc101/git-mkver/releases/download/v1.1.1/git-mkver-linux-amd64-1.1.1.tar.gz | tar xvz
+            sudo mv git-mkver /usr/local/bin
+            git mkver next -f $TAG_FORMAT >> GIT_TAG
+            if [ $(git tag -l "$(cat GIT_TAG)") ]; then
+              circleci-agent step halt
+            else
+              echo "export TAG=$(cat GIT_TAG)" >> $BASH_ENV
+            fi
+      # Insert commands to build & publish app & assets
+      - run:
+          name: Create Release
+          command: |
+            wget https://github.com/github-release/github-release/releases/download/v0.8.1/linux-amd64-github-release.bz2
+            bzip2 -d linux-amd64-github-release.bz2
+            chmod +x linux-amd64-github-release
+            mv linux-amd64-github-release ghr
+            ./ghr release \
+              --tag $TAG \
+              --security-token $GITHUB_TOKEN \
+              --user $GITHUB_OWNER \
+              --repo $GITHUB_REPO
   build:
     docker:
       # Specify the version you desire here
@@ -67,3 +99,8 @@ workflows:
   build:
     jobs:
       - build
+      - tag-and-release:
+          filters:  # using regex filters requires the entire branch to match
+            branches:
+              only:  # only branches matching the below regex filters will run
+                - main

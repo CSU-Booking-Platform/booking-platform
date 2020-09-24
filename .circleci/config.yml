@@ -60,7 +60,8 @@ jobs:
           name: "Build Frontend Assets"
           command: npm run prod
 
-      - slack/status
+      - slack/status:
+          fail_only: true
 
 workflows:
   build:

@@ -7,15 +7,20 @@ version: 2.1
 orbs:
   sonarcloud: sonarsource/sonarcloud@1.0.2
   slack: circleci/slack@3.4.2
+executors:
+  ci:
+    docker:
+      - image: circleci/php:7.4-node-browsers
 jobs:
   tag-and-release:
-    docker:
-      - image: cimg/base:2020.01
+    executor: ci
     environment:
       TAG_FORMAT: "{Major}.{Minor}.{Patch}"
       GITHUB_OWNER: csu-booking-platform
       GITHUB_REPO: application
     steps:
+      - attach_workspace:
+            at: .
       - run:
           name: Get next version
           command: |
@@ -40,10 +45,12 @@ jobs:
               --security-token $GITHUB_TOKEN \
               --user $GITHUB_OWNER \
               --repo $GITHUB_REPO
+
+      - slack/status:
+          fail_only: true
+
   build:
-    docker:
-      # Specify the version you desire here
-      - image: circleci/php:7.4-node-browsers
+    executor: ci
 
     steps:
       - checkout
@@ -92,6 +99,11 @@ jobs:
           name: "Build Frontend Assets"
           command: npm run prod
 
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
       - slack/status:
           fail_only: true
 
@@ -100,6 +112,8 @@ workflows:
     jobs:
       - build
       - tag-and-release:
+          requires:
+            - build
           filters:  # using regex filters requires the entire branch to match
             branches:
               only:  # only branches matching the below regex filters will run

@@ -19,3 +19,11 @@ List all issues this PR resolves.
 Complete these items before requesting reviews
 - [ ] Static Analysis Rules Validated
 - [ ] All commits follow naming conventions 
+
+### Sub-tasks Checklist
+- [ ] UI Implementation
+- [ ] UI Test
+- [ ] Backend Implementation
+- [ ] Backend Tests
+- [ ] Integration Tests
+- [ ] System Tests

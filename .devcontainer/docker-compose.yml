@@ -1,14 +1,11 @@
 version: '3'
 
-services: 
+services:
   app:
-    image: ghcr.io/csu-booking-platform/devcontainer:0.1.0
+    image: ghcr.io/csu-booking-platform/devcontainer:0.0.2
 
     volumes:
       - ..:/workspace:cached
-
-    # Overrides default command so things don't shut down after the process ends.
-    # command: sleep infinity
 
     # Runs app on the same network as the database container, allows "forwardPorts" in devcontainer.json function.
     network_mode: service:db
@@ -16,7 +13,7 @@ services:
     # Uncomment the next line to use a non-root user for all processes.
     # user: vscode
 
-    # Use "forwardPorts" in **devcontainer.json** to forward an app port locally. 
+    # Use "forwardPorts" in **devcontainer.json** to forward an app port locally.
     # (Adding the "ports" property to this file will not forward from a Codespace.)
 
   db:
@@ -31,6 +28,11 @@ services:
 
     # Add "forwardPorts": ["5432"] to **devcontainer.json** to forward Postgres locally.
     # (Adding the "ports" property to this file will not forward from a Codespace.)
-  
+
+    ports:
+     - 8080:8080
+     - 3000:3000
+     - 5432:5432
+
 volumes:
   postgres-data:

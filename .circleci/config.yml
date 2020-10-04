@@ -15,22 +15,25 @@ jobs:
   tag-and-release:
     executor: ci
     environment:
-      TAG_FORMAT: "{Major}.{Minor}.{Patch}"
       GITHUB_OWNER: csu-booking-platform
       GITHUB_REPO: application
     steps:
       - attach_workspace:
             at: .
+      - add_ssh_keys:
+          fingerprints:
+            - "59:17:eb:0c:20:36:e3:54:b2:54:84:68:b1:79:b4:ab"
+      - checkout
       - run:
           name: Get next version
           command: |
             curl -L https://github.com/idc101/git-mkver/releases/download/v1.1.1/git-mkver-linux-amd64-1.1.1.tar.gz | tar xvz
             sudo mv git-mkver /usr/local/bin
-            git mkver next -f $TAG_FORMAT >> GIT_TAG
-            if [ $(git tag -l "$(cat GIT_TAG)") ]; then
+            git mkver next -t
+            if [ $(git tag -l "$(git mkver next -t)") ]; then
               circleci-agent step halt
             else
-              echo "export TAG=$(cat GIT_TAG)" >> $BASH_ENV
+              echo "export TAG=$(git mkver next -t)" >> $BASH_ENV
             fi
       # Insert commands to build & publish app & assets
       - run:
@@ -40,6 +43,8 @@ jobs:
             bzip2 -d linux-amd64-github-release.bz2
             chmod +x linux-amd64-github-release
             mv linux-amd64-github-release ghr
+            git mkver tag
+            git push --tags
             ./ghr release \
               --tag $TAG \
               --security-token $GITHUB_TOKEN \

@@ -1113,16 +1113,16 @@
         },
         {
             "name": "laravel/fortify",
-            "version": "v1.6.0",
+            "version": "v1.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/fortify.git",
-                "reference": "395d4326b04a112412368fdffb6e66809bef5c2a"
+                "reference": "287378edfb3c65b01a30c4486e069a5924bff5d9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/fortify/zipball/395d4326b04a112412368fdffb6e66809bef5c2a",
-                "reference": "395d4326b04a112412368fdffb6e66809bef5c2a",
+                "url": "https://api.github.com/repos/laravel/fortify/zipball/287378edfb3c65b01a30c4486e069a5924bff5d9",
+                "reference": "287378edfb3c65b01a30c4486e069a5924bff5d9",
                 "shasum": ""
             },
             "require": {
@@ -1168,7 +1168,7 @@
                 "auth",
                 "laravel"
             ],
-            "time": "2020-09-29T17:35:46+00:00"
+            "time": "2020-10-05T14:58:24+00:00"
         },
         {
             "name": "laravel/framework",
@@ -1335,16 +1335,16 @@
         },
         {
             "name": "laravel/jetstream",
-            "version": "v1.3.1",
+            "version": "v1.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/jetstream.git",
-                "reference": "6e4885f81cb863959f2ff101d170eed6d33ce7be"
+                "reference": "096d7dd6e4cbbfb67206ce8c03befbdfbec0595e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/jetstream/zipball/6e4885f81cb863959f2ff101d170eed6d33ce7be",
-                "reference": "6e4885f81cb863959f2ff101d170eed6d33ce7be",
+                "url": "https://api.github.com/repos/laravel/jetstream/zipball/096d7dd6e4cbbfb67206ce8c03befbdfbec0595e",
+                "reference": "096d7dd6e4cbbfb67206ce8c03befbdfbec0595e",
                 "shasum": ""
             },
             "require": {
@@ -1393,7 +1393,7 @@
                 "laravel",
                 "tailwind"
             ],
-            "time": "2020-09-29T17:46:46+00:00"
+            "time": "2020-10-05T19:02:42+00:00"
         },
         {
             "name": "laravel/sanctum",
@@ -7552,7 +7552,7 @@
                 "MIT"
             ],
             "description": "PHP CodeSniffer Object Calisthenics rules/sniffs",
-            "abandoned": "https://github.com/symplify/coding-standard",
+            "abandoned": "symplify/coding-standard",
             "time": "2020-09-08T10:18:44+00:00"
         },
         {

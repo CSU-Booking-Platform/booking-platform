@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\ServiceProvider;
+use Inertia\Inertia;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -17,6 +19,14 @@ class AppServiceProvider extends ServiceProvider
             $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
             $this->app->register(TelescopeServiceProvider::class);
         }
+
+        Inertia::share([
+            'errors' => function () {
+                return Session::has('errors') ?
+                    Session::get('errors')->getBag('default')->getMessages() :
+                    (object)[];
+            }]);
+
     }
 
     /**

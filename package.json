@@ -15,7 +15,7 @@
         "@tailwindcss/ui": "^0.6.2",
         "axios": "^0.20",
         "cross-env": "^7.0",
-        "laravel-jetstream": "^0.2.0",
+        "laravel-jetstream": "^0.2.1",
         "laravel-mix": "^5.0.1",
         "lodash": "^4.17.19",
         "portal-vue": "^2.1.7",

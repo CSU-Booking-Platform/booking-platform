@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\PasswordValidationRules;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Inertia\Inertia;
 use Inertia\Response;
+use Laravel\Jetstream\Jetstream;
 
 class UserController extends Controller
 {
@@ -26,6 +27,16 @@ class UserController extends Controller
     use PasswordValidationRules;
 
     /**
+     * Display a listing of the resource.
+     *
+     * @return Response
+     */
+    public function create()
+    {
+        return Inertia::render('AddUser');
+    }
+
+    /**
      * Validate and create a newly registered user.
      *
      * @param array $input
@@ -33,10 +44,10 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $request->validateWithBag('createUser',[
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required','string', 'min:8', 'max:255', 'confirmed'],
+            'password' => ['required', 'string', 'max:255', 'confirmed'],
         ]);
 
         User::create([
@@ -45,7 +56,8 @@ class UserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-         return redirect()->route('dashboard')->with('successMessage', 'User was created!');
+        return back()->with('flash', ['we good']);
+
     }
 
 

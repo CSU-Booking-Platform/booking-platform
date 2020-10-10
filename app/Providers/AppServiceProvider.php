@@ -19,14 +19,6 @@ class AppServiceProvider extends ServiceProvider
             $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
             $this->app->register(TelescopeServiceProvider::class);
         }
-
-        Inertia::share([
-            'errors' => function () {
-                return Session::has('errors') ?
-                    Session::get('errors')->getBag('default')->getMessages() :
-                    (object)[];
-            }]);
-
     }
 
     /**

@@ -1,76 +1,120 @@
 <template>
-    <form action="api/users" method="POST" @submit.prevent="createUser" class="w-full max-w-lg">
-        <div class="flex flex-wrap -mx-3 mb-6">
-            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="name">
-                    Name
-                </label>
-                <input
-                    v-model="form.name"
-                    class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                    id="name" type="text" placeholder="John Doe">
-            </div>
-            <div class="w-full md:w-1/2 px-3">
-                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                       for="password_confirmation">
-                    Email
-                </label>
-                <input
-                    v-model="form.email"
-                    class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                    id="email" type="email" placeholder="email@domain.lel">
-            </div>
-        </div>
-        <div class="flex flex-wrap -mx-3 mb-6">
-            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="password">
-                    Password
-                </label>
-                <input
-                    v-model="form.password"
-                    class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                    id="password" type="password" placeholder="***********">
-            </div>
-            <div class="w-full md:w-1/2 px-3">
-                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                       for="password_confirmation">
-                    Password Confirmation
-                </label>
-                <input
-                    v-model="form.password_confirmation"
-                    class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                    id="password_confirmation" type="password" placeholder="***********">
-            </div>
-        </div>
-        <div class="form-group">
-            <button class="btn btn-primary">Submit</button>
-        </div>
-        <li v-for="error in form.errors">
-            {{error}}
-        </li>
-    </form>
+    <div>
+        <jet-form-section @submitted="createUser">
+            <template #title>
+                Create a User
+            </template>
 
+            <template #form>
+                <div class="col-span-6 sm:col-span-4">
+                    <jet-label for="name" value="Name"/>
+                    <jet-input id="name" type="text" class="mt-1 block w-full" v-model="createUserForm.name" autofocus/>
+                    <jet-input-error :message="createUserForm.error('name')" class="mt-2"/>
+                </div>
+                <div class="col-span-6 sm:col-span-4">
+                    <jet-label for="email" value="Email"/>
+                    <jet-input id="email" type="email" class="mt-1 block w-full" v-model="createUserForm.email"/>
+                    <jet-input-error :message="createUserForm.error('email')" class="mt-2"/>
+                </div>
+                <div class="col-span-6 sm:col-span-4">
+                    <jet-label for="password" value="Password"/>
+                    <jet-input id="password" type="password" class="mt-1 block w-full"
+                               v-model="createUserForm.password"/>
+                    <jet-input-error :message="createUserForm.error('password')" class="mt-2"/>
+                </div>
+                <div class="col-span-6 sm:col-span-4">
+                    <jet-label for="password_confirmation" value="PasswordConfirmation"/>
+                    <jet-input id="password_confirmation" type="password" class="mt-1 block w-full"
+                               v-model="createUserForm.password_confirmation"/>
+                    <jet-input-error :message="createUserForm.error('password_confirmation')" class="mt-2"/>
+                </div>
+            </template>
+
+            <template #actions>
+                <jet-action-message :on="createUserForm.recentlySuccessful" class="mr-3">
+                    Created.
+                </jet-action-message>
+
+                <jet-button :class="{ 'opacity-25': createUserForm.processing }" :disabled="createUserForm.processing">
+                    Create
+                </jet-button>
+            </template>
+        </jet-form-section>
+    </div>
 </template>
 
 <script>
-import axios from 'axios';
+
+import JetButton from '../Jetstream/Button'
+import JetInput from '../Jetstream/Input'
+import JetActionMessage from '../Jetstream/ActionMessage'
+import JetFormSection from '../Jetstream/FormSection'
+import JetInputError from '../Jetstream/InputError'
+import JetLabel from '../Jetstream/Label'
 
 export default {
+
+    components: {
+        JetButton,
+        JetInput,
+        JetFormSection,
+        JetActionMessage,
+        JetInputError,
+        JetLabel,
+    },
+
     data() {
         return {
-            form: {
-                errors: '',
+            createUserForm: this.$inertia.form({
                 name: '',
                 email: '',
                 password: '',
                 password_confirmation: '',
-            }
+            }, {
+                bag: 'createUser',
+                resetOnSuccess: true,
+            }),
         }
     },
-    methods: {
+    methods:  {
         createUser() {
-            this.$inertia.post('/api/users', this.form).then(()=>{})
-        }
-    }
+            this.createUserForm.post('/users', {
+                preserveScroll: true,
+            })
+        },
+        fromNow(timestamp) {
+            return moment(timestamp).local().fromNow()
+        },
+    },
+
+    // components: {
+    //     JetFormSection,
+    // },
+    // data() {
+    //     return {
+    //         createUserForm: this.$inertia.form({
+    //             name: this.name,
+    //             email: this.email,
+    //             password: this.password,
+    //             password_confirmation: this.password_confirmation,
+    //         }, {
+    //         bag: 'createUser',
+    //             resetOnSuccess: true,
+    //     })
+    //     }
+    // },
+    // methods: {
+    //     createUser() {
+    //         this.createUserForm.post('/api/users', {
+    //             preserveScroll: true,
+    //         }).then(response => {
+    //             if (! this.createUser().hasErrors()) {
+    //                 alert('success')
+    //             }else{
+    //                 alert('fail')
+    //             }
+    //         })
+    //     },
+    // }
 }
 </script>

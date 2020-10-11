@@ -95,8 +95,8 @@ jobs:
           command: php artisan key:generate
 
       - run:
-          name: "Run Unit Tests"
-          command: php artisan test
+          name: "Run Tests"
+          command: php artisan test && npm run test
 
       - sonarcloud/scan
 

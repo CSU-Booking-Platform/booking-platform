@@ -22,11 +22,11 @@
             <directory suffix=".php">./app</directory>
         </include>
         <report>
-            <clover outputFile="reports/clover.xml"/>
+            <clover outputFile="reports/php/clover.xml"/>
         </report>
     </coverage>
     <logging>
-        <junit outputFile="reports/junit.xml"/>
+        <junit outputFile="reports/php/junit.xml"/>
     </logging>
 
     <php>

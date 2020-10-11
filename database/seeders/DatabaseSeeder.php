@@ -14,6 +14,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $this->call([
+            AdminSeeder::class
+        ]);
+        // User::factory(10)->create();
         $this->call(RolesAndPermissionsSeeder::class);
 
         if (app()->environment('local')) {

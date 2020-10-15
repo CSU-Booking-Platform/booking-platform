@@ -24,7 +24,7 @@
         "cross-env": "^7.0",
         "jest": "^26.5.3",
         "jest-sonar-reporter": "^2.0.0",
-        "laravel-jetstream": "^0.2.1",
+        "laravel-jetstream": "^1.0.0",
         "laravel-mix": "^5.0.7",
         "lodash": "^4.17.19",
         "portal-vue": "^2.1.7",

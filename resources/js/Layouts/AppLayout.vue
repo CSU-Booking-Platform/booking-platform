@@ -211,12 +211,12 @@
 </template>
 
 <script>
-    import JetApplicationLogo from './../Jetstream/ApplicationLogo'
-    import JetApplicationMark from './../Jetstream/ApplicationMark'
-    import JetDropdown from './../Jetstream/Dropdown'
-    import JetDropdownLink from './../Jetstream/DropdownLink'
-    import JetNavLink from './../Jetstream/NavLink'
-    import JetResponsiveNavLink from './../Jetstream/ResponsiveNavLink'
+    import JetApplicationLogo from '@src/Jetstream/ApplicationLogo'
+    import JetApplicationMark from '@src/Jetstream/ApplicationMark'
+    import JetDropdown from '@src/Jetstream/Dropdown'
+    import JetDropdownLink from '@src/Jetstream/DropdownLink'
+    import JetNavLink from '@src/Jetstream/NavLink'
+    import JetResponsiveNavLink from '@src/Jetstream/ResponsiveNavLink'
 
     export default {
         components: {

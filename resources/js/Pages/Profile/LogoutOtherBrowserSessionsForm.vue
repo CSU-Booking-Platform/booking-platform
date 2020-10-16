@@ -87,13 +87,13 @@
 </template>
 
 <script>
-    import JetActionMessage from './../../Jetstream/ActionMessage'
-    import JetActionSection from './../../Jetstream/ActionSection'
-    import JetButton from './../../Jetstream/Button'
-    import JetDialogModal from './../../Jetstream/DialogModal'
-    import JetInput from './../../Jetstream/Input'
-    import JetInputError from './../../Jetstream/InputError'
-    import JetSecondaryButton from './../../Jetstream/SecondaryButton'
+    import JetActionMessage from '@src/Jetstream/ActionMessage'
+    import JetActionSection from '@src/Jetstream/ActionSection'
+    import JetButton from '@src/Jetstream/Button'
+    import JetDialogModal from '@src/Jetstream/DialogModal'
+    import JetInput from '@src/Jetstream/Input'
+    import JetInputError from '@src/Jetstream/InputError'
+    import JetSecondaryButton from '@src/Jetstream/SecondaryButton'
 
     export default {
         props: ['sessions'],

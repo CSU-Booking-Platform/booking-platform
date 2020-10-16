@@ -4,8 +4,8 @@ jest.mock('laravel-jetstream')
 import {createLocalVue, mount} from '@vue/test-utils'
 import {InertiaApp} from "@inertiajs/inertia-vue";
 import {InertiaForm} from "laravel-jetstream";
-import {InertiaFormMock} from "../../../__mocks__/laravel-jetstream";
-import CreateRoleForm from "../../../../../resources/js/Pages/Admin/Roles/CreateRoleForm";
+import {InertiaFormMock} from "@test/__mocks__/laravel-jetstream";
+import CreateRoleForm from "@src/Pages/Admin/Roles/CreateRoleForm";
 
 let localVue;
 

@@ -2,7 +2,7 @@ import Vue from 'vue'
 import { shallowMount } from '@vue/test-utils'
 import { InertiaApp } from '@inertiajs/inertia-vue'
 import { InertiaForm } from 'laravel-jetstream'
-import Dashboard from '../../../resources/js/Pages/Dashboard'
+import Dashboard from '@src/Pages/Dashboard'
 import {test} from "@jest/globals";
 
 Vue.use(InertiaApp)

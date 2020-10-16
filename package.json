@@ -62,7 +62,11 @@
         "roots": [
             "<rootDir>/resources/js",
             "<rootDir>/tests/Javascript"
-        ]
+        ],
+        "moduleNameMapper": {
+            "^@src/(.*)$": "<rootDir>/resources/js/$1",
+            "^@test/(.*)$": "<rootDir>/tests/Javascript/$1"
+        }
     },
     "babel": {
         "presets": [

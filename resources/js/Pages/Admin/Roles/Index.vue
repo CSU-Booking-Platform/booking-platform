@@ -80,12 +80,12 @@
 </template>
 
 <script>
-    import AppLayout from './../../../Layouts/AppLayout'
-    import JetSectionBorder from './../../../Jetstream/SectionBorder'
-    import JetActionSection from './../../../Jetstream/ActionSection'
-    import JetConfirmationModal from './../../../Jetstream/ConfirmationModal'
-    import JetDangerButton from './../../../Jetstream/DangerButton'
-    import JetSecondaryButton from './../../../Jetstream/SecondaryButton'
+    import AppLayout from '@src/Layouts/AppLayout'
+    import JetSectionBorder from '@src/Jetstream/SectionBorder'
+    import JetActionSection from '@src/Jetstream/ActionSection'
+    import JetConfirmationModal from '@src/Jetstream/ConfirmationModal'
+    import JetDangerButton from '@src/Jetstream/DangerButton'
+    import JetSecondaryButton from '@src/Jetstream/SecondaryButton'
     import CreateRoleForm from "./CreateRoleForm";
     import moment from "moment";
 

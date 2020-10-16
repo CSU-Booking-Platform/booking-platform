@@ -17,8 +17,8 @@
 </template>
 
 <script>
-    import AppLayout from './../Layouts/AppLayout'
-    import Welcome from './../Jetstream/Welcome'
+    import AppLayout from '@src/Layouts/AppLayout'
+    import Welcome from '@src/Jetstream/Welcome'
 
     export default {
         components: {

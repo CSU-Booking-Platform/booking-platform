@@ -40,7 +40,6 @@ class RoleControllerTest extends TestCase
         $response = $this->actingAs($user)->get('/roles/create');
 
         $response->assertOk();
-        $response->assertDontSee($role->name);
         $response->assertSee("create");
     }
 

@@ -14,7 +14,7 @@
         "test-ci": "jest --ci --runInBand --reporters=default --reporters=jest-junit"
     },
     "devDependencies": {
-        "@babel/core": "^7.12.0",
+        "@babel/core": "^7.12.1",
         "@babel/preset-env": "^7.12.1",
         "@inertiajs/inertia": "^0.1.7",
         "@inertiajs/inertia-vue": "^0.1.2",

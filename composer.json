@@ -20,6 +20,7 @@
         "spatie/laravel-permission": "^3.17"
     },
     "require-dev": {
+        "roave/security-advisories": "dev-latest",
         "barryvdh/laravel-debugbar": "^3.5",
         "barryvdh/laravel-ide-helper": "^2.8",
         "facade/ignition": "^2.4.1",

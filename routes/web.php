@@ -22,6 +22,5 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
         return Inertia\Inertia::render('Dashboard');
     })->name('dashboard');
 
-    Route::resource('permissions',\App\Http\Controllers\PermissionController::class);
     Route::resource('roles',\App\Http\Controllers\RoleController::class);
 });

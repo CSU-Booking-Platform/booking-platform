@@ -24,7 +24,6 @@ afterEach(() => {
     localVue = null
 })
 
-//This is an example, please do more than just test if it crashes :p
 test('should mount without crashing', () => {
 
     const wrapper = mount(CreateUserForm, {localVue})
@@ -33,7 +32,6 @@ test('should mount without crashing', () => {
 })
 
 
-//This is an example, please do more than just test if it crashes :p
 test('createPermission when no form errors', () => {
 
     InertiaFormMock.post.mockReturnValueOnce({
@@ -52,7 +50,6 @@ test('createPermission when no form errors', () => {
 
 })
 
-//This is an example, please do more than just test if it crashes :p
 test('createPermission when form errors', () => {
 
     InertiaFormMock.post.mockReturnValueOnce({

@@ -1,0 +1,37 @@
+{
+    "env": {
+        "SECRET_TOKEN": {
+            "description": "A secret key for verifying the integrity of signed cookies.",
+            "generator": "secret"
+        },
+        "APP_ENV": {
+            "value": "staging"
+        },
+        "LOG_CHANNEL" : {
+            "value": "errorlog"
+        }
+    },
+    "formation": {
+        "web": {
+            "quantity": 1,
+            "size": "standard-1x"
+        }
+    },
+    "image": "heroku/ruby",
+    "addons": [
+        {
+            "plan": "logdna"
+        },
+        {
+            "plan": "heroku-postgresql"
+        }
+    ],
+    "buildpacks": [
+        {
+            "url": "https://github.com/heroku/heroku-buildpack-php"
+        },
+        {
+            "url": "https://github.com/heroku/heroku-buildpack-nodejs"
+        }
+    ]
+}

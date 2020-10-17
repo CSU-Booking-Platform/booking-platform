@@ -2,9 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
@@ -26,6 +25,7 @@ class CreateUserFeatureTest extends TestCase
     public function testFormCreatesUserName()
     {
         $this->assertDatabaseCount('users', 0);
+
         $this->post('users', [
             'name' => 'John Doe',
             'email' => 'email@test.ca',
@@ -34,10 +34,12 @@ class CreateUserFeatureTest extends TestCase
         ]);
 
         $this->assertDatabaseCount('users', 1);
+
         $this->assertDatabaseHas('users', [
             'name' => 'John Doe',
             'email' => 'email@test.ca',
-            'password' => Hash::make('password123')
         ]);
+
+        $this->assertTrue(Hash::check('password123', User::first()->password));
     }
 }

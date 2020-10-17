@@ -45,15 +45,14 @@
 
 <script>
 
-import JetButton from '../Jetstream/Button'
-import JetInput from '../Jetstream/Input'
-import JetActionMessage from '../Jetstream/ActionMessage'
-import JetFormSection from '../Jetstream/FormSection'
-import JetInputError from '../Jetstream/InputError'
-import JetLabel from '../Jetstream/Label'
+import JetButton from '@src/Jetstream/Button'
+import JetInput from '@src/Jetstream/Input'
+import JetActionMessage from '@src/Jetstream/ActionMessage'
+import JetFormSection from '@src/Jetstream/FormSection'
+import JetInputError from '@src/Jetstream/InputError'
+import JetLabel from '@src/Jetstream/Label'
 
 export default {
-
     components: {
         JetButton,
         JetInput,
@@ -76,45 +75,12 @@ export default {
             }),
         }
     },
-    methods:  {
+    methods: {
         createUser() {
             this.createUserForm.post('/users', {
                 preserveScroll: true,
             })
         },
-        fromNow(timestamp) {
-            return moment(timestamp).local().fromNow()
-        },
     },
-
-    // components: {
-    //     JetFormSection,
-    // },
-    // data() {
-    //     return {
-    //         createUserForm: this.$inertia.form({
-    //             name: this.name,
-    //             email: this.email,
-    //             password: this.password,
-    //             password_confirmation: this.password_confirmation,
-    //         }, {
-    //         bag: 'createUser',
-    //             resetOnSuccess: true,
-    //     })
-    //     }
-    // },
-    // methods: {
-    //     createUser() {
-    //         this.createUserForm.post('/api/users', {
-    //             preserveScroll: true,
-    //         }).then(response => {
-    //             if (! this.createUser().hasErrors()) {
-    //                 alert('success')
-    //             }else{
-    //                 alert('fail')
-    //             }
-    //         })
-    //     },
-    // }
 }
 </script>

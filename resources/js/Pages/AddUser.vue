@@ -11,8 +11,8 @@
 </template>
 
 <script>
-import AppLayout from './../Layouts/AppLayout'
-import CreateUserForm from "../Components/CreateUserForm";
+import CreateUserForm from "./Admin/Users/CreateUserForm";
+import AppLayout from './../Layouts/AppLayout';
 
 export default {
     components: {

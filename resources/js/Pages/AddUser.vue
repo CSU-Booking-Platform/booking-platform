@@ -12,7 +12,7 @@
 
 <script>
 import CreateUserForm from '@src/Layouts/AppLayout';
-import AppLayout from './../Layouts/AppLayout';
+import AppLayout from '@src/Layouts/AppLayout';
 
 export default {
     components: {

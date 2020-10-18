@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import CreateUserForm from "./Admin/Users/CreateUserForm";
+import CreateUserForm from '@src/Layouts/AppLayout';
 import AppLayout from './../Layouts/AppLayout';
 
 export default {

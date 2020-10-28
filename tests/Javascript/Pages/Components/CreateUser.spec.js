@@ -6,7 +6,7 @@ import {InertiaApp} from "@inertiajs/inertia-vue";
 import {InertiaForm} from "laravel-jetstream";
 import {InertiaFormMock} from "@test/__mocks__/laravel-jetstream";
 import CreateUserForm from "@src/Pages/Admin/Users/CreateUserForm";
-import AddUserPage from "@src/Pages/AddUser";
+import Index from "@src/Pages/Admin/Users/Index";
 
 let localVue;
 

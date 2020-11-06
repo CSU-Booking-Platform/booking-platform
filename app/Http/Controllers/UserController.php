@@ -5,32 +5,25 @@ namespace App\Http\Controllers;
 use App\Actions\Fortify\PasswordValidationRules;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class UserController extends Controller
 {
-//    /**
-//     * Display a listing of the resource.
-//     *
-//     * @return \Illuminate\Http\Response
-//     */
-//    public function index()
-//    {
-//        return User::paginate(50);
-//    }
-
     use PasswordValidationRules;
 
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return \Illuminate\Http\Response|Response|\Inertia\ResponseFactory
      */
-    public function create()
+    public function index()
     {
-        return Inertia::render('AddUser');
+        return inertia('Admin/Users/Index', [
+            'users' => User::where('id', '!=', Auth::user()->id)->get()
+        ]);
     }
 
     /**
@@ -41,7 +34,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validateWithBag('createUser',[
+        $request->validateWithBag('createUser', [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'max:255', 'confirmed'],
@@ -81,14 +74,15 @@ class UserController extends Controller
 //        //
 //    }
 //
-//    /**
-//     * Remove the specified resource from storage.
-//     *
-//     * @param int $id
-//     * @return \Illuminate\Http\Response
-//     */
-//    public function destroy($id)
-//    {
-//        //
-//    }
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function destroy(User $user)
+    {
+        $user->delete();
+        return back()->with('flash', ['we good']);
+    }
 }

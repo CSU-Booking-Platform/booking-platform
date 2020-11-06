@@ -14,8 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::resource('users', UserController::class)->only(['create', 'store']);
-
 Route::get('/', function () {
     return view('welcome');
 });
@@ -24,6 +22,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
     Route::get('/dashboard', function () {
         return Inertia\Inertia::render('Dashboard');
     })->name('dashboard');
+
+    Route::resource('users', UserController::class)->only(['store', 'index', 'destroy']);
 
     Route::resource('roles',\App\Http\Controllers\RoleController::class);
 });

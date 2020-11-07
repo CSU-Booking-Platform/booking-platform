@@ -29,3 +29,10 @@ assignees: ''
 ## Context (Environment)
 <!--- How has this issue affected you? What are you trying to accomplish? -->
 <!--- Providing context helps us come up with a solution that is most useful in the real world -->
+
+# Bug Submission Checklist
+- [ ] Replication steps
+- [ ] Screenshots
+- [ ] Tagged commits fixing the bug for traceability
+- [ ] Tagged commits updating tests to cover the reported bug	
+- [ ] (optional) tagged with “performance” label if performance related

@@ -32,7 +32,7 @@
                                 </div>
 
                                 <button class="cursor-pointer ml-6 text-sm focus:outline-none"
-                                        @click="userBeingUpdated = user">
+                                        @click="openUpdateModal(user)">
                                     Edit
                                 </button>
 
@@ -54,15 +54,29 @@
             </template>
 
             <template #content>
-                <div class="col-span-6 sm:col-span-3">
+                <div>
                     <jet-label for="name" value="Name"/>
                     <jet-input id="name" type="text" class="mt-1 block w-full" v-model="updateUserForm.name" autofocus/>
                     <jet-input-error :message="updateUserForm.error('name')" class="mt-2"/>
                 </div>
-                <div class="col-span-6 sm:col-span-3">
+                <div>
                     <jet-label for="email" value="Email"/>
                     <jet-input id="email" type="email" class="mt-1 block w-full" v-model="updateUserForm.email"/>
                     <jet-input-error :message="updateUserForm.error('email')" class="mt-2"/>
+                </div>
+                <!-- Permissions -->
+                <div class="mt-2 col-span-12" v-if="roles.length > 0">
+                    <jet-label for="roles" value="Roles" />
+
+                    <div class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div v-for="role in roles">
+                            <label class="flex items-center">
+                                <input type="checkbox" class="form-checkbox" :value="role.name" v-model="updateUserForm.roles">
+                                <span class="ml-2 text-md text-black">{{ role.name }}</span>
+                                <span class="ml-2 text-sm text-gray-600">{{ role.guard_name }}</span>
+                            </label>
+                        </div>
+                    </div>
                 </div>
             </template>
 
@@ -119,6 +133,7 @@ import Dropdown from "@src/Jetstream/Dropdown";
 import JetInput from "@src/Jetstream/Input"
 import JetInputError from "@src/Jetstream/InputError"
 import JetLabel from "@src/Jetstream/Label"
+import Label from "@src/Jetstream/Label";
 
 export default {
     props: {
@@ -137,6 +152,7 @@ export default {
     },
 
     components: {
+        Label,
         Dropdown,
         Input,
         JetSectionBorder,
@@ -157,6 +173,7 @@ export default {
             updateUserForm: this.$inertia.form({
                 name: '',
                 email: '',
+                roles: [],
             }, {
                 bag: 'updateUser',
                 resetOnSuccess: true,
@@ -176,7 +193,13 @@ export default {
             })
         },
 
+        openUpdateModal(user) {
+            this.setSelectedRoles(user)
+            this.userBeingUpdated = user
+        },
+
         updateUser() {
+            console.log(this.userBeingUpdated)
             this.updateUserForm.put('/users/' + this.userBeingUpdated.id, {
                 preserveScroll: true,
                 preserveState: true,
@@ -189,6 +212,9 @@ export default {
             return moment(timestamp).local().fromNow()
         },
 
+        setSelectedRoles(user) {
+            this.updateUserForm.roles = user.roles.map((o) => {return o.name; });
+        }
     }
 }
 </script>

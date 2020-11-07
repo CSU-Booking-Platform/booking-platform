@@ -26,7 +26,7 @@ class UserController extends Controller
     public function index()
     {
         return inertia('Admin/Users/Index', [
-            'users' => User::where('id', '!=', Auth::user()->id)->get(),
+            'users' => User::with('roles')->get(),
             'roles' => Role::all()
         ]);
     }
@@ -78,13 +78,16 @@ class UserController extends Controller
     {
         $request->validateWithBag('updateUser', [
             'name' => ['nullable', 'string', 'max:255'],
-            'email' => ['nullable','string', 'email', 'max:255', 'unique:users']
+            'email' => ['nullable', 'string', 'email', 'max:255', 'unique:users'],
+            'roles' => ['array'],
         ]);
 
         if ($request->name)
             $user->name = $request->name;
         if ($request->email)
             $user->email = $request->email;
+
+        $user->syncRoles($request->roles);
 
         $user->save();
 

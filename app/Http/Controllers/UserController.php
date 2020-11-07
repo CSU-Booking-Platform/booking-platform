@@ -3,12 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Fortify\PasswordValidationRules;
+use App\Models\Role;
 use App\Models\User;
+use Exception;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 use Inertia\Response;
+use Inertia\ResponseFactory;
 
 class UserController extends Controller
 {
@@ -17,20 +21,21 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response|Response|\Inertia\ResponseFactory
+     * @return \Illuminate\Http\Response|Response|ResponseFactory
      */
     public function index()
     {
         return inertia('Admin/Users/Index', [
-            'users' => User::where('id', '!=', Auth::user()->id)->get()
+            'users' => User::where('id', '!=', Auth::user()->id)->get(),
+            'roles' => Role::all()
         ]);
     }
 
     /**
      * Validate and create a newly registered user.
      *
-     * @param array $input
-     * @return User|\Illuminate\Http\RedirectResponse
+     * @param Request $request
+     * @return User|RedirectResponse
      */
     public function store(Request $request)
     {
@@ -62,23 +67,37 @@ class UserController extends Controller
 //        //
 //    }
 //
-//    /**
-//     * Update the specified resource in storage.
-//     *
-//     * @param \Illuminate\Http\Request $request
-//     * @param int $id
-//     * @return \Illuminate\Http\Response
-//     */
-//    public function update(Request $request, $id)
-//    {
-//        //
-//    }
-//
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param Request $request
+     * @param User $user
+     * @return RedirectResponse
+     */
+    public function update(Request $request, User $user)
+    {
+        $request->validateWithBag('updateUser', [
+            'name' => ['nullable', 'string', 'max:255'],
+            'email' => ['nullable','string', 'email', 'max:255', 'unique:users']
+        ]);
+
+        if ($request->name)
+            $user->name = $request->name;
+        if ($request->email)
+            $user->email = $request->email;
+
+        $user->save();
+
+        return back()->with('flash', ['User updated']);
+
+    }
+
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
-     * @return \Illuminate\Http\RedirectResponse
+     * @param User $user
+     * @return RedirectResponse
+     * @throws Exception
      */
     public function destroy(User $user)
     {

@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Models\Permission;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
@@ -47,6 +49,28 @@ class UserControllerTest extends TestCase
         ]);
 
         $this->assertTrue(Hash::check($random, User::first()->password));
+    }
+
+    public function testUpdateUser()
+    {
+        $user = User::factory()->create();
+        $this->assertDatabaseCount('users', 1);
+
+        $roles = Role::factory()->count(20)->create();
+
+        $response = $this->actingAs(User::factory()->make())->put("users/{$user->id}", [
+            'name' => 'TESTING NAME',
+            'email' => 'test@test.com',
+            'roles' => $roles->random(5)->pluck('name')->toArray(),
+        ]);
+
+        $response->assertStatus(302);
+        $this->assertEquals(5, $user->roles()->count());
+
+        $this->assertDatabaseHas('users', [
+            'name' => 'TESTING NAME',
+            'email' => 'test@test.com',
+        ]);
     }
 
     /**

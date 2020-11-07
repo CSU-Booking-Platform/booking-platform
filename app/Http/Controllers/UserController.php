@@ -91,7 +91,7 @@ class UserController extends Controller
 
         $user->save();
 
-        return back()->with('flash', ['User updated']);
+        return redirect(route('users.index'));
 
     }
 

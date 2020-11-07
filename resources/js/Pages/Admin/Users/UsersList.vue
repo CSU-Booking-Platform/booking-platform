@@ -189,7 +189,7 @@ export default {
                 preserveScroll: true,
                 preserveState: true,
             }).then(() => {
-                // this.userBeingDeleted = null
+                this.userBeingDeleted = null
             })
         },
 
@@ -199,7 +199,6 @@ export default {
         },
 
         updateUser() {
-            console.log(this.userBeingUpdated)
             this.updateUserForm.put('/users/' + this.userBeingUpdated.id, {
                 preserveScroll: true,
                 preserveState: true,

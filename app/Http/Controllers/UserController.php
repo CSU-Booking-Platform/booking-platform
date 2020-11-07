@@ -82,10 +82,13 @@ class UserController extends Controller
             'roles' => ['array'],
         ]);
 
-        if ($request->name)
+        if ($request->name) {
             $user->name = $request->name;
-        if ($request->email)
+        }
+
+        if ($request->email) {
             $user->email = $request->email;
+        }
 
         $user->syncRoles($request->roles);
 

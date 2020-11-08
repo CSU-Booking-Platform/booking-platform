@@ -64,3 +64,43 @@ test('fromNow(timestamp)', () => {
     const result = wrapper.vm.fromNow(input)
     expect(result).toBe(moment(input).local().fromNow())
 })
+
+test('openUpdateModal', () => {
+    let user = {
+        roles: ["role1", "role2"]
+    }
+    const wrapper = shallowMount(UsersList, {localVue})
+    wrapper.vm.openUpdateModal(user)
+    expect(wrapper.vm.$data.userBeingUpdated).toBe(user);
+})
+
+test('updateUser()', () => {
+
+    let mockUserBeingUpdated = {
+        id: 69
+    }
+
+    InertiaFormMock.put.mockReturnValueOnce({
+        then(callback) {
+            callback({})
+        }
+    })
+
+    const wrapper = shallowMount(UsersList, {
+        localVue,
+        data() {
+            return {
+                userBeingUpdated: mockUserBeingUpdated
+            }
+        }
+    })
+
+    wrapper.vm.updateUser()
+
+    expect(InertiaFormMock.put).toBeCalledWith('/users/' + mockUserBeingUpdated.id, {
+        preserveScroll: true,
+        preserveState: true,
+    })
+
+    expect(wrapper.vm.$data.userBeingUpdated).toBe(null)
+})

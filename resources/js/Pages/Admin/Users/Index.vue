@@ -14,7 +14,7 @@
         </div>
         <div v-if="users.length > 0" class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
             <jet-section-border/>
-            <users-list :users="users"/>
+            <users-list :users="users" :roles="roles"/>
         </div>
 
     </app-layout>
@@ -40,6 +40,12 @@ export default {
                 return []
             },
         },
+        roles: {
+            type: Array,
+            default: function () {
+                return []
+            },
+        }
     }
 }
 </script>

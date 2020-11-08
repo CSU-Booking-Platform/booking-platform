@@ -19,7 +19,7 @@
         "@babel/preset-env": "^7.12.1",
         "@inertiajs/inertia": "^0.3.6",
         "@inertiajs/inertia-vue": "^0.2.4",
-        "@jest/globals": "^26.6.1",
+        "@jest/globals": "^26.6.2",
         "@tailwindcss/ui": "^0.7.2",
         "@vue/test-utils": "^1.1.1",
         "axios": "^0.21",

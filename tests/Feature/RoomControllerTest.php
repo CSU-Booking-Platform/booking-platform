@@ -31,4 +31,18 @@ class RoomControllerTest extends TestCase
         'floor' => $room->floor ,'building' => $room->building]);
         
     }
+
+    /**
+     * @test
+     */
+    public function testUsersIndexPageLoads()
+    {
+        $user = User::factory()->make();
+        $response = $this->actingAs($user)->get('/rooms');
+        $response->assertOk();
+        $response->assertSee("Rooms");
+
+    }
+
+
 }

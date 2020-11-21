@@ -26,4 +26,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
     Route::resource('users', UserController::class)->only(['store', 'index', 'destroy', 'update']);
 
     Route::resource('roles',\App\Http\Controllers\RoleController::class);
+
+    Route::resource('rooms',\App\Http\Controllers\RoomController::class)->only(['store', 'index']);
 });

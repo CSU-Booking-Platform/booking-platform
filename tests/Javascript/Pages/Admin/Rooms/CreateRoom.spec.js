@@ -32,7 +32,7 @@ test('should mount without crashing', () => {
 })
 
 
-test('createPermission when no form errors', () => {
+test('createRoom when no form errors', () => {
 
     InertiaFormMock.post.mockReturnValueOnce({
         then(callback) {
@@ -50,7 +50,7 @@ test('createPermission when no form errors', () => {
 
 })
 
-test('createPermission when form errors', () => {
+test('createRoom when form errors', () => {
 
     InertiaFormMock.post.mockReturnValueOnce({
         then(callback) {

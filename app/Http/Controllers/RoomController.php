@@ -52,7 +52,7 @@ class RoomController extends Controller
             'building' => $request->building
         ]);
 
-        return back()->with('flash', ['we good']);
+        return back();
     }
 
     /**

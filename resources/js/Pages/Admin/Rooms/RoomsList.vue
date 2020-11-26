@@ -16,7 +16,7 @@
                 <template #content>
 
                     <div class="space-y-6">
-                        <div class="grid grid-cols-4">
+                        <div class="grid grid-cols-5">
                             <div class="text-md mx-3">Room Name</div>
                             <div class="text-md mx-3">Room Number</div>
                             <div class="text-md mx-3">Floor Number</div>
@@ -24,7 +24,7 @@
                         </div>
 
                         <div v-for="room in rooms" class="grid flex items-center">
-                            <div class="grid grid-cols-4">
+                            <div class="grid grid-cols-5">
                                 <div class="text-md mx-3">
                                     {{ room.name }}
                                 </div>
@@ -37,9 +37,22 @@
                                 <div class="text-md mx-3">
                                     {{ room.building }}
                                 </div>
+                                <div class="text-md mx-3">
+                                    <button
+                                        class="cursor-pointer ml-6 text-sm text-blue-800 focus:outline-none"
+                                        @click="roomBeingUpdated = room"
+                                    >
+                                        Update
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
+
+                    <update-room-form
+                              :room="roomBeingUpdated"
+                              @close="roomBeingUpdated = null">
+                    </update-room-form>
 
                 </template>
             </jet-action-section>
@@ -61,6 +74,7 @@ import Dropdown from "@src/Jetstream/Dropdown";
 import JetInput from "@src/Jetstream/Input"
 import JetInputError from "@src/Jetstream/InputError"
 import JetLabel from "@src/Jetstream/Label"
+import UpdateRoomForm from "./UpdateRoomForm";
 import Label from "@src/Jetstream/Label";
 
 export default {
@@ -86,7 +100,14 @@ export default {
         JetModal,
         JetInput,
         JetLabel,
-        JetInputError
+        JetInputError,
+        UpdateRoomForm
+    },
+
+    data() {
+        return {
+            roomBeingUpdated: null
+        };
     },
 
     methods: {

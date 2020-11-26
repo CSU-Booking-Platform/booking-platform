@@ -41,8 +41,31 @@ class RoomControllerTest extends TestCase
         $response = $this->actingAs($user)->get('/rooms');
         $response->assertOk();
         $response->assertSee("Rooms");
-
     }
 
+    /**
+     * @test
+     */
+    public function admins_can_update_rooms()
+    {
+        $room = Room::factory()->create();
+        $user = User::factory()->make();
 
+        $this->assertDatabaseHas('rooms', [
+            'name' => $room->name, 'number' => $room->number,
+            'floor' => $room->floor, 'building' => $room->building
+        ]);
+
+        $response = $this->actingAs($user)->put('/rooms/' . $room->id, [
+            'name' => 'the room', 'number' => '24',
+            'floor' => '2009', 'building' => 'wiseau'
+        ]);
+
+        $response->assertStatus(302);
+
+        $this->assertDatabaseHas('rooms', [
+            'name' => 'the room', 'number' => '24',
+            'floor' => '2009', 'building' => 'wiseau'
+        ]);
+    }
 }

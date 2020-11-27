@@ -68,4 +68,23 @@ class RoomControllerTest extends TestCase
             'floor' => '2009', 'building' => 'wiseau'
         ]);
     }
+
+    /**
+     * @test
+     */
+    public function admins_can_delete_rooms()
+    {
+        $room = Room::factory()->create();
+        $user = User::factory()->make();
+
+        $this->assertDatabaseHas('rooms', [
+            'name' => $room->name, 'number' => $room->number,
+            'floor' => $room->floor, 'building' => $room->building
+        ]);
+
+        $response = $this->actingAs($user)->delete('/rooms/' . $room->id);
+
+        $response->assertStatus(302);
+        $this->assertDatabaseMissing('room', ['name' => $room->name]);
+    }
 }

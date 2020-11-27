@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Actions\Jetstream\DeleteUser;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Jetstream\Jetstream;
 
@@ -25,7 +26,8 @@ class JetstreamServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->configurePermissions();
+        //$this->configurePermissions();
+        $this->configureRoutes();
 
         Jetstream::deleteUsersUsing(DeleteUser::class);
     }
@@ -45,5 +47,22 @@ class JetstreamServiceProvider extends ServiceProvider
             'update',
             'delete',
         ]);
+    }
+    
+    /**
+     * Configure the routes offered by the application.
+     *
+     * @return void
+     */
+    protected function configureRoutes()
+    {
+        Jetstream::ignoreRoutes();
+
+        Route::group([
+            'namespace' => 'Laravel\Jetstream\Http\Controllers',
+            'domain' => config('jetstream.domain', null),
+        ], function () {
+            $this->loadRoutesFrom(__DIR__.'/../../routes/inertia.php');
+        });
     }
 }

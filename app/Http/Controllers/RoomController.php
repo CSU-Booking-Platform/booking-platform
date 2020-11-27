@@ -104,8 +104,10 @@ class RoomController extends Controller
      * @param  \App\Models\Room  $room
      * @return \Illuminate\Http\Response
      */
-    // public function destroy(Room $room)
-    // {
-    //     //
-    // }
+    public function destroy(Room $room)
+    {
+        $room->delete();
+
+        return redirect(route('rooms.index'));
+    }
 }

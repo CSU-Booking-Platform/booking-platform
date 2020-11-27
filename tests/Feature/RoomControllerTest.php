@@ -85,6 +85,6 @@ class RoomControllerTest extends TestCase
         $response = $this->actingAs($user)->delete('/rooms/' . $room->id);
 
         $response->assertStatus(302);
-        $this->assertDatabaseMissing('room', ['name' => $room->name]);
+        $this->assertDatabaseMissing('rooms', ['name' => $room->name]);
     }
 }

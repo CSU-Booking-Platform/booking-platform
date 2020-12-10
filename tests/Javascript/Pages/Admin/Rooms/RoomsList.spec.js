@@ -24,3 +24,34 @@ beforeEach(() => {
 test('should mount without crashing', () => {
     const wrapper = shallowMount(RoomsList, {localVue})
 })
+
+test('deleteRoom()', () => {
+
+    let mockRoomBeingDeleted = {
+        id: 10
+    }
+
+    InertiaFormMock.delete.mockReturnValueOnce({
+        then(callback) {
+            callback({})
+        }
+    })
+
+    const wrapper = shallowMount(RoomsList, {
+        localVue,
+        data() {
+            return {
+                roomBeingDeleted: mockRoomBeingDeleted
+            }
+        }
+    })
+
+    wrapper.vm.deleteRoom()
+
+    expect(InertiaFormMock.delete).toBeCalledWith('/rooms/' + mockRoomBeingDeleted.id, {
+        preserveScroll: true,
+        preserveState: true,
+    })
+
+    expect(wrapper.vm.$data.roomBeingDeleted).toBe(null)
+})

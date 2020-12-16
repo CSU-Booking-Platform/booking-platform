@@ -65,6 +65,7 @@ jobs:
           command: |
             sudo apt update
             sudo docker-php-ext-install zip
+            echo -e "xdebug.mode=coverage" | sudo tee /usr/local/etc/php/php.ini > /dev/null
       - run:
           name: "Create Environment file"
           command: |

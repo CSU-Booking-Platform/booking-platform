@@ -23,13 +23,11 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
         return Inertia\Inertia::render('Dashboard');
     })->name('dashboard');
 
-    Route::get('/book', function () {
-        return Inertia\Inertia::render('BookRoom');
-    })->name('book');
-
     Route::resource('users', UserController::class)->only(['store', 'index', 'destroy', 'update']);
 
     Route::resource('roles',\App\Http\Controllers\RoleController::class);
 
     Route::resource('rooms',\App\Http\Controllers\RoomController::class)->only(['store', 'index']);
+
+    Route::resource('book',\App\Http\Controllers\BookingRequestController::class)->only(['index']);
 });

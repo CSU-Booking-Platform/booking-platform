@@ -4,11 +4,11 @@
         <div class="mt-10 sm:mt-0">
             <jet-action-section>
                 <template #title>
-                    View Rooms
+                    View Booking Requests
                 </template>
 
                 <template #description>
-                    Description of rooms.
+                    Description of booking Requests.
                 </template>
 
 
@@ -17,25 +17,25 @@
 
                     <div class="space-y-6">
                         <div class="grid grid-cols-4">
-                            <div class="text-md mx-3">Room Name</div>
+                            <div class="text-md mx-3">User creating the booking</div>
                             <div class="text-md mx-3">Room Number</div>
-                            <div class="text-md mx-3">Floor Number</div>
-                            <div class="text-md mx-3">Building</div>
+                            <div class="text-md mx-3">Start Time</div>
+                            <div class="text-md mx-3">End time</div>
                         </div>
 
-                        <div v-for="room in rooms" :key="room.id" class="grid flex items-center">
+                        <div v-for="booking_request in booking_requests" :key="booking_request.id" class="grid flex items-center">
                             <div class="grid grid-cols-4">
                                 <div class="text-md mx-3">
-                                    {{ room.name }}
+                                    {{ booking_request.user_id }}
                                 </div>
                                 <div class="text-md mx-3">
-                                    {{ room.number }}
+                                    {{ booking_request.room_id }}
                                 </div>
                                 <div class="text-md mx-3">
-                                    {{ room.floor }}
+                                    {{ booking_request.start_time }}
                                 </div>
                                 <div class="text-md mx-3">
-                                    {{ room.building }}
+                                    {{ booking_request.end_time }}
                                 </div>
                             </div>
                         </div>
@@ -65,7 +65,7 @@ import Label from "@src/Jetstream/Label";
 
 export default {
     props: {
-        rooms: {
+        booking_requests: {
             type: Array,
             default: function () {
                 return []

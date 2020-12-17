@@ -84,10 +84,19 @@ class RoomController extends Controller
      * @param  \App\Models\Room  $room
      * @return \Illuminate\Http\Response
      */
-    // public function update(Request $request, Room $room)
-    // {
-    //     //
-    // }
+    public function update(Request $request, Room $room)
+    {
+        $request->validateWithBag('updateRoom', [
+            'name' => ['required', 'string', 'max:255'],
+            'number' => ['required', 'string', 'max:255'],
+            'floor' => ['required', 'integer'],
+            'building' => ['required', 'string', 'max:255'],
+        ]);
+
+        $room->fill($request->all())->save();
+
+        return back();
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -95,8 +104,10 @@ class RoomController extends Controller
      * @param  \App\Models\Room  $room
      * @return \Illuminate\Http\Response
      */
-    // public function destroy(Room $room)
-    // {
-    //     //
-    // }
+    public function destroy(Room $room)
+    {
+        $room->delete();
+
+        return redirect(route('rooms.index'));
+    }
 }

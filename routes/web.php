@@ -24,10 +24,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
         return Inertia\Inertia::render('Dashboard');
     })->name('dashboard');
 
-    Route::get('/book', function () {
-        return Inertia\Inertia::render('BookRoom');
-    })->name('book');
-
     Route::resource('users', UserController::class)->only(['store', 'index', 'destroy', 'update']);
 
     Route::resource('roles',\App\Http\Controllers\RoleController::class);
@@ -37,4 +33,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
     Route::resource('settings',SettingsController::class)->only(['index']);
     Route::post('settings/app_logo', SettingsController::class.'@storeAppLogo')->name('app.logo.change');
     Route::post('settings/app_name', SettingsController::class.'@storeAppName')->name('app.name.change');
+
+    Route::resource('book',\App\Http\Controllers\BookingRequestController::class)->only(['index']);
 });

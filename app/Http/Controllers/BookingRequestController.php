@@ -14,7 +14,9 @@ class BookingRequestController extends Controller
      */
     public function index()
     {
-        //
+        return inertia('Admin/BookingRequests/Index', [
+            'booking_requests' => BookingRequest::all(),
+        ]);
     }
 
     /**
@@ -22,10 +24,10 @@ class BookingRequestController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
-    }
+    // public function create()
+    // {
+    //     //
+    // }
 
     /**
      * Store a newly created resource in storage.
@@ -35,7 +37,21 @@ class BookingRequestController extends Controller
      */
     public function store(Request $request)
     {
-        //
+            $request->validateWithBag('createBookingRequest', [
+            'room_id' => ['required', 'integer'],
+            'user_id' => ['required', 'integer'],
+            'start_time' => ['required', 'integer'],
+            'end_time' => ['required', 'integer'],
+        ]);
+
+        Room::create([
+            'room_id' => $request->name,
+            'user_id' => $request->number,
+            'start_time' => $request->floor,
+            'end_time' => $request->end_time
+        ]);
+
+        return back();
     }
 
     /**

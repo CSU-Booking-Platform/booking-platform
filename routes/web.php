@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,4 +29,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
     Route::resource('roles',\App\Http\Controllers\RoleController::class);
 
     Route::resource('rooms',\App\Http\Controllers\RoomController::class)->only(['store', 'index', 'update','destroy']);
+
+    Route::resource('settings',SettingsController::class)->only(['index']);
+    Route::post('settings/app_logo', SettingsController::class.'@storeAppLogo')->name('app.logo.change');
+    Route::post('settings/app_name', SettingsController::class.'@storeAppName')->name('app.name.change');
 });

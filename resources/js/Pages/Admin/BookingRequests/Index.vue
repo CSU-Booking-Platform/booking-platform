@@ -8,7 +8,7 @@
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                    <CreateBookingRequestForm/>
+                    <CreateBookingRequestForm :rooms="rooms"/>
                 </div>
             </div>
         </div>
@@ -39,7 +39,14 @@ export default {
             default: function () {
                 return []
             },
-        }
+        },
+        rooms: {
+            type: Array,
+            default: function () {
+                return []
+            },
+        },
+
     }
 }
 </script>

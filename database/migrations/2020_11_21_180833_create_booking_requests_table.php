@@ -15,6 +15,10 @@ class CreateBookingRequestsTable extends Migration
     {
         Schema::create('booking_requests', function (Blueprint $table) {
             $table->id();
+            $table->string('room_id');
+            $table->integer('user_id');
+            $table->timestamp('start_time');
+            $table->timestamp('end_time');
             $table->timestamps();
         });
     }

@@ -51,7 +51,8 @@ class BookingRequestController extends Controller
             'room_id' => $request->room_id,
             'user_id' => $request->user_id,
             'start_time' => $request->start_time,
-            'end_time' => $request->end_time
+            'end_time' => $request->end_time,
+            'available' => false
         ]);
 
 
@@ -89,7 +90,16 @@ class BookingRequestController extends Controller
      */
     public function update(Request $request, BookingRequest $bookingRequest)
     {
-        //
+        $request->validateWithBag('updateBookingRequest', [
+            'user_id' => ['required', 'integer'],
+            'roomd_id' => ['required', 'integer'],
+            'start_time' => ['required', 'string', 'max:255'],
+            'end_time' => ['required', 'string', 'max:255'],
+        ]);
+
+        $bookingRequest->fill($request->all())->save();
+
+        return back();
     }
 
     /**
@@ -100,6 +110,8 @@ class BookingRequestController extends Controller
      */
     public function destroy(BookingRequest $bookingRequest)
     {
-        //
+        $bookingRequest->delete();
+
+        return redirect(route('bookingRequest.index'));
     }
 }

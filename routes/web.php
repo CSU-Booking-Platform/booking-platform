@@ -34,5 +34,5 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
     Route::post('settings/app_logo', SettingsController::class.'@storeAppLogo')->name('app.logo.change');
     Route::post('settings/app_name', SettingsController::class.'@storeAppName')->name('app.name.change');
 
-    Route::resource('book',\App\Http\Controllers\BookingRequestController::class)->only(['store', 'index']);
+    Route::resource('book',\App\Http\Controllers\BookingRequestController::class)->only(['store', 'index', 'update']);
 });

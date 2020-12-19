@@ -42,14 +42,13 @@ class BookingRequestController extends Controller
         
         $request->validateWithBag('createBookingRequest', [
             'room_id' => ['required', 'integer'],
-            'user_id' => ['required', 'integer'],
-            'start_time' => ['required', 'string', 'max:255'],
-            'end_time' => ['required', 'string', 'max:255'],
+            'start_time' => ['required', 'date'],
+            'end_time' => ['required', 'date'],
         ]);
 
         BookingRequest::create([
             'room_id' => $request->room_id,
-            'user_id' => $request->user_id,
+            'user_id' => $request->user()->id,
             'start_time' => $request->start_time,
             'end_time' => $request->end_time,
             'available' => false
@@ -91,8 +90,7 @@ class BookingRequestController extends Controller
     public function update(Request $request, BookingRequest $bookingRequest)
     {
         $request->validateWithBag('updateBookingRequest', [
-            'user_id' => ['required', 'integer'],
-            'roomd_id' => ['required', 'integer'],
+            'room_id' => ['required', 'integer'],
             'start_time' => ['required', 'string', 'max:255'],
             'end_time' => ['required', 'string', 'max:255'],
         ]);

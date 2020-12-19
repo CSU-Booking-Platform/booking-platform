@@ -11,8 +11,8 @@
         <template #content>
           <div class="space-y-6">
             <div class="grid grid-cols-7">
-              <div class="text-md mx-3">User creating the booking</div>
-              <div class="text-md mx-3">Room Number</div>
+              <div class="text-md mx-3">User</div>
+              <div class="text-md mx-3">Room</div>
               <div class="text-md mx-3">Start Time</div>
               <div class="text-md mx-3">End time</div>
               <div class="text-md mx-3">Available</div>

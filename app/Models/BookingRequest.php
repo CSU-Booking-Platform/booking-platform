@@ -19,6 +19,16 @@ class BookingRequest extends Model
     ];
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'start_time' => 'datetime',
+        'end_time' => 'datetime',
+    ];
+
+    /**
      * Get the room that owns the booking request.
      */
     public function room()

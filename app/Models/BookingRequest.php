@@ -14,7 +14,8 @@ class BookingRequest extends Model
         'room_id',
         'user_id',
         'start_time',
-        'end_time'
+        'end_time',
+        'available'
     ];
 
     /**

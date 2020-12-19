@@ -15,7 +15,7 @@
                 <!-- Users List -->
                 <template #content>
                     <div class="space-y-6">
-                        <div v-for="user in users" class="flex items-center justify-between">
+                        <div v-for="user in users" :key="user.id" class="flex items-center justify-between">
                             <div class="flex items-center">
                                 <div class="text-md mx-3">
                                     {{ user.name }}
@@ -61,7 +61,7 @@
                 </div>
                 <div>
                     <jet-label for="email" value="Email"/>
-                    <jet-input id="email" type="email" class="mt-1 block w-full" v-model="updateUserForm.email"/>
+                    <jet-input id="email" type="text" class="mt-1 block w-full" v-model="updateUserForm.email"/>
                     <jet-input-error :message="updateUserForm.error('email')" class="mt-2"/>
                 </div>
                 <!-- Permissions -->
@@ -195,7 +195,10 @@ export default {
 
         openUpdateModal(user) {
             this.setSelectedRoles(user)
-            this.userBeingUpdated = user
+            this.userBeingUpdated = user;
+            this.updateUserForm.name = user.name;
+            this.updateUserForm.email = user.email;
+            this.updateUserForm.roles = user.roles;
         },
 
         updateUser() {

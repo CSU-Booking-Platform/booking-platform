@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Settings;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Response;
 use Inertia\ResponseFactory;
 
@@ -45,7 +46,7 @@ class SettingsController extends Controller
             'app_logo' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
             'label' => 'required'
         ]);
-        $path = 'storage/'.$request->file('app_logo')->storeAs('images/logo', 'app_logo.'.$request->file('app_logo')->extension(), 'public');
+        $path = 'storage/'.Storage::disk('public')->put('logos',$request->file('app_logo'));
         Settings::updateOrCreate(
             ['slug' => $request->label],
             ['data' => json_encode($path)]

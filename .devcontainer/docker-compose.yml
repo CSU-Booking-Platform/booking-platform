@@ -2,7 +2,7 @@ version: '3'
 
 services:
   app:
-    image: ghcr.io/csu-booking-platform/devcontainer:0.0.2
+    image: ghcr.io/csu-booking-platform/devcontainer:0.0.4
 
     volumes:
       - ..:/workspace:cached

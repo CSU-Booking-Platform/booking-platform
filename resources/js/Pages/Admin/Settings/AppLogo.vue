@@ -1,5 +1,5 @@
 <template>
-        <jet-form-section-image @submitted="updateNameSetting">
+        <jet-form-section-image @submitted="updateLogoSetting">
             <template #title>
                 Application Logo
             </template>
@@ -7,7 +7,7 @@
             <template #form >
                     <jet-input id="label" type="hidden" class="mt-1 block w-full" value="app_logo"/>
                 <div class="col-span-12 sm:col-span-6">
-                    <img :src="updateLogoSettingform.app_logo" class="img-responsive" height="70" width="90">
+                    <img :src="updateLogoSettingform.app_path" class="img-responsive" height="70" width="90">
                     <jet-label for="app_logo" value="Application Logo"/>
                     <input type="file"  @change="selectFile">
                     <jet-input-error :message="updateLogoSettingform.error('app_logo')" class="mt-2"/>
@@ -51,6 +51,7 @@ export default {
             updateLogoSettingform: this.$inertia.form({
                 label: 'app_logo',
                 app_logo: this.getInfo(),
+                app_path: this.getInfo(),
             }, {
                 bag: 'updateNameSetting',
                 resetOnSuccess: false,
@@ -66,8 +67,17 @@ export default {
             },
         },
     },
+    watch: {
+        settings: {
+            // the callback will be called immediately after the start of the observation
+            immediate: true,
+            handler (val, oldVal) {
+                this.updateLogoSettingform.app_path = this.getInfo()
+            }
+        }
+    },
     methods: {
-        updateNameSetting() {
+        updateLogoSetting() {
             const data = new FormData()
             data.append('label', this.updateLogoSettingform.label || '')
             data.append('app_logo', this.updateLogoSettingform.app_logo || '')
@@ -79,7 +89,6 @@ export default {
             return '';
         },
         selectFile(event) {
-            // `files` is always an array because the file input may be in multiple mode
             this.updateLogoSettingform.app_logo = event.target.files[0];
         }
     },

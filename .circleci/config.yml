@@ -10,7 +10,7 @@ orbs:
 executors:
   ci:
     docker:
-      - image: circleci/php:7.4-node-browsers
+      - image: ghcr.io/csu-booking-platform/devcontainer:0.0.4
 jobs:
   tag-and-release:
     executor: ci
@@ -64,7 +64,6 @@ jobs:
           name: "Prepare Environment"
           command: |
             sudo apt update
-            sudo docker-php-ext-install zip
             echo -e "xdebug.mode=coverage" | sudo tee /usr/local/etc/php/php.ini > /dev/null
       - run:
           name: "Create Environment file"

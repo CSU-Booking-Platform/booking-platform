@@ -9,8 +9,10 @@ orbs:
   slack: circleci/slack@3.4.2
 executors:
   ci:
+    working_directory: /workspace
     docker:
       - image: ghcr.io/csu-booking-platform/devcontainer:0.0.4
+        command: []
 jobs:
   tag-and-release:
     executor: ci

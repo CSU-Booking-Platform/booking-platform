@@ -34,9 +34,9 @@ class BookingRequestControllerTest extends TestCase
         
     }
 
-    // /**
-    //  * @test
-    //  */
+    /**
+     * @test
+     */
     public function users_can_update_booking_requests()
     {
         $room = Room::factory()->create();
@@ -48,11 +48,14 @@ class BookingRequestControllerTest extends TestCase
             'end_time' => $booking_request->end_time
         ]);
 
+        
+
         $response = $this->actingAs($user)->put('/book/' . $booking_request->id, [
-            'room_id' => $room->id, 'start_time' => $booking_request->start_time,
-            'end_time' => $booking_request->end_time
+            'room_id' => $room->id, 'start_time' => $booking_request->start_time->toDateTimeString(),
+            'end_time' => $booking_request->end_time->toDateTimeString()
         ]);
 
+       
         $response->assertStatus(302);
 
         $this->assertDatabaseHas('booking_request', [

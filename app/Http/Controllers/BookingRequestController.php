@@ -86,10 +86,10 @@ class BookingRequestController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\BookingRequest  $bookingRequest
+     * @param  \App\Models\BookingRequest  $booking
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, BookingRequest $bookingRequest)
+    public function update(Request $request, BookingRequest $booking)
     {
         $request->validateWithBag('updateBookingRequest', [
             'room_id' => ['required', 'integer'],
@@ -97,7 +97,7 @@ class BookingRequestController extends Controller
             'end_time' => ['required', 'string', 'max:255'],
         ]);
 
-        $bookingRequest->fill($request->all())->save();
+        $booking->fill($request->all())->save();
 
         return back();
     }
@@ -112,6 +112,6 @@ class BookingRequestController extends Controller
     {
         $bookingRequest->delete();
 
-        return redirect(route('bookingRequest.index'));
+        return redirect(route('bookings.index'));
     }
 }

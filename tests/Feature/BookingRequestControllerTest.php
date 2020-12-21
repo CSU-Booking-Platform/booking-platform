@@ -27,7 +27,7 @@ class BookingRequestControllerTest extends TestCase
 
         $this->assertDatabaseMissing('booking_requests', ['room_id' => $booking_request->room_id, 'start_time' => $booking_request->start_time, 'end_time' => $booking_request->end_time]);
 
-        $response = $this->actingAs($user)->post('/book', ['room_id' => $booking_request->room_id, 'start_time' => $booking_request->start_time->toDateTimeString(), 'end_time' => $booking_request->end_time->toDateTimeString()]);
+        $response = $this->actingAs($user)->post('/bookings', ['room_id' => $booking_request->room_id, 'start_time' => $booking_request->start_time->toDateTimeString(), 'end_time' => $booking_request->end_time->toDateTimeString()]);
 
         $response->assertStatus(302);
         $this->assertDatabaseHas('booking_requests', ['room_id' => $booking_request->room_id, 'start_time' => $booking_request->start_time, 'end_time' => $booking_request->end_time]);
@@ -48,17 +48,14 @@ class BookingRequestControllerTest extends TestCase
             'end_time' => $booking_request->end_time
         ]);
 
-        
-
-        $response = $this->actingAs($user)->put('/book/' . $booking_request->id, [
+        $response = $this->actingAs($user)->put('/bookings/' . $booking_request->id, [
             'room_id' => $room->id, 'start_time' => $booking_request->start_time->toDateTimeString(),
             'end_time' => $booking_request->end_time->toDateTimeString()
         ]);
-
        
         $response->assertStatus(302);
 
-        $this->assertDatabaseHas('booking_request', [
+        $this->assertDatabaseHas('booking_requests', [
             'room_id' => $room->id, 'start_time' => $booking_request->start_time,
             'end_time' => $booking_request->end_time
         ]);

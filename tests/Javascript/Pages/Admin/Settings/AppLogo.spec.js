@@ -38,7 +38,12 @@ test('Testing file upload', () => {
     }
 
     // Mount the component
-    const wrapper = shallowMount(AppLogo, {localVue})
+    const wrapper = shallowMount(AppLogo, {
+        localVue,
+        propsData: {
+            settings: {}
+        }
+    })
 
     // Manually trigger the component’s onChange() method
     wrapper.vm.selectFile(event)
@@ -48,7 +53,12 @@ test('Testing file upload', () => {
 })
 
 test('should mount without crashing', () => {
-    const wrapper = shallowMount(AppLogo, {localVue})
+    const wrapper = shallowMount(AppLogo, {
+        localVue,
+        propsData: {
+            settings: {}
+        }
+    })
 })
 
 
@@ -73,6 +83,9 @@ test('updateLogo()', () => {
 
     const wrapper = shallowMount(AppLogo, {
         localVue,
+        propsData: {
+            settings: {}
+        },
         data() {
             return {
                 updateLogoSettingform: {
@@ -85,8 +98,5 @@ test('updateLogo()', () => {
 
     // Manually trigger the component’s onChange() method
     wrapper.vm.updateLogoSetting()
-    const data = new FormData()
-    data.append('label', 'app_logo')
-    data.append('app_logo', event.target.files[0])
-    expect(InertiaFormMock.post).toBeCalledWith('/settings/app_logo', data)
+    expect(InertiaFormMock.post).toBeCalledWith('/settings/app_logo')
 })

@@ -55,7 +55,7 @@ class SettingsControllerTest extends TestCase
 
         $this->assertDatabaseHas('settings', [
             'slug' => 'app_name',
-            'data' => json_encode($random),
+            'data' => json_encode(['name' => $random]),
         ]);
         $random = Str::random(40);
         //test if function edits if data is already there
@@ -69,7 +69,7 @@ class SettingsControllerTest extends TestCase
 
         $this->assertDatabaseHas('settings', [
             'slug' => 'app_name',
-            'data' => json_encode($random),
+            'data' =>  json_encode(['name' => $random]),
         ]);
     }
 
@@ -92,7 +92,7 @@ class SettingsControllerTest extends TestCase
         $this->assertDatabaseCount('settings', 1);
         $this->assertDatabaseHas('settings', [
             'slug' => 'app_logo',
-            'data' => json_encode('storage/logos/' . $file->hashName()),
+            'data' => json_encode(['path'=>'storage/logos/' . $file->hashName()]),
         ]);
         $random = Str::random(10);
         //test if function overwrites if option is already there
@@ -105,7 +105,7 @@ class SettingsControllerTest extends TestCase
         $this->assertDatabaseCount('settings', 1);
         $this->assertDatabaseHas('settings', [
             'slug' => 'app_logo',
-            'data' => json_encode('storage/logos/' . $file->hashName()),
+            'data' => json_encode(['path'=>'storage/logos/' . $file->hashName()]),
         ]);
     }
 

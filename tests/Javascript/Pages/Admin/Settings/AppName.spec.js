@@ -26,7 +26,10 @@ afterEach(() => {
 
 test('should mount without crashing', () => {
 
-    const wrapper = mount(AppName, {localVue})
+    const wrapper = mount(AppName, {localVue,
+        propsData: {
+            settings: {}
+        }})
 
     expect(wrapper.text()).toBeDefined()
 })
@@ -42,7 +45,10 @@ test('updateName when no form errors', () => {
 
     InertiaFormMock.hasErrors.mockReturnValueOnce(false)
 
-    const wrapper = mount(AppName, {localVue})
+    const wrapper = mount(AppName, {localVue,
+        propsData: {
+            settings: {}
+        }})
 
     wrapper.vm.updateNameSetting()
 

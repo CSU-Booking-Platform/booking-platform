@@ -6,9 +6,9 @@
       <template #form>
         <div class="col-span-6 sm:col-span-3">
           <div class="m-6">
-            <jet-label for="room_id" value="Room ID" />
+            <jet-label for="room_id" value="Room" />
             <select v-model="createBookingRequestForm.room_id" class="mt-1 block w-full" name="rooms" id="rooms">
-              <option value="0">Select a Room</option>
+              <option value="" selected disabled hidden>Choose here</option>
               <option v-for="room in rooms" :key="room.id" :value="room.id">{{room.name}}</option>
             </select>
             <jet-input-error :message="createBookingRequestForm.error('room_id')" class="mt-2" />
@@ -88,7 +88,7 @@ export default {
     return {
       createBookingRequestForm: this.$inertia.form(
         {
-          room_id: 0,
+          room_id: null,
           start_time: "",
           end_time: ""
         },

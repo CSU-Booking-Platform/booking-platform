@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Room;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -22,6 +23,11 @@ class DatabaseSeeder extends Seeder
             ]);
             $users = User::factory(10)->create();
             $users->first()->assignRole('super-admin');
+
+            $this->call([
+                RoomSeeder::class
+            ]);
+            $rooms = Room::factory(5)->create();
         }
 
 

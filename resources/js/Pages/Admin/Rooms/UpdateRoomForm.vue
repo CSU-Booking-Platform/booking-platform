@@ -55,6 +55,19 @@
                     class="mt-2"
                 />
             </div>
+
+            <div class="m-6">
+                <jet-label for="status" value="Status" />
+                <select v-model="form.status" class="mt-1 block w-full" name="status" id="statusUpdate">
+                    <option value="" selected disabled hidden>Select Room Status</option>
+                    <option value="available">Available</option>
+                    <option value="unavailable">Unavailable</option>
+                </select>
+                <jet-input-error
+                    :message="form.error('status')"
+                    class="mt-2"
+                />
+            </div>
         </template>
 
         <template #footer>
@@ -110,7 +123,8 @@ export default {
                     name: "",
                     number: null,
                     floor: "",
-                    building: ""
+                    building: "",
+                    status: ""
                 },
                 {
                     bag: "updateRoom"
@@ -144,6 +158,7 @@ export default {
             this.form.number = room?.number;
             this.form.floor = room?.floor;
             this.form.building = room?.building;
+            this.form.status = room?.status;
         }
     }
 };

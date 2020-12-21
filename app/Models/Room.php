@@ -18,7 +18,8 @@ class Room extends Model
         'name',
         'number',
         'floor',
-        'building'
+        'building',
+        'status'
     ];
 
      /**

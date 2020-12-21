@@ -43,13 +43,15 @@ class RoomController extends Controller
             'number' => ['required', 'string', 'max:255'],
             'floor' => ['required', 'integer'],
             'building' => ['required', 'string', 'max:255'],
+            'status' => ['required', 'string', 'max:255'],
         ]);
 
         Room::create([
             'name' => $request->name,
             'number' => $request->number,
             'floor' => $request->floor,
-            'building' => $request->building
+            'building' => $request->building,
+            'status' => $request->status
         ]);
 
         return back();
@@ -91,11 +93,12 @@ class RoomController extends Controller
             'number' => ['required', 'string', 'max:255'],
             'floor' => ['required', 'integer'],
             'building' => ['required', 'string', 'max:255'],
+            'status' => ['required', 'string', 'max:255'],
         ]);
 
         $room->fill($request->all())->save();
 
-        return back();
+        return redirect(route('rooms.index'))->with('flash', ['updated' => $room]);
     }
 
     /**

@@ -24,10 +24,10 @@
               class="grid flex items-center"
             >
               <div class="grid grid-cols-7">
-                <div class="text-md mx-3">{{ booking_request.user_id }}</div>
-                <div class="text-md mx-3">{{ booking_request.room_id }}</div>
-                <div class="text-md mx-3">{{ booking_request.start_time }}</div>
-                <div class="text-md mx-3">{{ booking_request.end_time }}</div>
+                <div class="text-md mx-3">{{ booking_request.user.name }}</div>
+                <div class="text-md mx-3">{{ booking_request.room.name }}</div>
+                <div class="text-md mx-3">{{ calendar(booking_request.start_time) }}</div>
+                <div class="text-md mx-3">{{ calendar(booking_request.end_time) }}</div>
                 <div class="text-md mx-3">{{ booking_request.available }}</div>
                 <div class="text-md mx-3">
                   <button
@@ -136,7 +136,10 @@ export default {
         .then(() => {
           this.bookingRequestBeingDeleted = null;
         });
-    }
+    },
+    calendar(timestamp) {
+        return moment(timestamp).local().format('LLL');
+    },
   }
 };
 </script>

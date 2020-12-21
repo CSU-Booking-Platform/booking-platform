@@ -50,8 +50,8 @@ export default {
         return {
             updateLogoSettingform: this.$inertia.form({
                 label: 'app_logo',
-                app_logo: this.getInfo(),
-                app_path: this.getInfo(),
+                app_logo: '',
+                app_path: this.settings.path,
             }, {
                 bag: 'updateNameSetting',
                 resetOnSuccess: false,
@@ -61,10 +61,7 @@ export default {
     },
     props: {
         settings: {
-            type: String,
-            default: function () {
-                return ''
-            },
+            type: Object,
         },
     },
     watch: {
@@ -72,21 +69,13 @@ export default {
             // the callback will be called immediately after the start of the observation
             immediate: true,
             handler (val, oldVal) {
-                this.updateLogoSettingform.app_path = this.getInfo()
+                this.updateLogoSettingform.app_path = this.settings.path
             }
         }
     },
     methods: {
         updateLogoSetting() {
-            const data = new FormData()
-            data.append('label', this.updateLogoSettingform.label || '')
-            data.append('app_logo', this.updateLogoSettingform.app_logo || '')
-            this.$inertia.post('/settings/app_logo', data)
-        },
-        getInfo() {
-            if (this.settings)
-                return JSON.parse(this.settings)
-            return '';
+            this.updateLogoSettingform.post('/settings/app_logo')
         },
         selectFile(event) {
             this.updateLogoSettingform.app_logo = event.target.files[0];

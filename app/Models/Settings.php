@@ -18,4 +18,8 @@ class Settings extends Model
         'slug',
         'data',
     ];
+
+    protected $casts = [
+        'data' => 'array'
+    ];
 }

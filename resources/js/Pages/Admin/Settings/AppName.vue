@@ -8,7 +8,7 @@
                     <jet-input id="label" type="hidden" class="mt-1 block w-full" value="app_name"/>
                 <div class="col-span-12 sm:col-span-6">
                     <jet-label for="app_name" value="Application Name"/>
-                    <jet-input id="app_name" type="text" class="mt-1 block w-full" v-model="updateNameSettingform.info"
+                    <jet-input id="app_name" type="text" class="mt-1 block w-full" v-model="updateNameSettingform.app_name"
                                autofocus/>
                     <jet-input-error :message="updateNameSettingform.error('app_name')" class="mt-2"/>
                 </div>
@@ -50,7 +50,7 @@ export default {
         return {
             updateNameSettingform: this.$inertia.form({
                 label: 'app_name',
-                info: this.getInfo(),
+                app_name: this.settings.name,
             }, {
                 bag: 'updateNameSetting',
                 resetOnSuccess: false,
@@ -59,10 +59,7 @@ export default {
     },
     props: {
         settings: {
-            type: String,
-            default: function () {
-                return ''
-            },
+            type: Object,
         },
     },
     methods: {
@@ -71,11 +68,6 @@ export default {
                 preserveScroll: true,
             })
         },
-        getInfo() {
-            if (this.settings)
-                return JSON.parse(this.settings)
-            return '';
-        }
     },
 }
 </script>

@@ -5,9 +5,9 @@
                 Settings
             </h2>
         </template>
-        <div class="py-12">
-            <app-name v-bind:settings="settings['app_name']"/>
-            <app-logo v-bind:settings="settings['app_logo']"/>
+        <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
+            <app-name :settings="settings.app_name"/>
+            <app-logo :settings="settings.app_logo"/>
         </div>
     </app-layout>
 </template>
@@ -27,9 +27,12 @@ export default {
     },
     props: {
         settings: {
-            type: Array,
+            type: Object,
             default: function () {
-                return []
+                return {
+                    app_name: {},
+                    app_logo: {}
+                }
             },
         },
     },

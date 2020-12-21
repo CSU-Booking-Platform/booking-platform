@@ -17,9 +17,15 @@ class SettingsController extends Controller
      */
     public function index()
     {
-        return inertia('Admin/Settings/Index', [
-            'settings' => Settings::all()->pluck('data', 'slug')
-        ]);
+        $settings = Settings::all()->pluck('data', 'slug');
+        if ($settings->isNotEmpty()) {
+            return inertia('Admin/Settings/Index', [
+                'settings' => $settings
+            ]);
+        } else {
+            return inertia('Admin/Settings/Index');
+        }
+
     }
 
     /**
@@ -30,11 +36,11 @@ class SettingsController extends Controller
     {
         $request->validateWithBag('updateSetting', [
             'label' => ['required'],
-            'app_name' => ['required'],
+            'app_name' => ['required', 'string'],
         ]);
         Settings::updateOrCreate(
             ['slug' => $request->label],
-            ['data' => json_encode($request->app_name)]
+            ['data' => ['name' => $request->app_name]]
         );
         return back();
     }
@@ -46,10 +52,10 @@ class SettingsController extends Controller
             'app_logo' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
             'label' => 'required'
         ]);
-        $path = 'storage/'.Storage::disk('public')->put('logos',$request->file('app_logo'));
+        $path = 'storage/' . Storage::disk('public')->put('logos', $request->file('app_logo'));
         Settings::updateOrCreate(
             ['slug' => $request->label],
-            ['data' => json_encode($path)]
+            ['data' => ['path' => $path]]
         );
         return back();
     }

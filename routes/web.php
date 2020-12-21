@@ -27,7 +27,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
 
     Route::resource('roles',\App\Http\Controllers\RoleController::class);
 
-    Route::resource('rooms',\App\Http\Controllers\RoomController::class)->only(['store', 'index']);
+    Route::resource('rooms',\App\Http\Controllers\RoomController::class)->only(['store', 'index', 'update', 'destroy']);
 
-    Route::resource('book',\App\Http\Controllers\BookingRequestController::class)->only(['store', 'index', 'update']);
+    Route::resource('book',\App\Http\Controllers\BookingRequestController::class)->only(['store', 'index', 'update', 'destroy']);
 });

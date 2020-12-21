@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\BookingRequest;
 use App\Models\Room;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class BookingRequestController extends Controller
 {
@@ -16,7 +17,7 @@ class BookingRequestController extends Controller
     public function index()
     {
         return inertia('Admin/BookingRequests/Index', [
-            'booking_requests' => BookingRequest::all(),
+            'booking_requests' => BookingRequest::with('user', 'room')->get(),
             'rooms' => Room::all(),
         ]);
     }
@@ -39,19 +40,20 @@ class BookingRequestController extends Controller
      */
     public function store(Request $request)
     {
-        
         $request->validateWithBag('createBookingRequest', [
             'room_id' => ['required', 'integer'],
             'start_time' => ['required', 'date'],
             'end_time' => ['required', 'date'],
         ]);
 
+        $room = Room::findOrFail($request->room_id); 
+            
         BookingRequest::create([
             'room_id' => $request->room_id,
             'user_id' => $request->user()->id,
             'start_time' => $request->start_time,
             'end_time' => $request->end_time,
-            'available' => false
+            'status' => "review"
         ]);
 
 

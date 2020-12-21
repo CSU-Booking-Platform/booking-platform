@@ -24,7 +24,7 @@
                         </div>
 
                         <div v-for="room in rooms" :key="room.id" class="grid flex items-center">
-                            <div class="grid grid-cols-6">
+                            <div class="grid grid-cols-7">
                                 <div class="text-md mx-3">
                                     {{ room.name }}
                                 </div>
@@ -36,6 +36,9 @@
                                 </div>
                                 <div class="text-md mx-3">
                                     {{ room.building }}
+                                </div>
+                                <div class="text-md mx-3">
+                                    {{ room.status }}
                                 </div>
                                 <div class="text-md mx-3">
                                     <button

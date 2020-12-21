@@ -7,7 +7,7 @@
             <template #form >
                     <jet-input id="label" type="hidden" class="mt-1 block w-full" value="app_logo"/>
                 <div class="col-span-12 sm:col-span-6">
-                    <img :src="updateLogoSettingform.app_path" class="img-responsive" height="70" width="90" al="Logo Image Preview">
+                    <img :src="updateLogoSettingform.app_path" class="img-responsive" height="70" width="90" alt="Logo Image Preview">
                     <jet-label for="app_logo" value="Application Logo"/>
                     <input type="file"  @change="selectFile">
                     <jet-input-error :message="updateLogoSettingform.error('app_logo')" class="mt-2"/>

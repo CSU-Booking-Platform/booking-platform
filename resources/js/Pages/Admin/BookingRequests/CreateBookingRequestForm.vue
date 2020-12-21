@@ -101,7 +101,7 @@ export default {
   },
   methods: {
     createBookingRequest() {
-      this.createBookingRequestForm.post("/book", {
+      this.createBookingRequestForm.post("/bookings", {
         preserveScroll: true
       });
     }

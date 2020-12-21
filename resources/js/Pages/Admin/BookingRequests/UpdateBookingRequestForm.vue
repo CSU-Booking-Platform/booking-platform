@@ -128,7 +128,7 @@ export default {
         },
         updateBookingRequest() {
             this.form
-                .put("/book/" + this.booking_request?.id, {
+                .put("/bookings/" + this.booking_request?.id, {
                     preserveState: true
                 })
                 .then(() => {

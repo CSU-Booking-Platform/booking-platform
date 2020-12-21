@@ -20,12 +20,14 @@ class BookingRequestControllerTest extends TestCase
     public function user_can_create_booking_request()
     {
         $room = Room::factory()->make();
-        $user = User::factory()->make();
+        $user = User::factory()->create();
         $booking_request = BookingRequest::factory()->make();
+
+        // dd($booking_request->start_time, $booking_request->end_time);
 
         $this->assertDatabaseMissing('booking_requests', ['room_id' => $booking_request->room_id, 'start_time' => $booking_request->start_time, 'end_time' => $booking_request->end_time]);
 
-        $response = $this->actingAs($user)->post('/book', ['room_id' => $booking_request->room_id, 'start_time' => $booking_request->start_time, 'end_time' => $booking_request->end_time]);
+        $response = $this->actingAs($user)->post('/book', ['room_id' => $booking_request->room_id, 'start_time' => $booking_request->start_time->toDateTimeString(), 'end_time' => $booking_request->end_time->toDateTimeString()]);
 
         $response->assertStatus(302);
         $this->assertDatabaseHas('booking_requests', ['room_id' => $booking_request->room_id, 'start_time' => $booking_request->start_time, 'end_time' => $booking_request->end_time]);
@@ -35,56 +37,28 @@ class BookingRequestControllerTest extends TestCase
     // /**
     //  * @test
     //  */
-    // public function testUsersIndexPageLoads()
-    // {
-    //     $user = User::factory()->make();
-    //     $response = $this->actingAs($user)->get('/rooms');
-    //     $response->assertOk();
-    //     $response->assertSee("Rooms");
-    // }
+    public function users_can_update_booking_requests()
+    {
+        $room = Room::factory()->create();
+        $user = User::factory()->create();
+        $booking_request = BookingRequest::factory()->create();
 
-    // /**
-    //  * @test
-    //  */
-    // public function admins_can_update_rooms()
-    // {
-    //     $room = Room::factory()->create();
-    //     $user = User::factory()->make();
+        $this->assertDatabaseHas('booking_requests', [
+            'room_id' => $booking_request->room_id, 'start_time' => $booking_request->start_time,
+            'end_time' => $booking_request->end_time
+        ]);
 
-    //     $this->assertDatabaseHas('rooms', [
-    //         'name' => $room->name, 'number' => $room->number,
-    //         'floor' => $room->floor, 'building' => $room->building
-    //     ]);
+        $response = $this->actingAs($user)->put('/book/' . $booking_request->id, [
+            'room_id' => $room->id, 'start_time' => $booking_request->start_time,
+            'end_time' => $booking_request->end_time
+        ]);
 
-    //     $response = $this->actingAs($user)->put('/rooms/' . $room->id, [
-    //         'name' => 'the room', 'number' => '24',
-    //         'floor' => '2009', 'building' => 'wiseau'
-    //     ]);
+        $response->assertStatus(302);
 
-    //     $response->assertStatus(302);
+        $this->assertDatabaseHas('booking_request', [
+            'room_id' => $room->id, 'start_time' => $booking_request->start_time,
+            'end_time' => $booking_request->end_time
+        ]);
+    }
 
-    //     $this->assertDatabaseHas('rooms', [
-    //         'name' => 'the room', 'number' => '24',
-    //         'floor' => '2009', 'building' => 'wiseau'
-    //     ]);
-    // }
-
-    // /**
-    //  * @test
-    //  */
-    // public function admins_can_delete_rooms()
-    // {
-    //     $room = Room::factory()->create();
-    //     $user = User::factory()->make();
-
-    //     $this->assertDatabaseHas('rooms', [
-    //         'name' => $room->name, 'number' => $room->number,
-    //         'floor' => $room->floor, 'building' => $room->building
-    //     ]);
-
-    //     $response = $this->actingAs($user)->delete('/rooms/' . $room->id);
-
-    //     $response->assertStatus(302);
-    //     $this->assertDatabaseMissing('rooms', ['name' => $room->name]);
-    // }
 }

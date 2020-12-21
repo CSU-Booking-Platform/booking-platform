@@ -60,17 +60,18 @@ test('Update room when form errors', () => {
     expect(InertiaFormMock.put).toBeCalledTimes(1);
 });
 
-// test('Room prop watcher updates form', () => {
-//     const room = { name: 'the room', number: '24', floor: '2009', building: 'wiseau' };
+test('Booking request prop watcher updates form', () => {
 
-//     wrapper.setProps({ room });
+    const booking_request =  { room_id: 'the room', start_time: 'now', end_time: 'tomorrow' };
 
-//     wrapper.vm.$nextTick(() => {
-//         expect(wrapper.vm.form.name).toBe(room.name);
-//         expect(wrapper.vm.form.number).toBe(room.number);
-//         expect(wrapper.vm.form.floor).toBe(room.floor);
-//         expect(wrapper.vm.form.building).toBe(room.building);
-//     })
+    wrapper.setProps({ booking_request })
 
-//     expect(wrapper.vm.room).toBe(room);
-// });
+    wrapper.vm.$nextTick(() => {
+        expect(wrapper.vm.form.room_id).toBe(booking_request.room_id)
+        expect(wrapper.vm.form.start_time).toBe(booking_request.start_time)
+        expect(wrapper.vm.form.end_time).toBe(booking_request.end_time)
+    })
+
+    expect(wrapper.vm.booking_request).toBe(booking_request)
+
+})

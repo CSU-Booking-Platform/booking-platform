@@ -7,17 +7,8 @@
         <template #content>
             <div class="m-6">
                 <jet-label for="name" value="Room" />
-                <!-- <jet-input
-                    id="room_id"
-                    type="room_id"
-                    class="mt-1 block w-full"
-                    v-model="form.room_id"
-                    autofocus
-                /> -->
-
                 <select v-model="form.room_id" class="mt-1 block w-full" name="rooms" id="room_id">
-                    <option :value="form.room_id" selected="selected"> {{form.roomName}}</option>
-                    <option v-for="room in availableExcludingCurrent" :key="room.id" :value="room.id">{{room.name}}</option>
+                    <option v-for="room in availableRooms" :key="room.id" :value="room.id" :selected="{ selected: room.id == form.room_id}">{{room.name}}</option>
                 </select>
                 <jet-input-error :message="form.error('room_id')" class="mt-2" />
             </div>
@@ -111,7 +102,6 @@ export default {
                     room_id: null,
                     start_time: null,
                     end_time: null,
-                    roomName: null
                 },
                 {
                     bag: "updateBookingRequest"
@@ -145,7 +135,6 @@ export default {
             this.form.room_id = booking_request?.room_id;
             this.form.start_time = booking_request?.start_time.substring(0, 16);
             this.form.end_time = booking_request?.end_time.substring(0, 16);
-            this.form.roomName = booking_request?.room.name;
 
             this.availableExcludingCurrent = this.availableRooms.filter(function( room ) {
                 return room.id !== booking_request?.room_id;

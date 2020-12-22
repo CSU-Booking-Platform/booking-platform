@@ -15,7 +15,7 @@
               <div class="text-md mx-3">Room</div>
               <div class="text-md mx-3">Start Time</div>
               <div class="text-md mx-3">End time</div>
-              <div class="text-md mx-3">Available</div>
+              <div class="text-md mx-3">Status</div>
             </div>
 
             <div
@@ -28,7 +28,7 @@
                 <div class="text-md mx-3">{{ booking_request.room.name }}</div>
                 <div class="text-md mx-3">{{ calendar(booking_request.start_time) }}</div>
                 <div class="text-md mx-3">{{ calendar(booking_request.end_time) }}</div>
-                <div class="text-md mx-3">{{ booking_request.available }}</div>
+                <div class="text-md mx-3">{{ booking_request.status }}</div>
                 <div class="text-md mx-3">
                   <button
                     class="cursor-pointer ml-6 text-sm text-blue-800 focus:outline-none"

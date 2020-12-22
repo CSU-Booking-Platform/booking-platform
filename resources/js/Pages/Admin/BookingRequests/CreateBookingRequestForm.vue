@@ -7,9 +7,9 @@
         <div class="col-span-6 sm:col-span-3">
           <div class="m-6">
             <jet-label for="room_id" value="Room" />
-            <select v-model="createBookingRequestForm.room_id" class="mt-1 block w-full" name="rooms" id="rooms">
-              <option value="" selected disabled hidden>Choose here</option>
-              <option v-for="room in rooms" :key="room.id" :value="room.id">{{room.name}}</option>
+            <select v-model="createBookingRequestForm.room_id" class="mt-1 block w-full" name="availableRooms" id="availableRooms">
+              <option :value="null" selected="selected">Choose here</option>
+              <option v-for="room in availableRooms" :key="room.id" :value="room.id">{{room.name}}</option>
             </select>
             <jet-input-error :message="createBookingRequestForm.error('room_id')" class="mt-2" />
           </div>
@@ -76,7 +76,7 @@ export default {
   },
 
   props: {
-    rooms: {
+    availableRooms: {
       type: Array,
       default: function() {
         return [];

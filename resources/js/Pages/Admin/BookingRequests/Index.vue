@@ -8,13 +8,15 @@
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                    <CreateBookingRequestForm :rooms="rooms"/>
+                    <CreateBookingRequestForm :availableRooms="availableRooms"/>
                 </div>
             </div>
         </div>
         <div v-if="booking_requests.length > 0" class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
             <jet-section-border/>
-            <BookingRequestsList :booking_requests="booking_requests"/>
+            <BookingRequestsList 
+            :booking_requests="booking_requests"
+            :rooms="rooms" />
         </div>
 
     </app-layout>
@@ -47,6 +49,11 @@ export default {
             },
         },
 
+    },
+    computed: {
+        availableRooms: function () {
+            return this.rooms.filter(room => room.status == "available");
+        }
     }
 }
 </script>

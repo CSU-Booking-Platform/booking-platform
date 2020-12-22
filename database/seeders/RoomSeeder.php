@@ -20,7 +20,7 @@ class RoomSeeder extends Seeder
             'number' => Str::random(10),
             'floor' => rand(1, 25),
             'building' => Str::random(10),
-            'status' => Str::random(5)
+            'status' => array_rand(["available", "unavailable"])
         ]);
     }
 }

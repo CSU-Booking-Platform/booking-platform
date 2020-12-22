@@ -25,7 +25,7 @@ class Room extends Model
      /**
      * Get the booking requests for the room.
      */
-    public function bookingrequests()
+    public function bookingRequests()
     {
         return $this->hasMany('App\Models\BookingRequest');
     }

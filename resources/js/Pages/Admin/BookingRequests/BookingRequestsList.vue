@@ -47,6 +47,7 @@
 
           <UpdateBookingRequestForm
             :booking_request="bookingRequestBeingUpdated"
+            :availableRooms="availableRooms"
             @close="bookingRequestBeingUpdated = null"
           ></UpdateBookingRequestForm>
 
@@ -98,6 +99,12 @@ export default {
       default: function() {
         return [];
       }
+    },
+    rooms: {
+      type: Array,
+      default: function() {
+        return [];
+      }
     }
   },
 
@@ -140,6 +147,11 @@ export default {
     calendar(timestamp) {
         return moment(timestamp).local().format('LLL');
     },
-  }
+  },
+  computed: {
+        availableRooms: function () {
+            return this.rooms.filter(room => room.status == "available");
+        }
+    }
 };
 </script>

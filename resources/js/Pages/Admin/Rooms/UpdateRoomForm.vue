@@ -59,9 +59,9 @@
             <div class="m-6">
                 <jet-label for="status" value="Status" />
                 <select v-model="form.status" class="mt-1 block w-full" name="status" id="statusUpdate">
-                    <option value="" selected disabled hidden>Select Room Status</option>
-                    <option value="available">Available</option>
-                    <option value="unavailable">Unavailable</option>
+                    <option :value="form.status" selected="selected">{{form.status}}</option>
+                    <option v-if="form.status != 'available'" :value="'available'">available</option>
+                    <option v-else :value="'unavailable'">anavailable</option>
                 </select>
                 <jet-input-error
                     :message="form.error('status')"

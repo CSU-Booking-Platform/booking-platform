@@ -1,14 +1,10 @@
 <template>
   <div class="table-container">
     <table class="table-auto border-solid border-4 border-light-blue-500">
+      <caption>{{tableCaption}}</caption>
       <thead>
         <tr>
-          <th>Room ID</th>
-          <th>Room Type</th>
-          <th>Building</th>
-          <th>Number</th>
-          <th>Floor</th>
-          <th>Availability</th>
+          <th v-for="header in tableHeaders" :key="header.id" :id="header.id">{{header}}</th>
         </tr>
       </thead>
       <tbody>
@@ -28,6 +24,16 @@ export default {
     tableData: {
       type: Array,
       default: [],
+      required: true
+    },
+    tableHeaders: {
+      type: Array,
+      default: [],
+      required: true
+    },
+    tableCaption:{
+      type: String,
+      default: '',
       required: true
     }
   },

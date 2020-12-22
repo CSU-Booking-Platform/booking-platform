@@ -64,7 +64,7 @@ class User extends Authenticatable
     /**
      * Get all booking requests created by this user.
      */
-    public function bookingrequests()
+    public function bookingRequests()
     {
         return $this->hasMany('App\Models\BookingRequest');
     }

@@ -60,4 +60,12 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    /**
+     * Get all booking requests created by this user.
+     */
+    public function bookingRequests()
+    {
+        return $this->hasMany('App\Models\BookingRequest');
+    }
 }

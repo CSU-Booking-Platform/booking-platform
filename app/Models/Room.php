@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class Room extends Model
 {
@@ -28,5 +29,13 @@ class Room extends Model
     public function bookingRequests()
     {
         return $this->hasMany('App\Models\BookingRequest');
+    }
+    
+     /**
+     * Check the availability of the room.
+     */
+    public function scopeAvailable(Builder $q)
+    {
+        $q->where('status', 'available');
     }
 }

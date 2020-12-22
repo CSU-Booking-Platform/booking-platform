@@ -15,12 +15,6 @@ class RoomSeeder extends Seeder
      */
     public function run()
     {
-        Room::create([
-            'name' => Str::random(10),
-            'number' => Str::random(10),
-            'floor' => rand(1, 25),
-            'building' => Str::random(10),
-            'status' => array_rand(["available", "unavailable"])
-        ]);
+        $rooms = Room::factory(5)->create();
     }
 }

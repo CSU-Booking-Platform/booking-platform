@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
             $this->call([
                 RoomSeeder::class
             ]);
-            $rooms = Room::factory(5)->create();
+            
         }
 
 

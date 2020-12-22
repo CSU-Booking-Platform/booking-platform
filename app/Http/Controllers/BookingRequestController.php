@@ -46,10 +46,10 @@ class BookingRequestController extends Controller
             'end_time' => ['required', 'date'],
         ]);
 
-        $room = Room::findOrFail($request->room_id); 
+        $room = Room::available()->findOrFail($request->room_id); 
             
         BookingRequest::create([
-            'room_id' => $request->room_id,
+            'room_id' => $room->id,
             'user_id' => $request->user()->id,
             'start_time' => $request->start_time,
             'end_time' => $request->end_time,

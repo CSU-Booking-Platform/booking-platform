@@ -8,7 +8,6 @@ assignees: ''
 ---
 
 <!--- Provide a general summary of the issue in the Title above -->
-*Do not assign a story-point value to this task*
 
 ### What needs to be done
 <!-- Describe what needs to be done --> 

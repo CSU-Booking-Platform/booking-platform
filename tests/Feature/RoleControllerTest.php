@@ -74,9 +74,11 @@ class RoleControllerTest extends TestCase
         $this->assertDatabaseHas('roles', ['name' => $role->name]);
         $this->assertEquals(0, $role->permissions()->count());
 
+        $addedPerms = $permissions->random(5)->pluck('name')->toArray();
+
         $response = $this->actingAs($user)->put('/roles/'. $role->id, [
             'name' => $role->name,
-            'permissions' => $permissions->random(5)->pluck('name')->toArray(),
+            'permissions' => $addedPerms,
         ]);
 
         $response->assertStatus(302);

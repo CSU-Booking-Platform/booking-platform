@@ -19,7 +19,7 @@ class CreateBookingRequestsTable extends Migration
             $table->foreignId('user_id')->constrained();
             $table->datetime('start_time');
             $table->datetime('end_time');
-            $table->String('status');
+            $table->string('status');
             $table->timestamps();
         });
     }

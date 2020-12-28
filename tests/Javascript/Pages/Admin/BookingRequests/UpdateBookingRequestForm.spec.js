@@ -62,9 +62,10 @@ test('Update room when form errors', () => {
 
 test('Booking request prop watcher updates form', () => {
 
-    const booking_request =  { room_id: 'the room', start_time: 'now', end_time: 'tomorrow' };
+    const booking_request =  { room_id: '1', start_time: 'now', end_time: 'tomorrow' };
+    const availableRooms = [{ name: 'the room', number: '24', floor: '2009', building: 'wiseau', id:'1' }]
 
-    wrapper.setProps({ booking_request })
+    wrapper.setProps({ booking_request, availableRooms })
 
     wrapper.vm.$nextTick(() => {
         expect(wrapper.vm.form.room_id).toBe(booking_request.room_id)

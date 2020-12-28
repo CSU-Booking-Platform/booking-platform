@@ -25,3 +25,36 @@ test('should mount without crashing', () => {
     const wrapper = shallowMount(BookingRequestsList, {localVue})
 })
 
+test('deleteBookingRequest()', () => {
+
+    let mockBookingRequestBeingDeleted = {
+        id: 10
+    }
+
+    InertiaFormMock.delete.mockReturnValueOnce({
+        then(callback) {
+            callback({})
+        }
+    })
+
+    const wrapper = shallowMount(BookingRequestsList, {
+        localVue,
+        data() {
+            return {
+                bookingRequestBeingDeleted: mockBookingRequestBeingDeleted
+            }
+        }
+    })
+
+    wrapper.vm.deleteBookingRequest()
+
+    expect(InertiaFormMock.delete).toBeCalledWith('/bookings/' + mockBookingRequestBeingDeleted.id, {
+        preserveScroll: true,
+        preserveState: true,
+    })
+
+    expect(wrapper.vm.$data.mockBookingRequestBeingDeleted).toBe(undefined)
+})
+
+
+

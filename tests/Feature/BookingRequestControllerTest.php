@@ -100,4 +100,18 @@ class BookingRequestControllerTest extends TestCase
         $this->assertDatabaseMissing('booking_requests', ['id' => $booking_request->id.'']);
     }
 
+    /**
+     * @test
+     */
+    public function testBookingRequestsIndexPageLoads()
+    {
+        $room = Room::factory()->make();
+        $user = User::factory()->make();
+        $booking_request = BookingRequest::factory()->make();
+
+        $response = $this->actingAs($user)->get('/bookings');
+        $response->assertOk();
+        $response->assertSee("BookingRequests");
+    }
+
 }

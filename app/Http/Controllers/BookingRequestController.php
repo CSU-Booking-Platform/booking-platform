@@ -66,10 +66,10 @@ class BookingRequestController extends Controller
      * @param  \App\Models\BookingRequest  $bookingRequest
      * @return \Illuminate\Http\Response
      */
-    public function show(BookingRequest $bookingRequest)
-    {
-        //
-    }
+    // public function show(BookingRequest $bookingRequest)
+    // {
+    //     //
+    // }
 
     /**
      * Show the form for editing the specified resource.
@@ -77,10 +77,10 @@ class BookingRequestController extends Controller
      * @param  \App\Models\BookingRequest  $bookingRequest
      * @return \Illuminate\Http\Response
      */
-    public function edit(BookingRequest $bookingRequest)
-    {
-        //
-    }
+    // public function edit(BookingRequest $bookingRequest)
+    // {
+    //     //
+    // }
 
     /**
      * Update the specified resource in storage.
@@ -108,9 +108,9 @@ class BookingRequestController extends Controller
      * @param  \App\Models\BookingRequest  $bookingRequest
      * @return \Illuminate\Http\Response
      */
-    public function destroy(BookingRequest $bookingRequest)
+    public function destroy(BookingRequest $booking)
     {
-        $bookingRequest->delete();
+        $booking->delete();
 
         return redirect(route('bookings.index'));
     }

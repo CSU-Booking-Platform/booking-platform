@@ -80,4 +80,24 @@ class BookingRequestControllerTest extends TestCase
         ]);
     }
 
+    /**
+     * @test
+     */
+    public function users_can_delete_booking_requests()
+    {
+        $room = Room::factory()->create();
+        $user = User::factory()->create();
+        $booking_request = BookingRequest::factory()->create();
+
+        $this->assertDatabaseHas('booking_requests', [
+            'room_id' => $booking_request->room_id, 'start_time' => $booking_request->start_time,
+            'end_time' => $booking_request->end_time
+        ]);
+
+        $response = $this->actingAs($user)->delete('/bookings/' . $booking_request->id);
+
+        $response->assertStatus(302);
+        $this->assertDatabaseMissing('booking_requests', ['id' => $booking_request->id.'']);
+    }
+
 }

@@ -136,7 +136,7 @@ export default {
   methods: {
     deleteBookingRequest() {
       this.deleteBookingRequestForm
-        .delete("/book/" + this.bookingRequestBeingDeleted.id, {
+        .delete("/bookings/" + this.bookingRequestBeingDeleted.id, {
           preserveScroll: true,
           preserveState: true
         })

@@ -2,7 +2,10 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Settings;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
+use Inertia\Inertia;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -28,8 +31,12 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request)
     {
+        Config::set('app.name', Settings::where('slug', 'app_name')->first()->data['name'] ?? 'Laravel');
+
+        $logo = Settings::where('slug', 'app_logo')->first()->data['path'] ?? null;
+
         return array_merge(parent::share($request), [
-            //
+            'app_logo' => $logo,
         ]);
     }
 }

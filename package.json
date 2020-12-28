@@ -15,7 +15,7 @@
         "heroku-postbuild": "npm run production"
     },
     "devDependencies": {
-        "@babel/core": "^7.12.3",
+        "@babel/core": "^7.12.10",
         "@babel/preset-env": "^7.12.11",
         "@inertiajs/inertia": "^0.3.6",
         "@inertiajs/inertia-vue": "^0.2.4",

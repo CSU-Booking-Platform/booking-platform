@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Availability;
 use App\Models\BookingRequest;
 use App\Models\Room;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
 
 class BookingRequestController extends Controller
 {
@@ -60,8 +63,9 @@ class BookingRequestController extends Controller
             }    
         }
 
-        $room = Room::available()->findOrFail($request->room_id); 
-            
+        $room = Room::available()->findOrFail($request->room_id);
+        $room->verifyDatetimesAreWithinAvailabilities($request->get('start_time'), $request->get('end_time'));
+
         BookingRequest::create([
             'room_id' => $room->id,
             'user_id' => $request->user()->id,
@@ -110,6 +114,9 @@ class BookingRequestController extends Controller
             'start_time' => ['required', 'string', 'max:255'],
             'end_time' => ['required', 'string', 'max:255'],
         ));
+
+        $room = Room::query()->findOrFail($request->room_id);
+        $room->verifyDatetimesAreWithinAvailabilities($request->get('start_time'), $request->get('end_time'));
 
         $booking->fill($request->except(['reference']))->save();
         

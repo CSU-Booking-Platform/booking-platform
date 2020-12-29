@@ -2,10 +2,12 @@
 
 namespace Tests\Feature;
 
+use App\Models\Availability;
 use Tests\TestCase;
 use App\Models\Room;
 use App\Models\User;
 use App\Models\Permission;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class RoomControllerTest extends TestCase
@@ -23,13 +25,63 @@ class RoomControllerTest extends TestCase
 
         $this->assertDatabaseMissing('rooms', ['name' => $room->name]);
 
-        $response = $this->actingAs($user)->post('/rooms', ['name' => $room->name , 'number' => $room->number,
-        'floor' => $room->floor ,'building' => $room->building, 'status' => $room->status]);
+        $response = $this->actingAs($user)->post('/rooms', [
+            'name' => $room->name, 'number' => $room->number,
+            'floor' => $room->floor, 'building' => $room->building, 'status' => $room->status
+        ]);
 
         $response->assertStatus(302);
-        $this->assertDatabaseHas('rooms', ['name' => $room->name , 'number' => $room->number,
-        'floor' => $room->floor ,'building' => $room->building, 'status' => $room->status]);
-        
+        $this->assertDatabaseHas('rooms', [
+            'name' => $room->name, 'number' => $room->number,
+            'floor' => $room->floor, 'building' => $room->building, 'status' => $room->status
+        ]);
+    }
+
+    /**
+     * @test
+     */
+    public function admins_can_create_rooms_with_availabilities()
+    {
+        $room = Room::factory()->make();
+        $user = User::factory()->make();
+
+        $this->assertDatabaseMissing('rooms', ['name' => $room->name]);
+
+        $response = $this->actingAs($user)->post(
+            '/rooms',
+            [
+                'name' => $room->name,
+                'number' => $room->number,
+                'floor' => $room->floor,
+                'building' => $room->building,
+                'status' => $room->status,
+                'availabilities' => [
+                    'Monday' => [
+                        'opening_hours' => '12:00:00',
+                        'closing_hours' => '13:00:00'
+                    ]
+                ]
+            ]
+        );
+
+        $response->assertStatus(302);
+
+        $this->assertDatabaseHas('rooms', [
+            'name' => $room->name,
+            'number' => $room->number,
+            'floor' => $room->floor,
+            'building' => $room->building,
+            'status' => $room->status,
+        ]);
+
+        $this->assertDatabaseHas(
+            'availabilities',
+            [
+                'weekday' => 'Monday',
+                'opening_hours' => '12:00:00',
+                'closing_hours' => '13:00:00'
+            ]
+        );
     }
 
     /**

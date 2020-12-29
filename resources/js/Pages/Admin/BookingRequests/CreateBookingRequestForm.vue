@@ -44,6 +44,9 @@
               multiple  
             >
           </div>         
+          <div class="m-6">
+            <jet-input-error :message="createBookingRequestForm.error('availabilities')" class="mt-2" />
+          </div>
         </div>
       </template>
 

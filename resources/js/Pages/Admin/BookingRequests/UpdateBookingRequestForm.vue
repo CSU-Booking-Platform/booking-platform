@@ -48,6 +48,12 @@
                 multiple  
                 />
             </div>  
+            <div class="m-6">
+                <jet-input-error
+                    :message="form.error('availabilities')"
+                    class="mt-2"
+                />
+            </div>
         </template>
 
         <template #footer>

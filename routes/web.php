@@ -26,11 +26,14 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
 
     Route::resource('users', UserController::class)->only(['store', 'index', 'destroy', 'update']);
 
-    Route::resource('roles',\App\Http\Controllers\RoleController::class);
+    Route::resource('roles',\App\Http\Controllers\RoleController::class)->except(['show', 'edit']);
 
+    Route::resource('rooms',\App\Http\Controllers\RoomController::class)->only(['store', 'index', 'update', 'destroy']);
     Route::resource('rooms',\App\Http\Controllers\RoomController::class)->only(['store', 'index', 'update','destroy']);
 
     Route::resource('settings',SettingsController::class)->only(['index']);
     Route::post('settings/app_logo', SettingsController::class.'@storeAppLogo')->name('app.logo.change');
     Route::post('settings/app_name', SettingsController::class.'@storeAppName')->name('app.name.change');
+
+    Route::resource('bookings',\App\Http\Controllers\BookingRequestController::class)->only(['store', 'index', 'update', 'destroy']);
 });

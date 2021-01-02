@@ -24,11 +24,11 @@ class RoomControllerTest extends TestCase
         $this->assertDatabaseMissing('rooms', ['name' => $room->name]);
 
         $response = $this->actingAs($user)->post('/rooms', ['name' => $room->name , 'number' => $room->number,
-        'floor' => $room->floor ,'building' => $room->building]);
+        'floor' => $room->floor ,'building' => $room->building, 'status' => $room->status]);
 
         $response->assertStatus(302);
         $this->assertDatabaseHas('rooms', ['name' => $room->name , 'number' => $room->number,
-        'floor' => $room->floor ,'building' => $room->building]);
+        'floor' => $room->floor ,'building' => $room->building, 'status' => $room->status]);
         
     }
 
@@ -53,19 +53,19 @@ class RoomControllerTest extends TestCase
 
         $this->assertDatabaseHas('rooms', [
             'name' => $room->name, 'number' => $room->number,
-            'floor' => $room->floor, 'building' => $room->building
+            'floor' => $room->floor, 'building' => $room->building, 'status' => $room->status
         ]);
 
         $response = $this->actingAs($user)->put('/rooms/' . $room->id, [
             'name' => 'the room', 'number' => '24',
-            'floor' => '2009', 'building' => 'wiseau'
+            'floor' => '2009', 'building' => 'wiseau', 'status' => 'available'
         ]);
 
         $response->assertStatus(302);
 
         $this->assertDatabaseHas('rooms', [
             'name' => 'the room', 'number' => '24',
-            'floor' => '2009', 'building' => 'wiseau'
+            'floor' => '2009', 'building' => 'wiseau', 'status' => 'available'
         ]);
     }
 

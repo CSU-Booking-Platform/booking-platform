@@ -16,15 +16,16 @@
                 <template #content>
 
                     <div class="space-y-6">
-                        <div class="grid grid-cols-6">
+                        <div class="grid grid-cols-7">
                             <div class="text-md mx-3">Room Name</div>
                             <div class="text-md mx-3">Room Number</div>
                             <div class="text-md mx-3">Floor Number</div>
                             <div class="text-md mx-3">Building</div>
+                            <div class="text-md mx-3">Status</div>
                         </div>
 
-                        <div v-for="room in rooms" class="grid flex items-center">
-                            <div class="grid grid-cols-6">
+                        <div v-for="room in rooms" :key="room.id" class="grid flex items-center">
+                            <div class="grid grid-cols-7">
                                 <div class="text-md mx-3">
                                     {{ room.name }}
                                 </div>
@@ -38,6 +39,9 @@
                                     {{ room.building }}
                                 </div>
                                 <div class="text-md mx-3">
+                                    {{ room.status }}
+                                </div>
+                                <div class="text-md mx-3">
                                     <button
                                         class="cursor-pointer ml-6 text-sm text-blue-800 focus:outline-none"
                                         @click="roomBeingUpdated = room"
@@ -45,7 +49,7 @@
                                         Update
                                     </button>
                                 </div>
-                                 <div class="text-md mx-3">
+                                <div class="text-md mx-3">
                                     <button
                                         class="cursor-pointer ml-6 text-sm text-blue-800 focus:outline-none"
                                         @click="roomBeingDeleted = room"
@@ -58,40 +62,39 @@
                     </div>
 
                     <update-room-form
-                              :room="roomBeingUpdated"
-                              @close="roomBeingUpdated = null">
+                        :room="roomBeingUpdated"
+                        @close="roomBeingUpdated = null">
                     </update-room-form>
-                    
-                <jet-confirmation-modal :show="roomBeingDeleted" @close="roomBeingDeleted = null">
-                <template #title>
-                    Delete Room
-                </template>
 
-                <template #content>
-                    Are you sure you would like to delete this room?
-                </template>
+                    <jet-confirmation-modal :show="roomBeingDeleted" @close="roomBeingDeleted = null">
+                        <template #title>
+                            Delete Room
+                        </template>
 
-                <template #footer>
-                    <jet-secondary-button @click.native="roomBeingDeleted = null">
-                        Nevermind
-                    </jet-secondary-button>
+                        <template #content>
+                            Are you sure you would like to delete this room?
+                        </template>
 
-                    <jet-danger-button class="ml-2" @click.native="deleteRoom"
-                                       :class="{ 'opacity-25': deleteRoomForm.processing }"
-                                       :disabled="deleteRoomForm.processing">
-                        Delete
-                    </jet-danger-button>
-                </template>
-            </jet-confirmation-modal>
-                   
+                        <template #footer>
+                            <jet-secondary-button @click.native="roomBeingDeleted = null">
+                                Nevermind
+                            </jet-secondary-button>
+
+                            <jet-danger-button class="ml-2" @click.native="deleteRoom"
+                                               :class="{ 'opacity-25': deleteRoomForm.processing }"
+                                               :disabled="deleteRoomForm.processing">
+                                Delete
+                            </jet-danger-button>
+                        </template>
+                    </jet-confirmation-modal>
+
 
                 </template>
             </jet-action-section>
-          
-        </div>
-        </div>
 
+        </div>
     </div>
+
 </template>
 
 <script>
@@ -147,13 +150,13 @@ export default {
 
     methods: {
         deleteRoom() {
-                this.deleteRoomForm.delete('/rooms/' + this.roomBeingDeleted.id, {
-                    preserveScroll: true,
-                    preserveState: true,
-                }).then(() => {
-                    this.roomBeingDeleted = null
-                })
-            }
+            this.deleteRoomForm.delete('/rooms/' + this.roomBeingDeleted.id, {
+                preserveScroll: true,
+                preserveState: true,
+            }).then(() => {
+                this.roomBeingDeleted = null
+            })
+        }
     }
 }
 </script>

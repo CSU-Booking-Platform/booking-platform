@@ -22,10 +22,11 @@ class RoomFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->sentence,
-            'number' => $this->faker->sentence,
+            'name' => $this->faker->word,
+            'number' => $this->faker->word,
             'floor' => $this->faker->RandomDigit,
-            'building' => $this->faker->sentence,
+            'building' => $this->faker->word,
+            'status' => $this->faker->randomElement(["available", "unavailable"]),
         ];
     }
 }

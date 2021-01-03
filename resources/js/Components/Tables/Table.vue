@@ -1,22 +1,28 @@
 <template>
   <div class="table-container">
-    <table class="table-auto border-solid border-4 border-light-blue-500">
+    <div class="table-filter-container">
+      <input type="text"
+         placeholder="Search Table"
+         v-model="filter" 
+         />
+    </div>
+     
+    <table class="table-auto responsive-spaced">
       <caption>{{tableCaption}}</caption>
       <thead>
         <tr>
-          <th v-for="header in tableHeaders" :key="header.id" :id="header.id">{{header}}</th>
+          <th class="lt-grey" v-for="header in tableHeaders" :key="header.id" :id="header.id">{{header}}</th>
         </tr>
       </thead>
       <tbody>
-        <TableRow v-for="row in tableData" :key="row.id" 
-        :rowData="row"
-        />
+         <tr v-for="row in filteredRows" :key="row.id">
+          <td class="text-center lt-grey" v-for="item in row" :key="item.id">{{item}}</td>
+        </tr>
       </tbody>
     </table>
   </div>
 </template>
 <script>
-import TableRow from '@src/Components/Tables/TableRow'
 
 export default {
   name: "Table",
@@ -38,7 +44,25 @@ export default {
     }
   },
   components: {
-    TableRow
-  }
+    
+  },
+  data() {
+      return {
+          filter: '',
+          rows: this.tableData
+      }
+  },
+  computed: {
+    filteredRows() {
+      return this.rows.filter(row => {
+        console.log(row)
+        const searchTerm = this.filter.toLowerCase();
+       
+        return row.find(item =>
+            item.includes(searchTerm));
+        
+      });
+    }
+  },
 };
 </script>

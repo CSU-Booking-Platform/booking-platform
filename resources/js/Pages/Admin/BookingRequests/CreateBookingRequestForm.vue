@@ -8,7 +8,7 @@
           <div class="m-6">
             <jet-label for="room_id" value="Room" />
             <select v-model="createBookingRequestForm.room_id" class="mt-1 block w-full" name="availableRooms" id="availableRooms">
-              <option :value="null" selected="selected">Chooseeee here</option>
+              <option :value="null" selected="selected">Chose here</option>
               <option v-for="room in availableRooms" :key="room.id" :value="room.id">{{room.name}}</option>
             </select>
             <jet-input-error :message="createBookingRequestForm.error('room_id')" class="mt-2" />

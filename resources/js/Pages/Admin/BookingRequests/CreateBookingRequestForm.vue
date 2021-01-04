@@ -35,6 +35,15 @@
             />
             <jet-input-error :message="createBookingRequestForm.error('end_time')" class="mt-2" />
           </div>
+
+          <div class="m-6 form-group">
+            <jet-label>Upload Reference Files</jet-label>
+            <input 
+              type="file" 
+              @change="fieldChange"
+              multiple  
+            >
+          </div>         
         </div>
       </template>
 
@@ -90,13 +99,15 @@ export default {
         {
           room_id: null,
           start_time: "",
-          end_time: ""
+          end_time: "",
+          reference: [],
         },
         {
           bag: "createBookingRequest",
           resetOnSuccess: true
         }
-      )
+      ),
+
     };
   },
   methods: {
@@ -104,7 +115,18 @@ export default {
       this.createBookingRequestForm.post("/bookings", {
         preserveScroll: true
       });
-    }
+    },
+    fieldChange(e){
+      let selectedFiles = e.target.files;
+
+      if(!selectedFiles.length)
+        return false;
+
+      for(let file of selectedFiles)
+      {
+        this.createBookingRequestForm.reference.push(file);
+      }
+    }    
   }
 };
 </script>

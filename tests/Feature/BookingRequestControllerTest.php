@@ -7,6 +7,10 @@ use App\Models\Room;
 use App\Models\BookingRequest;
 use App\Models\User;
 use App\Models\Permission;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Str;
+use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class BookingRequestControllerTest extends TestCase
@@ -32,7 +36,33 @@ class BookingRequestControllerTest extends TestCase
         $this->assertDatabaseHas('booking_requests', ['room_id' => $booking_request->room_id, 'start_time' => $booking_request->start_time, 'end_time' => $booking_request->end_time]);
         
     }
+    /**
+     * @test
+     */
+    public function user_can_add_reference_files_to_booking()
+    {
+        Storage::fake('public');
+        $room = Room::factory()->create(['status'=>'available']);
+        $user = User::factory()->create();
+        $booking_request = BookingRequest::factory()->make();
 
+        //test if function creates a new reference in booking after uploading an array of files
+        $files = [UploadedFile::fake()->create('testFile.txt', 100)];
+
+        $this->assertDatabaseMissing('booking_requests', ['reference' => $booking_request->reference]);
+
+        $response = $this->actingAs($user)->post('/bookings', [
+            'room_id' => $booking_request->room_id, 
+            'start_time' => $booking_request->start_time->toDateTimeString(), 
+            'end_time' => $booking_request->end_time->toDateTimeString(), 
+            'reference' => $files]);
+
+        Storage::disk('public')->assertExists($booking_request->room_id . '_' . strtotime($booking_request->start_time) . '_reference/testFile.txt');
+        $response->assertStatus(302);
+        $this->assertDatabaseHas('booking_requests', [
+            'reference' => json_encode(['path' => $booking_request->room_id . '_' . strtotime($booking_request->start_time) . '_reference/'])]);
+        
+    }
 
     /**
      * @test
@@ -78,6 +108,36 @@ class BookingRequestControllerTest extends TestCase
             'room_id' => $room->id, 'start_time' => $booking_request->start_time,
             'end_time' => $booking_request->end_time
         ]);
+    }
+
+    /**
+     * @test
+     */
+    public function users_can_update_reference_on_booking_request()
+    {  
+        Storage::fake('public');
+        $room = Room::factory()->create();
+        $user = User::factory()->create();
+        $booking_request = BookingRequest::factory()->create();
+        $files = [UploadedFile::fake()->create('testFile.txt', 100)];
+
+        Storage::disk('public')->assertMissing($booking_request->room_id . '_' . strtotime($booking_request->start_time) . '_reference/testFile.txt');
+        $this->assertDatabaseHas('booking_requests', [
+            'room_id' => $booking_request->room_id, 
+            'start_time' => $booking_request->start_time, 
+            'end_time' => $booking_request->end_time, 
+            'reference' => $booking_request->reference]);
+        $response = $this->actingAs($user)->put('/bookings/' . $booking_request->id, [
+            'room_id' => $booking_request->room_id, 
+            'start_time' => $booking_request->start_time->toDateTimeString(), 
+            'end_time' => $booking_request->end_time->toDateTimeString(), 
+            'reference' => $files]);
+       
+        $response->assertStatus(302);
+        $this->assertDatabaseHas('booking_requests', [
+            'reference' => json_encode(['path' => $booking_request->room_id . '_' . strtotime($booking_request->start_time) . '_reference/'])]);
+        Storage::disk('public')->assertExists($booking_request->room_id . '_' . strtotime($booking_request->start_time) . '_reference/testFile.txt');
+
     }
 
     /**

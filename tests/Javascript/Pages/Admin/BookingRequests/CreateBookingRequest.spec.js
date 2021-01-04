@@ -1,7 +1,7 @@
 import {afterEach, beforeEach, jest, test} from "@jest/globals";
 
 jest.mock('laravel-jetstream')
-import {createLocalVue, mount} from '@vue/test-utils'
+import {createLocalVue, mount, shallowMount} from '@vue/test-utils'
 import {InertiaApp} from "@inertiajs/inertia-vue";
 import {InertiaForm} from "laravel-jetstream";
 import {InertiaFormMock} from "@test/__mocks__/laravel-jetstream";
@@ -66,5 +66,66 @@ test('createBookingRequest when form errors', () => {
     wrapper.vm.createBookingRequest()
 
     expect(InertiaFormMock.post).toBeCalledTimes(1)
+
+})
+
+test('Testing file upload', () => {
+
+    let event = {
+        target: {
+            files: [
+                {
+                    name: 'image.png',
+                    size: 50000,
+                    type: 'image/png',
+                },
+            ],
+        },
+    }
+
+    // Mount the component
+    const wrapper = shallowMount(CreateBookingRequestForm, {
+        localVue,
+        data() {
+            return {
+                createBookingRequestForm: {
+                    reference: [],
+                }
+            }
+        }
+    })
+
+    // Manually trigger the component’s onChange() method
+    wrapper.vm.fieldChange(event)
+
+    expect(wrapper.vm.createBookingRequestForm.reference).toEqual(event.target.files)
+
+})
+
+test('Testing empty file upload', () => {
+
+    let event = {
+        target: {
+            files: [
+            ],
+        },
+    }
+
+    // Mount the component
+    const wrapper = shallowMount(CreateBookingRequestForm, {
+        localVue,
+        data() {
+            return {
+                createBookingRequestForm: {
+                    reference: [],
+                }
+            }
+        }
+    })
+
+    // Manually trigger the component’s onChange() method
+    wrapper.vm.fieldChange(event)
+
+    expect(wrapper.vm.createBookingRequestForm.reference).toEqual(event.target.files)
 
 })

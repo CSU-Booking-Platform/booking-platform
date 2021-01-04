@@ -56,7 +56,7 @@ class BookingRequestController extends Controller
             foreach($request->reference as $file)
             {
                 $name = $file->getClientOriginalName();
-                'storage/'.Storage::disk('public')->putFileAs($referenceFolder, $file, $name);
+                $filePath = 'storage/'.Storage::disk('public')->putFileAs($referenceFolder, $file, $name);
             }    
         }
 
@@ -124,7 +124,7 @@ class BookingRequestController extends Controller
             foreach($request->reference as $file)
             {
                 $name = $file->getClientOriginalName();
-                'storage/'.Storage::disk('public')->putFileAs($referenceFolder, $file, $name);
+                $filePath = 'storage/'.Storage::disk('public')->putFileAs($referenceFolder, $file, $name);
             }  
             $booking->reference = ['path' => $referenceFolder];
             $booking->save();

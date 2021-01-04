@@ -8,7 +8,7 @@
           <div class="m-6">
             <jet-label for="room_id" value="Room" />
             <select v-model="createBookingRequestForm.room_id" class="mt-1 block w-full" name="availableRooms" id="availableRooms">
-              <option :value="null" selected="selected">Chose here</option>
+              <option :value="null" selected="selected">Choose here</option>
               <option v-for="room in availableRooms" :key="room.id" :value="room.id">{{room.name}}</option>
             </select>
             <jet-input-error :message="createBookingRequestForm.error('room_id')" class="mt-2" />
@@ -101,7 +101,6 @@ export default {
           start_time: "",
           end_time: "",
           reference: [],
-          file: null,
         },
         {
           bag: "createBookingRequest",
@@ -116,7 +115,6 @@ export default {
       this.createBookingRequestForm.post("/bookings", {
         preserveScroll: true
       });
-      this.file = null;
     },
     fieldChange(e){
       let selectedFiles = e.target.files;
@@ -124,9 +122,9 @@ export default {
       if(!selectedFiles.length)
         return false;
 
-      for(let i=0;i<selectedFiles.length;i++)
+      for(let file of selectedFiles)
       {
-        this.createBookingRequestForm.reference.push(selectedFiles[i]);
+        this.createBookingRequestForm.reference.push(file);
       }
     }    
   }

@@ -146,9 +146,9 @@ export default {
             if(!selectedFiles.length)
                 return false;
 
-            for(let i=0;i<selectedFiles.length;i++)
+            for(let file of selectedFiles)
             {
-                this.form.reference.push(selectedFiles[i]);
+                this.form.reference.push(file);
             }
         }
     },

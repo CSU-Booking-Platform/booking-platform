@@ -39,6 +39,15 @@
                     class="mt-2"
                 />
             </div>
+
+            <div class="m-6">
+                <jet-label>Upload Reference Files</jet-label>
+                <input 
+                type="file" 
+                @change="fieldChange"
+                multiple  
+                />
+            </div>  
         </template>
 
         <template #footer>
@@ -95,18 +104,21 @@ export default {
 
     data() {
         return {
-            availableExcludingCurrent: [],
+            availableExcludingCurrent: [], 
             form: this.$inertia.form(
-                {
+                { 
                     user_id: null,
                     room_id: null,
                     start_time: null,
                     end_time: null,
+                    reference: [],
+                    _method: 'PUT'
                 },
                 {
                     bag: "updateBookingRequest"
                 }
-            )
+            ),
+            
         };
     },
 
@@ -118,15 +130,26 @@ export default {
             this.$emit("close");
         },
         updateBookingRequest() {
-            this.form
-                .put("/bookings/" + this.booking_request?.id, {
+            this.form.post("/bookings/" + this.booking_request?.id, {
                     preserveState: true
                 })
                 .then(() => {
                     if (this.form.successful) {
                         this.closeModal();
                     }
-                });
+                }
+            );
+        },
+        fieldChange(e){
+            let selectedFiles = e.target.files;
+
+            if(!selectedFiles.length)
+                return false;
+
+            for(let i=0;i<selectedFiles.length;i++)
+            {
+                this.form.reference.push(selectedFiles[i]);
+            }
         }
     },
     watch: {

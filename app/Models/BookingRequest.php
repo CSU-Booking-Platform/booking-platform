@@ -15,7 +15,8 @@ class BookingRequest extends Model
         'user_id',
         'start_time',
         'end_time',
-        'status'
+        'status',
+        'reference'
     ];
 
     /**
@@ -26,6 +27,7 @@ class BookingRequest extends Model
     protected $casts = [
         'start_time' => 'datetime',
         'end_time' => 'datetime',
+        'reference' => 'array'
     ];
 
     /**

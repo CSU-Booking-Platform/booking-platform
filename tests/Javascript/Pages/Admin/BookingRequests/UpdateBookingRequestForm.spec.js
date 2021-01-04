@@ -22,7 +22,7 @@ afterEach(() => {
     localVue = null;
     wrapper = null;
 
-    InertiaFormMock.put.mockClear();
+    InertiaFormMock.post.mockClear();
 });
 
 test('should mount without crashing', () => {
@@ -30,7 +30,7 @@ test('should mount without crashing', () => {
 })
 
 test('Update booking request when no form errors', () => {
-    InertiaFormMock.put.mockReturnValueOnce({
+    InertiaFormMock.post.mockReturnValueOnce({
         then(callback) {
             callback({});
         }
@@ -41,11 +41,11 @@ test('Update booking request when no form errors', () => {
 
     wrapper.vm.updateBookingRequest();
 
-    expect(InertiaFormMock.put).toBeCalledTimes(1);
+    expect(InertiaFormMock.post).toBeCalledTimes(1);
 });
 
 test('Update room when form errors', () => {
-    InertiaFormMock.put.mockReturnValueOnce({
+    InertiaFormMock.post.mockReturnValueOnce({
         then(callback) {
             callback({});
         }
@@ -57,7 +57,7 @@ test('Update room when form errors', () => {
 
     wrapper.vm.updateBookingRequest();
 
-    expect(InertiaFormMock.put).toBeCalledTimes(1);
+    expect(InertiaFormMock.post).toBeCalledTimes(1);
 });
 
 test('Booking request prop watcher updates form', () => {
@@ -74,5 +74,66 @@ test('Booking request prop watcher updates form', () => {
     })
 
     expect(wrapper.vm.booking_request).toBe(booking_request)
+
+})
+
+test('Testing file upload', () => {
+
+    let event = {
+        target: {
+            files: [
+                {
+                    name: 'image.png',
+                    size: 50000,
+                    type: 'image/png',
+                },
+            ],
+        },
+    }
+
+    // Mount the component
+    const wrapper = shallowMount(UpdateBookingRequestForm, {
+        localVue,
+        data() {
+            return {
+                form: {
+                    reference: [],
+                }
+            }
+        }
+    })
+
+    // Manually trigger the component’s onChange() method
+    wrapper.vm.fieldChange(event)
+
+    expect(wrapper.vm.form.reference).toEqual(event.target.files)
+
+})
+
+test('Testing empty file upload', () => {
+
+    let event = {
+        target: {
+            files: [
+            ],
+        },
+    }
+
+    // Mount the component
+    const wrapper = shallowMount(UpdateBookingRequestForm, {
+        localVue,
+        data() {
+            return {
+                form: {
+                    reference: [],
+                }
+            }
+        }
+    })
+
+    // Manually trigger the component’s onChange() method
+    wrapper.vm.fieldChange(event)
+
+    expect(wrapper.vm.form.reference).toEqual(event.target.files)
 
 })

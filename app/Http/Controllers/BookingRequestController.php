@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\BookingRequest;
 use App\Models\Room;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 
 class BookingRequestController extends Controller
@@ -45,6 +46,19 @@ class BookingRequestController extends Controller
             'start_time' => ['required', 'date'],
             'end_time' => ['required', 'date'],
         ]);
+        
+        $referenceFolder = NULL;
+        
+        if($request->file())
+        {
+            $referenceFolder = $request->room_id.'_'.strtotime($request->start_time).'_reference/';
+            
+            foreach($request->reference as $file)
+            {
+                $name = $file->getClientOriginalName();
+                $filePath = 'storage/'.Storage::disk('public')->putFileAs($referenceFolder, $file, $name);
+            }    
+        }
 
         $room = Room::available()->findOrFail($request->room_id); 
             
@@ -52,10 +66,10 @@ class BookingRequestController extends Controller
             'room_id' => $room->id,
             'user_id' => $request->user()->id,
             'start_time' => $request->start_time,
-            'end_time' => $request->end_time,
-            'status' => "review"
+            'end_time' => $request->end_time, 
+            'status' => "review",
+            'reference' => ["path" => $referenceFolder]
         ]);
-
 
         return back();
     }
@@ -91,14 +105,31 @@ class BookingRequestController extends Controller
      */
     public function update(Request $request, BookingRequest $booking)
     {
-        $request->validateWithBag('updateBookingRequest', [
+        $request->validateWithBag('updateBookingRequest', array(
             'room_id' => ['required', 'integer'],
             'start_time' => ['required', 'string', 'max:255'],
             'end_time' => ['required', 'string', 'max:255'],
-        ]);
+        ));
 
-        $booking->fill($request->all())->save();
+        $booking->fill($request->except(['reference']))->save();
+        
+        if($request->file())
+        {    
+            $referenceFolder = $request->room_id.'_'.strtotime($request->start_time).'_reference/';
 
+            if(isset($booking->reference["path"]))
+            {
+                $referenceFolder = $booking->reference["path"];
+            }
+            foreach($request->reference as $file)
+            {
+                $name = $file->getClientOriginalName();
+                $filePath = 'storage/'.Storage::disk('public')->putFileAs($referenceFolder, $file, $name);
+            }  
+            $booking->reference = ['path' => $referenceFolder];
+            $booking->save();
+        }
+        
         return back();
     }
 

@@ -8,7 +8,7 @@
           <div class="m-6">
             <jet-label for="room_id" value="Room" />
             <select v-model="createBookingRequestForm.room_id" class="mt-1 block w-full" name="availableRooms" id="availableRooms">
-              <option :value="null" selected="selected">Choose here</option>
+              <option :value="null" selected="selected">Chooseeee here</option>
               <option v-for="room in availableRooms" :key="room.id" :value="room.id">{{room.name}}</option>
             </select>
             <jet-input-error :message="createBookingRequestForm.error('room_id')" class="mt-2" />
@@ -35,6 +35,16 @@
             />
             <jet-input-error :message="createBookingRequestForm.error('end_time')" class="mt-2" />
           </div>
+
+          <div class="m-6 form-group">
+            <jet-label>Upload Reference Files</jet-label>
+            <input 
+              type="file" 
+              v-el:file  
+              @change="fieldChange"
+              multiple  
+            >
+          </div>         
         </div>
       </template>
 
@@ -90,13 +100,16 @@ export default {
         {
           room_id: null,
           start_time: "",
-          end_time: ""
+          end_time: "",
+          reference: [],
+          file: null,
         },
         {
           bag: "createBookingRequest",
           resetOnSuccess: true
         }
-      )
+      ),
+
     };
   },
   methods: {
@@ -104,7 +117,19 @@ export default {
       this.createBookingRequestForm.post("/bookings", {
         preserveScroll: true
       });
-    }
+      this.file = null;
+    },
+    fieldChange(e){
+      let selectedFiles = e.target.files;
+
+      if(!selectedFiles.length)
+        return false;
+
+      for(let i=0;i<selectedFiles.length;i++)
+      {
+        this.createBookingRequestForm.reference.push(selectedFiles[i]);
+      }
+    }    
   }
 };
 </script>

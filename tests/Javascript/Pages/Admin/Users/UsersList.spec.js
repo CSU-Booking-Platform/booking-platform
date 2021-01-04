@@ -104,3 +104,39 @@ test('updateUser()', () => {
 
     expect(wrapper.vm.$data.userBeingUpdated).toBe(null)
 })
+
+
+test('userBeingUpdated should not be null with the request fails', () => {
+
+    let mockUserBeingUpdated = {
+        id: 69
+    }
+
+    InertiaFormMock.put.mockImplementationOnce(function (...args) {
+        InertiaFormMock.successful = false;
+        return {
+            then(callback) {
+                callback({})
+            }
+        }
+    })
+
+    const wrapper = shallowMount(UsersList, {
+        localVue,
+        data() {
+            return {
+                userBeingUpdated: mockUserBeingUpdated
+            }
+        }
+    })
+
+    wrapper.vm.updateUser()
+
+    expect(InertiaFormMock.put).toBeCalledWith('/users/' + mockUserBeingUpdated.id, {
+        preserveScroll: true,
+        preserveState: true,
+    })
+
+    expect(wrapper.vm.$data.userBeingUpdated).toBe(mockUserBeingUpdated);
+})
+

@@ -40,7 +40,6 @@
             <jet-label>Upload Reference Files</jet-label>
             <input 
               type="file" 
-              v-el:file  
               @change="fieldChange"
               multiple  
             >

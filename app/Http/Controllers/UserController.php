@@ -78,7 +78,7 @@ class UserController extends Controller
     {
         $request->validateWithBag('updateUser', [
             'name' => ['nullable', 'string', 'max:255'],
-            'email' => ['nullable', 'string', 'email', 'max:255', 'unique:users'],
+            'email' => ['nullable', 'string', 'email', 'max:255'],
             'roles' => ['array'],
         ]);
 

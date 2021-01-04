@@ -66,12 +66,13 @@
                 </div>
                 <!-- Permissions -->
                 <div class="mt-2 col-span-12" v-if="roles.length > 0">
-                    <jet-label for="roles" value="Roles" />
+                    <jet-label for="roles" value="Roles"/>
 
                     <div class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div v-for="role in roles">
                             <label class="flex items-center">
-                                <input type="checkbox" class="form-checkbox" :value="role.name" v-model="updateUserForm.roles">
+                                <input type="checkbox" class="form-checkbox" :value="role.name"
+                                       v-model="updateUserForm.roles">
                                 <span class="ml-2 text-md text-black">{{ role.name }}</span>
                                 <span class="ml-2 text-sm text-gray-600">{{ role.guard_name }}</span>
                             </label>
@@ -198,7 +199,6 @@ export default {
             this.userBeingUpdated = user;
             this.updateUserForm.name = user.name;
             this.updateUserForm.email = user.email;
-            this.updateUserForm.roles = user.roles;
         },
 
         updateUser() {
@@ -206,8 +206,10 @@ export default {
                 preserveScroll: true,
                 preserveState: true,
             }).then(() => {
-                this.userBeingUpdated = null
-            })
+                if (this.updateUserForm.successful) {
+                    this.userBeingUpdated = null;
+                }
+            });
         },
 
         fromNow(timestamp) {
@@ -215,7 +217,13 @@ export default {
         },
 
         setSelectedRoles(user) {
-            this.updateUserForm.roles = user.roles.map((o) => {return o.name; });
+            this.updateUserForm.roles = this.mapUserRoles(user.roles)
+        },
+
+        mapUserRoles(roles) {
+            return roles.map((o) => {
+                return o.name;
+            });
         }
     }
 }

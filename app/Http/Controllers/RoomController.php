@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Availability;
 use App\Models\Room;
 use Illuminate\Http\Request;
 
@@ -44,15 +45,44 @@ class RoomController extends Controller
             'floor' => ['required', 'integer'],
             'building' => ['required', 'string', 'max:255'],
             'status' => ['required', 'string', 'max:255'],
+            'availabilities.Monday.opening_hours' => 'nullable|required_with:availabilities.Monday.closing_hours|before:availabilities.Monday.closing_hours',
+            'availabilities.Monday.closing_hours' => 'nullable|required_with:availabilities.Monday.opening_hours|after:availabilities.Monday.opening_hours',
+            'availabilities.Tuesday.opening_hours' => 'nullable|required_with:availabilities.Tuesday.closing_hours|before:availabilities.Tuesday.closing_hours',
+            'availabilities.Tuesday.closing_hours' => 'nullable|required_with:availabilities.Tuesday.opening_hours|after:availabilities.Tuesday.opening_hours',
+            'availabilities.Wednesday.opening_hours' => 'nullable|required_with:availabilities.Wednesday.closing_hours|before:availabilities.Wednesday.closing_hours',
+            'availabilities.Wednesday.closing_hours' => 'nullable|required_with:availabilities.Wednesday.opening_hours|after:availabilities.Wednesday.opening_hours',
+            'availabilities.Thursday.opening_hours' => 'nullable|required_with:availabilities.Thursday.closing_hours|before:availabilities.Thursday.closing_hours',
+            'availabilities.Thursday.closing_hours' => 'nullable|required_with:availabilities.Thursday.opening_hours|after:availabilities.Thursday.opening_hours',
+            'availabilities.Friday.opening_hours' => 'nullable|required_with:availabilities.Friday.closing_hours|before:availabilities.Friday.closing_hours',
+            'availabilities.Friday.closing_hours' => 'nullable|required_with:availabilities.Friday.opening_hours|after:availabilities.Friday.opening_hours',
+            'availabilities.Saturday.opening_hours' => 'nullable|required_with:availabilities.Saturday.closing_hours|before:availabilities.Saturday.closing_hours',
+            'availabilities.Saturday.closing_hours' => 'nullable|required_with:availabilities.Saturday.opening_hours|after:availabilities.Saturday.opening_hours',
+            'availabilities.Sunday.opening_hours' => 'nullable|required_with:availabilities.Sunday.closing_hours|before:availabilities.Sunday.closing_hours',
+            'availabilities.Sunday.closing_hours' => 'nullable|required_with:availabilities.Sunday.opening_hours|after:availabilities.Sunday.opening_hours',
         ]);
 
-        Room::create([
+        $room = Room::create([
             'name' => $request->name,
             'number' => $request->number,
             'floor' => $request->floor,
             'building' => $request->building,
             'status' => $request->status
         ]);
+
+        $availabilities = $request->get('availabilities');
+
+        if (!empty($availabilities)) {
+            foreach ($availabilities as $weekday => $availability) {
+                if (!empty($availability['opening_hours']) && !empty($availability['closing_hours'])) {
+                    Availability::create([
+                        'weekday' => $weekday,
+                        'opening_hours' => $availability['opening_hours'],
+                        'closing_hours' => $availability['closing_hours'],
+                        'room_id' => $room->id
+                    ]);
+                }
+            }
+        }
 
         return back();
     }

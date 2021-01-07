@@ -2,15 +2,17 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Validation\ValidationException;
 
 class Room extends Model
 {
     use HasFactory;
 
-     /**
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -23,19 +25,65 @@ class Room extends Model
         'status'
     ];
 
-     /**
+    /**
      * Get the booking requests for the room.
      */
     public function bookingRequests()
     {
         return $this->hasMany('App\Models\BookingRequest');
     }
-    
-     /**
+
+    /**
+     * Get the availabilities for the room
+     */
+    public function availabilities()
+    {
+        return $this->hasMany('App\Models\Availability');
+    }
+
+    /**
      * Check the availability of the room.
      */
     public function scopeAvailable(Builder $q)
     {
         $q->where('status', 'available');
+    }
+
+    /**
+     * Check if start date and end date is within room availabilities
+     * @param $startDate is a date time string
+     * @param $endDate is a date time string
+     * @return void
+     * @throws ValidationException
+     */
+    public function verifyDatetimesAreWithinAvailabilities($startDate, $endDate)
+    {
+        $startTime = Carbon::parse($startDate)->toTimeString();
+        $endTime = Carbon::parse($endDate)->toTimeString();
+
+        $availabilityStart =
+            Availability::query()->where(
+                'weekday',
+                '=',
+                Carbon::parse($startDate)->format('l')
+            )->where('room_id', '=', $this->id)->first();
+
+        $availabilityEnd =
+            Availability::query()->where(
+                'weekday',
+                '=',
+                Carbon::parse($endDate)->format('l')
+            )->where('room_id', '=', $this->id)->first();
+
+        if (
+            empty($availabilityStart) ||
+            empty($availabilityEnd) ||
+            $startTime < $availabilityStart->opening_hours ||
+            $endTime > $availabilityEnd->closing_hours
+        ) {
+            throw ValidationException::withMessages([
+                'availabilities' => 'Booking request not within availabilities!'
+            ]);
+        }
     }
 }

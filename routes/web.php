@@ -36,4 +36,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
     Route::post('settings/app_name', SettingsController::class.'@storeAppName')->name('app.name.change');
 
     Route::resource('bookings',\App\Http\Controllers\BookingRequestController::class)->only(['store', 'index', 'update', 'destroy']);
+
+    if (env('APP_ENV') == 'local') {
+        Route::resource('demo/tables',\App\Http\Controllers\DemoController::class)->only(['index']);
+    }
 });

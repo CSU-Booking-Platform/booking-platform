@@ -71,3 +71,40 @@ h2 {
     font-size: 1.2rem;
     font-weight: bold;
 }
+
+/* Table layout and bordering */
+table.responsive-spaced
+{
+    border-collapse:separate;
+    border-spacing: 40px 0;
+    table-layout: fixed;
+    width: 100%;
+}
+
+/* Table header aligning and padding */
+table.responsive-spaced th{
+    padding: 12px;
+    text-align: center;
+}
+
+/* Table data aligning and padding */
+table.responsive-spaced td{
+    padding: 40px;
+    text-align: center;
+}
+
+/* Table body spacing from headers */
+table.responsive-spaced tbody:before
+{
+    line-height:1em;
+    content:"_";
+    color:white;
+    display:block;
+}
+
+/* Table filter */
+.table-filter-container{
+    width: 100%;
+    text-align: center;
+    padding: 15px;
+}

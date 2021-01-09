@@ -37,7 +37,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
 
     Route::resource('bookings',\App\Http\Controllers\BookingRequestController::class)->only(['store', 'index', 'update', 'destroy']);
 
-    if (env('APP_ENV') == 'local') {
+    if (env('APP_ENV') == 'local' || env('APP_ENV') == 'testing') {
         Route::resource('demo/tables',\App\Http\Controllers\DemoController::class)->only(['index']);
     }
 });

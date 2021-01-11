@@ -86,4 +86,19 @@ class Room extends Model
             ]);
         }
     }
+    public function verifyDatesAreWithinRoomRestrictions($startDate)
+    {
+        $startTime = Carbon::parse($startDate)->toDateString();
+        $min_days = $this->min_days_advance;
+        $max_days = $this->max_days_advance;
+        
+        if(Carbon::today()-> diffInDays($startTime) < $min_days)
+        {
+            throw ValidationException::withMessages(['booked_too_close' => 'You can not book events closer than ' .$min_days.' days to the event']);
+        }
+        elseif(Carbon::today()-> diffInDays($startTime) > $max_days)
+        {
+            throw ValidationException::withMessages(['booked_too_far' => 'You cannot book events farther than '.$max_days.' days from the event']);
+        }
+    }
 }

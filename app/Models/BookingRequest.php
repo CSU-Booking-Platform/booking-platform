@@ -16,7 +16,9 @@ class BookingRequest extends Model
         'start_time',
         'end_time',
         'status',
-        'reference'
+        'reference',
+        'min_days_advance',
+        'max_days_advance'
     ];
 
     /**

@@ -78,6 +78,19 @@
                             class="mt-2"
                         />
                     </div>
+
+                    <div class="col-span-6 sm:col-span-3">  
+                        <jet-label for="min_days_advance" value="Minimum Days Before Booking"/>
+                        <jet-input id="min_days_advance" type="min_days_advance" class="mt-1 block w-full" v-model="createRoomForm.min_days_advance"/>
+                        <jet-input-error :message="createRoomForm.error('min_days_advance')" class="mt-2"/>
+                    </div>
+
+                    <div class="col-span-6 sm:col-span-3">  
+                        <jet-label for="max_days_advance" value="Maximum Days Before Booking"/>
+                        <jet-input id="max_days_advance" type="max_days_advance" class="mt-1 block w-full" v-model="createRoomForm.max_days_advance"/>
+                        <jet-input-error :message="createRoomForm.error('max_days_advance')" class="mt-2"/>
+                    </div>
+
             </template>
 
             <template #actions>
@@ -149,7 +162,9 @@ export default {
                         opening_hours: '',
                         closing_hours: ''
                     },
-                }
+                },
+                min_days_advance:'',
+                max_days_advance:''
             }, {
                 bag: 'createRoom',
                 resetOnSuccess: true,

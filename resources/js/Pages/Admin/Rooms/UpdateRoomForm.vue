@@ -68,6 +68,31 @@
                     class="mt-2"
                 />
             </div>
+
+
+            <div class="m-6">
+                <jet-label for="min_days_advance" value="Minimum Days Before Booking" />
+                <jet-input
+                    id="min_days_advance"
+                    type="min_days_advance"
+                    class="mt-1 block w-full"
+                    v-model="form.min_days_advance"
+                    autofocus
+                />
+                <jet-input-error :message="form.error('number')" class="mt-2" />
+            </div>
+            <div class="m-6">
+                <jet-label for="max_days_advance" value="Maximum Days Before Booking" />
+                <jet-input
+                    id="max_days_advance"
+                    type="max_days_advance"
+                    class="mt-1 block w-full"
+                    v-model="form.max_days_advance"
+                    autofocus
+                />
+                <jet-input-error :message="form.error('number')" class="mt-2" />
+            </div>
+
         </template>
 
         <template #footer>
@@ -124,7 +149,9 @@ export default {
                     number: null,
                     floor: "",
                     building: "",
-                    status: ""
+                    status: "",
+                    min_days_advance:"",
+                    max_days_advance:""
                 },
                 {
                     bag: "updateRoom"
@@ -159,6 +186,8 @@ export default {
             this.form.floor = room?.floor;
             this.form.building = room?.building;
             this.form.status = room?.status;
+            this.form.status = room?.min_days_advance;
+            this.form.status = room?.max_days_advance;
         }
     }
 };

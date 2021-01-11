@@ -15,31 +15,44 @@ _You must have the ZenHub Extension installed for your browser to properly our i
 
 ## Installation
 
-### Pre-requisites
-- PHP >= 7.3, preferably 7.4
+### Hard Requirements
+- Some web server: `Apache` / `Nginx` / `Caddy`
+- `Postgres` > 12
+- `PHP` >= 7.4
 - PHP extensions you might not have by default: `bcmath, pgsql`
-- `composer` & `npm` executables
-- Postgres > 12
-- Latest Apache / Nginx / Caddy
+- [composer](https://getcomposer.org/)
+- [node and npm](https://www.npmjs.com/get-npm)
 - `xdebug` is always a plus
 
-_Use any XAMPP/ MAMP like tools, I recommended `laragon` on pc or `valet`/`valet+` on mac_
+_Use any XAMPP/ MAMP like tools, I recommended `laragon` on win or `valet`/`valet+` on mac_
 
 ### First-Time Setup Steps
 1. once you clone the repo run `composer fresh`, it will run a batch of the starter commands.
 1. Open the `.env` and configure it to work with what you need, _namely the DB connection_
-1. Create a pgsql database matching the connection details in your `.env`
+1. Create a database matching the connection details in your `.env`
 1. Create the db schema and seed it with random values with `composer mfs`
-1. verify your setup is functional with alias `composer diag` or the full command `php artisan self-diagnosis`
-1. Access the web app through your preferred local web server setup
-_(I like valet+ on macs & laragon on PC, ghetto way: php artisan serve + manual Postgres install)_
+1. verify your setup is functional with `php artisan self-diagnosis`
+1. Access the app through your preferred local web server setup
+   _(I like valet+ on macs & laragon on win... ghetto way: php artisan serve with sqlite db)_
+
+##### Need More Details?
+- [Laravel Installation](https://laravel.com/docs/8.x/installation)
+- [Detailed Installation Steps for old project](https://github.com/alexstojda/SOEN341/wiki/1.-Installation-Instructions)
 
 ### Bonus Commands
-- When you see DB issues run `php artisan migrate:fresh --seed` (`composer mfs` for short) to quickly 
-  recreate the db tables and seed it with random data
+- When you see DB issues run `php artisan migrate:fresh --seed` (`composer mfs` for short) to quickly recreate the db tables and seed it with random data
 - If you just need more random data in the db run `php artisan db:seed`
-- When everything goes to hell run `composer fresh` or `composer reset` if you don't want to rerun migrations
-- `npm run dev` or `npm run watch` for frontend dev build, the watch command will recompile when files are changed.
+- When everything goes to hell run `composer fresh` or `composer reset` if you think its related to composer dependencies
+- `npm run dev` or `npm run watch` for frontend dev build, the watch command will recompile when files are changed
+
+### Docs for all the things
+- [PHP](https://secure.php.net/manual/en/index.php)
+- [Laravel](https://laravel.com/docs/8.x)
+- [Vue.js](https://v3.vuejs.org/guide/introduction.html)
+- [Inertia.js](https://inertiajs.com)
+- [Laravel Jetstream](https://jetstream.laravel.com/1.x/introduction.html)
+- [TailwindCSS](https://tailwindcss.com/)
+- [DevDocs aka ALL DOCS](https://devdocs.io/)
 
 ## Usage
 
@@ -55,23 +68,26 @@ out api endpoint collections.
 Tinker is the primary tool for testing queries, php logic, and debugging weird code... Basically your best friend.
 Open it with `php artisan tinker`. It's an interactive repl php shell that makes it quick & easy to dumbass proof your code.
 
+## Testing
+
+### PHPUnit
+Yu can run `php artisan test` to run all the test suites.
+Normally your IDE can be configured to run specific tests or all of them. Refer to specific IDE documentation.
+
+### Jest
+Again, your IDE should recognize these tests and help you create a run configuration for those. To run everything from console use `npm run test`.
+
+### Debugging
+For PHP, make sure your install the XDebug PHP extension and configure it properly. I like to use remote autostart to avoid hassle and quickly debug my code. 
+- [PHPStorm Setup Tutorial](https://youtu.be/iSSjeelN5NU). 
+- [Detailed setup instructions for Windows and PHPStorm](https://github.com/alexstojda/SOEN341/wiki/2.-Debugging-and-Unit-testing)
+- Another one: [Xdebug with Docker & VSCode](https://www.youtube.com/watch?v=iloCjuqMdKU)
+
 ## Resources
 
 We'll be using the laravel framework for this project. A good place to start learning all of this scary new tech is 
 [Laracasts](https://laracasts.com/), specifically the [laravel from scratch series](https://laracasts.com/series/laravel-6-from-scratch)
 & [Vue 2 Step by step](https://laracasts.com/series/learn-vue-2-step-by-step).
-
-Here are some more resources you might want to take a look at : 
-
-### Various Useful Docs
-- [PHP](https://secure.php.net/manual/en/index.php)
-- [Laravel](https://laravel.com/docs/8.x)
-- [Vue.js](https://v3.vuejs.org/guide/introduction.html)
-- [Inertia.js](https://inertiajs.com)
-- [Jetstream](https://jetstream.laravel.com/1.x/introduction.html)
-- [TailwindCSS](https://tailwindcss.com/)
-- [Bootstrap](https://getbootstrap.com/)
-- [DevDocs aka ALL DOCS](https://devdocs.io/)
 
 ### Video Tutorials
 
@@ -93,12 +109,6 @@ Here are some more resources you might want to take a look at :
 - [Adapter, Straregy & Factory Patterns in Laravel w/ examples](https://www.youtube.com/watch?v=e4ugSgGaCQ0&index=2&list=PLuCEg9czvGugn72y0kuvxEUvbRc2HHN4J) 
 _prepare to 2x speed and hit the left key 8x a sec_
 - Design Patterns in PHP and Laravel by Kelt Dockins, ISBN:9781484224502 [link on gdrive coming soon](soon)
-
-### Extra
-- [Detailed Installation](https://github.com/alexstojda/SOEN341/wiki/1.-Installation-Instructions)
-- [Detailed Debug Setup in PhpStorm](https://github.com/alexstojda/SOEN341/wiki/2.-Debugging-and-Unit-testing)
-- [Doc appointment DB Design](https://www.vertabelo.com/blog/technical-articles/the-doctor-will-see-you-soon-a-data-model-for-a-medical-appointment-booking-app)
-- [Actually best vid, basically 341 in 45m](https://www.youtube.com/watch?v=enTb2E4vEos&index=3&list=PLuCEg9czvGugn72y0kuvxEUvbRc2HHN4J) 
 
 ## License
 This booking application is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

@@ -186,8 +186,8 @@ export default {
             this.form.floor = room?.floor;
             this.form.building = room?.building;
             this.form.status = room?.status;
-            this.form.status = room?.min_days_advance;
-            this.form.status = room?.max_days_advance;
+            this.form.min_days_advance = room?.min_days_advance;
+            this.form.max_days_advance = room?.max_days_advance;
         }
     }
 };

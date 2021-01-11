@@ -56,12 +56,12 @@
             </div>
             
             <div class="m-6">
-            <jet-input-error :message="createBookingRequestForm.error('booked_too_close')" class="mt-2" />
-          </div>
+                <jet-input-error :message="form.error('booked_too_close')" class="mt-2" />
+            </div>
 
            <div class="m-6">
-            <jet-input-error :message="createBookingRequestForm.error('booked_too_far')" class="mt-2" />
-          </div>
+               <jet-input-error :message="form.error('booked_too_far')" class="mt-2" />
+           </div>
         </template>
 
         <template #footer>

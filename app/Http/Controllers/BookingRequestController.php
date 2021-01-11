@@ -65,6 +65,7 @@ class BookingRequestController extends Controller
 
         $room = Room::available()->findOrFail($request->room_id);
         $room->verifyDatetimesAreWithinAvailabilities($request->get('start_time'), $request->get('end_time'));
+        $room->verifyDatesAreWithinRoomRestrictions($request->get('start_time'), $request->get('end_time'));
 
         BookingRequest::create([
             'room_id' => $room->id,
@@ -117,6 +118,7 @@ class BookingRequestController extends Controller
 
         $room = Room::query()->findOrFail($request->room_id);
         $room->verifyDatetimesAreWithinAvailabilities($request->get('start_time'), $request->get('end_time'));
+        $room->verifyDatesAreWithinRoomRestrictions($request->get('start_time'), $request->get('end_time'));
 
         $booking->fill($request->except(['reference']))->save();
         

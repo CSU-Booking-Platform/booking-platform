@@ -6,11 +6,9 @@
             </h2>
         </template>
         <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                    <CreateBookingRequestForm :availableRooms="availableRooms"/>
-                </div>
-            </div>
+             <RoomTable 
+            :rooms="rooms"
+            />
         </div>
         <div v-if="booking_requests.length > 0" class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
             <jet-section-border/>
@@ -18,6 +16,7 @@
             :booking_requests="booking_requests"
             :rooms="rooms" />
         </div>
+
 
     </app-layout>
 </template>
@@ -27,6 +26,7 @@ import JetSectionBorder from '@src/Jetstream/SectionBorder'
 import CreateBookingRequestForm from './CreateBookingRequestForm';
 import BookingRequestsList from './BookingRequestsList';
 import AppLayout from '@src/Layouts/AppLayout';
+import RoomTable from '@src/Components/Tables/RoomTable';
 
 export default {
     components: {
@@ -34,6 +34,7 @@ export default {
         AppLayout,
         BookingRequestsList,
         JetSectionBorder,
+        RoomTable
     },
     props: {
         booking_requests: {

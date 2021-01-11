@@ -30,13 +30,26 @@
             <td class="text-center lt-grey">{{room.floor}}</td>
             <td class="text-center lt-grey">{{room.status}}</td>
             <td class="text-center lt-grey">Reference</td>
-            <td class="text-center lt-grey">Action</td>
+            <td class="text-center lt-grey">
+              <button
+                    class="h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800"
+                    @click="roomBeingBooked = room"
+                  >Book
+              </button>
+            </td>
         </tr>
       </tbody>
     </table>
+
+    <CreateBookingRequestModal
+      :room="roomBeingBooked"
+      @close="roomBeingBooked = null"
+    ></CreateBookingRequestModal>
   </div>
 </template>
 <script>
+
+import CreateBookingRequestModal from "@src/Pages/Admin/BookingRequests/CreateBookingRequestModal";
 
 export default {
   name: "RoomTable",
@@ -48,11 +61,12 @@ export default {
     },
   },
   components: {
-    
+    CreateBookingRequestModal
   },
   data() {
       return {
-          filter: ''
+          filter: '',
+          roomBeingBooked: null
       }
   },
     computed: {

@@ -88,32 +88,24 @@
         "notify": [
             "node -e \"require('node-notifier').notify({title: 'The cake was a lie!', message: 'I am cross-platform notification', icon: path.join(__dirname, 'resources/img/success.jpg'), sound: true})\""
         ],
-        "reset:vendor": [
-            "rm -rf vendor/*/"
-        ],
-        "reset": [
-            "rm -f composer.lock",
-            "@composer install",
-            "php artisan telescope:publish --ansi",
-            "node -e \"require('node-notifier').notify({title: 'Reset Complete!', message: 'Your local project setup was fully reset', icon: path.join(__dirname, 'resources/img/success.jpg'), sound: true})\""
-        ],
-        "reset:full": [
-            "@reset:vendor",
-            "@reset"
-        ],
         "fresh": [
-            "@reset",
+            "@composer install",
             "@keygen",
             "@ide",
             "@mfs"
         ],
-        "fresher": [
-            "@reset:vendor",
-            "@fresh"
-        ],
         "mfs": [
             "@php artisan migrate:fresh --seed",
             "node -e \"require('node-notifier').notify({title: 'Fresh Data Delivered!', message: 'Your database was reset and fresh data was seeded'})\""
+        ],
+        "reset": [
+            "rm -f composer.lock",
+            "@fresh",
+            "node -e \"require('node-notifier').notify({title: 'Reset Complete!', message: 'Your local project setup was fully reset', icon: path.join(__dirname, 'resources/img/success.jpg'), sound: true})\""
+        ],
+        "reset:full": [
+            "rm -rf vendor/*/",
+            "@reset"
         ],
         "ide": [
             "@php artisan ide-helper:eloquent",

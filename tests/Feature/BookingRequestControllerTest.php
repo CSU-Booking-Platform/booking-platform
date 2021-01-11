@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Availability;
+use Faker\Factory;
 use Tests\TestCase;
 use App\Models\Room;
 use App\Models\BookingRequest;
@@ -20,13 +21,24 @@ class BookingRequestControllerTest extends TestCase
     use RefreshDatabase;
 
     /**
+     * @var \Faker\Generator
+     */
+    public $faker;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->faker = Factory::create();
+    }
+
+    /**
      * @test
      */
     public function user_can_create_booking_request()
     {
         $room = Room::factory()->create(['status'=>'available']);
         $user = User::factory()->create();
-        $booking_request = BookingRequest::factory()->make();
+        $booking_request = $this->createBookingRequest($room, false);
 
         $this->createBookingRequestAvailabilities($booking_request, $room);
 
@@ -46,7 +58,7 @@ class BookingRequestControllerTest extends TestCase
         Storage::fake('public');
         $room = Room::factory()->create(['status'=>'available']);
         $user = User::factory()->create();
-        $booking_request = BookingRequest::factory()->make();
+        $booking_request = $this->createBookingRequest($room, false);
 
         $this->createBookingRequestAvailabilities($booking_request, $room);
 
@@ -74,7 +86,7 @@ class BookingRequestControllerTest extends TestCase
     {
         $room = Room::factory()->create(['status'=>'available']);
         $user = User::factory()->create();
-        $booking_request = BookingRequest::factory()->make();
+        $booking_request = $this->createBookingRequest($room, false);
 
 
         $this->assertDatabaseMissing('booking_requests', ['room_id' => $booking_request->room_id, 'start_time' => $booking_request->start_time, 'end_time' => $booking_request->end_time]);
@@ -93,7 +105,7 @@ class BookingRequestControllerTest extends TestCase
     {
         $room = Room::factory()->create(['status'=>'unavailable']);
         $user = User::factory()->create();
-        $booking_request = BookingRequest::factory()->make();
+        $booking_request = $this->createBookingRequest($room, false);
 
 
         $this->assertDatabaseMissing('booking_requests', ['room_id' => $booking_request->room_id, 'start_time' => $booking_request->start_time, 'end_time' => $booking_request->end_time]);
@@ -112,7 +124,7 @@ class BookingRequestControllerTest extends TestCase
     {
         $room = Room::factory()->create(['status'=>'available']);
         $user = User::factory()->create();
-        $booking_request = BookingRequest::factory()->create();
+        $booking_request = $this->createBookingRequest($room);
 
         $this->createBookingRequestAvailabilities($booking_request, $room);
 
@@ -142,7 +154,7 @@ class BookingRequestControllerTest extends TestCase
     {
         $room = Room::factory()->create(['status'=>'available']);
         $user = User::factory()->create();
-        $booking_request = BookingRequest::factory()->create();
+        $booking_request = $this->createBookingRequest($room);
 
         $this->createBookingRequestAvailabilities($booking_request, $room);
 
@@ -173,7 +185,7 @@ class BookingRequestControllerTest extends TestCase
         Storage::fake('public');
         $room = Room::factory()->create();
         $user = User::factory()->create();
-        $booking_request = BookingRequest::factory()->create();
+        $booking_request = $this->createBookingRequest($room);
         $files = [UploadedFile::fake()->create('testFile.txt', 100)];
 
         $this->createBookingRequestAvailabilities($booking_request, $room);
@@ -204,7 +216,7 @@ class BookingRequestControllerTest extends TestCase
     {
         $room = Room::factory()->create();
         $user = User::factory()->create();
-        $booking_request = BookingRequest::factory()->create();
+        $booking_request = $this->createBookingRequest($room);
 
         $this->assertDatabaseHas('booking_requests', [
             'room_id' => $booking_request->room_id, 'start_time' => $booking_request->start_time,
@@ -224,11 +236,31 @@ class BookingRequestControllerTest extends TestCase
     {
         $room = Room::factory()->make();
         $user = User::factory()->make();
-        $booking_request = BookingRequest::factory()->make();
+        $booking_request = $this->createBookingRequest($room, false);
 
         $response = $this->actingAs($user)->get('/bookings');
         $response->assertOk();
         $response->assertSee("BookingRequests");
+    }
+
+    /**
+     * helper function
+     */
+    private function createBookingRequest($room, $create = true) {
+        $start = $this->faker->dateTimeInInterval('+'.$room->min_days_advance.' days', '+'.$room->min_days_advance.' days');
+
+        $input = [
+            'start_time' => $start,
+            'end_time' => Carbon::parse($start)->addHours(2),
+        ];
+
+        if ($create) {
+            $booking_request = BookingRequest::factory()->create($input);
+        } else {
+            $booking_request = BookingRequest::factory()->make($input);
+        }
+
+        return $booking_request;
     }
 
     /**

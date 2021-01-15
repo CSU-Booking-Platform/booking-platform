@@ -59,6 +59,7 @@ class User extends Authenticatable
      */
     protected $appends = [
         'profile_photo_url',
+        'can',
     ];
 
     /**
@@ -67,5 +68,10 @@ class User extends Authenticatable
     public function bookingRequests()
     {
         return $this->hasMany('App\Models\BookingRequest');
+    }
+
+    public function getCanAttribute()
+    {
+        return $this->getAllPermissions()->pluck('name');
     }
 }

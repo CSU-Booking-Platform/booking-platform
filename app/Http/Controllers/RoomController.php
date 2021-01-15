@@ -66,7 +66,23 @@ class RoomController extends Controller
             'number' => $request->number,
             'floor' => $request->floor,
             'building' => $request->building,
-            'status' => $request->status
+            'capacity_standing' => $request->capacity_standing,
+            'capacity_sitting' => $request->capacity_sitting,
+            'food' => $request->food,
+            'alcohol' => $request->alcohol,
+            'a_v_permitted' => $request->a_v_permitted,
+            'projector' => $request->projector,
+            'television' => $request->television,
+            'computer' => $request->computer,
+            'whiteboard' => $request->whiteboard,
+            'sofas' => $request->sofas,
+            'coffee_tables' => $request->coffee_tables,
+            'tables' => $request->tables,
+            'chairs' => $request->chairs,
+            'ambiant_music' => $request->ambiant_music,
+            'sale_for_profit' => $request->sale_for_profit,
+            'fundraiser' => $request->fundraiser,
+            'status' => $request->status,
         ]);
 
         $availabilities = $request->get('availabilities');

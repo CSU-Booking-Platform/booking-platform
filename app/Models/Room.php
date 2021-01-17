@@ -38,6 +38,14 @@ class Room extends Model
     ];
 
     /**
+     * The roles restricted from this room.
+     */
+    public function restrictions()
+    {
+        return $this->belongsToMany(Role::class, 'room_restrictions');
+    }
+
+    /**
      * Get the booking requests for the room.
      */
     public function bookingRequests()

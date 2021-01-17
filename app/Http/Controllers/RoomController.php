@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Availability;
+use App\Models\Role;
 use App\Models\Room;
 use Illuminate\Http\Request;
 
@@ -16,7 +17,8 @@ class RoomController extends Controller
     public function index()
     {
         return inertia('Admin/Rooms/Index', [
-            'rooms' => Room::all(),
+            'rooms' => Room::with('restrictions')->get(),
+            'roles' => Role::all()
         ]);
     }
 

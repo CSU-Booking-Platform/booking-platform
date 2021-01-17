@@ -314,7 +314,7 @@ export default {
             this.form.ambiant_music = room?.attributes.ambiant_music;
             this.form.sale_for_profit = room?.attributes.sale_for_profit;
             this.form.fundraiser = room?.attributes.fundraiser;
-            this.form.status = room?.attributes.status;
+            this.form.status = room?.status;
             this.form.min_days_advance = room?.min_days_advance;
             this.form.max_days_advance = room?.max_days_advance;          
         }

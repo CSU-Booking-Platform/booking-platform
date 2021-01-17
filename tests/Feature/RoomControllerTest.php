@@ -26,14 +26,54 @@ class RoomControllerTest extends TestCase
         $this->assertDatabaseMissing('rooms', ['name' => $room->name]);
 
         $response = $this->actingAs($user)->post('/rooms', [
-            'name' => $room->name, 'number' => $room->number,
-            'floor' => $room->floor, 'building' => $room->building, 'status' => $room->status
+            'name' => $room->name, 
+            'number' => $room->number,
+            'floor' => $room->floor, 
+            'building' => $room->building, 
+            'status' => $room->status,
+            'capacity_standing' => $room->capacity_standing,
+            'capacity_sitting' => $room->capacity_sitting,
+            'food' => $room->food,
+            'alcohol' => $room->alcohol,
+            'a_v_permitted' => $room->a_v_permitted,
+            'projector' => $room->projector,
+            'television' => $room->television,
+            'computer' => $room->computer,
+            'whiteboard' => $room->whiteboard,
+            'sofas' => $room->sofas,
+            'coffee_tables' => $room->coffee_tables,
+            'tables' => $room->tables,
+            'chairs' => $room->chairs,
+            'ambiant_music' => $room->ambiant_music,
+            'sale_for_profit' => $room->sale_for_profit,
+            'fundraiser' => $room->fundraiser, 
         ]);
 
         $response->assertStatus(302);
         $this->assertDatabaseHas('rooms', [
-            'name' => $room->name, 'number' => $room->number,
-            'floor' => $room->floor, 'building' => $room->building, 'status' => $room->status
+            'name' => $room->name, 
+            'number' => $room->number,
+            'floor' => $room->floor, 
+            'building' => $room->building, 
+            'status' => $room->status, 
+            'attributes' => json_encode([            
+                'capacity_standing' => $room->capacity_standing,
+                'capacity_sitting' => $room->capacity_sitting,
+                'food' => $room->food,
+                'alcohol' => $room->alcohol,
+                'a_v_permitted' => $room->a_v_permitted,
+                'projector' => $room->projector,
+                'television' => $room->television,
+                'computer' => $room->computer,
+                'whiteboard' => $room->whiteboard,
+                'sofas' => $room->sofas,
+                'coffee_tables' => $room->coffee_tables,
+                'tables' => $room->tables,
+                'chairs' => $room->chairs,
+                'ambiant_music' => $room->ambiant_music,
+                'sale_for_profit' => $room->sale_for_profit,
+                'fundraiser' => $room->fundraiser
+            ]),
         ]);
     }
 
@@ -105,19 +145,60 @@ class RoomControllerTest extends TestCase
 
         $this->assertDatabaseHas('rooms', [
             'name' => $room->name, 'number' => $room->number,
-            'floor' => $room->floor, 'building' => $room->building, 'status' => $room->status
+            'floor' => $room->floor, 'building' => $room->building,
+            'status' => $room->status,'attributes' => json_encode($room->attributes),             
         ]);
 
         $response = $this->actingAs($user)->put('/rooms/' . $room->id, [
-            'name' => 'the room', 'number' => '24',
-            'floor' => '2009', 'building' => 'wiseau', 'status' => 'available'
+            'name' => 'the room', 
+            'number' => '24',
+            'floor' => '2009', 
+            'building' => 'wiseau', 
+            'status' => 'available',       
+            'capacity_standing' => '100',
+            'capacity_sitting' => '80',
+            'food' => 'true',
+            'alcohol' => 'true',
+            'a_v_permitted' => 'false',
+            'projector' => 'true',
+            'television' => 'true',
+            'computer' => 'true',
+            'whiteboard' => 'true',
+            'sofas' => '1',
+            'coffee_tables' => '1',
+            'tables' => '1',
+            'chairs' => '1',
+            'ambiant_music' => 'true',
+            'sale_for_profit' => 'false',
+            'fundraiser' => 'false'
         ]);
 
         $response->assertStatus(302);
 
         $this->assertDatabaseHas('rooms', [
-            'name' => 'the room', 'number' => '24',
-            'floor' => '2009', 'building' => 'wiseau', 'status' => 'available'
+            'name' => 'the room', 
+            'number' => '24',
+            'floor' => '2009', 
+            'building' => 'wiseau', 
+            'status' => 'available', 
+            'attributes' => json_encode([            
+                'capacity_standing' => '100',
+                'capacity_sitting' => '80',
+                'food' => 'true',
+                'alcohol' => 'true',
+                'a_v_permitted' => 'false',
+                'projector' => 'true',
+                'television' => 'true',
+                'computer' => 'true',
+                'whiteboard' => 'true',
+                'sofas' => '1',
+                'coffee_tables' => '1',
+                'tables' => '1',
+                'chairs' => '1',
+                'ambiant_music' => 'true',
+                'sale_for_profit' => 'false',
+                'fundraiser' => 'false'
+            ]),
         ]);
     }
 

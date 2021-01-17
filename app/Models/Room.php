@@ -40,7 +40,7 @@ class Room extends Model
     /**
      * The roles restricted from this room.
      */
-    public function restrictions()
+    public function restrictions(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(Role::class, 'room_restrictions');
     }
@@ -67,6 +67,18 @@ class Room extends Model
     public function scopeAvailable(Builder $q)
     {
         $q->where('status', 'available');
+    }
+
+    /**
+     * Hide rooms restricted by the user's roles
+     */
+    public function scopeHideUserRestrictions(Builder $q, User $u = null)
+    {
+        if (!$u) {
+            $u = \Auth::user();
+        }
+
+        $q->whereNotIn('id', $u->roles()->first()->restrictions()->select('id')->get()->pluck('id'));
     }
 
     /**

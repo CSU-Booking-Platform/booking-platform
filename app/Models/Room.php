@@ -22,25 +22,19 @@ class Room extends Model
         'number',
         'floor',
         'building',
-        'capacity_standing',
-        'capacity_sitting',
-        'food',
-        'alcohol',
-        'a_v_permitted',
-        'status',
-        'projector',
-        'television',
-        'computer',
-        'whiteboard',
-        'sofas',
-        'coffee_tables',
-        'tables',
-        'chairs',
-        'ambiant_music',
-        'sale_for_profit',
-        'fundraiser',
+        'status', 
         'min_days_advance',
         'max_days_advance',
+        'attributes',
+    ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'attributes' => 'array',
     ];
 
     /**

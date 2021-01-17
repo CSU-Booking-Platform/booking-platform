@@ -121,13 +121,13 @@
                         <label class="flex items-center text-sm">Sofa(s)</label>
                         <jet-input  v-model.number="createRoomForm.sofas" type="number"/> 
 
-                        <label class="flex items-center">Coffee Table(s)</label>
+                        <label class="flex items-center text-sm">Coffee Table(s)</label>
                         <jet-input  v-model.number="createRoomForm.coffee_tables" type="number"/>
 
-                        <label class="flex items-center">Table(s)</label> 
+                        <label class="flex items-center text-sm">Table(s)</label> 
                         <jet-input  v-model.number="createRoomForm.tables" type="number"/>
 
-                        <label class="flex items-center">Chair(s)</label> 
+                        <label class="flex items-center text-sm">Chair(s)</label> 
                         <jet-input  v-model.number="createRoomForm.chairs" type="number"/> 
 
                         <jet-input-error :message="createRoomForm.error('furniture')" class="mt-2"/>

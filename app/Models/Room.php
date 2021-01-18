@@ -72,13 +72,10 @@ class Room extends Model
     /**
      * Hide rooms restricted by the user's roles
      */
-    public function scopeHideUserRestrictions(Builder $q, User $u = null)
+    public function scopeHideUserRestrictions(Builder $q, User $u)
     {
-        if (!$u) {
-            $u = \Auth::user();
-        }
-
-        $q->whereNotIn('id', $u->roles()->first()->restrictions()->select('id')->get()->pluck('id'));
+        $q->whereNotIn('id', $u->roles()->with('restrictions')->get()
+            ->pluck('restrictions')->flatten()->pluck('id')->unique()->toArray());
     }
 
     /**

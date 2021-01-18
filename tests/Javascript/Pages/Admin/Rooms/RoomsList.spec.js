@@ -55,3 +55,45 @@ test('deleteRoom()', () => {
 
     expect(wrapper.vm.$data.roomBeingDeleted).toBe(null)
 })
+
+
+test('openUpdateRestrictionsModal', () => {
+    let room = {
+        restrictions: ["role1", "role2"]
+    }
+    const wrapper = shallowMount(RoomsList, {localVue})
+    wrapper.vm.openEditModal(room)
+    expect(wrapper.vm.$data.roomRestBeingUpdated).toBe(room);
+})
+
+test('updateRoomRestrictions()', () => {
+
+    let mockRoomResBeingUpdated = {
+        id: 10,
+        roles:['role1', 'roles2']
+    }
+
+    InertiaFormMock.put.mockReturnValueOnce({
+        then(callback) {
+            callback({})
+        }
+    })
+
+    const wrapper = shallowMount(RoomsList, {
+        localVue,
+        data() {
+            return {
+                roomRestBeingUpdated: mockRoomResBeingUpdated
+            }
+        }
+    })
+
+    wrapper.vm.updateRestrictions()
+
+    expect(InertiaFormMock.put).toBeCalledWith('/room/restrictions/'  + mockRoomResBeingUpdated.id, {
+        preserveScroll: true,
+        preserveState: true,
+    })
+
+    expect(wrapper.vm.$data.roomRestBeingUpdated).toBe(null)
+})

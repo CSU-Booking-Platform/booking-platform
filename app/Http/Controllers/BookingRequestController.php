@@ -180,24 +180,16 @@ class BookingRequestController extends Controller
    
         $fileName = $folder . '.zip';
    
-        if ($zip->open(Storage::disk('public')->path($fileName), ZipArchive::CREATE) === TRUE)
-        {
-            if($files = File::files($path))
-            {                   
-                foreach ($files as $key => $value) {
-                    $relativeNameInZipFile = basename($value);
-                    $zip->addFile($value, $relativeNameInZipFile);
-                }             
-                $zip->close();
-            }
-            else
-            {
-                return back();
-            }
-        }
-        $file = $fileName;
+        $zip->open(Storage::disk('public')->path($fileName), ZipArchive::CREATE) === TRUE;
+        $files = File::files($path);
+                              
+        foreach ($files as $key => $value) {
+            $relativeNameInZipFile = basename($value);
+            $zip->addFile($value, $relativeNameInZipFile);
+        }             
+        $zip->close();
 
-        return response()->download(Storage::disk('public')->path($file))->deleteFileAfterSend(true);
+        return response()->download(Storage::disk('public')->path($fileName))->deleteFileAfterSend(true);
         
     }
 }

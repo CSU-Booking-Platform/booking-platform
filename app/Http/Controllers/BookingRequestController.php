@@ -56,12 +56,12 @@ class BookingRequestController extends Controller
         
         if($request->file())
         {
-            $referenceFolder = $request->room_id.'_'.strtotime($request->start_time).'_reference/';
+            $referenceFolder = $request->room_id.'_'.strtotime($request->start_time).'_reference';
             
             foreach($request->reference as $file)
             {
                 $name = $file->getClientOriginalName();
-                Storage::disk('public')->putFileAs($referenceFolder, $file, $name);
+                Storage::disk('public')->putFileAs($referenceFolder . '/', $file, $name);
             }    
         }
 
@@ -126,7 +126,7 @@ class BookingRequestController extends Controller
         
         if($request->file())
         {    
-            $referenceFolder = $request->room_id.'_'.strtotime($request->start_time).'_reference/';
+            $referenceFolder = $request->room_id.'_'.strtotime($request->start_time).'_reference';
 
             if(isset($booking->reference["path"]))
             {
@@ -135,7 +135,7 @@ class BookingRequestController extends Controller
             foreach($request->reference as $file)
             {
                 $name = $file->getClientOriginalName();
-                Storage::disk('public')->putFileAs($referenceFolder, $file, $name);
+                Storage::disk('public')->putFileAs($referenceFolder . '/', $file, $name);
             }  
             $booking->reference = ['path' => $referenceFolder];
             $booking->save();
@@ -159,13 +159,13 @@ class BookingRequestController extends Controller
 
     public function downloadReferenceFiles($folder) 
     {
-        $path = storage_path('app/public/'.$folder);
+        $path = Storage::disk('public')->path($folder);
 
         $zip = new ZipArchive;
    
         $fileName = $folder . '.zip';
    
-        if ($zip->open(storage_path('app/public/'.$fileName), ZipArchive::CREATE) === TRUE)
+        if ($zip->open(Storage::disk('public')->path($fileName), ZipArchive::CREATE) === TRUE)
         {
             if($files = File::files($path))
             {                   
@@ -180,9 +180,9 @@ class BookingRequestController extends Controller
                 return back();
             }
         }
-        $file = "app/public/" . $fileName;
+        $file = $fileName;
 
-        return response()->download(storage_path($file))->deleteFileAfterSend(true);
+        return response()->download(Storage::disk('public')->path($file))->deleteFileAfterSend(true);
         
     }
 }

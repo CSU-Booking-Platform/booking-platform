@@ -16,23 +16,23 @@
                 <template #content>
 
                     <div class="space-y-6">
-                        <div class="grid grid-cols-7">
+                        <div class="grid grid-cols-8">
                             <div class="text-md mx-3">Room Name</div>
                             <div class="text-md mx-3">Room Number</div>
-                            <div class="text-md mx-3">Floor Number</div>
+                            <div class="text-md mx-2">Floor Number</div>
                             <div class="text-md mx-3">Building</div>
                             <div class="text-md mx-3">Status</div>
                         </div>
 
                         <div v-for="room in rooms" :key="room.id" class="grid flex items-center">
-                            <div class="grid grid-cols-7">
+                            <div class="grid grid-cols-8">
                                 <div class="text-md mx-3">
                                     {{ room.name }}
                                 </div>
                                 <div class="text-md mx-3">
                                     {{ room.number }}
                                 </div>
-                                <div class="text-md mx-3">
+                                <div class="text-md mx-2">
                                     {{ room.floor }}
                                 </div>
                                 <div class="text-md mx-3">
@@ -61,7 +61,7 @@
                                 <div class="text-md mx-2">
                                 <button class="cursor-pointer ml-6 text-sm text-blue-800 focus:outline-none"
                                         @click="openEditModal(room)">
-                                    Edit
+                                    Restricted Roles
                                 </button>
                                 </div>
                             </div>

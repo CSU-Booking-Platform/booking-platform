@@ -5,7 +5,7 @@
         </template>
 
         <template #content>
-            <div class="scroll-modal">
+            <div class="overflow-y-auto max-h-96">
                 <div class="m-6">
                     <jet-label for="name" value="Room name" />
                     <jet-input 

@@ -5,13 +5,13 @@
                 Rooms page
             </h2>
         </template> 
-        <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-                <create-room-form/>
+            <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
+                <create-room-form />
+            <div v-if="rooms.length > 0">
+                <jet-section-border />
+                <rooms-list :rooms="rooms" />
+            </div>
         </div>  
-        <div v-if="rooms.length > 0" class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-            <jet-section-border/>
-            <rooms-list :rooms="rooms"/>
-        </div>
     </app-layout>
 </template>
 

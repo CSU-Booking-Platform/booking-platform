@@ -33,19 +33,10 @@ h2 {
 .edit-unclickable {
     color: #303030;
 }
-/*Smaller input field box*/
-.input-sm {
-    width: 30%;
-}
 
 /*Background Color for Table/Form Areas*/
 .lt-grey {
     background-color: #eaeaea ;
-}
-
-.scroll-modal{
-    max-height: 600px;  
-    overflow-y: auto;
 }
 
 /*Sub Nav-Bar*/

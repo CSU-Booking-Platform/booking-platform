@@ -26,7 +26,7 @@
 
                     <div class="col-span-6 sm:col-span-3">
                         <jet-label for="floor" value="Floor"/>
-                        <jet-input id="floor" type="number" class="mt-1 block w-full" v-model="createRoomForm.floor"/>
+                        <jet-input id="floor" type="number" min="0" class="mt-1 block w-full" v-model="createRoomForm.floor"/>
                         <jet-input-error :message="createRoomForm.error('floor')" class="mt-2"/>
                     </div>
 
@@ -38,13 +38,13 @@
 
                     <div class="col-span-6 sm:col-span-3">  
                         <jet-label for="stand_capacity" value="Standing Capacity"/>
-                        <jet-input id="stand_capacity" type="stand_capacity" class="mt-1 block w-full" v-model="createRoomForm.capacity_standing"/>
-                        <jet-input-error :message="createRoomForm.error('stand_capacity')" class="mt-2"/>
+                        <jet-input id="stand_capacity" type="number" min="0" class="mt-1 block w-full" v-model.number="createRoomForm.capacity_standing"/>
+                        <jet-input-error :message="createRoomForm.error('capacity_standing')" class="mt-2"/>
                     </div>
 
                     <div class="col-span-6 sm:col-span-3">  
                         <jet-label for="sit_capacity" value="Seating Capacity"/>
-                        <jet-input id="sit_capacity" type="sit_capacity" class="mt-1 block w-full" v-model="createRoomForm.capacity_sitting"/>
+                        <jet-input id="sit_capacity" type="number" min="0" class="mt-1 block w-full" v-model.number="createRoomForm.capacity_sitting"/>
                         <jet-input-error :message="createRoomForm.error('sit_capacity')" class="mt-2"/>
                     </div>
 
@@ -105,6 +105,7 @@
                         <input type="checkbox" class="form-checkbox" v-model="createRoomForm.ambiant_music"/>
                         <span class="ml-2 text-sm text-black">Ambiance Music</span>    
                         </label> 
+                        <label class="flex items-center">
                         <input type="checkbox" class="form-checkbox" v-model="createRoomForm.sale_for_profit"/>
                         <span class="ml-2 text-sm text-black">Sale for Profit</span>  
                         </label> 
@@ -119,16 +120,16 @@
                         <jet-label for="furniture" value="Furniture"/> 
                         <br>                        
                         <label class="flex items-center text-sm">Sofa(s)</label>
-                        <jet-input  v-model.number="createRoomForm.sofas" type="number"/> 
+                        <jet-input  v-model.number="createRoomForm.sofas" type="number" min="0"/> 
 
                         <label class="flex items-center text-sm">Coffee Table(s)</label>
-                        <jet-input  v-model.number="createRoomForm.coffee_tables" type="number"/>
+                        <jet-input  v-model.number="createRoomForm.coffee_tables" type="number" min="0"/>
 
                         <label class="flex items-center text-sm">Table(s)</label> 
-                        <jet-input  v-model.number="createRoomForm.tables" type="number"/>
+                        <jet-input  v-model.number="createRoomForm.tables" type="number" min="0"/>
 
                         <label class="flex items-center text-sm">Chair(s)</label> 
-                        <jet-input  v-model.number="createRoomForm.chairs" type="number"/> 
+                        <jet-input  v-model.number="createRoomForm.chairs" type="number" min="0"/> 
 
                         <jet-input-error :message="createRoomForm.error('furniture')" class="mt-2"/>
                     </div>
@@ -179,9 +180,9 @@
                     >   
                         <h3>Bookable Window</h3>
                         <jet-label for="min_days_advance" value="Minimum Days Before Booking"/>
-                        <jet-input id="min_days_advance" type="min_days_advance" class="mt-1 block w-full" v-model="createRoomForm.min_days_advance"/>
+                        <jet-input id="min_days_advance" type="number" min="0" class="mt-1 block w-full" v-model="createRoomForm.min_days_advance"/>
                         <jet-input-error :message="createRoomForm.error('min_days_advance')" class="mt-2"/>                        <jet-label for="max_days_advance" value="Maximum Days Before Booking"/>
-                        <jet-input id="max_days_advance" type="max_days_advance" class="mt-1 block w-full" v-model="createRoomForm.max_days_advance"/>
+                        <jet-input id="max_days_advance" type="number" min="0" class="mt-1 block w-full" v-model="createRoomForm.max_days_advance"/>
                         <jet-input-error :message="createRoomForm.error('max_days_advance')" class="mt-2"/>
                     </div>
             </template>

@@ -35,6 +35,7 @@
                     <jet-input
                         id="floor"
                         type="number"
+                        min="0"
                         class="mt-1 block w-full"
                         v-model="form.floor"
                         autofocus
@@ -75,7 +76,8 @@
                     <jet-label for="min_days_advance" value="Minimum Days Before Booking" />
                     <jet-input
                         id="min_days_advance"
-                        type="min_days_advance"
+                        type="number"
+                        min="0"
                         class="mt-1 block w-full"
                         v-model="form.min_days_advance"
                         autofocus
@@ -86,7 +88,8 @@
                     <jet-label for="max_days_advance" value="Maximum Days Before Booking" />
                     <jet-input
                         id="max_days_advance"
-                        type="max_days_advance"
+                        type="number"
+                        min="0"
                         class="mt-1 block w-full"
                         v-model="form.max_days_advance"
                         autofocus
@@ -95,13 +98,13 @@
                 </div>
                 <div class="m-6">  
                     <jet-label for="stand_capacity" value="Standing Capacity"/>
-                    <jet-input id="stand_capacity" type="stand_capacity" class="mt-1 block w-full" v-model="form.capacity_standing"/>
+                    <jet-input id="stand_capacity" type="number" min="0" class="mt-1 block w-full" v-model="form.capacity_standing"/>
                     <jet-input-error :message="form.error('stand_capacity')" class="mt-2"/>
                 </div>
 
                 <div class="m-6">  
                     <jet-label for="sit_capacity" value="Seating Capacity"/>
-                    <jet-input id="sit_capacity" type="sit_capacity" class="mt-1 block w-full" v-model="form.capacity_sitting"/>
+                    <jet-input id="sit_capacity" type="number" min="0" class="mt-1 block w-full" v-model="form.capacity_sitting"/>
                     <jet-input-error :message="form.error('sit_capacity')" class="mt-2"/>
                 </div>
 
@@ -162,7 +165,8 @@
                     <input type="checkbox" class="form-checkbox" v-model="form.ambiant_music"/>
                     <span class="ml-2 text-sm text-black">Ambiance Music</span>    
                     </label> 
-                    <input type="checkbox" class="form-checkbox" v-model="form.sale_for_profit"/>
+                    <label class="flex items-center">
+                    <input type="checkbox" class="form-checkbox" v-model="form.sale_for_profit"/>                    
                     <span class="ml-2 text-sm text-black">Sale for Profit</span>  
                     </label> 
                     <label class="flex items-center">
@@ -176,16 +180,16 @@
                     <jet-label for="furniture" value="Furniture"/> 
                     <br>                        
                     <label class="flex items-center text-sm">Sofa(s)</label>
-                    <jet-input  v-model.number="form.sofas" type="number"/> 
+                    <jet-input  v-model.number="form.sofas" type="number" min="0"/> 
 
                     <label class="flex items-center">Coffee Table(s)</label>
-                    <jet-input  v-model.number="form.coffee_tables" type="number"/>
+                    <jet-input  v-model.number="form.coffee_tables" type="number" min="0"/>
 
                     <label class="flex items-center">Table(s)</label> 
-                    <jet-input  v-model.number="form.tables" type="number"/>
+                    <jet-input  v-model.number="form.tables" type="number" min="0"/>
 
                     <label class="flex items-center">Chair(s)</label> 
-                    <jet-input  v-model.number="form.chairs" type="number"/> 
+                    <jet-input  v-model.number="form.chairs" type="number" min="0"/> 
 
                     <jet-input-error :message="form.error('furniture')" class="mt-2"/>
                 </div>

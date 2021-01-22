@@ -12,8 +12,18 @@ executors:
     working_directory: /workspace
     docker:
       - image: ghcr.io/csu-booking-platform/devcontainer:0.0.4
-        command: []
+        command: [ ]
 jobs:
+  validate-commits:
+    docker:
+      - image: aevea/commitsar
+    environment:
+      COMMIT_RANGE: << pipeline.git.base_revision >>..<<pipeline.git.revision>>
+    steps:
+      - checkout
+      - run:
+          name: Analyze commits
+          command: commitsar ${COMMIT_RANGE}
   tag-and-release:
     executor: ci
     environment:
@@ -21,7 +31,7 @@ jobs:
       GITHUB_REPO: application
     steps:
       - attach_workspace:
-            at: .
+          at: .
       - add_ssh_keys:
           fingerprints:
             - "59:17:eb:0c:20:36:e3:54:b2:54:84:68:b1:79:b4:ab"
@@ -129,10 +139,15 @@ workflows:
   build:
     jobs:
       - build
+      - validate-commits:
+          filters:
+            branches:
+              # only from forks
+              only: /^pull\/.*$/
       - tag-and-release:
           requires:
             - build
-          filters:  # using regex filters requires the entire branch to match
+          filters: # using regex filters requires the entire branch to match
             branches:
-              only:  # only branches matching the below regex filters will run
+              only: # only branches matching the below regex filters will run
                 - main

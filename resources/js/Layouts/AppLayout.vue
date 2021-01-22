@@ -105,6 +105,7 @@
     import JetNavLink from '@src/Components/Navbar/NavLink'
     import JetResponsiveNavLink from '@src/Jetstream/ResponsiveNavLink'
     import Navbar from'@src/Components/Navbar/Navbar'
+    import axios from 'axios'
 
     export default {
         components: {

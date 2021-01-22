@@ -4,6 +4,11 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
+/**
+ * Vendor-published file, contains no business logic.
+ *
+ * @codeCoverageIgnore
+ */
 class AppServiceProvider extends ServiceProvider
 {
     /**

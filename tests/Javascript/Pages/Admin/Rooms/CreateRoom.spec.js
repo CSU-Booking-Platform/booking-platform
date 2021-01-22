@@ -68,3 +68,15 @@ test('createRoom when form errors', () => {
     expect(InertiaFormMock.post).toBeCalledTimes(1)
 
 })
+
+test('toggle correctly toggles the boolean', () => {
+
+    const wrapper = mount(CreateRoomForm, {localVue})
+
+    let preToggleBool = wrapper.vm.showAvailabilities
+
+    wrapper.vm.toggle()
+
+    expect(wrapper.vm.showAvailabilities).toBe(!preToggleBool)
+
+})

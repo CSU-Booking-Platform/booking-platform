@@ -22,9 +22,19 @@ class Room extends Model
         'number',
         'floor',
         'building',
-        'status',
+        'status', 
         'min_days_advance',
-        'max_days_advance'
+        'max_days_advance',
+        'attributes',
+    ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'attributes' => 'array',
     ];
 
     /**

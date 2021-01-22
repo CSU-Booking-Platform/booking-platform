@@ -69,6 +69,8 @@
 </template>
 
 <script>
+/* istanbul ignore file */
+/* REMOVE THESE COMMENTS IF MAKING MODIFICATIONS TO THIS FILE */
     import JetButton from '@src/Jetstream/Button'
     import JetFormSection from '@src/Jetstream/FormSection'
     import JetInput from '@src/Jetstream/Input'

@@ -35,6 +35,8 @@
 </template>
 
 <script>
+/* istanbul ignore file */
+/* REMOVE THESE COMMENTS IF MAKING MODIFICATIONS TO THIS FILE */
     import AppLayout from '@src/Layouts/AppLayout'
     import DeleteUserForm from './DeleteUserForm'
     import JetSectionBorder from '@src/Jetstream/SectionBorder'

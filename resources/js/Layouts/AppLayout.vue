@@ -17,7 +17,7 @@
         <!-- Modal Portal -->
         <portal-target name="modal" multiple>
         </portal-target>
-        
+
         <!-- Footer -->
         <footer class="bg-black text-white text-xs font-bold pb-48">
             <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
@@ -99,10 +99,10 @@
 
 <script>
     import JetApplicationLogo from '@src/Jetstream/ApplicationLogo'
-    import JetApplicationMark from '@src/Jetstream/ApplicationMark'
+    import JetApplicationMark from '@src/Components/ApplicationMark'
     import JetDropdown from '@src/Jetstream/Dropdown'
     import JetDropdownLink from '@src/Jetstream/DropdownLink'
-    import JetNavLink from '@src/Jetstream/NavLink'
+    import JetNavLink from '@src/Components/Navbar/NavLink'
     import JetResponsiveNavLink from '@src/Jetstream/ResponsiveNavLink'
     import Navbar from'@src/Components/Navbar/Navbar'
 

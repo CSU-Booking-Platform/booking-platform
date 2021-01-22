@@ -4,7 +4,7 @@ import {createLocalVue, shallowMount} from '@vue/test-utils'
 import {InertiaApp} from "@inertiajs/inertia-vue";
 import {InertiaForm} from "laravel-jetstream";
 import {InertiaFormMock} from "@test/__mocks__/laravel-jetstream";
-import Subnavlink from "@src/Jetstream/SubNavLink";
+import Subnavlink from "@src/Components/Navbar/SubNavLink";
 
 
 let localVue;

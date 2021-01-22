@@ -46,7 +46,9 @@
         "testResultsProcessor": "jest-sonar-reporter",
         "coverageDirectory": "reports/js",
         "collectCoverageFrom": [
-            "resources/js/**/*.{js,vue}"
+            "resources/js/Pages/**/*.{js,vue}",
+            "resources/js/Components/**/*.{js,vue}",
+            "resources/js/Layouts/**/*.{js,vue}"
         ],
         "moduleFileExtensions": [
             "js",

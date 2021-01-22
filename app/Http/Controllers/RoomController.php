@@ -45,6 +45,22 @@ class RoomController extends Controller
             'floor' => ['required', 'integer'],
             'building' => ['required', 'string', 'max:255'],
             'status' => ['required', 'string', 'max:255'],
+            'capacity_standing' => ['nullable', 'integer'],
+            'capacity_sitting' => ['nullable', 'integer'],
+            'food' => ['required', 'boolean'],
+            'alcohol' => ['required', 'boolean'],
+            'a_v_permitted' => ['required', 'boolean'],
+            'projector' => ['required', 'boolean'],
+            'television' => ['required', 'boolean'],
+            'computer' => ['required', 'boolean'],
+            'whiteboard' => ['required', 'boolean'],
+            'sofas' => ['nullable', 'integer'],
+            'coffee_tables' => ['nullable', 'integer'],
+            'tables' => ['nullable', 'integer'],
+            'chairs' => ['nullable', 'integer'],
+            'ambiant_music' => ['required', 'boolean'],
+            'sale_for_profit' => ['required', 'boolean'],
+            'fundraiser' => ['required', 'boolean'],
             'availabilities.Monday.opening_hours' => 'nullable|required_with:availabilities.Monday.closing_hours|before:availabilities.Monday.closing_hours',
             'availabilities.Monday.closing_hours' => 'nullable|required_with:availabilities.Monday.opening_hours|after:availabilities.Monday.opening_hours',
             'availabilities.Tuesday.opening_hours' => 'nullable|required_with:availabilities.Tuesday.closing_hours|before:availabilities.Tuesday.closing_hours',
@@ -66,7 +82,26 @@ class RoomController extends Controller
             'number' => $request->number,
             'floor' => $request->floor,
             'building' => $request->building,
-            'status' => $request->status
+            'status' => $request->status,
+            'attributes' => [
+                'capacity_standing' => $request->capacity_standing,
+                'capacity_sitting' => $request->capacity_sitting,
+                'food' => $request->food,
+                'alcohol' => $request->alcohol,
+                'a_v_permitted' => $request->a_v_permitted,
+                'projector' => $request->projector,
+                'television' => $request->television,
+                'computer' => $request->computer,
+                'whiteboard' => $request->whiteboard,
+                'sofas' => $request->sofas,
+                'coffee_tables' => $request->coffee_tables,
+                'tables' => $request->tables,
+                'chairs' => $request->chairs,
+                'ambiant_music' => $request->ambiant_music,
+                'sale_for_profit' => $request->sale_for_profit,
+                'fundraiser' => $request->fundraiser,           
+            ],
+
         ]);
 
         $availabilities = $request->get('availabilities');
@@ -126,7 +161,28 @@ class RoomController extends Controller
             'status' => ['required', 'string', 'max:255'],
         ]);
 
-        $room->fill($request->all())->save();
+        $room->fill($request->except('attributes'))->save();
+
+        $room->attributes = [
+            'capacity_standing' => $request->capacity_standing,
+            'capacity_sitting' => $request->capacity_sitting,
+            'food' => $request->food,
+            'alcohol' => $request->alcohol,
+            'a_v_permitted' => $request->a_v_permitted,
+            'projector' => $request->projector,
+            'television' => $request->television,
+            'computer' => $request->computer,
+            'whiteboard' => $request->whiteboard,
+            'sofas' => $request->sofas,
+            'coffee_tables' => $request->coffee_tables,
+            'tables' => $request->tables,
+            'chairs' => $request->chairs,
+            'ambiant_music' => $request->ambiant_music,
+            'sale_for_profit' => $request->sale_for_profit,
+            'fundraiser' => $request->fundraiser,           
+        ];
+
+        $room->save();
 
         return redirect(route('rooms.index'))->with('flash', ['updated' => $room]);
     }

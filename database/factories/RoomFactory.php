@@ -29,6 +29,24 @@ class RoomFactory extends Factory
             'status' => $this->faker->randomElement(["available", "unavailable"]),
             'min_days_advance' => $this->faker->numberBetween(0, 4),
             'max_days_advance' => $this->faker->numberBetween(5, 14),
+            'attributes' => [
+                'capacity_standing' => $this->faker->RandomDigit,
+                'capacity_sitting' => $this->faker->RandomDigit,
+                'food' => $this->faker->boolean,
+                'alcohol' => $this->faker->boolean,
+                'a_v_permitted' => $this->faker->boolean,
+                'projector' => $this->faker->boolean,
+                'television' => $this->faker->boolean,
+                'computer' => $this->faker->boolean,
+                'whiteboard' => $this->faker->boolean,
+                'sofas' => $this->faker->RandomDigit,
+                'coffee_tables' => $this->faker->RandomDigit,
+                'tables' => $this->faker->RandomDigit,
+                'chairs' => $this->faker->RandomDigit,
+                'ambiant_music' => $this->faker->boolean,
+                'sale_for_profit' => $this->faker->boolean,
+                'fundraiser' => $this->faker->boolean
+            ]
         ];
     }
 }

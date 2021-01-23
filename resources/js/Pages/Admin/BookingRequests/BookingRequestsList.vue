@@ -29,12 +29,7 @@
                 <div class="text-md mx-3">{{ bookingRequest.room.name }}</div>
                 <div class="text-md mx-3">{{ calendar(bookingRequest.start_time) }}</div>
                 <div class="text-md mx-3">{{ calendar(bookingRequest.end_time) }}</div>
-                <div class="text-md mx-3">
-                  <button
-                    class="cursor-pointer ml-6 text-sm text-blue-800 focus:outline-none"
-                    @click="bookingRequestToTrack = bookingRequest"
-                  >View</button>
-                </div>
+                <div class="text-md mx-3">{{ bookingRequest.status }}</div>
                 <div class="text-md mx-3">
                   <a 
                     v-if="bookingRequest.reference.path"
@@ -62,11 +57,6 @@
               </div>
             </div>
           </div>
-
-           <ViewBookingRequestStatusModal
-            :bookingRequest="bookingRequestToTrack"
-            @close="bookingRequestToTrack = null"
-          ></ViewBookingRequestStatusModal>
 
           <UpdateBookingRequestForm
             :bookingRequest="bookingRequestBeingUpdated"
@@ -113,7 +103,6 @@ import JetInput from "@src/Jetstream/Input";
 import JetInputError from "@src/Jetstream/InputError";
 import JetLabel from "@src/Jetstream/Label";
 import UpdateBookingRequestForm from "./UpdateBookingRequestForm";
-import ViewBookingRequestStatusModal from "./ViewBookingRequestStatusModal";
 import Label from "@src/Jetstream/Label";
 const moment= require('moment') 
 
@@ -147,15 +136,13 @@ export default {
     JetInput,
     JetLabel,
     JetInputError,
-    UpdateBookingRequestForm,
-    ViewBookingRequestStatusModal
+    UpdateBookingRequestForm
   },
 
   data() {
     return {
       deleteBookingRequestForm: this.$inertia.form(),
       bookingReference: '',
-      bookingRequestToTrack: null,
       bookingRequestBeingUpdated: null,
       bookingRequestBeingDeleted: null,
       

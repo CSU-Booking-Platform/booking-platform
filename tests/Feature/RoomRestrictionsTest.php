@@ -22,10 +22,18 @@ class RoomRestrictionsTest extends TestCase
      */
     public function test_restrictions_controller()
     {
+        //Create rooms and roles
         $rooms = Room::factory()->count(5)->create();
         $roles = Role::factory()->count(5)->create();
-        $user = User::factory()->create();
 
+        //Give test user permission to update rooms.
+        Permission::create(['name'=>'bookings.approve', 'guard_name'=> 'web']);
+        $user = User::factory()->create();
+        $role = $roles->first();
+        $role->givePermissionTo('bookings.approve');
+        $user->assignRole($role);
+
+        //Pick our random room and roles.
         $test_room = $rooms->random();
         $test_roles = $roles->random(2);
         $test_role1 = $test_roles->first();
@@ -66,7 +74,7 @@ class RoomRestrictionsTest extends TestCase
 
     }
     /**
-     * Test restirctions rooms scope filter
+     * Test restrictions rooms scope filter
      *
      * @return void
      */

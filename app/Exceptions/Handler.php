@@ -4,6 +4,12 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
+
+/**
+ * Configuration file, contains no business logic.
+ *
+ * @codeCoverageIgnore
+ */
 class Handler extends ExceptionHandler
 {
     /**

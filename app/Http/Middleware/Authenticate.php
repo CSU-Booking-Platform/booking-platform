@@ -4,6 +4,13 @@ namespace App\Http\Middleware;
 
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 
+/**
+ * REMOVE ME IF MAKING CHANGES TO THIS FILE
+ *
+ * This file is excluded from coverage as it is vendor-published code
+ *
+ * @codeCoverageIgnore
+ */
 class Authenticate extends Middleware
 {
     /**

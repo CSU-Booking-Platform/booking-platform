@@ -23,7 +23,7 @@
                 Home
               </jet-nav-link>
               <jet-nav-link
-                v-if="$page.user.can.includes('bookings')"  
+                v-if="$page.user.can.includes('bookings')"
                 href="rooms"
                 :active="$page.currentRouteName == 'rooms'"
               >
@@ -393,13 +393,13 @@
 
 <script>
 import JetApplicationLogo from "@src/Jetstream/ApplicationLogo";
-import JetApplicationMark from "@src/Jetstream/ApplicationMark";
+import JetApplicationMark from "@src/Components/ApplicationMark";
 import JetDropdown from "@src/Jetstream/Dropdown";
 import JetDropdownLink from "@src/Jetstream/DropdownLink";
-import JetNavLink from "@src/Jetstream/NavLink";
+import JetNavLink from "@src/Components/Navbar/NavLink";
 import JetResponsiveNavLink from "@src/Jetstream/ResponsiveNavLink";
 import Subnavbar from "@src/Components/Navbar/Subnavbar";
-import JetNavSub from "@src/Jetstream/SubNavLink";
+import JetNavSub from "@src/Components/Navbar/SubNavLink";
 
 
 export default {

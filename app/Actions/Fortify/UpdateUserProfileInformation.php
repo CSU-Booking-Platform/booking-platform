@@ -7,6 +7,13 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
 
+/**
+ * REMOVE ME IF MAKING CHANGES TO THIS FILE
+ *
+ * This file is excluded from coverage as it is vendor-published code
+ *
+ * @codeCoverageIgnore
+ */
 class UpdateUserProfileInformation implements UpdatesUserProfileInformation
 {
     /**

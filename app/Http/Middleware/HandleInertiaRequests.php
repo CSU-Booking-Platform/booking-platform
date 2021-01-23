@@ -8,6 +8,13 @@ use Illuminate\Support\Facades\Config;
 use Inertia\Inertia;
 use Inertia\Middleware;
 
+/**
+ * REMOVE ME IF MAKING CHANGES TO THIS FILE
+ *
+ * This file is excluded from coverage as it is vendor-published code
+ *
+ * @codeCoverageIgnore
+ */
 class HandleInertiaRequests extends Middleware
 {
     /**

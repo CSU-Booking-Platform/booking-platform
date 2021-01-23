@@ -7,6 +7,13 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 
+/**
+ * REMOVE ME IF MAKING CHANGES TO THIS FILE
+ *
+ * This file is excluded from coverage as it is vendor-published code
+ *
+ * @codeCoverageIgnore
+ */
 class CreateNewUser implements CreatesNewUsers
 {
     use PasswordValidationRules;

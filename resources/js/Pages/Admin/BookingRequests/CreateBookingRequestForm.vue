@@ -38,12 +38,12 @@
 
           <div class="m-6 form-group">
             <jet-label>Upload Reference Files</jet-label>
-            <input 
-              type="file" 
+            <input
+              type="file"
               @change="fieldChange"
-              multiple  
+              multiple
             >
-          </div>         
+          </div>
           <div class="m-6">
             <jet-input-error :message="createBookingRequestForm.error('availabilities')" class="mt-2" />
           </div>
@@ -80,7 +80,7 @@ import JetLabel from "@src/Jetstream/Label";
 
 import JetDropdown from "@src/Jetstream/Dropdown";
 import JetDropdownLink from "@src/Jetstream/DropdownLink";
-import JetNavLink from "@src/Jetstream/NavLink";
+import JetNavLink from "@src/Components/Navbar/NavLink";
 
 export default {
   components: {
@@ -137,7 +137,7 @@ export default {
       {
         this.createBookingRequestForm.reference.push(file);
       }
-    }    
+    }
   }
 };
 </script>

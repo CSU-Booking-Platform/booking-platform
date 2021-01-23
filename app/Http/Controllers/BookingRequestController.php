@@ -16,13 +16,13 @@ class BookingRequestController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response|\Inertia\Response|\Inertia\ResponseFactory
      */
-    public function index()
+    public function index(Request $request)
     {
         return inertia('Admin/BookingRequests/Index', [
             'booking_requests' => BookingRequest::with('user', 'room')->get(),
-            'rooms' => Room::hideUserRestrictions(auth()->user())->get(),
+            'rooms' => Room::hideUserRestrictions($request->user())->get(),
         ]);
     }
 

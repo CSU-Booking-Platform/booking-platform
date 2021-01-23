@@ -41,6 +41,8 @@
 </template>
 
 <script>
+/* istanbul ignore file */
+/* REMOVE THESE COMMENTS IF MAKING MODIFICATIONS TO THIS FILE */
     import JetActionMessage from '@src/Jetstream/ActionMessage'
     import JetButton from '@src/Jetstream/Button'
     import JetFormSection from '@src/Jetstream/FormSection'

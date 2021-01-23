@@ -46,12 +46,12 @@
 
             <div class="m-6">
                 <jet-label>Upload Reference Files</jet-label>
-                <input 
-                type="file" 
+                <input
+                type="file"
                 @change="fieldChange"
-                multiple  
+                multiple
                 />
-            </div>  
+            </div>
             <div class="m-6">
                 <jet-input-error
                     :message="createBookingRequestForm.error('availabilities')"
@@ -87,7 +87,7 @@ import JetLabel from "@src/Jetstream/Label";
 import JetDialogModal from "@src/Jetstream/DialogModal";
 import JetDropdown from "@src/Jetstream/Dropdown";
 import JetDropdownLink from "@src/Jetstream/DropdownLink";
-import JetNavLink from "@src/Jetstream/NavLink";
+import JetNavLink from "@src/Components/Navbar/NavLink";
 import JetSecondaryButton from "@src/Jetstream/SecondaryButton";
 
 export default {

@@ -1,14 +1,13 @@
 import {afterEach, beforeEach, jest, test} from "@jest/globals";
+
 jest.mock('laravel-jetstream')
-import {createLocalVue, shallowMount} from '@vue/test-utils'
+import {createLocalVue, mount} from '@vue/test-utils'
 import {InertiaApp} from "@inertiajs/inertia-vue";
 import {InertiaForm} from "laravel-jetstream";
 import {InertiaFormMock} from "@test/__mocks__/laravel-jetstream";
-import Subnavlink from "@src/Jetstream/SubNavLink";
-
+import Subnavbar from "@src/Components/Navbar/Subnavbar";
 
 let localVue;
-
 
 beforeEach(() => {
     InertiaFormMock.error.mockClear()
@@ -25,30 +24,13 @@ afterEach(() => {
 
 test('should mount without crashing', () => {
 
-    const wrapper = shallowMount(Subnavlink, {
-        localVue,
-        propsData: {
-                href: "link"
-        }
-    })
+    const wrapper = mount(Subnavbar, {localVue})
 
     expect(wrapper.text()).toBeDefined()
 })
 
 
-test('should mount without crashing and active true', () => {
 
-    const wrapper = shallowMount(Subnavlink, {
-        localVue,
-        propsData: {
-                href: "link",
-                active: true
-
-        }
-    })
-
-    expect(wrapper.text()).toBeDefined()
-})
 
 
 

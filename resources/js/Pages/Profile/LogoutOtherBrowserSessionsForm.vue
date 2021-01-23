@@ -87,6 +87,8 @@
 </template>
 
 <script>
+/* istanbul ignore file */
+/* REMOVE THESE COMMENTS IF MAKING MODIFICATIONS TO THIS FILE */
     import JetActionMessage from '@src/Jetstream/ActionMessage'
     import JetActionSection from '@src/Jetstream/ActionSection'
     import JetButton from '@src/Jetstream/Button'

@@ -3,7 +3,11 @@
 namespace App\View\Components;
 
 use Illuminate\View\Component;
-
+/**
+ * Configuration file, contains no business logic.
+ *
+ * @codeCoverageIgnore
+ */
 class GuestLayout extends Component
 {
     /**

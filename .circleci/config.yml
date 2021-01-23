@@ -16,14 +16,12 @@ executors:
 jobs:
   validate-commits:
     docker:
-      - image: aevea/commitsar
-    environment:
-      COMMIT_RANGE: << pipeline.git.base_revision >>..<<pipeline.git.revision>>
+      - image: docker.io/alexstojda/commitlint:11.0.0
     steps:
       - checkout
       - run:
-          name: Analyze commits
-          command: commitsar ${COMMIT_RANGE}
+          name: Analyze commits starting from << pipeline.git.base_revision >>
+          command: commitlint --from << pipeline.git.base_revision >>
   tag-and-release:
     executor: ci
     environment:

@@ -183,9 +183,9 @@ class BookingRequestController extends Controller
         $zip->open(Storage::disk('public')->path($fileName), ZipArchive::CREATE);
         $files = File::files($path);
                               
-        foreach ($files as $key => $value) {
-            $relativeNameInZipFile = basename($value);
-            $zip->addFile($value, $relativeNameInZipFile);
+        foreach ($files as $file) {
+            $relativeNameInZipFile = basename($file);
+            $zip->addFile($file, $relativeNameInZipFile);
         }             
         $zip->close();
 

@@ -29,7 +29,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
 
     Route::resource('roles',\App\Http\Controllers\RoleController::class)->except(['show', 'edit']);
     Route::resource('rooms',\App\Http\Controllers\RoomController::class)->only(['store', 'index', 'update', 'destroy']);
-    Route::put('room/restrictions/{id}', RestrictionsController::class.'@update')
+    Route::put('room/restrictions/{id}', [RestrictionsController::class, 'update'])
         ->name('room.restrictions.update')->middleware('permission:bookings.approve');
 
     Route::resource('settings',SettingsController::class)->only(['index']);

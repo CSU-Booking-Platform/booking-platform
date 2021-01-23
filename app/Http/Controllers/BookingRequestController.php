@@ -180,7 +180,7 @@ class BookingRequestController extends Controller
    
         $fileName = $folder . '.zip';
    
-        $zip->open(Storage::disk('public')->path($fileName), ZipArchive::CREATE) === TRUE;
+        $zip->open(Storage::disk('public')->path($fileName), ZipArchive::CREATE);
         $files = File::files($path);
                               
         foreach ($files as $key => $value) {

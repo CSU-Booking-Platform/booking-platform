@@ -63,6 +63,52 @@ jobs:
 
       - slack/status:
           fail_only: true
+  test-php:
+    executor: ci
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: "Run Tests"
+          command: php artisan test && npm run test-ci
+      - store_test_results:
+          path: reports
+      - store_artifacts:
+          path: reports
+      - store_artifacts:
+          path: storage/logs/laravel.log
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
+  test-js:
+    executor: ci
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: "Run Tests"
+          command: npm run test-ci
+      - store_test_results:
+          path: reports
+      - store_artifacts:
+          path: reports
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
+  sonar:
+    executor: ci
+    steps:
+      - attach_workspace:
+          at: .
+      - sonarcloud/scan
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
 
   build:
     executor: ci
@@ -112,31 +158,25 @@ jobs:
           name: "Generate App key"
           command: php artisan key:generate
 
-      - run:
-          name: "Run Tests"
-          command: php artisan test && npm run test-ci
-
-      - store_test_results:
-          path: reports
-      - store_artifacts:
-          path: reports
-      - store_artifacts:
-          path: storage/logs/laravel.log
-
-      - sonarcloud/scan
-
       - persist_to_workspace:
           root: .
           paths:
             - .
 
-      - slack/status:
-          fail_only: true
-
 workflows:
   build:
     jobs:
       - build
+      - test-php:
+          requires:
+            - build
+      - test-js:
+          requires:
+            - build
+      - sonar:
+          requires:
+            - test-php
+            - test-js
       - validate-commits:
           filters:
             branches:
@@ -144,7 +184,7 @@ workflows:
               only: /^pull\/.*$/
       - tag-and-release:
           requires:
-            - build
+            - sonar
           filters: # using regex filters requires the entire branch to match
             branches:
               only: # only branches matching the below regex filters will run

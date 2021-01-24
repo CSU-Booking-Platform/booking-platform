@@ -5,24 +5,21 @@
                 Blackouts on Room {{room.name}}, {{room.building}} - {{room.number}}
             </h2>
         </template>
-       
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="overflow-hidden sm:rounded-lg">
+        <div class="py-2">
+            <div class="flex flex-col lg:flex-row md:mx-auto md:w-2/3 my-3">
+                <div>
                     <create-blackout-form :room='room'/>
                 </div>
                 <div v-if="blackouts.length > 0">
                     <jet-section-border/>
-                    <blackout-list :blackouts="blackouts"/>
+                    <blackout-list :blackouts="blackouts" class="w-full"/>
                 </div>
             </div>
         </div>
-        
     </app-layout>
 </template>
 
 <script>
-import JetSectionBorder from '@src/Jetstream/SectionBorder'
 import CreateBlackoutForm from './CreateBlackoutForm';
 import BlackoutList from './BlackoutList';
 import AppLayout from '@src/Layouts/AppLayout';
@@ -32,7 +29,6 @@ export default {
         CreateBlackoutForm,
         AppLayout,
         BlackoutList,
-        JetSectionBorder,
     },
     props: {
         room: {

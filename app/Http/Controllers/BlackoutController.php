@@ -33,17 +33,18 @@ class BlackoutController extends Controller
      */
     public function store(Request $request)
     {
-        
-        
+
         $request->validateWithBag('createBlackout', [
             'room_id' => ['required', 'integer', 'exists:'.Room::class.",id"],
             'start' => ['required', 'date'],
             'end' => ['required', 'date', "after:start"],
+            'name' => ['required','string']
         ]);
         
         Blackout::create([
             'start_time' => $request->start,
-            'end_time' => $request->end
+            'end_time' => $request->end,
+            'name' => $request->name
         ])->rooms()->attach($request->room_id);
 
         return back();

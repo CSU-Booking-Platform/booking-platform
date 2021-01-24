@@ -10,6 +10,7 @@ class Blackout extends Model
     use HasFactory;
 
     protected $fillable = [
+        'name',
         'start_time',
         'end_time'
     ];
@@ -20,6 +21,7 @@ class Blackout extends Model
      * @var array
      */
     protected $casts = [
+        'name' => 'string',
         'start_time' => 'datetime',
         'end_time' => 'datetime'
     ];

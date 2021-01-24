@@ -1,21 +1,23 @@
 <template>
     <div>
-        <jet-form-section @submitted="createBlackout">
+        <form-section @submitted="createBlackout">
             <template #title>
                 Schedule a Blackout
             </template>
-            <template #description>
-                Schedule a period where rooms cannot be booked.
-            </template>
             <template #form>
-                <div class="col-span-6 sm:col-span-3">
-                    <jet-label for="start" value="Start time"/>
+                <div class="mb-3">
+                    <jet-input id="name" type="string" class="mt-1 block w-full" v-model="form.name" autofocus/>
+                                        <jet-label for="name" value="Name"/>
+                    <jet-input-error :message="form.error('name')" class="mt-2"/>
+                </div>
+                <div class="mb-3">
                     <jet-input id="start" type="datetime-local" class="mt-1 block w-full" v-model="form.start" autofocus/>
+                    <jet-label for="start" value="Start time"/>
                     <jet-input-error :message="form.error('start')" class="mt-2"/>
                 </div>
-                <div class="col-span-6 sm:col-span-3">
-                    <jet-label for="end" value="End Time"/>
+                <div class="mb-3">
                     <jet-input id="end" type="datetime-local" class="mt-1 block w-full" v-model="form.end"/>
+                    <jet-label for="end" value="End Time"/>
                     <jet-input-error :message="form.error('end')" class="mt-2"/>
                 </div>
                 <input v-if = "room" type="hidden" id='room_id' v-model="form.room_id">
@@ -30,7 +32,7 @@
                     Create
                 </jet-button>
             </template>
-        </jet-form-section>
+        </form-section>
     </div>
 </template>
 
@@ -39,7 +41,7 @@
 import JetButton from '@src/Jetstream/Button'
 import JetInput from '@src/Jetstream/Input'
 import JetActionMessage from '@src/Jetstream/ActionMessage'
-import JetFormSection from '@src/Jetstream/FormSection'
+import FormSection from '@src/Components/FormSection'
 import JetInputError from '@src/Jetstream/InputError'
 import JetLabel from '@src/Jetstream/Label'
 
@@ -47,7 +49,7 @@ export default {
     components: {
         JetButton,
         JetInput,
-        JetFormSection,
+        FormSection,
         JetActionMessage,
         JetInputError,
         JetLabel
@@ -56,6 +58,7 @@ export default {
     data() {
         return {
             form: this.$inertia.form({
+                name:'',
                 start: '',
                 end: '',
                 room_id:''

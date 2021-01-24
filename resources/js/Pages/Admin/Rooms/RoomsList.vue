@@ -16,7 +16,7 @@
                 <template #content>
 
                     <div class="space-y-6">
-                        <div class="grid grid-cols-6">
+                        <div class="grid grid-cols-7">
                             <div class="text-md mx-3">Room Name</div>
                             <div class="text-md mx-3">Room Number</div>
                             <div class="text-md mx-2">Floor Number</div>
@@ -24,9 +24,9 @@
                             <div class="text-md mx-3">Status</div>
                             <div class="text-md mx-3">Room Type</div>
                         </div>
-
+                    
                         <div v-for="room in rooms" :key="room.id" class="grid flex items-center">
-                            <div class="grid grid-cols-6">
+                            <div class="grid grid-cols-7">
                                 <div class="text-md mx-3">
                                     {{ room.name }}
                                 </div>
@@ -83,10 +83,9 @@
                                     Restricted Roles
                                 </button>
                                 </div>
-                                </template>
-                                </jet-dropdown>
-
-                                
+                                    </template>
+                                    </jet-dropdown>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -131,7 +130,7 @@
                                 <jet-label for="restrictions" value="Restrictions"/>
 
                                 <div class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div v-for="role in roles">
+                                    <div v-for="role in roles" :key="role.id">
                                         <label class="flex items-center">
                                             <input type="checkbox" class="form-checkbox" :value="role.id"
                                                    v-model="updateRoomRestForm.restrictions">

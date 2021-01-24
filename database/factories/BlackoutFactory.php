@@ -23,6 +23,7 @@ class BlackoutFactory extends Factory
     {
         
         return [
+            'name' => $this->faker->word,
             'start_time' => $this->faker->dateTimeBetween('now', '+2 hours'),
             'end_time' => $this->faker->dateTimeBetween('now +2 hours', '+4 hours')
         ];

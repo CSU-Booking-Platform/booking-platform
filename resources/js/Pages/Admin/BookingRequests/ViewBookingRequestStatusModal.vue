@@ -103,7 +103,6 @@ import JetActionMessage from "@src/Jetstream/ActionMessage";
 import JetFormSection from "@src/Jetstream/FormSection";
 import JetDialogModal from "@src/Jetstream/DialogModal";
 import JetButton from "@src/Jetstream/Button";
-import JetSecondaryButton from "@src/Jetstream/SecondaryButton";
 import JetLabel from "@src/Jetstream/Label";
 import JetInput from "@src/Jetstream/Input";
 import JetInputError from "@src/Jetstream/InputError";

@@ -24,11 +24,16 @@
               class="grid flex items-center"
             >
               <div class="grid grid-cols-7">
-                <div class="text-md mx-3">{{ booking_request.user.name }}</div>
-                <div class="text-md mx-3">{{ booking_request.room.name }}</div>
-                <div class="text-md mx-3">{{ calendar(booking_request.start_time) }}</div>
-                <div class="text-md mx-3">{{ calendar(booking_request.end_time) }}</div>
-                <div class="text-md mx-3">{{ booking_request.status }}</div>
+                <div class="text-md mx-3">{{ bookingRequest.user.name }}</div>
+                <div class="text-md mx-3">{{ bookingRequest.room.name }}</div>
+                <div class="text-md mx-3">{{ calendar(bookingRequest.start_time) }}</div>
+                <div class="text-md mx-3">{{ calendar(bookingRequest.end_time) }}</div>
+                <div class="text-md mx-3">
+                  <button
+                    class="cursor-pointer ml-6 text-sm text-blue-800 focus:outline-none"
+                    @click="bookingRequestToTrack = bookingRequest"
+                  >View</button>
+                </div>
                 <div class="text-md mx-3">
                   <button
                     class="cursor-pointer ml-6 text-sm text-blue-800 focus:outline-none"
@@ -44,6 +49,11 @@
               </div>
             </div>
           </div>
+
+           <ViewBookingRequestStatusModal
+            :bookingRequest="bookingRequestToTrack"
+            @close="bookingRequestToTrack = null"
+          ></ViewBookingRequestStatusModal>
 
           <UpdateBookingRequestForm
             :booking_request="bookingRequestBeingUpdated"
@@ -90,6 +100,7 @@ import JetInput from "@src/Jetstream/Input";
 import JetInputError from "@src/Jetstream/InputError";
 import JetLabel from "@src/Jetstream/Label";
 import UpdateBookingRequestForm from "./UpdateBookingRequestForm";
+import ViewBookingRequestStatusModal from "./ViewBookingRequestStatusModal";
 import Label from "@src/Jetstream/Label";
 
 export default {
@@ -122,12 +133,15 @@ export default {
     JetInput,
     JetLabel,
     JetInputError,
-    UpdateBookingRequestForm
+    UpdateBookingRequestForm,
+    ViewBookingRequestStatusModal
   },
 
   data() {
     return {
       deleteBookingRequestForm: this.$inertia.form(),
+      bookingReference: '',
+      bookingRequestToTrack: null,
       bookingRequestBeingUpdated: null,
       bookingRequestBeingDeleted: null
     };

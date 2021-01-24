@@ -77,15 +77,16 @@
                                         Delete
                                     </button>
                                 </div>
-                                </template>
-                                </jet-dropdown>
-
                                 <div class="text-md mx-2">
                                 <button class="cursor-pointer ml-6 text-sm text-blue-800 focus:outline-none"
                                         @click="openEditModal(room)">
                                     Restricted Roles
                                 </button>
                                 </div>
+                                </template>
+                                </jet-dropdown>
+
+                                
                             </div>
                         </div>
                     </div>

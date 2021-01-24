@@ -25,7 +25,7 @@ class AddReference extends Migration
      */
     public function down()
     {
-        Schema::table('references', function (Blueprint $table) {
+        Schema::table('booking_requests', function (Blueprint $table) {
             $table->dropColumn(['reference']);
         });
     }

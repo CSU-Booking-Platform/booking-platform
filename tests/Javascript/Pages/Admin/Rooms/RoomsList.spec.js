@@ -97,3 +97,37 @@ test('updateRoomRestrictions()', () => {
 
     expect(wrapper.vm.$data.roomRestBeingUpdated).toBe(null)
 })
+
+test('updateRoomRestrictionsFail()', () => {
+
+    let mockRoomResBeingUpdated = {
+        id: 10,
+        roles:['role1', 'roles2']
+    }
+
+    InertiaFormMock.put.mockReturnValueOnce({
+        then(callback) {
+            callback({})
+        }
+    })
+
+    InertiaFormMock.successful = false;
+
+    const wrapper = shallowMount(RoomsList, {
+        localVue,
+        data() {
+            return {
+                roomRestBeingUpdated: mockRoomResBeingUpdated
+            }
+        }
+    })
+
+    wrapper.vm.updateRestrictions()
+
+    expect(InertiaFormMock.put).toBeCalledWith('/room/restrictions/'  + mockRoomResBeingUpdated.id, {
+        preserveScroll: true,
+        preserveState: true,
+    })
+
+    expect(wrapper.vm.$data.roomRestBeingUpdated).toBe(mockRoomResBeingUpdated)
+})

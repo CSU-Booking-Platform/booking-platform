@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="py-2 text-md">
     <slot> </slot>
   </div>
 </template>

@@ -71,6 +71,17 @@
                     />
                 </div>
 
+             <div class="m-6">
+                <jet-label for="room_type" value="Room Type" />
+                <select v-model="form.room_type" class="mt-1 block w-full" name="room_type" id="room_typeUpdate">
+                    <option v-for="roomType in availableRoomTypes" :key="roomType" :value="roomType" :selected="form.room_type===roomType">{{roomType}}</option> 
+                </select>
+                <jet-input-error
+                    :message="form.error('room_type')"
+                    class="mt-2"
+                />
+            </div>
+
 
                 <div class="m-6">
                     <jet-label for="min_days_advance" value="Minimum Days Before Booking" />
@@ -239,7 +250,12 @@ export default {
         room: {
             type: Object,
             required: false
-        }
+        },
+
+        availableRoomTypes: {
+            type: Array,
+            required: true
+        },
     },
 
     data() {
@@ -267,6 +283,7 @@ export default {
                     sale_for_profit: false,
                     fundraiser: false,
                     status: "",
+                    room_type: "",
                     min_days_advance:"",
                     max_days_advance:""
                 },
@@ -319,6 +336,7 @@ export default {
             this.form.sale_for_profit = room?.attributes.sale_for_profit;
             this.form.fundraiser = room?.attributes.fundraiser;
             this.form.status = room?.status;
+            this.form.room_type = room?.room_type;
             this.form.min_days_advance = room?.min_days_advance;
             this.form.max_days_advance = room?.max_days_advance;          
         }

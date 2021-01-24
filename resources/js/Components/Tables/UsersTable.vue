@@ -1,11 +1,5 @@
 <template>
   <div class="table-container">
-    <div class="flex flex-row-reverse w-full mb-4">
-      <jet-input type="text"
-                 placeholder="Search Users Table"
-      />
-    </div>
-
     <table class="table-auto responsive-spaced">
       <caption></caption>
       <thead>

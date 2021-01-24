@@ -30,13 +30,17 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
     Route::resource('roles',\App\Http\Controllers\RoleController::class)->except(['show', 'edit']);
     Route::resource('rooms',\App\Http\Controllers\RoomController::class)->only(['store', 'index', 'update', 'destroy']);
     Route::put('room/restrictions/{id}', [RestrictionsController::class, 'update'])
-        ->name('room.restrictions.update')->middleware('permission:bookings.approve');
+    ->name('room.restrictions.update')->middleware('permission:bookings.approve');
+    Route::resource('blackouts',\App\Http\Controllers\BlackoutController::class)->only(['index', 'store', 'destroy', 'update']);
+    Route::get('rooms/{room}/blackouts',[\App\Http\Controllers\BlackoutController::class, 'room']);
 
     Route::resource('settings',SettingsController::class)->only(['index']);
     Route::post('settings/app_logo', SettingsController::class.'@storeAppLogo')->name('app.logo.change');
     Route::post('settings/app_name', SettingsController::class.'@storeAppName')->name('app.name.change');
 
     Route::resource('bookings',\App\Http\Controllers\BookingRequestController::class)->only(['store', 'index', 'update', 'destroy']);
+
+    
 
     if (env('APP_ENV') == 'local' || env('APP_ENV') == 'testing') {
         Route::resource('demo/tables',\App\Http\Controllers\DemoController::class)->only(['index']);

@@ -56,6 +56,15 @@ class Room extends Model
         return $this->hasMany(BookingRequest::class);
     }
 
+    /** 
+     * Get the blackouts on the room
+    */
+
+    public function blackouts()
+    {
+        return $this->belongsToMany(Blackout::class);
+    }
+
     /**
      * Get the availabilities for the room
      */
@@ -124,4 +133,5 @@ class Room extends Model
             throw ValidationException::withMessages(['booked_too_far' => 'You cannot book events farther than '.$max_days.' days from the event']);
         }
     }
+
 }

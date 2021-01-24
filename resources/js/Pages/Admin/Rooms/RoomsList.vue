@@ -16,7 +16,7 @@
                 <template #content>
 
                     <div class="space-y-6">
-                        <div class="grid grid-cols-8">
+                        <div class="grid grid-cols-6">
                             <div class="text-md mx-3">Room Name</div>
                             <div class="text-md mx-3">Room Number</div>
                             <div class="text-md mx-2">Floor Number</div>
@@ -26,7 +26,7 @@
                         </div>
 
                         <div v-for="room in rooms" :key="room.id" class="grid flex items-center">
-                            <div class="grid grid-cols-8">
+                            <div class="grid grid-cols-6">
                                 <div class="text-md mx-3">
                                     {{ room.name }}
                                 </div>
@@ -46,6 +46,17 @@
                                     {{ room.room_type }}
                                 </div>
                                 <div class="text-md mx-3">
+                                <jet-dropdown align="right" width="48">
+                                   <template #trigger>
+                                        <button
+                                        class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out"
+                                        >
+                                        <div>. . .</div>
+                                    </button>
+                                   </template>     
+
+                                   <template #content> 
+                                    <div class="text-md mx-3">
                                     <button
                                         class="cursor-pointer ml-6 text-sm text-blue-800 focus:outline-none"
                                         @click="roomBeingUpdated = room"
@@ -53,7 +64,12 @@
                                         Update
                                     </button>
                                 </div>
-                                <div class="text-md mx-2">
+                                <div class="text-md mx-3">
+                                    <jet-dropdown-link :href="'/rooms/'+room.id+'/blackouts'">
+                                        Blackout
+                                    </jet-dropdown-link>
+                                </div>
+                                <div class="text-md mx-3">
                                     <button
                                         class="cursor-pointer ml-6 text-sm text-blue-800 focus:outline-none"
                                         @click="roomBeingDeleted = room"
@@ -61,6 +77,8 @@
                                         Delete
                                     </button>
                                 </div>
+                                </template>
+                                </jet-dropdown>
 
                                 <div class="text-md mx-2">
                                 <button class="cursor-pointer ml-6 text-sm text-blue-800 focus:outline-none"
@@ -160,6 +178,8 @@ import JetInputError from "@src/Jetstream/InputError"
 import JetLabel from "@src/Jetstream/Label"
 import UpdateRoomForm from "./UpdateRoomForm";
 import Label from "@src/Jetstream/Label";
+import JetDropdown from "@src/Jetstream/Dropdown";
+import JetDropdownLink from "@src/Jetstream/DropdownLink";
 
 export default {
     props: {
@@ -196,7 +216,9 @@ export default {
         JetInput,
         JetLabel,
         JetInputError,
-        UpdateRoomForm
+        UpdateRoomForm,
+        JetDropdown,
+        JetDropdownLink
     },
 
     data() {

@@ -21,13 +21,14 @@ class DatabaseSeeder extends Seeder
             $this->call([
                 EasyUserSeeder::class
             ]);
+            User::first()->assignRole('super-admin');
             $users = User::factory(10)->create();
             $users->first()->assignRole('super-admin');
 
             $this->call([
                 RoomSeeder::class
             ]);
-            
+
         }
 
 

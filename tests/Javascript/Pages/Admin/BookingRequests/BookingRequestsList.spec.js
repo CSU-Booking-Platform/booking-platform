@@ -48,7 +48,7 @@ test('deleteBookingRequest()', () => {
 
     wrapper.vm.deleteBookingRequest()
 
-    expect(InertiaFormMock.delete).toBeCalledWith('/bookings/' + mockBookingRequestBeingDeleted.id, {
+    expect(InertiaFormMock.delete).toBeCalledWith('/reservation/' + mockBookingRequestBeingDeleted.id, {
         preserveScroll: true,
         preserveState: true,
     })

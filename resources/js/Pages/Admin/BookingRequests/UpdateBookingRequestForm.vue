@@ -42,19 +42,19 @@
 
             <div class="m-6">
                 <jet-label>Upload Reference Files</jet-label>
-                <input 
-                type="file" 
+                <input
+                type="file"
                 @change="fieldChange"
-                multiple  
+                multiple
                 />
-            </div>  
+            </div>
             <div class="m-6">
                 <jet-input-error
                     :message="form.error('availabilities')"
                     class="mt-2"
                 />
             </div>
-            
+
             <div class="m-6">
                 <jet-input-error :message="form.error('booked_too_close')" class="mt-2" />
             </div>
@@ -104,6 +104,7 @@ export default {
     },
 
     props: {
+        //references a reservation
         booking_request: {
             type: Object,
             required: false
@@ -118,10 +119,10 @@ export default {
 
     data() {
         return {
-            availableExcludingCurrent: [], 
+            availableExcludingCurrent: [],
             form: this.$inertia.form(
-                { 
-                    user_id: null,
+                {
+                    booking_request_id: null,
                     room_id: null,
                     start_time: null,
                     end_time: null,
@@ -132,7 +133,7 @@ export default {
                     bag: "updateBooking_request"
                 }
             ),
-            
+
         };
     },
 
@@ -144,7 +145,7 @@ export default {
             this.$emit("close");
         },
         updateBookingRequest() {
-            this.form.post("/bookings/" + this.booking_request?.id, {
+            this.form.post("/reservation/" + this.booking_request?.id, {
                     preserveState: true
                 })
                 .then(() => {
@@ -168,7 +169,7 @@ export default {
     },
     watch: {
         booking_request(booking_request) {
-            this.form.user_id = booking_request?.user_id;
+            this.form.booking_request_id = booking_request?.booking_request_id;
             this.form.room_id = booking_request?.room_id;
             this.form.start_time = booking_request?.start_time.substring(0, 16);
             this.form.end_time = booking_request?.end_time.substring(0, 16);

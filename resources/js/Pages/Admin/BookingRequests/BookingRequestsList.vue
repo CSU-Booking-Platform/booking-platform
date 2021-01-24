@@ -24,34 +24,35 @@
               :key="booking_request.id"
               class="grid flex items-center"
             >
-              <div class="grid grid-cols-8">
-                <div class="text-md mx-3">{{ booking_request.user.name }}</div>
-                <div class="text-md mx-3">{{ booking_request.room.name }}</div>
-                <div class="text-md mx-3">{{ calendar(booking_request.start_time) }}</div>
-                <div class="text-md mx-3">{{ calendar(booking_request.end_time) }}</div>
+<!--        Will list all reservations-->
+              <div class="grid grid-cols-8" v-for="reservation in booking_request.reservations">
+                <div class="text-md mx-2">{{ booking_request.user.name }}</div>
+                <div class="text-md mx-3">{{reservation.room.name}}</div>
+                <div class="text-md mx-3">{{ calendar(reservation.start_time) }}</div>
+                <div class="text-md mx-3">{{ calendar(reservation.end_time) }}</div>
                 <div class="text-md mx-3">{{ booking_request.status }}</div>
                 <div class="text-md mx-3">
-                  <a 
+                  <a
                     v-if="booking_request.reference.path"
-                    @click="setReference(booking_request);" 
-                    class="cursor-pointer text-sm text-blue-800 focus:outline-none" 
+                    @click="setReference(booking_request);"
+                    class="cursor-pointer text-sm text-blue-800 focus:outline-none"
                     :href="href"
                   >Download</a>
-                  <a 
+                  <a
                     v-else
-                    class="text-sm focus:outline-none" 
+                    class="text-sm focus:outline-none"
                   >No Files Submitted</a>
                 </div>
-                <div class="text-md mx-3">
+                <div class="text-md mx-2">
                   <button
-                    class="cursor-pointer ml-6 text-sm text-blue-800 focus:outline-none"
-                    @click="bookingRequestBeingUpdated = booking_request"
+                    class="cursor-pointer text-sm text-blue-800 focus:outline-none"
+                    @click="bookingRequestBeingUpdated = reservation"
                   >Update</button>
                 </div>
-                <div class="text-md mx-3">
+                <div class="text-md mx-2">
                   <button
-                    class="cursor-pointer ml-6 text-sm text-blue-800 focus:outline-none"
-                    @click="bookingRequestBeingDeleted = booking_request"
+                    class="cursor-pointer text-sm text-blue-800 focus:outline-none"
+                    @click="bookingRequestBeingDeleted = reservation"
                   >Delete</button>
                 </div>
               </div>
@@ -111,7 +112,7 @@ import UpdateBookingRequestForm from "./UpdateBookingRequestForm";
 import ViewBookingRequestStatusModal from "./ViewBookingRequestStatusModal";
 import Label from "@src/Jetstream/Label";
 
-const moment= require('moment') 
+const moment= require('moment')
 
 export default {
   props: {
@@ -153,15 +154,14 @@ export default {
       bookingReference: '',
       bookingRequestToTrack: null,
       bookingRequestBeingUpdated: null,
-      bookingRequestBeingDeleted: null,
-      
+      bookingRequestBeingDeleted: null
     };
   },
 
   methods: {
     deleteBookingRequest() {
       this.deleteBookingRequestForm
-        .delete("/bookings/" + this.bookingRequestBeingDeleted.id, {
+        .delete("/reservation/" + this.bookingRequestBeingDeleted.id, {
           preserveScroll: true,
           preserveState: true
         })
@@ -181,7 +181,7 @@ export default {
           return this.rooms.filter(room => room.status == "available");
         },
         href () {
-          return 'bookings/download/' + this.bookingReference;          
+          return 'bookings/download/' + this.bookingReference;
         }
     }
 };

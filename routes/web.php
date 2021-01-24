@@ -40,8 +40,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
 
     Route::resource('bookings',\App\Http\Controllers\BookingRequestController::class)->only(['store', 'index', 'update', 'destroy']);
     Route::get('bookings/download/{folder}', \App\Http\Controllers\BookingRequestController::class.'@downloadReferenceFiles');
+    Route::resource('reservation',\App\Http\Controllers\ReservationsController::class);
 
-    
+
 
     if (env('APP_ENV') == 'local' || env('APP_ENV') == 'testing') {
         Route::resource('demo/tables',\App\Http\Controllers\DemoController::class)->only(['index']);

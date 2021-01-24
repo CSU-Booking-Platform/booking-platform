@@ -11,10 +11,7 @@ class BookingRequest extends Model
 
 
     protected $fillable = [
-        'room_id',
         'user_id',
-        'start_time',
-        'end_time',
         'status',
         'reference',
         'log',
@@ -26,18 +23,27 @@ class BookingRequest extends Model
      * @var array
      */
     protected $casts = [
-        'start_time' => 'datetime',
-        'end_time' => 'datetime',
         'reference' => 'array',
         'log' => 'array',
     ];
 
     /**
-     * Get the room that owns the booking request.
+     * Get the rooms that are part of the booking request.
      */
-    public function room()
+    public function rooms()
     {
-        return $this->belongsTo('App\Models\Room');
+        return $this->belongsToMany(Room::class,
+            'reservations',
+            'booking_request_id',
+            'room_id');
+    }
+
+    /**
+     * Get the rooms that are part of the booking request.
+     */
+    public function reservations(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Reservation::class);
     }
 
     /**

@@ -49,11 +49,14 @@ class Room extends Model
     }
 
     /**
-     * Get the booking requests for the room.
+     * Get the rooms that are part of the booking request.
      */
     public function bookingRequests()
     {
-        return $this->hasMany(BookingRequest::class);
+        return $this->belongsToMany(BookingRequest::class,
+            'reservations',
+            'room_id',
+            'booking_request_id');
     }
 
     /** 

@@ -159,6 +159,12 @@ class BookingRequestController extends Controller
             $log = '[' . date($date_format) . ']' . ' - Updated booking request reference file(s)';
             BookingRequestUpdated::dispatch($booking, $log);
         }
+        //for now only one
+        $reservation = $booking->reservations()->first();
+        $reservation->room_id = $request->room_id;
+        $reservation->start_time = $request->start_time;
+        $reservation->end_time = $request->end_time;
+        $reservation->save();
 
         return back();
     }
@@ -171,6 +177,7 @@ class BookingRequestController extends Controller
      */
     public function destroy(BookingRequest $booking)
     {
+        Reservation::where('booking_request_id', $booking->id)->delete();
         $booking->delete();
 
         return redirect(route('bookings.index'));

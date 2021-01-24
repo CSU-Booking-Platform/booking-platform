@@ -5,7 +5,7 @@ namespace Database\Factories;
 use App\Models\Reservation;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class ReservationsFactory extends Factory
+class ReservationFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.

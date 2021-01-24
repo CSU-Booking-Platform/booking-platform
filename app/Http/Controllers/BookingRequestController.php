@@ -114,6 +114,8 @@ class BookingRequestController extends Controller
      */
     public function update(Request $request, BookingRequest $booking)
     {   
+        $date_format = "F j, Y, g:i a";
+
         $request->validateWithBag('updateBookingRequest', array(
             'room_id' => ['required', 'integer'],
             'start_time' => ['required', 'string', 'max:255'],
@@ -128,7 +130,7 @@ class BookingRequestController extends Controller
 
         if($booking->wasChanged())
         {
-            $log = '[' . date("F j, Y, g:i a") . ']' . ' - Updated booking request location and/or date';
+            $log = '[' . date($date_format) . ']' . ' - Updated booking request location and/or date';
             BookingRequestUpdated::dispatch($booking, $log);
         }
         
@@ -148,7 +150,7 @@ class BookingRequestController extends Controller
             $booking->reference = ['path' => $referenceFolder];
             $booking->save();
             
-            $log = '[' . date("F j, Y, g:i a") . ']' . ' - Updated booking request reference file(s)';
+            $log = '[' . date($date_format) . ']' . ' - Updated booking request reference file(s)';
             BookingRequestUpdated::dispatch($booking, $log);
         }
   

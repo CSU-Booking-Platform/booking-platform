@@ -22,6 +22,7 @@
                             <div class="text-md mx-2">Floor Number</div>
                             <div class="text-md mx-3">Building</div>
                             <div class="text-md mx-3">Status</div>
+                            <div class="text-md mx-3">Room Type</div>
                         </div>
 
                         <div v-for="room in rooms" :key="room.id" class="grid flex items-center">
@@ -41,7 +42,10 @@
                                 <div class="text-md mx-3">
                                     {{ room.status }}
                                 </div>
-                                <div class="text-md mx-2">
+                                <div class="text-md mx-3">
+                                    {{ room.room_type }}
+                                </div>
+                                <div class="text-md mx-3">
                                     <button
                                         class="cursor-pointer ml-6 text-sm text-blue-800 focus:outline-none"
                                         @click="roomBeingUpdated = room"
@@ -69,7 +73,8 @@
                     </div>
 
                     <update-room-form
-                        :room="roomBeingUpdated"
+                        :room="roomBeingUpdated" 
+                        :available-room-types="availableRoomTypes" 
                         @close="roomBeingUpdated = null">
                     </update-room-form>
 
@@ -169,6 +174,11 @@ export default {
             default: function () {
                 return []
             },
+        },
+
+        availableRoomTypes: {
+            type: Array,
+            required: true
         }
     },
 

@@ -1,20 +1,12 @@
 <template>
     <app-layout>
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Users
-            </h2>
-        </template>
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                    <create-user-form/>
-                </div>
+        <div class="flex flex-col lg:flex-row md:mx-auto md:w-2/3 my-3">
+            <div class="m-4 w-1/3">
+                <create-user-form/>
             </div>
-        </div>
-        <div v-if="users.length > 0" class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-            <jet-section-border/>
-            <users-list :users="users" :roles="roles"/>
+            <div v-if="users.length > 0" class="m-4 w-2/3">
+                <users-list :users="users" :roles="roles" class="w-full"/>
+            </div>
         </div>
 
     </app-layout>
@@ -25,6 +17,7 @@ import JetSectionBorder from '@src/Jetstream/SectionBorder'
 import CreateUserForm from './CreateUserForm';
 import UsersList from './UsersList';
 import AppLayout from '@src/Layouts/AppLayout';
+import XSection from '@src/Components/XSection';
 
 export default {
     components: {
@@ -32,6 +25,7 @@ export default {
         AppLayout,
         UsersList,
         JetSectionBorder,
+        XSection,
     },
     props: {
         users: {

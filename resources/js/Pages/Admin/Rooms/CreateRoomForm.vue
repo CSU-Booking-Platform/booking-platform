@@ -76,6 +76,25 @@
                         <jet-input-error :message="createRoomForm.error('status')" class="mt-2"/>
                     </div>
 
+                
+                    <div class="col-span-6 sm:col-span-3">
+                    <jet-label for="room_type" value="Room type" />
+                    <select
+                      v-model="createRoomForm.room_type"
+                      class="mt-1 block w-full"
+                      name="room_type"
+                      id="room_type"
+                    >
+                      <option value="" selected disabled hidden>Select Room Type</option>
+                      <option v-for="roomType in availableRoomTypes" :key="roomType" :value="roomType">{{roomType}}</option>
+                    </select>
+                    <jet-input-error
+                      :message="createRoomForm.error('room_type')"
+                      class="mt-2"
+                    />
+                    </div>
+
+
                     <div class="col-span-6 sm:col-span-3">  
                         <jet-label for="equippment" value="Equippment"/>
                         <br>
@@ -201,96 +220,106 @@
 </template>
 
 <script>
-
-import JetButton from '@src/Jetstream/Button'
-import JetInput from '@src/Jetstream/Input'
-import JetActionMessage from '@src/Jetstream/ActionMessage'
-import JetFormSection from '@src/Jetstream/FormSection'
-import JetInputError from '@src/Jetstream/InputError'
-import JetLabel from '@src/Jetstream/Label'
+import JetButton from "@src/Jetstream/Button";
+import JetInput from "@src/Jetstream/Input";
+import JetActionMessage from "@src/Jetstream/ActionMessage";
+import JetFormSection from "@src/Jetstream/FormSection";
+import JetInputError from "@src/Jetstream/InputError";
+import JetLabel from "@src/Jetstream/Label";
 
 export default {
-    components: {
-        JetButton,
-        JetInput,
-        JetFormSection,
-        JetActionMessage,
-        JetInputError,
-        JetLabel,
+  components: {
+    JetButton,
+    JetInput,
+    JetFormSection,
+    JetActionMessage,
+    JetInputError,
+    JetLabel,
+  },
+
+    props: {
+        availableRoomTypes: {
+            type: Array,
+            required: true
+        },
     },
 
-    data() {
-        return {
-            createRoomForm: this.$inertia.form({
-                name: '',
-                number: '',
-                floor: '',
-                building: '',
-                projector:  false,
-                television: false,
-                computer: false,
-                whiteboard: false,
-                capacity_standing: '',
-                capacity_sitting: '',
-                food: false,
-                alcohol: false,
-                a_v_permitted: false,
-                sofas: '',
-                coffee_tables: '',
-                tables: '',
-                chairs: '',
-                ambiant_music: false,
-                sale_for_profit: false,
-                fundraiser: false,
-                status: '',
-                availabilities: {
-                    Monday: {
-                        opening_hours: '',
-                        closing_hours: ''
-                    },
-                    Tuesday: {
-                        opening_hours: '',
-                        closing_hours: ''
-                    },
-                    Wednesday: {
-                        opening_hours: '',
-                        closing_hours: ''
-                    },
-                    Thursday: {
-                        opening_hours: '',
-                        closing_hours: ''
-                    },
-                    Friday: {
-                        opening_hours: '',
-                        closing_hours: ''
-                    },
-                    Saturday: {
-                        opening_hours: '',
-                        closing_hours: ''
-                    },
-                    Sunday: {
-                        opening_hours: '',
-                        closing_hours: ''
-                    },
-                },
-                min_days_advance:'',
-                max_days_advance:''
-            }, {
-                bag: 'createRoom',
-                resetOnSuccess: true,
-            }),
-            showAvailabilities: true,
+  data() {
+    return {
+      createRoomForm: this.$inertia.form(
+        {
+          name: "",
+          number: "",
+          floor: "",
+          building: "",
+          projector: false,
+          television: false,
+          computer: false,
+          whiteboard: false,
+          capacity_standing: "",
+          capacity_sitting: "",
+          food: false,
+          alcohol: false,
+          a_v_permitted: false,
+          sofas: "",
+          coffee_tables: "",
+          tables: "",
+          chairs: "",
+          ambiant_music: false,
+          sale_for_profit: false,
+          fundraiser: false,
+          status: "",
+          room_type: "",
+          availabilities: {
+            Monday: {
+              opening_hours: "",
+              closing_hours: "",
+            },
+            Tuesday: {
+              opening_hours: "",
+              closing_hours: "",
+            },
+            Wednesday: {
+              opening_hours: "",
+              closing_hours: "",
+            },
+            Thursday: {
+              opening_hours: "",
+              closing_hours: "",
+            },
+            Friday: {
+              opening_hours: "",
+              closing_hours: "",
+            },
+            Saturday: {
+              opening_hours: "",
+              closing_hours: "",
+            },
+            Sunday: {
+              opening_hours: "",
+              closing_hours: "",
+            },
+          },
+          min_days_advance: "",
+          max_days_advance: "",
+        },
+        {
+          bag: "createRoom",
+          resetOnSuccess: true,
         }
+      ),
+      showAvailabilities: true,
+    };
+  },
+  methods: {
+    createRoom() {
+      this.createRoomForm.post("/rooms", {
+        preserveScroll: true,
+      });
     },
-    methods: {
-        createRoom() {
-            this.createRoomForm.post('/rooms', {
-                preserveScroll: true,
-            })
-        },
-        toggle() {
-            this.showAvailabilities = !this.showAvailabilities
-        },
+    toggle() {
+      this.showAvailabilities = !this.showAvailabilities;
     },
-}
+  },
+};
 </script>

@@ -12,7 +12,7 @@
       <tr>
         <th class="lt-grey" id="id_user_name">Name</th>
         <th class="lt-grey" id="id_user_email">Email</th>
-        <th/>
+        <th class="lt-grey" id="id_actions">Actions</th>
       </tr>
       </thead>
       <tbody>

@@ -1,5 +1,5 @@
 <template>
-    <jet-dialog-modal :show="bookingRequest" @close="closeModal">
+    <jet-dialog-modal :show="booking_request" @close="closeModal">
         <template #title>
             Update Booking Request
         </template>
@@ -104,7 +104,7 @@ export default {
     },
 
     props: {
-        bookingRequest: {
+        booking_request: {
             type: Object,
             required: false
         },
@@ -144,7 +144,7 @@ export default {
             this.$emit("close");
         },
         updateBookingRequest() {
-            this.form.post("/bookings/" + this.bookingRequest?.id, {
+            this.form.post("/bookings/" + this.booking_request?.id, {
                     preserveState: true
                 })
                 .then(() => {
@@ -167,14 +167,14 @@ export default {
         }
     },
     watch: {
-        bookingRequest(bookingRequest) {
-            this.form.user_id = bookingRequest?.user_id;
-            this.form.room_id = bookingRequest?.room_id;
-            this.form.start_time = bookingRequest?.start_time.substring(0, 16);
-            this.form.end_time = bookingRequest?.end_time.substring(0, 16);
+        booking_request(booking_request) {
+            this.form.user_id = booking_request?.user_id;
+            this.form.room_id = booking_request?.room_id;
+            this.form.start_time = booking_request?.start_time.substring(0, 16);
+            this.form.end_time = booking_request?.end_time.substring(0, 16);
 
             this.availableExcludingCurrent = this.availableRooms.filter(function( room ) {
-                return room.id !== bookingRequest?.room_id;
+                return room.id !== booking_request?.room_id;
             });
         }
     }

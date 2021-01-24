@@ -20,20 +20,20 @@
             </div>
 
             <div
-              v-for="bookingRequest in bookingRequests"
-              :key="bookingRequest.id"
+              v-for="booking_request in booking_requests"
+              :key="booking_request.id"
               class="grid flex items-center"
             >
               <div class="grid grid-cols-8">
-                <div class="text-md mx-3">{{ bookingRequest.user.name }}</div>
-                <div class="text-md mx-3">{{ bookingRequest.room.name }}</div>
-                <div class="text-md mx-3">{{ calendar(bookingRequest.start_time) }}</div>
-                <div class="text-md mx-3">{{ calendar(bookingRequest.end_time) }}</div>
-                <div class="text-md mx-3">{{ bookingRequest.status }}</div>
+                <div class="text-md mx-3">{{ booking_request.user.name }}</div>
+                <div class="text-md mx-3">{{ booking_request.room.name }}</div>
+                <div class="text-md mx-3">{{ calendar(booking_request.start_time) }}</div>
+                <div class="text-md mx-3">{{ calendar(booking_request.end_time) }}</div>
+                <div class="text-md mx-3">{{ booking_request.status }}</div>
                 <div class="text-md mx-3">
                   <a 
-                    v-if="bookingRequest.reference.path"
-                    @click="setReference(bookingRequest);" 
+                    v-if="booking_request.reference.path"
+                    @click="setReference(booking_request);" 
                     class="cursor-pointer text-sm text-blue-800 focus:outline-none" 
                     :href="href"
                   >Download</a>
@@ -45,13 +45,13 @@
                 <div class="text-md mx-3">
                   <button
                     class="cursor-pointer ml-6 text-sm text-blue-800 focus:outline-none"
-                    @click="bookingRequestBeingUpdated = bookingRequest"
+                    @click="bookingRequestBeingUpdated = booking_request"
                   >Update</button>
                 </div>
                 <div class="text-md mx-3">
                   <button
                     class="cursor-pointer ml-6 text-sm text-blue-800 focus:outline-none"
-                    @click="bookingRequestBeingDeleted = bookingRequest"
+                    @click="bookingRequestBeingDeleted = booking_request"
                   >Delete</button>
                 </div>
               </div>
@@ -64,7 +64,7 @@
           ></ViewBookingRequestStatusModal>
 
           <UpdateBookingRequestForm
-            :bookingRequest="bookingRequestBeingUpdated"
+            :booking_request="bookingRequestBeingUpdated"
             :availableRooms="availableRooms"
             @close="bookingRequestBeingUpdated = null"
           ></UpdateBookingRequestForm>
@@ -110,13 +110,14 @@ import JetLabel from "@src/Jetstream/Label";
 import UpdateBookingRequestForm from "./UpdateBookingRequestForm";
 import ViewBookingRequestStatusModal from "./ViewBookingRequestStatusModal";
 import Label from "@src/Jetstream/Label";
+
 const moment= require('moment') 
 
 const moment= require('moment') 
 
 export default {
   props: {
-    bookingRequests: {
+    booking_requests: {
       type: Array,
       default: function() {
         return [];

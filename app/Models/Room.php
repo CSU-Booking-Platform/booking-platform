@@ -22,7 +22,8 @@ class Room extends Model
         'number',
         'floor',
         'building',
-        'status', 
+        'status',
+        'room_type',
         'min_days_advance',
         'max_days_advance',
         'attributes',
@@ -36,6 +37,8 @@ class Room extends Model
     protected $casts = [
         'attributes' => 'array',
     ];
+
+    public const ROOM_TYPES =['Lounge', 'Mezzazine', 'Conference'];
 
     /**
      * The roles restricted from this room.

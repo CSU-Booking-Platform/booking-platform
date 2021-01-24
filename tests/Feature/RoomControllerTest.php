@@ -31,6 +31,7 @@ class RoomControllerTest extends TestCase
             'floor' => $room->floor, 
             'building' => $room->building, 
             'status' => $room->status,
+            'room_type'  => $room->room_type,
             'capacity_standing' => $room->attributes['capacity_standing'],
             'capacity_sitting' => $room->attributes['capacity_sitting'],
             'food' => $room->attributes['food'],
@@ -56,6 +57,7 @@ class RoomControllerTest extends TestCase
             'floor' => $room->floor, 
             'building' => $room->building, 
             'status' => $room->status, 
+            'room_type' => $room->room_type,
             'attributes' => json_encode([ 
                 'capacity_standing' => $room->attributes['capacity_standing'],           
                 'capacity_sitting' => $room->attributes['capacity_sitting'],
@@ -95,6 +97,7 @@ class RoomControllerTest extends TestCase
                 'floor' => $room->floor,
                 'building' => $room->building,
                 'status' => $room->status,
+                'room_type' => $room->room_type,
                 'capacity_standing' => $room->attributes['capacity_standing'],
                 'capacity_sitting' => $room->attributes['capacity_sitting'],
                 'food' => $room->attributes['food'],
@@ -111,6 +114,7 @@ class RoomControllerTest extends TestCase
                 'ambiant_music' => $room->attributes['ambiant_music'],
                 'sale_for_profit' => $room->attributes['sale_for_profit'],
                 'fundraiser' => $room->attributes['fundraiser'],           
+                'room_type'  => $room->room_type,
                 'availabilities' => [
                     'Monday' => [
                         'opening_hours' => '12:00:00',
@@ -128,6 +132,7 @@ class RoomControllerTest extends TestCase
             'floor' => $room->floor,
             'building' => $room->building,
             'status' => $room->status,
+            'room_type'  => $room->room_type,
             'attributes' => json_encode([
                 'capacity_standing' => $room->attributes['capacity_standing'],
                 'capacity_sitting' => $room->attributes['capacity_sitting'],
@@ -146,6 +151,7 @@ class RoomControllerTest extends TestCase
                 'sale_for_profit' => $room->attributes['sale_for_profit'],
                 'fundraiser' => $room->attributes['fundraiser'],          
             ]),
+
         ]);
 
         $this->assertDatabaseHas(
@@ -188,7 +194,8 @@ class RoomControllerTest extends TestCase
             'number' => '24',
             'floor' => '2009', 
             'building' => 'wiseau', 
-            'status' => 'available',       
+            'status' => 'available',
+            'room_type'  => 'Lounge',     
             'capacity_standing' => '100',
             'capacity_sitting' => '80',
             'food' => 'true',
@@ -214,7 +221,8 @@ class RoomControllerTest extends TestCase
             'number' => '24',
             'floor' => '2009', 
             'building' => 'wiseau', 
-            'status' => 'available', 
+            'status' => 'available',
+            'room_type'  => 'Lounge', 
             'attributes' => json_encode([            
                 'capacity_standing' => '100',
                 'capacity_sitting' => '80',

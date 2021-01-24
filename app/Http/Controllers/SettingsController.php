@@ -52,7 +52,10 @@ class SettingsController extends Controller
             'app_logo' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
             'label' => 'required'
         ]);
-        $path = 'storage/' . Storage::disk('public')->put('logos', $request->file('app_logo'));
+        $path = 'storage/' . Storage::disk('public')->putFileAs(
+            'logos',
+                $request->file('app_logo'),
+                now()->format('d-m-y-H-i-s').'.'.$request->file('app_logo')->extension());
         Settings::updateOrCreate(
             ['slug' => $request->label],
             ['data' => ['path' => $path]]

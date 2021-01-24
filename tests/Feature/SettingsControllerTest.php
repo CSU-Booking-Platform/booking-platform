@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Role;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
@@ -78,6 +79,7 @@ class SettingsControllerTest extends TestCase
      */
     public function testFormUpdateCreateAppLogo()
     {
+        Carbon::setTestNow(now());
         Storage::fake('public');
         $user = User::factory()->make();
         $random = Str::random(10);
@@ -88,24 +90,63 @@ class SettingsControllerTest extends TestCase
             'label' => 'app_logo',
             'app_logo' => $file,
         ]);
-        Storage::disk('public')->assertExists('logos/' . $file->hashName());
+        Storage::disk('public')->assertExists('logos/' . now()->format('d-m-y-H-i-s').'.'.$file->extension());
         $this->assertDatabaseCount('settings', 1);
         $this->assertDatabaseHas('settings', [
             'slug' => 'app_logo',
-            'data' => json_encode(['path'=>'storage/logos/' . $file->hashName()]),
+            'data' => json_encode(['path'=>'storage/logos/' . now()->format('d-m-y-H-i-s').'.'.$file->extension()]),
         ]);
         $random = Str::random(10);
+        Carbon::setTestNow(now());
         //test if function overwrites if option is already there
         $file = UploadedFile::fake()->image($random.'.jpg');
         $this->actingAs($user)->post('settings/app_logo', [
             'label' => 'app_logo',
             'app_logo' => $file,
         ]);
-        Storage::disk('public')->assertExists('logos/' . $file->hashName());
+        Storage::disk('public')->assertExists('logos/' . now()->format('d-m-y-H-i-s').'.'.$file->extension());
         $this->assertDatabaseCount('settings', 1);
         $this->assertDatabaseHas('settings', [
             'slug' => 'app_logo',
-            'data' => json_encode(['path'=>'storage/logos/' . $file->hashName()]),
+            'data' => json_encode(['path'=>'storage/logos/' . now()->format('d-m-y-H-i-s').'.'.$file->extension()]),
+        ]);
+    }
+
+    /**
+     * @test
+     */
+    public function testFormUpdateCreateAppLogoSendString()
+    {
+        Carbon::setTestNow(now());
+        Storage::fake('public');
+        $user = User::factory()->make();
+        $random = Str::random(10);
+        //test if function creates if no option is there
+        $file = UploadedFile::fake()->image($random.'.png');
+        $this->assertDatabaseCount('settings', 0);
+        $this->actingAs($user)->post('settings/app_logo', [
+            'label' => 'app_logo',
+            'app_logo' => $file,
+        ]);
+        Storage::disk('public')->assertExists('logos/' . now()->format('d-m-y-H-i-s').'.'.$file->extension());
+        $this->assertDatabaseCount('settings', 1);
+        $this->assertDatabaseHas('settings', [
+            'slug' => 'app_logo',
+            'data' => json_encode(['path'=>'storage/logos/' . now()->format('d-m-y-H-i-s').'.'.$file->extension()]),
+        ]);
+        $random = Str::random(10);
+        //test if function overwrites if option is already there
+        Carbon::setTestNow(now());
+        $file = UploadedFile::fake()->image($random.'.jpg');
+        $this->actingAs($user)->post('settings/app_logo', [
+            'label' => 'app_logo',
+            'app_logo' => $file,
+        ]);
+        Storage::disk('public')->assertExists('logos/' . now()->format('d-m-y-H-i-s').'.'.$file->extension());
+        $this->assertDatabaseCount('settings', 1);
+        $this->assertDatabaseHas('settings', [
+            'slug' => 'app_logo',
+            'data' => json_encode(['path'=>'storage/logos/' . now()->format('d-m-y-H-i-s').'.'.$file->extension()]),
         ]);
     }
 

@@ -84,6 +84,8 @@ class ReservationsController extends Controller
       $reservation->start_time = $request->start_time;
       $reservation->end_time = $request->end_time;
       $reservation->save();
+
+      return back();
     }
 
     /**

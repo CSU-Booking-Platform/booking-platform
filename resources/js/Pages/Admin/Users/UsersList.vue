@@ -1,109 +1,94 @@
 <template>
-    <div>
-        <!-- Manage Application Users -->
-        <x-section class="w-full">
-            <div class="space-y-6">
-                <div v-for="user in users" :key="user.id" class="flex items-center justify-between">
-                    <div class="flex items-center">
-                        <div class="text-md mx-3">
-                            {{ user.name }}
-                        </div>
-                        <div class="text-sm text-gray-400">
-                            {{ user.email }}
-                        </div>
-                    </div>
+  <div>
+    <!-- Manage Application Users -->
+    <user-table :users="users">
+      <template v-slot:user="{ user }">
+        <div class="flex items-center">
 
-                    <div class="flex items-center">
+          <button class="cursor-pointer ml-6 text-sm focus:outline-none"
+                  @click="openUpdateModal(user)">
+            Edit
+          </button>
 
-                        <div v-if="user.created_at" class="text-sm text-gray-400">
-                            Created {{ fromNow(user.created_at) }}
-                        </div>
+          <button class="cursor-pointer ml-6 text-sm text-red-500 focus:outline-none"
+                  @click="userBeingDeleted = user">
+            Delete
+          </button>
 
-                        <button class="cursor-pointer ml-6 text-sm focus:outline-none"
-                                @click="openUpdateModal(user)">
-                            Edit
-                        </button>
+        </div>
+      </template>
+    </user-table>
 
-                        <button class="cursor-pointer ml-6 text-sm text-red-500 focus:outline-none"
-                                @click="userBeingDeleted = user">
-                            Delete
-                        </button>
+    <jet-confirmation-modal :show="userBeingUpdated != null" @close="userBeingUpdated = null">
+      <template #title>
+        Update User: {{ userBeingUpdated != null && userBeingUpdated.name }}
+      </template>
 
-                    </div>
-                </div>
+      <template #content>
+        <div>
+          <jet-label for="name" value="Name"/>
+          <jet-input id="name" type="text" class="mt-1 block w-full" v-model="updateUserForm.name" autofocus/>
+          <jet-input-error :message="updateUserForm.error('name')" class="mt-2"/>
+        </div>
+        <div>
+          <jet-label for="email" value="Email"/>
+          <jet-input id="email" type="text" class="mt-1 block w-full" v-model="updateUserForm.email"/>
+          <jet-input-error :message="updateUserForm.error('email')" class="mt-2"/>
+        </div>
+        <!-- Permissions -->
+        <div class="mt-2 col-span-12" v-if="roles.length > 0">
+          <jet-label for="roles" value="Roles"/>
+
+          <div class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div v-for="role in roles">
+              <label class="flex items-center">
+                <input type="checkbox" class="form-checkbox" :value="role.name"
+                       v-model="updateUserForm.roles">
+                <span class="ml-2 text-md text-black">{{ role.name }}</span>
+                <span class="ml-2 text-sm text-gray-600">{{ role.guard_name }}</span>
+              </label>
             </div>
-        </x-section>
+          </div>
+        </div>
+      </template>
 
-        <jet-confirmation-modal :show="userBeingUpdated != null" @close="userBeingUpdated = null">
-            <template #title>
-                Update User: {{ userBeingUpdated != null && userBeingUpdated.name }}
-            </template>
+      <template #footer>
+        <jet-secondary-button @click.native="userBeingUpdated = null">
+          Nevermind
+        </jet-secondary-button>
 
-            <template #content>
-                <div>
-                    <jet-label for="name" value="Name"/>
-                    <jet-input id="name" type="text" class="mt-1 block w-full" v-model="updateUserForm.name" autofocus/>
-                    <jet-input-error :message="updateUserForm.error('name')" class="mt-2"/>
-                </div>
-                <div>
-                    <jet-label for="email" value="Email"/>
-                    <jet-input id="email" type="text" class="mt-1 block w-full" v-model="updateUserForm.email"/>
-                    <jet-input-error :message="updateUserForm.error('email')" class="mt-2"/>
-                </div>
-                <!-- Permissions -->
-                <div class="mt-2 col-span-12" v-if="roles.length > 0">
-                    <jet-label for="roles" value="Roles"/>
-
-                    <div class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div v-for="role in roles">
-                            <label class="flex items-center">
-                                <input type="checkbox" class="form-checkbox" :value="role.name"
-                                       v-model="updateUserForm.roles">
-                                <span class="ml-2 text-md text-black">{{ role.name }}</span>
-                                <span class="ml-2 text-sm text-gray-600">{{ role.guard_name }}</span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-            </template>
-
-            <template #footer>
-                <jet-secondary-button @click.native="userBeingUpdated = null">
-                    Nevermind
-                </jet-secondary-button>
-
-                <jet-button class="ml-2" @click.native="updateUser"
-                            :class="{ 'opacity-25': updateUserForm.processing }"
-                            :disabled="updateUserForm.processing">
-                    Update
-                </jet-button>
-            </template>
-        </jet-confirmation-modal>
+        <jet-button class="ml-2" @click.native="updateUser"
+                    :class="{ 'opacity-25': updateUserForm.processing }"
+                    :disabled="updateUserForm.processing">
+          Update
+        </jet-button>
+      </template>
+    </jet-confirmation-modal>
 
 
-        <!-- Delete User Confirmation Modal -->
-        <jet-confirmation-modal :show="userBeingDeleted" @close="userBeingDeleted = null">
-            <template #title>
-                Delete User
-            </template>
+    <!-- Delete User Confirmation Modal -->
+    <jet-confirmation-modal :show="userBeingDeleted" @close="userBeingDeleted = null">
+      <template #title>
+        Delete User
+      </template>
 
-            <template #content>
-                Are you sure you would like to delete this user?
-            </template>
+      <template #content>
+        Are you sure you would like to delete this user?
+      </template>
 
-            <template #footer>
-                <jet-secondary-button @click.native="userBeingDeleted = null">
-                    Nevermind
-                </jet-secondary-button>
+      <template #footer>
+        <jet-secondary-button @click.native="userBeingDeleted = null">
+          Nevermind
+        </jet-secondary-button>
 
-                <jet-danger-button class="ml-2" @click.native="deleteUser"
-                                   :class="{ 'opacity-25': deleteUserForm.processing }"
-                                   :disabled="deleteUserForm.processing">
-                    Delete
-                </jet-danger-button>
-            </template>
-        </jet-confirmation-modal>
-    </div>
+        <jet-danger-button class="ml-2" @click.native="deleteUser"
+                           :class="{ 'opacity-25': deleteUserForm.processing }"
+                           :disabled="deleteUserForm.processing">
+          Delete
+        </jet-danger-button>
+      </template>
+    </jet-confirmation-modal>
+  </div>
 </template>
 
 <script>
@@ -122,97 +107,99 @@ import JetInputError from "@src/Jetstream/InputError"
 import JetLabel from "@src/Jetstream/Label"
 import Label from "@src/Jetstream/Label";
 import XSection from "@src/Components/XSection";
+import UserTable from "@src/Components/Tables/UsersTable";
 
 export default {
-    props: {
-        users: {
-            type: Array,
-            default: function () {
-                return []
-            },
-        },
-        roles: {
-            type: Array,
-            default: function () {
-                return []
-            },
-        }
+  props: {
+    users: {
+      type: Array,
+      default: function () {
+        return []
+      },
     },
-
-    components: {
-        Label,
-        Dropdown,
-        Input,
-        JetSectionBorder,
-        JetActionSection,
-        JetButton,
-        JetDangerButton,
-        JetSecondaryButton,
-        JetConfirmationModal,
-        JetModal,
-        JetInput,
-        JetLabel,
-        JetInputError,
-        XSection
-    },
-
-    data() {
-        return {
-            deleteUserForm: this.$inertia.form(),
-            updateUserForm: this.$inertia.form({
-                name: '',
-                email: '',
-                roles: [],
-            }, {
-                bag: 'updateUser',
-                resetOnSuccess: true,
-            }),
-            userBeingDeleted: null,
-            userBeingUpdated: null,
-        }
-    },
-
-    methods: {
-        deleteUser() {
-            this.deleteUserForm.delete('/users/' + this.userBeingDeleted.id, {
-                preserveScroll: true,
-                preserveState: true,
-            }).then(() => {
-                this.userBeingDeleted = null
-            })
-        },
-
-        openUpdateModal(user) {
-            this.setSelectedRoles(user)
-            this.userBeingUpdated = user;
-            this.updateUserForm.name = user.name;
-            this.updateUserForm.email = user.email;
-        },
-
-        updateUser() {
-            this.updateUserForm.put('/users/' + this.userBeingUpdated.id, {
-                preserveScroll: true,
-                preserveState: true,
-            }).then(() => {
-                if (this.updateUserForm.successful) {
-                    this.userBeingUpdated = null;
-                }
-            });
-        },
-
-        fromNow(timestamp) {
-            return moment(timestamp).local().fromNow()
-        },
-
-        setSelectedRoles(user) {
-            this.updateUserForm.roles = this.mapUserRoles(user.roles)
-        },
-
-        mapUserRoles(roles) {
-            return roles.map((o) => {
-                return o.name;
-            });
-        }
+    roles: {
+      type: Array,
+      default: function () {
+        return []
+      },
     }
+  },
+
+  components: {
+    UserTable,
+    Label,
+    Dropdown,
+    Input,
+    JetSectionBorder,
+    JetActionSection,
+    JetButton,
+    JetDangerButton,
+    JetSecondaryButton,
+    JetConfirmationModal,
+    JetModal,
+    JetInput,
+    JetLabel,
+    JetInputError,
+    XSection
+  },
+
+  data() {
+    return {
+      deleteUserForm: this.$inertia.form(),
+      updateUserForm: this.$inertia.form({
+        name: '',
+        email: '',
+        roles: [],
+      }, {
+        bag: 'updateUser',
+        resetOnSuccess: true,
+      }),
+      userBeingDeleted: null,
+      userBeingUpdated: null,
+    }
+  },
+
+  methods: {
+    deleteUser() {
+      this.deleteUserForm.delete('/users/' + this.userBeingDeleted.id, {
+        preserveScroll: true,
+        preserveState: true,
+      }).then(() => {
+        this.userBeingDeleted = null
+      })
+    },
+
+    openUpdateModal(user) {
+      this.setSelectedRoles(user)
+      this.userBeingUpdated = user;
+      this.updateUserForm.name = user.name;
+      this.updateUserForm.email = user.email;
+    },
+
+    updateUser() {
+      this.updateUserForm.put('/users/' + this.userBeingUpdated.id, {
+        preserveScroll: true,
+        preserveState: true,
+      }).then(() => {
+        if (this.updateUserForm.successful) {
+          this.userBeingUpdated = null;
+        }
+      });
+    },
+
+    fromNow(timestamp) {
+      return moment(timestamp).local().fromNow()
+    },
+
+    setSelectedRoles(user) {
+      this.updateUserForm.roles = this.mapUserRoles(user.roles)
+    },
+
+    mapUserRoles(roles) {
+      return roles.map((o) => {
+        return o.name;
+      });
+    }
+  }
 }
 </script>

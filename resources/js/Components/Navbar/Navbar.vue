@@ -1,11 +1,13 @@
 <template>
   <div>
     <header>
-       <div class="flex-shrink-0 flex items-center" style ="margin-left: 50px">
-        <a href="/dashboard">
-          <jet-application-mark class="block h-15 w-auto"/>
-        </a>
-        <pre> CSU booking platform </pre>
+      <div class="flex-shrink-0 flex" style="margin-left: 50px">
+        <div class="flex flex-row items-center py-4">
+          <a href="/dashboard">
+            <jet-application-mark class="block h-15 w-auto"/>
+          </a>
+          <h1 class="ml-3 pl-3 border-l-2 border-gray-600 text-2xl"> CSU booking platform </h1>
+        </div>
       </div>
     </header>
 
@@ -152,7 +154,7 @@
 
                   <!-- Authentication -->
                   <form @submit.prevent="logout">
-                    <jet-dropdown-link as="button"> Logout </jet-dropdown-link>
+                    <jet-dropdown-link as="button"> Logout</jet-dropdown-link>
                   </form>
                 </template>
               </jet-dropdown>
@@ -206,31 +208,31 @@
         class="sm:hidden"
       >
         <div class="pt-2 pb-3 space-y-1">
-              <jet-nav-link
-                href="/dashboard"
-                :active="$page.currentRouteName == 'dashboard'"
-              >
-                Home
-              </jet-nav-link>
-              <jet-nav-link
-                href="rooms"
-                :active="$page.currentRouteName == 'rooms'"
-              >
-                Booking Management
-              </jet-nav-link>
-              <jet-nav-link
-                href="users"
-                :active="$page.currentRouteName == 'users'"
-              >
-                User Management
-              </jet-nav-link>
-              <jet-nav-link
-                href="roles"
-                :active="$page.currentRouteName == 'roles'"
-              >
-                MyAccount
-              </jet-nav-link>
-          </div>
+          <jet-nav-link
+            href="/dashboard"
+            :active="$page.currentRouteName == 'dashboard'"
+          >
+            Home
+          </jet-nav-link>
+          <jet-nav-link
+            href="rooms"
+            :active="$page.currentRouteName == 'rooms'"
+          >
+            Booking Management
+          </jet-nav-link>
+          <jet-nav-link
+            href="users"
+            :active="$page.currentRouteName == 'users'"
+          >
+            User Management
+          </jet-nav-link>
+          <jet-nav-link
+            href="roles"
+            :active="$page.currentRouteName == 'roles'"
+          >
+            MyAccount
+          </jet-nav-link>
+        </div>
 
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">
@@ -334,60 +336,60 @@
         </div>
       </div>
     </nav>
-  <nav class="sub-nav" aria-label="SubnavBar">
-    <Subnavbar v-if="$page.currentRouteName == 'dashboard'">
-      <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-        <jet-nav-sub
-          href="/dashboard"
-          :active="$page.currentRouteName == 'dashboard'"
-        >
-          Dashboard
-        </jet-nav-sub>
-      </div>
-    </Subnavbar>
-    <Subnavbar v-else-if="$page.currentRouteName == 'rooms.index'">
-      <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex ">
-        <jet-nav-sub
-          href="/rooms"
-          :active="$page.currentRouteName == 'rooms.index'"
-        >
-          Rooms
-        </jet-nav-sub>
-      </div>
-    </Subnavbar>
-    <Subnavbar v-else-if="$page.currentRouteName == 'users.index'">
-      <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex ">
-        <jet-nav-sub
-          href="/users"
-          :active="$page.currentRouteName == 'users.index'"
-        >
-          Users
-        </jet-nav-sub>
-        <jet-nav-sub
-          href="/roles"
-          :active="$page.currentRouteName == 'roles.index'"
-        >
-          Roles
-        </jet-nav-sub>
-      </div>
-    </Subnavbar>
-    <Subnavbar v-else-if="$page.currentRouteName == 'roles.index'">
-      <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-       <jet-nav-sub
-          href="/users"
-          :active="$page.currentRouteName == 'users.index'"
-        >
-          Users
-        </jet-nav-sub>
-        <jet-nav-sub
-          href="/roles"
-          :active="$page.currentRouteName == 'roles.index'"
-        >
-          Roles
-        </jet-nav-sub>
-      </div>
-    </Subnavbar>
-  </nav>
+    <nav class="sub-nav" aria-label="SubnavBar">
+      <Subnavbar v-if="$page.currentRouteName == 'dashboard'">
+        <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+          <jet-nav-sub
+            href="/dashboard"
+            :active="$page.currentRouteName == 'dashboard'"
+          >
+            Dashboard
+          </jet-nav-sub>
+        </div>
+      </Subnavbar>
+      <Subnavbar v-else-if="$page.currentRouteName == 'rooms.index'">
+        <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex ">
+          <jet-nav-sub
+            href="/rooms"
+            :active="$page.currentRouteName == 'rooms.index'"
+          >
+            Rooms
+          </jet-nav-sub>
+        </div>
+      </Subnavbar>
+      <Subnavbar v-else-if="$page.currentRouteName == 'users.index'">
+        <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex ">
+          <jet-nav-sub
+            href="/users"
+            :active="$page.currentRouteName == 'users.index'"
+          >
+            Users
+          </jet-nav-sub>
+          <jet-nav-sub
+            href="/roles"
+            :active="$page.currentRouteName == 'roles.index'"
+          >
+            Roles
+          </jet-nav-sub>
+        </div>
+      </Subnavbar>
+      <Subnavbar v-else-if="$page.currentRouteName == 'roles.index'">
+        <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+          <jet-nav-sub
+            href="/users"
+            :active="$page.currentRouteName == 'users.index'"
+          >
+            Users
+          </jet-nav-sub>
+          <jet-nav-sub
+            href="/roles"
+            :active="$page.currentRouteName == 'roles.index'"
+          >
+            Roles
+          </jet-nav-sub>
+        </div>
+      </Subnavbar>
+    </nav>
   </div>
 </template>
 

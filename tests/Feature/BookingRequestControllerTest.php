@@ -39,22 +39,20 @@ class BookingRequestControllerTest extends TestCase
      */
     public function user_can_create_booking_request()
     {
-        Carbon::setTestNow(now());
         $room = Room::factory()->create(['status' => 'available']);
         $user = User::factory()->create();
 
         $this->assertDatabaseCount('booking_requests', 0);
         $this->assertDatabaseCount('reservations', 0);
 
-        $this->faker->dateTimeInInterval('+'.$room->min_days_advance.' days', '+'.$room->max_days_advance.' days');
-        $start =  $this->faker->dateTimeThisMonth('now');
-        $end =  $this->faker->dateTimeThisMonth('+2 hours');
-        $this->createReservationAvailabilities($start, $end, $room);
+        $date = $this->faker->dateTimeInInterval('+'.$room->min_days_advance.' days', '+'.($room->max_days_advance-$room->min_days_advance).' days');
+
+        $this->createReservationAvailabilities($date, $room);
 
         $response = $this->actingAs($user)->post('/bookings', [
             'room_id' => $room->id,
-            'start_time' => $start->format('Y-m-d\TH:i'),
-            'end_time' => $end->format('Y-m-d\TH:i')
+            'start_time' => $date->format('Y-m-d\TH:i:00'),
+            'end_time' => Carbon::parse($date)->addMinutes(1)->toDateTime()->format('Y-m-d\TH:i:00')
         ]);
 
         $response->assertStatus(302);
@@ -64,8 +62,8 @@ class BookingRequestControllerTest extends TestCase
         $booking = BookingRequest::first()->id;
         $this->assertDatabaseHas('reservations', [
             'room_id' => $room->id,
-            'start_time' => $start->format('Y-m-d H:i:00'),
-            'end_time' => $end->format('Y-m-d H:i:00'),
+            'start_time' => $date->format('Y-m-d H:i:00'),
+            'end_time' => Carbon::parse($date)->addMinutes(1)->toDateTime()->format('Y-m-d H:i:00'),
             'booking_request_id' => $booking
         ]);
 
@@ -376,23 +374,16 @@ class BookingRequestControllerTest extends TestCase
             'weekday' => Carbon::parse($booking_request->end_time)->addMinute()->format('l')
         ]);
     }
-    private function createReservationAvailabilities($start, $end, $room)
+    private function createReservationAvailabilities($start, $room)
     {
-        $openingHours = Carbon::parse($start)->subMinute()->toTimeString();
-        $closingHours = Carbon::parse($end)->addMinute()->toTimeString();
+        $openingHours = Carbon::parse($start)->subMinutes(5)->toTimeString();
+        $closingHours = Carbon::parse($start)->addMinutes(10)->toTimeString();
 
         Availability::create([
             'room_id' => $room->id,
             'opening_hours' => $openingHours,
             'closing_hours' => $closingHours,
-            'weekday' => Carbon::parse($start)->subMinute()->format('l')
-        ]);
-
-        Availability::create([
-            'room_id' => $room->id,
-            'opening_hours' => $openingHours,
-            'closing_hours' => $closingHours,
-            'weekday' => Carbon::parse($end)->addMinute()->format('l')
+            'weekday' => Carbon::parse($start)->format('l')
         ]);
     }
 

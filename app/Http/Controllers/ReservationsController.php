@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Reservation;
+use App\Models\Room;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -42,10 +43,10 @@ class ReservationsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Reservation $reservations
+     * @param Reservation $reservation
      * @return \Illuminate\Http\Response
      */
-    public function show(Reservation $reservations)
+    public function show(Reservation $reservation)
     {
         //
     }
@@ -53,10 +54,10 @@ class ReservationsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Reservation $reservations
+     * @param Reservation $reservation
      * @return \Illuminate\Http\Response
      */
-    public function edit(Reservation $reservations)
+    public function edit(Reservation $reservation)
     {
         //
     }
@@ -65,12 +66,24 @@ class ReservationsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param Reservation $reservations
+     * @param Reservation $reservation
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Reservation $reservations)
+    public function update(Request $request, Reservation $reservation)
     {
-        //
+      $request->validateWithBag('updateBookingRequest', array(
+        'room_id' => ['required', 'integer'],
+        'start_time' => ['required', 'string', 'max:255'],
+        'end_time' => ['required', 'string', 'max:255'],
+      ));
+
+      $room = Room::query()->findOrFail($request->room_id);
+      $room->verifyDatetimesAreWithinAvailabilities($request->get('start_time'), $request->get('end_time'));
+      $room->verifyDatesAreWithinRoomRestrictions($request->get('start_time'), $request->get('end_time'));
+      $reservation->room_id = $request->room_id;
+      $reservation->start_time = $request->start_time;
+      $reservation->end_time = $request->end_time;
+      $reservation->save();
     }
 
     /**

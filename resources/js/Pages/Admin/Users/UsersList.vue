@@ -1,52 +1,38 @@
 <template>
     <div>
         <!-- Manage Application Users -->
-        <div class="mt-10 sm:mt-0">
-            <jet-action-section>
-                <template #title>
-                    Manage Users
-                </template>
-
-                <template #description>
-                    You may delete any existing user, besides yourself.
-                </template>
-
-
-                <!-- Users List -->
-                <template #content>
-                    <div class="space-y-6">
-                        <div v-for="user in users" :key="user.id" class="flex items-center justify-between">
-                            <div class="flex items-center">
-                                <div class="text-md mx-3">
-                                    {{ user.name }}
-                                </div>
-                                <div class="text-sm text-gray-400">
-                                    {{ user.email }}
-                                </div>
-                            </div>
-
-                            <div class="flex items-center">
-
-                                <div v-if="user.created_at" class="text-sm text-gray-400">
-                                    Created {{ fromNow(user.created_at) }}
-                                </div>
-
-                                <button class="cursor-pointer ml-6 text-sm focus:outline-none"
-                                        @click="openUpdateModal(user)">
-                                    Edit
-                                </button>
-
-                                <button class="cursor-pointer ml-6 text-sm text-red-500 focus:outline-none"
-                                        @click="userBeingDeleted = user">
-                                    Delete
-                                </button>
-
-                            </div>
+        <x-section class="w-full">
+            <div class="space-y-6">
+                <div v-for="user in users" :key="user.id" class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <div class="text-md mx-3">
+                            {{ user.name }}
+                        </div>
+                        <div class="text-sm text-gray-400">
+                            {{ user.email }}
                         </div>
                     </div>
-                </template>
-            </jet-action-section>
-        </div>
+
+                    <div class="flex items-center">
+
+                        <div v-if="user.created_at" class="text-sm text-gray-400">
+                            Created {{ fromNow(user.created_at) }}
+                        </div>
+
+                        <button class="cursor-pointer ml-6 text-sm focus:outline-none"
+                                @click="openUpdateModal(user)">
+                            Edit
+                        </button>
+
+                        <button class="cursor-pointer ml-6 text-sm text-red-500 focus:outline-none"
+                                @click="userBeingDeleted = user">
+                            Delete
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+        </x-section>
 
         <jet-confirmation-modal :show="userBeingUpdated != null" @close="userBeingUpdated = null">
             <template #title>
@@ -135,6 +121,7 @@ import JetInput from "@src/Jetstream/Input"
 import JetInputError from "@src/Jetstream/InputError"
 import JetLabel from "@src/Jetstream/Label"
 import Label from "@src/Jetstream/Label";
+import XSection from "@src/Components/XSection";
 
 export default {
     props: {
@@ -165,7 +152,8 @@ export default {
         JetModal,
         JetInput,
         JetLabel,
-        JetInputError
+        JetInputError,
+        XSection
     },
 
     data() {

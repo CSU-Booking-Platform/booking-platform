@@ -1,31 +1,31 @@
 <template>
     <div>
-        <jet-form-section @submitted="createUser">
+        <form-section @submitted="createUser">
             <template #title>
                 Create a User
             </template>
 
             <template #form>
-                <div class="col-span-6 sm:col-span-3">
-                    <jet-label for="name" value="Name"/>
+                <div class="mb-3">
                     <jet-input id="name" type="text" class="mt-1 block w-full" v-model="createUserForm.name" autofocus/>
+                    <jet-label for="name" value="Name"/>
                     <jet-input-error :message="createUserForm.error('name')" class="mt-2"/>
                 </div>
-                <div class="col-span-6 sm:col-span-3">
-                    <jet-label for="email" value="Email"/>
+                <div class="mb-3">
                     <jet-input id="email" type="email" class="mt-1 block w-full" v-model="createUserForm.email"/>
+                    <jet-label for="email" value="Email"/>
                     <jet-input-error :message="createUserForm.error('email')" class="mt-2"/>
                 </div>
-                <div class="col-span-6 sm:col-span-3">
-                    <jet-label for="password" value="Password"/>
+                <div class="mb-3">
                     <jet-input id="password" type="password" class="mt-1 block w-full"
                                v-model="createUserForm.password"/>
+                    <jet-label for="password" value="Password"/>
                     <jet-input-error :message="createUserForm.error('password')" class="mt-2"/>
                 </div>
-                <div class="col-span-6 sm:col-span-3">
-                    <jet-label for="password_confirmation" value="Password Confirmation"/>
+                <div class="mb-3">
                     <jet-input id="password_confirmation" type="password" class="mt-1 block w-full"
                                v-model="createUserForm.password_confirmation"/>
+                    <jet-label for="password_confirmation" value="Password Confirmation"/>
                     <jet-input-error :message="createUserForm.error('password_confirmation')" class="mt-2"/>
                 </div>
             </template>
@@ -39,7 +39,7 @@
                     Create
                 </jet-button>
             </template>
-        </jet-form-section>
+        </form-section>
     </div>
 </template>
 
@@ -48,7 +48,7 @@
 import JetButton from '@src/Jetstream/Button'
 import JetInput from '@src/Jetstream/Input'
 import JetActionMessage from '@src/Jetstream/ActionMessage'
-import JetFormSection from '@src/Jetstream/FormSection'
+import FormSection from '@src/Components/FormSection'
 import JetInputError from '@src/Jetstream/InputError'
 import JetLabel from '@src/Jetstream/Label'
 
@@ -56,10 +56,10 @@ export default {
     components: {
         JetButton,
         JetInput,
-        JetFormSection,
         JetActionMessage,
         JetInputError,
         JetLabel,
+        FormSection,
     },
 
     data() {

@@ -12,12 +12,13 @@ class BlackoutController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        
-    }
+     
 
+    *public function index()
+    *{
+        
+    *}
+    */
     /**
      * Show the form for creating a new resource.
      *
@@ -60,13 +61,13 @@ class BlackoutController extends Controller
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+    
+    *public function edit($id)
+    *{
+       
+    *}
 
-    /**
+  
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request

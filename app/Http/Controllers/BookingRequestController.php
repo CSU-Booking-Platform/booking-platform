@@ -18,13 +18,13 @@ class BookingRequestController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response|\Inertia\Response|\Inertia\ResponseFactory
      */
-    public function index()
+    public function index(Request $request)
     {
         return inertia('Admin/BookingRequests/Index', [
             'booking_requests' => BookingRequest::with('user', 'room')->get(),
-            'rooms' => Room::all(),
+            'rooms' => Room::hideUserRestrictions($request->user())->get(),
         ]);
     }
 
@@ -51,9 +51,9 @@ class BookingRequestController extends Controller
             'start_time' => ['required', 'date'],
             'end_time' => ['required', 'date'],
         ]);
-        
+
         $referenceFolder = NULL;
-        
+
         if($request->file())
         {
             $referenceFolder = $request->room_id.'_'.strtotime($request->start_time).'_reference';
@@ -73,7 +73,7 @@ class BookingRequestController extends Controller
             'room_id' => $room->id,
             'user_id' => $request->user()->id,
             'start_time' => $request->start_time,
-            'end_time' => $request->end_time, 
+            'end_time' => $request->end_time,
             'status' => "review",
             'reference' => ["path" => $referenceFolder]
         ]);
@@ -123,7 +123,7 @@ class BookingRequestController extends Controller
         $room->verifyDatesAreWithinRoomRestrictions($request->get('start_time'), $request->get('end_time'));
 
         $booking->fill($request->except(['reference']))->save();
-        
+
         if($request->file())
         {    
             $referenceFolder = $request->room_id.'_'.strtotime($request->start_time).'_reference';
@@ -140,7 +140,7 @@ class BookingRequestController extends Controller
             $booking->reference = ['path' => $referenceFolder];
             $booking->save();
         }
-        
+
         return back();
     }
 

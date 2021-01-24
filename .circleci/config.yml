@@ -14,6 +14,16 @@ executors:
     docker:
       - image: ghcr.io/csu-booking-platform/devcontainer:0.0.4
         command: [ ]
+  ci-db:
+    working_directory: /workspace
+    docker:
+      - image: ghcr.io/csu-booking-platform/devcontainer:0.0.4
+        command: [ ]
+      - image: circleci/postgres:10.15
+        environment:
+          POSTGRES_USER: circleci
+          POSTGRES_DB: circle_test
+          POSTGRES_PASSWORD: passw0rd
 jobs:
   validate-commits:
     docker:
@@ -65,17 +75,33 @@ jobs:
       - slack/status:
           fail_only: true
   test-php:
-    executor: ci
+    executor: ci-db
     steps:
       - attach_workspace:
           at: .
       - browser-tools/install-chrome
-      - browser-tools/install-chromedriver
       - run:
-          command: |
-            google-chrome --version
-            chromedriver --version
-          name: Check install
+          name: install dockerize
+          command: wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && sudo tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+          environment:
+            DOCKERIZE_VERSION: v0.3.0
+      - run:
+          name: "Install Dusk and Update Chrome Drivers"
+          command: "php artisan dusk:update --detect"
+      - run:
+          name: Start Chrome Driver
+          command: ./vendor/laravel/dusk/bin/chromedriver-linux --allowed-ips
+          background: true
+      - run:
+          name: Run Laravel Server
+          command: php artisan serve
+          background: true
+      - run:
+          name: Wait for db
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: "Run migrations & seed"
+          command: php artisan migrate:fresh --seed
       - run:
           name: "Run Tests"
           command: php artisan test
@@ -137,7 +163,7 @@ jobs:
       - restore_cache:
           keys:
             # "composer.lock" can be used if it is committed to the repo
-            - v1-dependencies-{{ checksum "composer.json" }}
+            - v1-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
 
@@ -154,9 +180,10 @@ jobs:
           command: npm ci
 
       - save_cache:
-          key: v1-dependencies-{{ checksum "composer.json" }}
+          key: v1-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
           paths:
             - ./vendor
+            - ./node_modules
 
       - run:
           name: "Build Frontend Assets"

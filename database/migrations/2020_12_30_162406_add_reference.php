@@ -14,7 +14,7 @@ class AddReference extends Migration
     public function up()
     {
         Schema::table('booking_requests', function (Blueprint $table) {
-            $table->json('reference')->nullable();
+            $table->jsonb('reference')->nullable();
         });
     }
 

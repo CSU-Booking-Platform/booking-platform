@@ -31,7 +31,8 @@
         "nunomaduro/collision": "^5.0",
         "nunomaduro/phpinsights": "^1.14",
         "phpunit/phpunit": "^9.4",
-        "roave/security-advisories": "dev-latest"
+        "roave/security-advisories": "dev-latest",
+        "staudenmeir/dusk-updater": "^1.2"
     },
     "config": {
         "optimize-autoloader": true,

@@ -193,6 +193,14 @@ export default {
     };
   },
 
+  methods: {
+    logout() {
+      axios.post('/logout').then(response => {
+        window.location = '/';
+      })
+    },
+  },
+
   computed: {
     path() {
       return window.location.pathname;

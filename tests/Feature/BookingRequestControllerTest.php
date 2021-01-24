@@ -9,12 +9,14 @@ use App\Models\Room;
 use App\Models\BookingRequest;
 use App\Models\User;
 use App\Models\Permission;
+use App\Events\BookingRequestUpdated;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 use Illuminate\Foundation\Testing\WithFaker;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Event;
 
 class BookingRequestControllerTest extends TestCase
 {
@@ -96,7 +98,6 @@ class BookingRequestControllerTest extends TestCase
         $response->assertStatus(302);
         $this->assertDatabaseMissing('booking_requests', ['room_id' => $booking_request->room_id, 'start_time' => $booking_request->start_time, 'end_time' => $booking_request->end_time]);
     }
-
 
     /**
      * @test
@@ -241,6 +242,29 @@ class BookingRequestControllerTest extends TestCase
         $response = $this->actingAs($user)->get('/bookings');
         $response->assertOk();
         $response->assertSee("BookingRequests");
+    }
+
+    /**
+     * @test
+     */
+    public function booking_request_adds_log_entry()
+    {
+        Event::fake();
+
+        $room = Room::factory()->create(['status'=>'available']);
+        $user = User::factory()->create();
+        $booking_request = $this->createBookingRequest($room, false);
+
+        $this->createBookingRequestAvailabilities($booking_request, $room);
+
+        $this->assertDatabaseMissing('booking_requests', ['room_id' => $booking_request->room_id, 'start_time' => $booking_request->start_time, 'end_time' => $booking_request->end_time]);
+
+        $response = $this->actingAs($user)->post('/bookings', ['room_id' => $booking_request->room_id, 'start_time' => $booking_request->start_time->toDateTimeString(), 'end_time' => $booking_request->end_time->toDateTimeString()]);
+
+        $response->assertStatus(302);
+        $this->assertDatabaseHas('booking_requests', ['room_id' => $booking_request->room_id, 'start_time' => $booking_request->start_time, 'end_time' => $booking_request->end_time]);
+
+        Event::assertDispatched(BookingRequestUpdated::class);
     }
 
     /**

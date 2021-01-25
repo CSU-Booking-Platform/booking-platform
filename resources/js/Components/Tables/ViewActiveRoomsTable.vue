@@ -16,40 +16,62 @@
           <th class="lt-grey p-3" id="id_room_number">Number</th>
           <th class="lt-grey p-3" id="id_room_floor">Floor</th>
           <th class="lt-grey p-3" id="id_room_availability">Availability</th>
-          <th class="lt-grey p-3" id="id_room_action">Update</th>
-          <th class="lt-grey p-3" id="id_room_action">Delete</th>
-          <th class="lt-grey p-3" id="id_room_action">Restricted Roles</th>
+          <th class="lt-grey p-3" id="id_room_availability">Action</th>
         </tr>
       </thead>
       <tbody>
-         <tr v-for="room in filterRooms" :key="room.id">
-            <td class="text-center lt-grey p-3">{{room.id}}</td>
-            <td class="text-center lt-grey p-3">{{room.name}}</td>
-            <td class="text-center lt-grey p-3">{{room.building}}</td>
-            <td class="text-center lt-grey p-3">{{room.number}}</td>
-            <td class="text-center lt-grey p-3">{{room.floor}}</td>
-            <td class="text-center lt-grey p-3">{{room.status}}</td>
-            <td class="text-center lt-grey p-3">
-              <button
-                    class="h-5 m-2 text-blue-500 bg-lt-gray"
-                    @click="roomBeingUpdated = room"
-                  >Update
-              </button>
-            </td>
-            <td class="text-center lt-grey p-3">
-              <button
-                    class="h-5 m-2 text-red-500 bg-lt-gray"
-                    @click="roomBeingDeleted = room"
-                  >Delete
-              </button>
-            </td>
-            <td class="text-center lt-grey p-3">
-              <button
-                    class="h-5 m-2 text-blue-500 bg-lt-gray"
-                    @click="openEditModal(room)"
-                  >Restrict
-              </button>
-            </td>
+        <tr v-for="room in filterRooms" :key="room.id">
+          <td class="text-center lt-grey p-3">{{room.id}}</td>
+          <td class="text-center lt-grey p-3">{{room.name}}</td>
+          <td class="text-center lt-grey p-3">{{room.building}}</td>
+          <td class="text-center lt-grey p-3">{{room.number}}</td>
+          <td class="text-center lt-grey p-3">{{room.floor}}</td>
+          <td class="text-center lt-grey p-3">{{room.status}}</td>
+          <td class="lt-grey p-3">
+            <div class="text-md mx-2">
+              <jet-dropdown width="48">
+                <template #trigger>
+                  <button
+                  class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out mx-auto"
+                  >
+                  <div>. . .</div>
+                  </button>
+                </template>
+
+                <template #content> 
+                  <div class="text-md mx-3">
+                    <button
+                        class="cursor-pointer text-sm text-blue-800 focus:outline-none"
+                        @click="roomBeingUpdated = room"
+                    >
+                        Update
+                    </button>
+                  </div>
+                  <div class="text-md mx-3">
+                    <jet-dropdown-link :href="'/rooms/'+room.id+'/blackouts'">
+                        <div class="cursor-pointer text-sm text-blue-800 focus:outline-none">
+                          Blackout
+                        </div>
+                    </jet-dropdown-link>
+                  </div>
+                  <div class="text-md mx-3">
+                    <button
+                        class="cursor-pointer text-sm text-red-800 focus:outline-none"
+                        @click="roomBeingDeleted = room"
+                    >
+                        Delete
+                    </button>
+                  </div>
+                  <div class="text-md mx-2">
+                    <button class="cursor-pointer text-sm text-blue-800 focus:outline-none"
+                            @click="openEditModal(room)">
+                        Restricted Roles
+                    </button>
+                  </div>
+                </template>
+              </jet-dropdown>
+            </div>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -136,6 +158,8 @@ import JetInputError from "@src/Jetstream/InputError"
 import JetLabel from "@src/Jetstream/Label"
 import UpdateRoomForm from "@src/Pages/Admin/Rooms/UpdateRoomForm";
 import Label from "@src/Jetstream/Label";
+import JetDropdown from "@src/Jetstream/Dropdown";
+import JetDropdownLink from "@src/Jetstream/DropdownLink";
 
 export default {
   name: "RoomTable",
@@ -173,7 +197,9 @@ export default {
         JetInput,
         JetLabel,
         JetInputError,
-        UpdateRoomForm,  
+        UpdateRoomForm,
+        JetDropdown,
+        JetDropdownLink  
   },
   data() {
       return {

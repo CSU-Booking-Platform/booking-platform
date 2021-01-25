@@ -108,26 +108,6 @@ class ReservationsController extends Controller
       BookingRequestUpdated::dispatch($booking, $log);
     }
 
-//    if($request->file())
-//    {
-//      $referenceFolder = $request->room_id.'_'.strtotime($request->start_time).'_reference/';
-//
-//      if(isset($booking->reference["path"]))
-//      {
-//        $referenceFolder = $booking->reference["path"];
-//      }
-//      foreach($request->reference as $file)
-//      {
-//        $name = $file->getClientOriginalName();
-//        Storage::disk('public')->putFileAs($referenceFolder, $file, $name);
-//      }
-//      $booking->reference = ['path' => $referenceFolder];
-//      $booking->save();
-//
-//      $log = '[' . date($date_format) . ']' . ' - Updated booking request reference file(s)';
-//      BookingRequestUpdated::dispatch($booking, $log);
-//    }
-
     //for now only one
 //    $reservation = $booking->reservations()->first();
     $reservation->room_id = $request->room_id;
@@ -167,8 +147,8 @@ class ReservationsController extends Controller
       'recurrences.*' => ['array', 'size:2',
         function ($attribute, $value, $fail) use ($request){
           $room = Room::query()->findOrFail($request->room_id);
-          $room->verifyDatesAreWithinRoomRestrictionsValidation($value['start_time'], $fail);
-          $room->verifyDatetimesAreWithinAvailabilitiesValidation($value['start_time'], $value['end_time'], $fail);
+          $room->verifyDatesAreWithinRoomRestrictionsValidation($value['start_time'], $fail, $attribute);
+          $room->verifyDatetimesAreWithinAvailabilitiesValidation($value['start_time'], $value['end_time'], $fail, $attribute);
 
         }
       ]

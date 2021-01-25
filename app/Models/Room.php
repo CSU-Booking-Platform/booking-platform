@@ -59,7 +59,7 @@ class Room extends Model
             'booking_request_id');
     }
 
-    /** 
+    /**
      * Get the blackouts on the room
     */
 
@@ -136,5 +136,39 @@ class Room extends Model
             throw ValidationException::withMessages(['booked_too_far' => 'You cannot book events farther than '.$max_days.' days from the event']);
         }
     }
+    public function verifyDatesAreWithinRoomRestrictionsValidation($startDate, $fail)
+    {
+        $startTime = Carbon::parse($startDate)->toDateString();
+        $min_days = $this->min_days_advance;
+        $max_days = $this->max_days_advance;
+
+        if(Carbon::today()-> diffInDays($startTime) < $min_days) {
+            $fail('You can not book events closer than ' .$min_days.' days to the event');
+        } elseif(Carbon::today()-> diffInDays($startTime) > $max_days) {
+          $fail('You cannot book events farther than '.$max_days.' days from the event');
+        }
+    }
+    public function verifyDatetimesAreWithinAvailabilitiesValidation($startDate, $endDate, $fail)
+  {
+    $startTime = Carbon::parse($startDate)->toTimeString();
+    $endTime = Carbon::parse($endDate)->toTimeString();
+
+    $availabilityStart =
+      Availability::where('weekday', Carbon::parse($startDate)->format('l'))
+        ->where('room_id', '=', $this->id)->first();
+
+    $availabilityEnd =
+      Availability::where('weekday', Carbon::parse($endDate)->format('l'))
+        ->where('room_id', '=', $this->id)->first();
+
+    if (
+      empty($availabilityStart) ||
+      empty($availabilityEnd) ||
+      $startTime < $availabilityStart->opening_hours ||
+      $endTime > $availabilityEnd->closing_hours
+    ) {
+        $fail('Booking request not within availabilities!');
+    }
+  }
 
 }

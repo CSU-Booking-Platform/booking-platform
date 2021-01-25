@@ -21,17 +21,18 @@
         "ext-json": "*"
     },
     "require-dev": {
-        "roave/security-advisories": "dev-latest",
         "barryvdh/laravel-debugbar": "^3.5",
         "barryvdh/laravel-ide-helper": "^2.8",
         "facade/ignition": "^2.4.1",
         "fzaninotto/faker": "^1.9.1",
-        "laravel/dusk": "^6.8",
+        "laravel/dusk": "^6.11",
         "laravel/telescope": "^4.0",
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^5.0",
         "nunomaduro/phpinsights": "^1.14",
-        "phpunit/phpunit": "^9.4"
+        "phpunit/phpunit": "^9.4",
+        "roave/security-advisories": "dev-latest",
+        "staudenmeir/dusk-updater": "^1.2"
     },
     "config": {
         "optimize-autoloader": true,

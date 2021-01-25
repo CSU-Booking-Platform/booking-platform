@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Laravel\Dusk\DuskServiceProvider;
 
 /**
  * Vendor-published file, contains no business logic.
@@ -18,9 +19,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        if ($this->app->isLocal()) {
-            $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
-            $this->app->register(TelescopeServiceProvider::class);
+        if ($this->app->environment('local', 'testing', 'staging')) {
+          $this->app->register(DuskServiceProvider::class);
         }
     }
 

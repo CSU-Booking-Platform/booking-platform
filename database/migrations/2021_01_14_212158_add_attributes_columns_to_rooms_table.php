@@ -14,8 +14,8 @@ class AddAttributesColumnsToRoomsTable extends Migration
     public function up()
     {
         Schema::table('rooms', function (Blueprint $table) {
-            $table->json('attributes')->nullable();
-		
+            $table->jsonb('attributes')->nullable();
+
         });
     }
 
@@ -28,7 +28,7 @@ class AddAttributesColumnsToRoomsTable extends Migration
     {
         Schema::table('rooms', function (Blueprint $table) {
             $table->dropColumn(
-                ['attributes'], 
+                ['attributes'],
             );
         });
     }

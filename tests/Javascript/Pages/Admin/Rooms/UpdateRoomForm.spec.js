@@ -15,7 +15,12 @@ beforeEach(() => {
     localVue.use(InertiaApp);
     localVue.use(InertiaForm);
 
-    wrapper = shallowMount(UpdateRoomForm, { localVue });
+    wrapper = shallowMount(UpdateRoomForm, { 
+        localVue,
+        propsData: {
+            availableRoomTypes: ['test']
+        }
+    });
 });
 
 afterEach(() => {

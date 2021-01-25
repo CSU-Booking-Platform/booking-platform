@@ -22,7 +22,12 @@ beforeEach(() => {
 });
 
 test('should mount without crashing', () => {
-    const wrapper = shallowMount(RoomsList, {localVue})
+    const wrapper = shallowMount(RoomsList, {
+        localVue,
+        propsData: {
+            availableRoomTypes: ['test']
+        }
+    })
 })
 
 test('deleteRoom()', () => {
@@ -43,6 +48,9 @@ test('deleteRoom()', () => {
             return {
                 roomBeingDeleted: mockRoomBeingDeleted
             }
+        },
+        propsData: {
+            availableRoomTypes: ['test']
         }
     })
 
@@ -61,7 +69,12 @@ test('openUpdateRestrictionsModal', () => {
     let room = {
         restrictions: ["role1", "role2"]
     }
-    const wrapper = shallowMount(RoomsList, {localVue})
+    const wrapper = shallowMount(RoomsList, {
+        localVue,
+        propsData: {
+            availableRoomTypes: ['test']
+        }
+    })
     wrapper.vm.openEditModal(room)
     expect(wrapper.vm.$data.roomRestBeingUpdated).toBe(room);
 })
@@ -85,6 +98,9 @@ test('updateRoomRestrictions()', () => {
             return {
                 roomRestBeingUpdated: mockRoomResBeingUpdated
             }
+        },
+        propsData: {
+            availableRoomTypes: ['test']
         }
     })
 
@@ -119,6 +135,9 @@ test('updateRoomRestrictionsFail()', () => {
             return {
                 roomRestBeingUpdated: mockRoomResBeingUpdated
             }
+        },
+        propsData: {
+            availableRoomTypes: ['test']
         }
     })
 

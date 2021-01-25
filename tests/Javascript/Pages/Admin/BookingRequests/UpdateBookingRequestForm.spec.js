@@ -15,7 +15,21 @@ beforeEach(() => {
     localVue.use(InertiaApp);
     localVue.use(InertiaForm);
 
-    wrapper = shallowMount(UpdateBookingRequestForm, { localVue });
+    wrapper = shallowMount(UpdateBookingRequestForm, { localVue ,
+      data() {
+        return {
+          form: {
+            booking_request_id: null,
+            room_id: null,
+            recurrences: [{
+              start_time: null,
+              end_time: null,
+            }],
+            reference: [],
+          }
+        }
+      }
+    });
 });
 
 afterEach(() => {
@@ -91,18 +105,6 @@ test('Testing file upload', () => {
         },
     }
 
-    // Mount the component
-    const wrapper = shallowMount(UpdateBookingRequestForm, {
-        localVue,
-        data() {
-            return {
-                form: {
-                    reference: [],
-                }
-            }
-        }
-    })
-
     // Manually trigger the component’s onChange() method
     wrapper.vm.fieldChange(event)
 
@@ -125,7 +127,13 @@ test('Testing empty file upload', () => {
         data() {
             return {
                 form: {
-                    reference: [],
+                  booking_request_id: null,
+                  room_id: null,
+                  recurrences: [{
+                    start_time: null,
+                    end_time: null,
+                  }],
+                  reference: [],
                 }
             }
         }
@@ -137,3 +145,4 @@ test('Testing empty file upload', () => {
     expect(wrapper.vm.form.reference).toEqual(event.target.files)
 
 })
+

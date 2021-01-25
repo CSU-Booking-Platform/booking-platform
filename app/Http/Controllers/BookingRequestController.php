@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
+use ZipArchive;
+use File;
 
 class BookingRequestController extends Controller
 {
@@ -168,5 +170,34 @@ class BookingRequestController extends Controller
         $booking->delete();
 
         return redirect(route('bookings.index'));
+    }
+
+    public function downloadReferenceFiles($folder) 
+    {
+        $path = storage_path('app/public/'.$folder);
+
+        $zip = new ZipArchive;
+   
+        $fileName = $folder . '.zip';
+   
+        if ($zip->open(storage_path('app/public/'.$fileName), ZipArchive::CREATE) === TRUE)
+        {
+            if($files = File::files($path))
+            {                   
+                foreach ($files as $key => $value) {
+                    $relativeNameInZipFile = basename($value);
+                    $zip->addFile($value, $relativeNameInZipFile);
+                }             
+                $zip->close();
+            }
+            else
+            {
+                return back();
+            }
+        }
+        $file = "app/public/" . $fileName;
+
+        return response()->download(storage_path($file))->deleteFileAfterSend(true);
+        
     }
 }

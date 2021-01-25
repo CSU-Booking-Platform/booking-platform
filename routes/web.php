@@ -39,6 +39,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
     Route::post('settings/app_name', SettingsController::class.'@storeAppName')->name('app.name.change');
 
     Route::resource('bookings',\App\Http\Controllers\BookingRequestController::class)->only(['store', 'index', 'update', 'destroy']);
+    Route::get('bookings/download/{folder}', \App\Http\Controllers\BookingRequestController::class.'@downloadReferenceFiles');
 
     
 

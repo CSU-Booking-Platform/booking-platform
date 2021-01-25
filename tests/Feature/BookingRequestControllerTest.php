@@ -77,9 +77,9 @@ class BookingRequestControllerTest extends TestCase
         Storage::fake('public');
         $room = Room::factory()->create(['status' => 'available']);
         $user = User::factory()->create();
-        $booking_request = $this->createBookingRequest($room, false);
-
-        $this->createBookingRequestAvailabilities($booking_request, $room);
+        $booking_request = $this->createBookingRequest(false);
+        $reservation = $this->createReservation($room, $booking_request, false);
+        $this->createReservationAvailabilities($reservation->start_time, $room);
 
         //test if function creates a new reference in booking after uploading an array of files
         $files = [UploadedFile::fake()->create('testFile.txt', 100)];
@@ -87,15 +87,15 @@ class BookingRequestControllerTest extends TestCase
         $this->assertDatabaseMissing('booking_requests', ['reference' => $booking_request->reference]);
 
         $response = $this->actingAs($user)->post('/bookings', [
-            'room_id' => $booking_request->room_id,
-            'start_time' => $booking_request->start_time->toDateTimeString(),
-            'end_time' => $booking_request->end_time->toDateTimeString(),
+            'room_id' => $room->id,
+            'start_time' => $reservation->start_time->toDateTimeString(),
+            'end_time' => $reservation->end_time->toDateTimeString(),
             'reference' => $files]);
 
-        Storage::disk('public')->assertExists($booking_request->room_id . '_' . strtotime($booking_request->start_time) . '_reference/testFile.txt');
+        Storage::disk('public')->assertExists($room->id . '_' . strtotime($reservation->start_time) . '_reference/testFile.txt');
         $response->assertStatus(302);
         $this->assertDatabaseHas('booking_requests', [
-            'reference' => json_encode(['path' => $booking_request->room_id . '_' . strtotime($booking_request->start_time) . '_reference'])]);
+            'reference' => json_encode(['path' => $room->id . '_' . strtotime($reservation->start_time) . '_reference'])]);
 
     }
         /**
@@ -106,9 +106,9 @@ class BookingRequestControllerTest extends TestCase
         Storage::fake('public');
         $room = Room::factory()->create(['status'=>'available']);
         $user = User::factory()->create();
-        $booking_request = $this->createBookingRequest($room, false);
-
-        $this->createBookingRequestAvailabilities($booking_request, $room);
+        $booking_request = $this->createBookingRequest(false);
+        $reservation = $this->createReservation($room, $booking_request, false);
+        $this->createReservationAvailabilities($reservation->start_time, $room);
 
         //make sure function creates a new reference in booking after uploading an array of files
         $files = [UploadedFile::fake()->create('testFile.txt', 100)];
@@ -116,19 +116,19 @@ class BookingRequestControllerTest extends TestCase
         $this->assertDatabaseMissing('booking_requests', ['reference' => $booking_request->reference]);
 
         $response = $this->actingAs($user)->post('/bookings', [
-            'room_id' => $booking_request->room_id,
-            'start_time' => $booking_request->start_time->toDateTimeString(),
-            'end_time' => $booking_request->end_time->toDateTimeString(),
+            'room_id' => $room->id,
+            'start_time' => $reservation->start_time->toDateTimeString(),
+            'end_time' => $reservation->end_time->toDateTimeString(),
             'reference' => $files]);
 
-        Storage::disk('public')->assertExists($booking_request->room_id . '_' . strtotime($booking_request->start_time) . '_reference/testFile.txt');
+      Storage::disk('public')->assertExists($room->id . '_' . strtotime($reservation->start_time) . '_reference/testFile.txt');
         $response->assertStatus(302);
 
-        $this->assertDatabaseHas('booking_requests', ['reference' => json_encode(['path' => $booking_request->room_id . '_' . strtotime($booking_request->start_time) . '_reference'])]);
+        $this->assertDatabaseHas('booking_requests', ['reference' => json_encode(['path' => $room->id . '_' . strtotime($reservation->start_time) . '_reference'])]);
 
         //Test if the required file was downloaded through the browser
-        $response = $this->actingAs($user)->call('GET', '/bookings/download/' . $booking_request->room_id . '_' . strtotime($booking_request->start_time) . '_reference');
-        $this->assertTrue($response->headers->get('content-disposition') == 'attachment; filename=' . $booking_request->room_id . '_' . strtotime($booking_request->start_time) . '_reference.zip');
+        $response = $this->actingAs($user)->call('GET', '/bookings/download/' . $room->id . '_' . strtotime($reservation->start_time) . '_reference');
+        $this->assertTrue($response->headers->get('content-disposition') == 'attachment; filename=' . $room->id . '_' . strtotime($reservation->start_time) . '_reference.zip');
     }
 
     /**
@@ -191,7 +191,7 @@ class BookingRequestControllerTest extends TestCase
     {
         $room = Room::factory()->create(['status' => 'available']);
         $user = User::factory()->create();
-        $booking_request = $this->createBookingRequest($room);
+        $booking_request = $this->createBookingRequest();
         $reservation = $this->createReservation($room, $booking_request);
         $this->createReservationAvailabilities($reservation->start_time, $room);
 
@@ -224,7 +224,7 @@ class BookingRequestControllerTest extends TestCase
     {
       $room = Room::factory()->create(['status' => 'available']);
       $user = User::factory()->create();
-      $booking_request = $this->createBookingRequest($room);
+      $booking_request = $this->createBookingRequest();
       $reservation = $this->createReservation($room, $booking_request);
       $this->createReservationAvailabilities($reservation->start_time, $room);
 
@@ -266,7 +266,7 @@ class BookingRequestControllerTest extends TestCase
         Storage::fake('public');
         $room = Room::factory()->create();
         $user = User::factory()->create();
-      $booking_request = $this->createBookingRequest($room);
+      $booking_request = $this->createBookingRequest();
       $reservation = $this->createReservation($room, $booking_request);
       $this->createReservationAvailabilities($reservation->start_time, $room);
 
@@ -298,7 +298,7 @@ class BookingRequestControllerTest extends TestCase
     {
         $room = Room::factory()->create();
         $user = User::factory()->create();
-        $booking_request = $this->createBookingRequest($room);
+        $booking_request = $this->createBookingRequest();
         $this->createReservation($room, $booking_request);
 
         $this->assertDatabaseHas('booking_requests', [
@@ -323,7 +323,7 @@ class BookingRequestControllerTest extends TestCase
     {
         $room = Room::factory()->make();
         $user = User::factory()->make();
-        $booking_request = $this->createBookingRequest($room);
+        $booking_request = $this->createBookingRequest();
 
         $response = $this->actingAs($user)->get('/bookings');
         $response->assertOk();

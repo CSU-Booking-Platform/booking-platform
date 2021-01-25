@@ -120,6 +120,67 @@ test('Testing file upload', () => {
 
 })
 
+test('Testing date push', () => {
+
+    // Mount the component
+    const wrapper = shallowMount(CreateBookingRequestModal, {
+        localVue,
+        data() {
+            return {
+                createBookingRequestForm: {
+                  booking_request_id: null,
+                  room_id: null,
+                  recurrences: [{
+                    start_time: null,
+                    end_time: null,
+                  }],
+                  reference: [],
+                }
+            }
+        }
+    })
+
+    // Manually trigger the component’s onChange() method
+    wrapper.vm.addDate()
+
+    expect(wrapper.vm.createBookingRequestForm.recurrences.length).toEqual(2)
+
+})
+
+test('Testing date pop', () => {
+
+    // Mount the component
+    const wrapper = shallowMount(CreateBookingRequestModal, {
+        localVue,
+        data() {
+            return {
+                createBookingRequestForm: {
+                  booking_request_id: null,
+                  room_id: null,
+                  recurrences: [{
+                    start_time: 1,
+                    end_time: 1,
+                  },{
+                    start_time: 2,
+                    end_time: 2,
+                  },{
+                    start_time: 3,
+                    end_time: 3,
+                  }],
+                  reference: [],
+                }
+            }
+        }
+    })
+
+    // Manually trigger the component’s onChange() method
+    wrapper.vm.removeDate(1)
+
+    expect(wrapper.vm.createBookingRequestForm.recurrences.length).toEqual(2)
+  expect(wrapper.vm.createBookingRequestForm.recurrences[0].start_time).toEqual(1)
+  expect(wrapper.vm.createBookingRequestForm.recurrences[1].start_time).toEqual(3)
+})
+
 test('Testing empty file upload', () => {
 
     let event = {
@@ -166,7 +227,7 @@ test('Testing empty file upload', () => {
 
 //   wrapper.setData({ filter: '' })
 //   expect(wrapper.html()).toContain('<td class="text-center lt-grey">1</td>')
-  
+
 //   wrapper.setData({ filter: 'building' })
 //   expect(wrapper.vm.filter).toBe('building')
 //   expect(wrapper.html()).toContain('<td class="text-center lt-grey">1</td>')
@@ -175,7 +236,7 @@ test('Testing empty file upload', () => {
 //   expect(wrapper.vm.filter).toBe('thisfiltershouldnotwork')
 //   expect(wrapper.vm.filteredRooms.length).toBe(0)
 
-  
+
 
 //   expect(wrapper.text()).toBeDefined()
 // })

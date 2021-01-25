@@ -160,7 +160,7 @@ export default {
             start_time: "",
             end_time: "",
           }
-        ],
+        ];
         this.createBookingRequestForm.reference = [];
         this.$emit("close");
     },

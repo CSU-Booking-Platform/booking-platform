@@ -40,7 +40,7 @@ class ReservationsController extends Controller
    */
   public function store(Request $request)
   {
-    $this->reservationValidate($request);
+    $this->reservationValidate($request, 'store');
 
 //    $room = Room::query()->findOrFail($request->room_id);
 //    $room->verifyDatetimesAreWithinAvailabilities($request->get('start_time'), $request->get('end_time'));
@@ -95,7 +95,7 @@ class ReservationsController extends Controller
    */
   public function update(Request $request, Reservation $reservation)
   {
-    $this->reservationValidate($request);
+    $this->reservationValidate($request, 'update');
 
     $date_format = "F j, Y, g:i a";
 
@@ -134,8 +134,8 @@ class ReservationsController extends Controller
     return back();
   }
 
-  private function reservationValidate(Request $request){
-    $request->validateWithBag('createReservationsRequest', array(
+  private function reservationValidate(Request $request, $function){
+    $request->validateWithBag($function.'ReservationsRequest', array(
       'room_id' => ['required', 'integer', 'exists:rooms,id'],
       'recurrences' => ['required'],
       'recurrences.*.start_time' => ['required', 'date'],

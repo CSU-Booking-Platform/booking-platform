@@ -5,6 +5,7 @@
         </template>
 
         <template #content>
+          <div class="overflow-y-auto h-96">
             <div class="m-6">
                 <jet-label for="name" value="Room" />
                 <jet-input
@@ -16,33 +17,44 @@
                 />
                 <jet-input-error :message="createBookingRequestForm.error('room_id')" class="mt-2" />
             </div>
+            <div v-for="(dates, index) in createBookingRequestForm.recurrences" :key="index">
+              <jet-input-error :message="createBookingRequestForm.error('recurrences.'+index)" class="mt-2" />
+              <jet-label  :value="index+1" />
+              <div class="m-6">
+                  <jet-label for="start_time" value="Start Time" />
+                  <jet-input
+                      id="start_time"
+                      type="datetime-local"
+                      class="mt-1 block w-full"
+                      v-model="dates.start_time"
+                      autofocus
+                  />
+                  <jet-input-error :message="createBookingRequestForm.error('recurrences.'+index+'.start_time')" class="mt-2" />
+              </div>
 
-            <div class="m-6">
-                <jet-label for="start_time" value="Start Time" />
-                <jet-input
-                    id="start_time"
-                    type="datetime-local"
-                    class="mt-1 block w-full"
-                    v-model="createBookingRequestForm.start_time"
-                    autofocus
-                />
-                <jet-input-error :message="createBookingRequestForm.error('start_time')" class="mt-2" />
+              <div class="m-6">
+                  <jet-label for="end_time" value="End Time" />
+                  <jet-input
+                      id="end_time"
+                      type="datetime-local"
+                      class="mt-1 block w-full"
+                      v-model="dates.end_time"
+                      autofocus
+                  />
+                  <jet-input-error
+                      :message="createBookingRequestForm.error('recurrences.'+index+'.start_time')"
+                      class="mt-2"
+                  />
+              </div>
+              <jet-secondary-button v-if="numDates > 1" @click.native="removeDate(index)">
+                Remove this date
+              </jet-secondary-button>
             </div>
-
-            <div class="m-6">
-                <jet-label for="end_time" value="End Time" />
-                <jet-input
-                    id="end_time"
-                    type="datetime-local"
-                    class="mt-1 block w-full"
-                    v-model="createBookingRequestForm.end_time"
-                    autofocus
-                />
-                <jet-input-error
-                    :message="createBookingRequestForm.error('end_time')"
-                    class="mt-2"
-                />
-            </div>
+          <div class="m-6">
+          <jet-secondary-button @click.native="addDate">
+            Add Another date
+          </jet-secondary-button>
+          </div>
 
             <div class="m-6">
                 <jet-label>Upload Reference Files</jet-label>
@@ -58,6 +70,7 @@
                     class="mt-2"
                 />
             </div>
+          </div>
         </template>
 
         <template #footer>
@@ -89,9 +102,11 @@ import JetDropdown from "@src/Jetstream/Dropdown";
 import JetDropdownLink from "@src/Jetstream/DropdownLink";
 import JetNavLink from "@src/Components/Navbar/NavLink";
 import JetSecondaryButton from "@src/Jetstream/SecondaryButton";
+import DialogModal from "@src/Jetstream/DialogModal";
 
 export default {
   components: {
+    DialogModal,
     JetButton,
     JetInput,
     JetFormSection,
@@ -111,18 +126,26 @@ export default {
       required: false
     }
   },
-
+  computed: {
+    numDates: function() {
+      return this.createBookingRequestForm.recurrences.length;
+    },
+  },
   data() {
     return {
       createBookingRequestForm: this.$inertia.form(
         {
           room_id: null,
-          start_time: "",
-          end_time: "",
+          recurrences:[
+            {
+              start_time: "",
+              end_time: "",
+            }
+          ],
           reference: []
         },
         {
-          bag: "createBookingRequest",
+          bag: "createReservationsRequest",
           resetOnSuccess: true
         }
       ),
@@ -132,16 +155,31 @@ export default {
   methods: {
     closeModal() {
         this.createBookingRequestForm.room_id = null;
-        this.createBookingRequestForm.start_time = "";
-        this.createBookingRequestForm.end_time = "";
+        this.createBookingRequestForm.recurrences = [
+          {
+            start_time: "",
+            end_time: "",
+          }
+        ],
         this.createBookingRequestForm.reference = [];
         this.$emit("close");
     },
+    addDate() {
+      this.createBookingRequestForm.recurrences.push({
+        start_time: "",
+        end_time: "",
+      })
+    },
+    removeDate(pos) {
+      this.createBookingRequestForm.recurrences.splice(pos,1)
+    },
     createBookingRequest() {
-      this.createBookingRequestForm.post("/bookings", {
+      this.createBookingRequestForm.post("/reservation", {
         preserveScroll: true
-      }).then( () => {
-        this.closeModal();
+      }).then(response => {
+        if (! this.createBookingRequestForm.hasErrors()) {
+          this.closeModal();
+        }
       });
     },
     fieldChange(e) {

@@ -41,7 +41,8 @@ class ReservationsController extends Controller
     $request->validateWithBag('createReservationsRequest', array(
       'room_id' => ['required', 'integer', 'exists:rooms,id'],
       'recurrences' => ['required'],
-      'recurrences.*.start_time' => [ 'required', 'date'],
+      'recurrences.*' => ['array', 'size:2'],
+      'recurrences.*.start_time' => ['required', 'date'],
       'recurrences.*.end_time' => ['required', 'date'],
     ));
 

@@ -66,6 +66,7 @@ class ReservationControllerTest extends TestCase
       'end_time' => $reservation2->end_time->format('Y-m-d H:i:00'),
     ]);
   }
+
   public function test_storing_multiple_reservations_fail_if_one_is_denied()
   {
     $user = User::factory()->create();
@@ -91,6 +92,17 @@ class ReservationControllerTest extends TestCase
 
   }
 
+  public function test_relations_set(){
+    $room = Room::factory()->create();
+    $booking_request = $this->createBookingRequest();
+    $reservation = $this->createReservation($room,$booking_request);
+
+    $this->assertEquals(1, $room->bookingRequests()->count());
+    $this->assertEquals(1, $booking_request->rooms()->count());
+    $this->assertEquals(1, $reservation->room()->count());
+    $this->assertEquals(1, $reservation->bookingRequest()->count());
+
+  }
   /**
    * helper functions
    */

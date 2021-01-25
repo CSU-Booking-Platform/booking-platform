@@ -173,6 +173,7 @@ import JetNavLink from "@src/Components/Navbar/NavLink";
 import JetResponsiveNavLink from "@src/Jetstream/ResponsiveNavLink";
 import Subnavbar from "@src/Components/Navbar/Subnavbar";
 import JetNavSub from "@src/Components/Navbar/SubNavLink";
+import axios from "axios";
 
 
 export default {
@@ -191,6 +192,14 @@ export default {
     return {
       showingNavigationDropdown: false,
     };
+  },
+
+  methods: {
+    logout() {
+      axios.post('/logout').then(response => {
+        window.location = '/';
+      })
+    },
   },
 
   computed: {

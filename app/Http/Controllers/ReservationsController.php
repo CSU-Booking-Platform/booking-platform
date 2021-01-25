@@ -15,20 +15,20 @@ class ReservationsController extends Controller
    *
    * @return \Illuminate\Http\Response
    */
-  public function index()
-  {
-    //
-  }
+//  public function index()
+//  {
+//    //
+//  }
 
   /**
    * Show the form for creating a new resource.
    *
    * @return \Illuminate\Http\Response
    */
-  public function create()
-  {
-    //
-  }
+//  public function create()
+//  {
+//    //
+//  }
 
   /**
    * Store a newly created resource in storage.
@@ -85,10 +85,10 @@ class ReservationsController extends Controller
    * @param Reservation $reservation
    * @return \Illuminate\Http\Response
    */
-  public function show(Reservation $reservation)
-  {
-    //
-  }
+//  public function show(Reservation $reservation)
+//  {
+//    //
+//  }
 
   /**
    * Show the form for editing the specified resource.
@@ -96,10 +96,10 @@ class ReservationsController extends Controller
    * @param Reservation $reservation
    * @return \Illuminate\Http\Response
    */
-  public function edit(Reservation $reservation)
-  {
-    //
-  }
+//  public function edit(Reservation $reservation)
+//  {
+//    //
+//  }
 
   /**
    * Update the specified resource in storage.

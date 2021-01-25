@@ -102,23 +102,7 @@ class Room extends Model
      */
     public function verifyDatetimesAreWithinAvailabilities($startDate, $endDate)
     {
-        $startTime = Carbon::parse($startDate)->toTimeString();
-        $endTime = Carbon::parse($endDate)->toTimeString();
-
-        $availabilityStart =
-            Availability::where('weekday', Carbon::parse($startDate)->format('l'))
-                ->where('room_id', '=', $this->id)->first();
-
-        $availabilityEnd =
-            Availability::where('weekday', Carbon::parse($endDate)->format('l'))
-                ->where('room_id', '=', $this->id)->first();
-
-        if (
-            empty($availabilityStart) ||
-            empty($availabilityEnd) ||
-            $startTime < $availabilityStart->opening_hours ||
-            $endTime > $availabilityEnd->closing_hours
-        ) {
+        if ($this->notWithinAvailabilities($startDate, $endDate)) {
             throw ValidationException::withMessages([
                 'availabilities' => 'Booking request not within availabilities!'
             ]);
@@ -150,6 +134,13 @@ class Room extends Model
     }
     public function verifyDatetimesAreWithinAvailabilitiesValidation($startDate, $endDate, $fail)
   {
+    if ($this->notWithinAvailabilities($startDate, $endDate)) {
+        $fail('Booking request not within availabilities!');
+    }
+  }
+
+  private function notWithinAvailabilities($startDate, $endDate)
+  {
     $startTime = Carbon::parse($startDate)->toTimeString();
     $endTime = Carbon::parse($endDate)->toTimeString();
 
@@ -161,14 +152,11 @@ class Room extends Model
       Availability::where('weekday', Carbon::parse($endDate)->format('l'))
         ->where('room_id', '=', $this->id)->first();
 
-    if (
+    return
       empty($availabilityStart) ||
       empty($availabilityEnd) ||
       $startTime < $availabilityStart->opening_hours ||
-      $endTime > $availabilityEnd->closing_hours
-    ) {
-        $fail('Booking request not within availabilities!');
-    }
+      $endTime > $availabilityEnd->closing_hours;
   }
 
 }

@@ -5,7 +5,9 @@
                 <create-room-form :available-room-types="availableRoomTypes" />
             </div>
             <div v-if="rooms.length > 0" class="m-4 w-2/3">
-                <rooms-list :rooms="rooms"  :available-room-types="availableRoomTypes"  />
+                <div class="py-12">
+                    <ViewActiveRoomsTable :rooms="rooms" :availableRoomTypes="availableRoomTypes"/>
+                </div>
             </div>
         </div>
     </app-layout>
@@ -17,6 +19,7 @@ import CreateRoomForm from './CreateRoomForm';
 import RoomsList from './RoomsList';
 import AppLayout from '@src/Layouts/AppLayout';
 import XSection from '@src/Components/XSection';
+import ViewActiveRoomsTable from '@src/Components/Tables/ViewActiveRoomsTable';
 
 export default {
     components: {
@@ -24,6 +27,7 @@ export default {
         AppLayout,
         RoomsList,
         JetSectionBorder,
+        ViewActiveRoomsTable,
     },
     props: {
         rooms: {

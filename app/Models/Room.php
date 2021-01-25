@@ -22,7 +22,8 @@ class Room extends Model
         'number',
         'floor',
         'building',
-        'status', 
+        'status',
+        'room_type',
         'min_days_advance',
         'max_days_advance',
         'attributes',
@@ -36,6 +37,16 @@ class Room extends Model
     protected $casts = [
         'attributes' => 'array',
     ];
+
+    public const ROOM_TYPES =['Lounge', 'Mezzazine', 'Conference'];
+
+    /**
+     * The roles restricted from this room.
+     */
+    public function restrictions(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Role::class, 'room_restrictions');
+    }
 
     /**
      * Get the booking requests for the room.
@@ -59,6 +70,15 @@ class Room extends Model
     public function scopeAvailable(Builder $q)
     {
         $q->where('status', 'available');
+    }
+
+    /**
+     * Hide rooms restricted by the user's roles
+     */
+    public function scopeHideUserRestrictions(Builder $q, User $u)
+    {
+        $q->whereNotIn('id', $u->roles()->with('restrictions')->get()
+            ->pluck('restrictions')->flatten()->pluck('id')->unique()->toArray());
     }
 
     /**

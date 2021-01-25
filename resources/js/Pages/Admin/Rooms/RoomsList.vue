@@ -16,23 +16,24 @@
                 <template #content>
 
                     <div class="space-y-6">
-                        <div class="grid grid-cols-7">
+                        <div class="grid grid-cols-8">
                             <div class="text-md mx-3">Room Name</div>
                             <div class="text-md mx-3">Room Number</div>
-                            <div class="text-md mx-3">Floor Number</div>
+                            <div class="text-md mx-2">Floor Number</div>
                             <div class="text-md mx-3">Building</div>
                             <div class="text-md mx-3">Status</div>
+                            <div class="text-md mx-3">Room Type</div>
                         </div>
 
                         <div v-for="room in rooms" :key="room.id" class="grid flex items-center">
-                            <div class="grid grid-cols-7">
+                            <div class="grid grid-cols-8">
                                 <div class="text-md mx-3">
                                     {{ room.name }}
                                 </div>
                                 <div class="text-md mx-3">
                                     {{ room.number }}
                                 </div>
-                                <div class="text-md mx-3">
+                                <div class="text-md mx-2">
                                     {{ room.floor }}
                                 </div>
                                 <div class="text-md mx-3">
@@ -42,6 +43,9 @@
                                     {{ room.status }}
                                 </div>
                                 <div class="text-md mx-3">
+                                    {{ room.room_type }}
+                                </div>
+                                <div class="text-md mx-3">
                                     <button
                                         class="cursor-pointer ml-6 text-sm text-blue-800 focus:outline-none"
                                         @click="roomBeingUpdated = room"
@@ -49,7 +53,7 @@
                                         Update
                                     </button>
                                 </div>
-                                <div class="text-md mx-3">
+                                <div class="text-md mx-2">
                                     <button
                                         class="cursor-pointer ml-6 text-sm text-blue-800 focus:outline-none"
                                         @click="roomBeingDeleted = room"
@@ -57,12 +61,20 @@
                                         Delete
                                     </button>
                                 </div>
+
+                                <div class="text-md mx-2">
+                                <button class="cursor-pointer ml-6 text-sm text-blue-800 focus:outline-none"
+                                        @click="openEditModal(room)">
+                                    Restricted Roles
+                                </button>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <update-room-form
-                        :room="roomBeingUpdated"
+                        :room="roomBeingUpdated" 
+                        :available-room-types="availableRoomTypes" 
                         @close="roomBeingUpdated = null">
                     </update-room-form>
 
@@ -85,6 +97,42 @@
                                                :disabled="deleteRoomForm.processing">
                                 Delete
                             </jet-danger-button>
+                        </template>
+                    </jet-confirmation-modal>
+
+                    <jet-confirmation-modal :show="roomRestBeingUpdated != null" @close="roomRestBeingUpdated = null">
+                        <template #title>
+                            Update Room Restrictions: {{ roomRestBeingUpdated != null && roomRestBeingUpdated.name }}
+                        </template>
+
+                        <template #content>
+
+                            <!-- Permissions -->
+                            <div class="mt-2 col-span-12" v-if="roles.length > 0">
+                                <jet-label for="restrictions" value="Restrictions"/>
+
+                                <div class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div v-for="role in roles">
+                                        <label class="flex items-center">
+                                            <input type="checkbox" class="form-checkbox" :value="role.id"
+                                                   v-model="updateRoomRestForm.restrictions">
+                                            <span class="ml-2 text-md text-black">{{ role.name }}</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+
+                        <template #footer>
+                            <jet-secondary-button @click.native="roomRestBeingUpdated = null">
+                                Nevermind
+                            </jet-secondary-button>
+
+                            <jet-button class="ml-2" @click.native="updateRestrictions"
+                                        :class="{ 'opacity-25': updateRoomRestForm.processing }"
+                                        :disabled="updateRoomRestForm.processing">
+                                Update
+                            </jet-button>
                         </template>
                     </jet-confirmation-modal>
 
@@ -120,6 +168,17 @@ export default {
             default: function () {
                 return []
             }
+        },
+        roles: {
+            type: Array,
+            default: function () {
+                return []
+            },
+        },
+
+        availableRoomTypes: {
+            type: Array,
+            required: true
         }
     },
 
@@ -143,7 +202,14 @@ export default {
     data() {
         return {
             deleteRoomForm: this.$inertia.form(),
+            updateRoomRestForm: this.$inertia.form({
+                restrictions: [],
+            }, {
+                bag: 'updateRoomRestriction',
+                resetOnSuccess: true,
+            }),
             roomBeingUpdated: null,
+            roomRestBeingUpdated: null,
             roomBeingDeleted: null
         };
     },
@@ -156,7 +222,32 @@ export default {
             }).then(() => {
                 this.roomBeingDeleted = null
             })
-        }
+        },
+
+        openEditModal(room) {
+            this.setSelectedRestrictions(room)
+            this.roomRestBeingUpdated = room;
+        },
+
+        setSelectedRestrictions(room) {
+            this.updateRoomRestForm.restrictions = this.mapRoomRestrictions(room.restrictions)
+        },
+
+        mapRoomRestrictions(restrictions) {
+            return restrictions.map((o) => {
+                return o.id;
+            });
+        },
+        updateRestrictions() {
+            this.updateRoomRestForm.put('/room/restrictions/' + this.roomRestBeingUpdated.id, {
+                preserveScroll: true,
+                preserveState: true,
+            }).then(() => {
+                if (this.updateRoomRestForm.successful) {
+                    this.roomRestBeingUpdated = null;
+                }
+            });
+        },
     }
 }
 </script>

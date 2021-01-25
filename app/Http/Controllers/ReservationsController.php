@@ -42,9 +42,6 @@ class ReservationsController extends Controller
   {
     $this->reservationValidate($request, 'store');
 
-//    $room = Room::query()->findOrFail($request->room_id);
-//    $room->verifyDatetimesAreWithinAvailabilities($request->get('start_time'), $request->get('end_time'));
-//    $room->verifyDatesAreWithinRoomRestrictions($request->get('start_time'), $request->get('end_time'));
 //    //lazy for now
     $booking = BookingRequest::create([
       'user_id' => $request->user()->id,
@@ -95,7 +92,7 @@ class ReservationsController extends Controller
    */
   public function update(Request $request, Reservation $reservation)
   {
-    $this->reservationValidate($request, 'update');
+    $this->reservationValidate($request, 'update', $reservation);
 
     $date_format = "F j, Y, g:i a";
 
@@ -134,7 +131,7 @@ class ReservationsController extends Controller
     return back();
   }
 
-  private function reservationValidate(Request $request, $function){
+  private function reservationValidate(Request $request, $function, $reservation = null){
     $request->validateWithBag($function.'ReservationsRequest', array(
       'room_id' => ['required', 'integer', 'exists:rooms,id'],
       'recurrences' => ['required'],
@@ -142,13 +139,13 @@ class ReservationsController extends Controller
       'recurrences.*.end_time' => ['required', 'date'],
     ));
 
-    $request->validateWithBag('createReservationsRequest', array(
+    $request->validateWithBag($function.'ReservationsRequest', array(
       'recurrences.*' => ['array', 'size:2',
-        function ($attribute, $value, $fail) use ($request){
+        function ($attribute, $value, $fail) use ($request, $reservation){
           $room = Room::query()->findOrFail($request->room_id);
           $room->verifyDatesAreWithinRoomRestrictionsValidation($value['start_time'], $fail, $attribute);
           $room->verifyDatetimesAreWithinAvailabilitiesValidation($value['start_time'], $value['end_time'], $fail, $attribute);
-
+          $room->verifyRoomIsFreeValidation($value['start_time'], $value['end_time'], $fail, $attribute, $reservation);
         }
       ]
     ));

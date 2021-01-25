@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Facade\Ignition\DumpRecorder\Dump;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
@@ -136,6 +137,27 @@ class Room extends Model
   {
     if ($this->notWithinAvailabilities($startDate, $endDate)) {
         $fail($attribute.' - Booking request not within availabilities!');
+    }
+  }
+
+  public function verifyRoomIsFreeValidation($startDate, $endDate, $fail, $attribute, $reservation = null)
+  {
+
+    $query = Reservation::where('room_id', $this->id);
+    if($reservation){
+      $query = $query->where('id','!=', $reservation->id);
+    }
+    $query = $query->where(function ($query) use ($startDate, $endDate) {
+      $query->whereBetween('start_time', [$startDate, $endDate])
+      ->orWhereBetween('end_time', [$startDate, $endDate])
+      ->orWhere(function ($query) use ($startDate, $endDate) {
+        $query->where('start_time', '<', $startDate)->where('end_time', '>', $endDate);
+      });
+    });
+      $conflict = $query->first();
+
+    if ($conflict) {
+      $fail($attribute . ' - Is blocked by another reservation.');
     }
   }
 

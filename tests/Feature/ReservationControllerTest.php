@@ -84,6 +84,7 @@ class ReservationControllerTest extends TestCase
     $this->assertDatabaseCount('reservations', 0);
 
   }
+
   public function test_update_reservations()
   {
     $user = User::factory()->create();
@@ -114,6 +115,40 @@ class ReservationControllerTest extends TestCase
       'room_id' => $room->id,
       'start_time' => $reservationNew->start_time->format('Y-m-d H:i:00'),
       'end_time' => $reservationNew->end_time->format('Y-m-d H:i:00'),
+    ]);
+  }
+
+  public function test_conflict_block_case_A()
+  {
+    //Case A: The reservation ends after another is supposed to start
+    $user = User::factory()->create();
+    $room = Room::factory()->create();
+
+    $booking_request = $this->createBookingRequest( );
+    $reservation = $this->createReservation($room,$booking_request);
+    $this->createReservationAvailabilities($reservation->start_time, $room);
+    $this->assertDatabaseCount('booking_requests', 1);
+    $this->assertDatabaseCount('reservations', 1);
+    $reservationNew = $reservation->replicate();
+    $reservationNew->start_time = Carbon::parse($reservation->start_time)->subMinute()->format('Y-m-d\TH:i');
+    $reservationNew->end_time = Carbon::parse($reservation->start_time)->addMinute()->format('Y-m-d\TH:i');
+    $response = $this->actingAs($user)->post('/reservation', [
+      'room_id' => $reservationNew->room_id,
+      'recurrences'=>[
+        [
+          'start_time' => $reservationNew->start_time->format('Y-m-d\TH:i:00'),
+          'end_time' => $reservationNew->end_time->format('Y-m-d\TH:i:00'),
+        ]
+      ],
+    ]);
+
+    $response->assertStatus(302);
+    $this->assertDatabaseCount('booking_requests', 1);
+    $this->assertDatabaseCount('reservations', 1);
+    $this->assertDatabaseHas('reservations', [
+      'room_id' => $room->id,
+      'start_time' => $reservation->start_time->format('Y-m-d H:i:00'),
+      'end_time' => $reservation->end_time->format('Y-m-d H:i:00'),
     ]);
   }
 
@@ -227,7 +262,7 @@ class ReservationControllerTest extends TestCase
       'room_id' => $room->id,
       'booking_request_id' => $bookingRequest->id,
       'start_time' => Carbon::parse($date)->format('Y-m-d\TH:i'),
-      'end_time' => Carbon::parse($date)->addMinute()->format('Y-m-d\TH:i'),
+      'end_time' => Carbon::parse($date)->addMinutes(30)->format('Y-m-d\TH:i'),
     ];
     if ($create) {
       $reservation = Reservation::factory()->create($data);

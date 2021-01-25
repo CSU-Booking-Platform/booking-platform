@@ -26,7 +26,21 @@ afterEach(() => {
 
 test('should mount without crashing', () => {
 
-    const wrapper = mount(CreateRoomForm, {localVue})
+    const wrapper = mount(CreateRoomForm, {
+        localVue,
+        propsData: {
+            rooms: [{
+                id: 1,
+                name: "name",
+                building: "building",
+                number: "1",
+                floor: 1,
+                status: "available"
+            }],
+            
+            availableRoomTypes: ['test']
+        }
+    })
 
     expect(wrapper.text()).toBeDefined()
 })
@@ -42,7 +56,21 @@ test('createRoom when no form errors', () => {
 
     InertiaFormMock.hasErrors.mockReturnValueOnce(false)
 
-    const wrapper = mount(CreateRoomForm, {localVue})
+    const wrapper = mount(CreateRoomForm, {
+        localVue,
+        propsData: {
+            rooms: [{
+                id: 1,
+                name: "name",
+                building: "building",
+                number: "1",
+                floor: 1,
+                status: "available"
+            }],
+            
+            availableRoomTypes: ['test']
+        }
+    })
 
     wrapper.vm.createRoom()
 
@@ -61,7 +89,21 @@ test('createRoom when form errors', () => {
     InertiaFormMock.hasErrors.mockReturnValueOnce(true)
     InertiaFormMock.error.mockReturnValueOnce("Some name error")
 
-    const wrapper = mount(CreateRoomForm, {localVue})
+    const wrapper = mount(CreateRoomForm, {
+        localVue,
+        propsData: {
+            rooms: [{
+                id: 1,
+                name: "name",
+                building: "building",
+                number: "1",
+                floor: 1,
+                status: "available"
+            }],
+            
+            availableRoomTypes: ['test']
+        }
+    })
 
     wrapper.vm.createRoom()
 
@@ -71,7 +113,21 @@ test('createRoom when form errors', () => {
 
 test('toggle correctly toggles the boolean', () => {
 
-    const wrapper = mount(CreateRoomForm, {localVue})
+    const wrapper = mount(CreateRoomForm, {
+        localVue,
+        propsData: {
+            rooms: [{
+                id: 1,
+                name: "name",
+                building: "building",
+                number: "1",
+                floor: 1,
+                status: "available"
+            }],
+            
+            availableRoomTypes: ['test']
+        }
+    })
 
     let preToggleBool = wrapper.vm.showAvailabilities
 

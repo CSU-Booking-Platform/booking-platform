@@ -1,32 +1,30 @@
 <template>
     <app-layout>
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Rooms page
-            </h2>
-        </template>
-            <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
+        <div class="flex flex-col lg:flex-row md:mx-auto md:w-11/12 ">
+            <div class="m-4 w-1/4 pt-12 pb-48">
                 <create-room-form :available-room-types="availableRoomTypes" />
-                <div v-if="rooms.length > 0">
-                    <jet-section-border />
-                    <rooms-list :rooms="rooms"  :available-room-types="availableRoomTypes"  />
+            </div>
+            <div v-if="rooms.length > 0" class="m-4 w-3/4">
+                <div class="py-12">
+                    <ViewActiveRoomsTable :rooms="rooms" :availableRoomTypes="availableRoomTypes" :roles="roles"/>
                 </div>
             </div>
+        </div>
     </app-layout>
 </template>
 
 <script>
 import JetSectionBorder from '@src/Jetstream/SectionBorder'
 import CreateRoomForm from './CreateRoomForm';
-import RoomsList from './RoomsList';
 import AppLayout from '@src/Layouts/AppLayout';
+import ViewActiveRoomsTable from '@src/Components/Tables/ViewActiveRoomsTable';
 
 export default {
     components: {
         CreateRoomForm,
         AppLayout,
-        RoomsList,
         JetSectionBorder,
+        ViewActiveRoomsTable,
     },
     props: {
         rooms: {

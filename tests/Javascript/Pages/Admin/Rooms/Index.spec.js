@@ -23,6 +23,11 @@ beforeEach(() => {
 });
 
 test('should mount without crashing', () => {
-    const wrapper = shallowMount(Index, {localVue})
+    const wrapper = shallowMount(Index, {
+        localVue,
+        propsData: {
+            availableRoomTypes: ['test']
+        }
+    })
 })
 

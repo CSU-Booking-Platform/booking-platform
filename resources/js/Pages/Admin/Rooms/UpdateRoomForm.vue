@@ -63,7 +63,7 @@
                     <select v-model="form.status" class="mt-1 block w-full" name="status" id="statusUpdate">
                         <option :value="form.status" selected="selected">{{form.status}}</option>
                         <option v-if="form.status != 'available'" :value="'available'">available</option>
-                        <option v-else :value="'unavailable'">anavailable</option>
+                        <option v-else :value="'unavailable'">unavailable</option>
                     </select>
                     <jet-input-error
                         :message="form.error('status')"

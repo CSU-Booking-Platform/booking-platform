@@ -99,21 +99,20 @@ class ReservationsController extends Controller
 
     $date_format = "F j, Y, g:i a";
 
-    $booking = $reservation->bookingRequest()->first();
-    $booking->fill($request->except(['reference']))->save();
-
-    if($booking->wasChanged())
-    {
-      $log = '[' . date($date_format) . ']' . ' - Updated booking request location and/or date';
-      BookingRequestUpdated::dispatch($booking, $log);
-    }
-
     //for now only one
 //    $reservation = $booking->reservations()->first();
     $reservation->room_id = $request->room_id;
     $reservation->start_time = $request->recurrences[0]['start_time'];
     $reservation->end_time = $request->recurrences[0]['end_time'];
     $reservation->save();
+
+    $booking = $reservation->bookingRequest()->first();
+
+    if($reservation->wasChanged())
+    {
+      $log = '[' . date($date_format) . ']' . ' - Updated booking request location and/or date';
+      BookingRequestUpdated::dispatch($booking, $log);
+    }
 
     return back();
   }

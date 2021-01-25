@@ -1,7 +1,7 @@
 <template>
     <app-layout>
         <div class="flex flex-col lg:flex-row md:mx-auto md:w-11/12 ">
-            <div class="m-4 w-1/4 pt-12">
+            <div class="m-4 w-1/4 pt-12 pb-48">
                 <create-room-form :available-room-types="availableRoomTypes" />
             </div>
             <div v-if="rooms.length > 0" class="m-4 w-3/4">

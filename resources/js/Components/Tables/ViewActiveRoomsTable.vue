@@ -168,7 +168,7 @@ export default {
         JetInput,
         JetLabel,
         JetInputError,
-    UpdateRoomForm,  
+        UpdateRoomForm,  
   },
   data() {
       return {

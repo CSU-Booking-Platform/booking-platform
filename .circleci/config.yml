@@ -79,6 +79,11 @@ jobs:
     steps:
       - attach_workspace:
           at: .
+      - run:
+          name: "Prepare Environment"
+          command: |
+            sudo apt update
+            echo -e "xdebug.mode=coverage" | sudo tee /usr/local/etc/php/php.ini > /dev/null
       - browser-tools/install-chrome
       - run:
           name: install dockerize
@@ -108,17 +113,17 @@ jobs:
       - store_test_results:
           path: reports
       - store_artifacts:
+          path: reports
+      - store_artifacts:
           path: tests/Browser/screnshots
       - store_artifacts:
           path: tests/Browser/console
-      - store_artifacts:
-          path: reports
       - store_artifacts:
           path: storage/logs/laravel.log
       - persist_to_workspace:
           root: .
           paths:
-            - reports/php
+            - reports
 
   test-js:
     executor: ci
@@ -135,7 +140,7 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-            - reports/js
+            - reports
 
   sonar:
     executor: ci
@@ -153,12 +158,6 @@ jobs:
 
     steps:
       - checkout
-
-      - run:
-          name: "Prepare Environment"
-          command: |
-            sudo apt update
-            echo -e "xdebug.mode=coverage" | sudo tee /usr/local/etc/php/php.ini > /dev/null
       - run:
           name: "Create Environment file"
           command: |

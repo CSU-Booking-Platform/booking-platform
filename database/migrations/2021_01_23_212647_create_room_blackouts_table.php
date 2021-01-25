@@ -21,8 +21,8 @@ class CreateRoomBlackoutsTable extends Migration
         });
 		
 		Schema::create('blackout_room', function (Blueprint $table) {
-			$table->foreignId('room_id')->constrained();
-			$table->foreignId('blackout_id')->constrained();
+			$table->foreignId('room_id')->constrained()->cascadeOnDelete();
+			$table->foreignId('blackout_id')->constrained()->cascadeOnDelete();
 
         });
     }
@@ -34,7 +34,7 @@ class CreateRoomBlackoutsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('blackouts') CASCADE;
-		Schema::dropIfExists('blackout_room') CASCADE;
+        Schema::dropIfExists('blackouts');
+		Schema::dropIfExists('blackout_room');
     }
 }

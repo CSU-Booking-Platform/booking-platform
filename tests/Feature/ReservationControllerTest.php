@@ -67,6 +67,56 @@ class ReservationControllerTest extends TestCase
     ]);
   }
 
+  public function test_deleting_reservations()
+  {
+    $user = User::factory()->create();
+    $room = Room::factory()->create();
+
+    $booking_request = $this->createBookingRequest( );
+    $reservation = $this->createReservation($room,$booking_request);
+    $this->createReservationAvailabilities($reservation->start_time, $room);
+    $this->assertDatabaseCount('booking_requests', 1);
+    $this->assertDatabaseCount('reservations', 1);
+
+    $response = $this->actingAs($user)->delete('/reservation/'.$reservation->id );
+    $response->assertStatus(302);
+    $this->assertDatabaseCount('booking_requests', 0);
+    $this->assertDatabaseCount('reservations', 0);
+
+  }
+  public function test_update_reservations()
+  {
+    $user = User::factory()->create();
+    $room = Room::factory()->create();
+
+    $booking_request = $this->createBookingRequest( );
+    $reservation = $this->createReservation($room,$booking_request,);
+    $this->createReservationAvailabilities($reservation->start_time, $room);
+    $this->assertDatabaseCount('booking_requests', 1);
+    $this->assertDatabaseCount('reservations', 1);
+    $reservationNew = $reservation->replicate();
+    $reservationNew->start_time = Carbon::parse($reservation->start_time)->addMinute()->format('Y-m-d\TH:i');
+    $reservationNew->end_time = Carbon::parse($reservation->end_time)->addMinute()->format('Y-m-d\TH:i');
+    $response = $this->actingAs($user)->put('/reservation/'.$reservation->id, [
+      'room_id' => $reservationNew->room_id,
+      'recurrences'=>[
+        [
+          'start_time' => $reservationNew->start_time->format('Y-m-d\TH:i:00'),
+          'end_time' => $reservationNew->end_time->format('Y-m-d\TH:i:00'),
+        ]
+      ],
+    ]);
+
+    $response->assertStatus(302);
+    $this->assertDatabaseCount('booking_requests', 1);
+    $this->assertDatabaseCount('reservations', 1);
+    $this->assertDatabaseHas('reservations', [
+      'room_id' => $room->id,
+      'start_time' => $reservationNew->start_time->format('Y-m-d H:i:00'),
+      'end_time' => $reservationNew->end_time->format('Y-m-d H:i:00'),
+    ]);
+  }
+
   public function test_storing_multiple_reservations_fail_if_one_is_denied()
   {
     $user = User::factory()->create();

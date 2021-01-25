@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\BookingRequestUpdated;
 use App\Models\BookingRequest;
 use App\Models\Reservation;
 use App\Models\Room;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ReservationsController extends Controller
 {
@@ -105,31 +107,63 @@ class ReservationsController extends Controller
    *
    * @param \Illuminate\Http\Request $request
    * @param Reservation $reservation
-   * @return \Illuminate\Http\Response
+   * @return RedirectResponse
    */
   public function update(Request $request, Reservation $reservation)
   {
-    $request->validateWithBag('updateBookingRequest', array(
-      'room_id' => ['bail', 'required', 'integer', 'exists:rooms,id'],
-      'recurrences' => ['bail', 'required'],
-      'recurrences.*.start_time' => ['bail', 'required', 'date'],
-      'recurrences.*.end_time' => ['bail', 'required', 'date'],
-      'recurrences.*' => ['array', 'size:2',
-        function ($attribute, $value, $fail) use ($request) {
-
-          $room = Room::query()->findOrFail($request->room_id);
-          $room->verifyDatesAreWithinRoomRestrictionsValidation($value->start_time, $fail);
-
-        },
-      ],
+    $request->validateWithBag('createReservationsRequest', array(
+      'room_id' => ['required', 'integer', 'exists:rooms,id'],
+      'recurrences' => ['required'],
+      'recurrences.*.start_time' => ['required', 'date'],
+      'recurrences.*.end_time' => ['required', 'date'],
     ));
 
-    $room = Room::query()->findOrFail($request->room_id);
-    $room->verifyDatetimesAreWithinAvailabilities($request->get('start_time'), $request->get('end_time'));
-    $room->verifyDatesAreWithinRoomRestrictions($request->get('start_time'), $request->get('end_time'));
+    $request->validateWithBag('createReservationsRequest', array(
+      'recurrences.*' => ['array', 'size:2',
+        function ($attribute, $value, $fail) use ($request){
+          $room = Room::query()->findOrFail($request->room_id);
+          $room->verifyDatesAreWithinRoomRestrictionsValidation($value['start_time'], $fail);
+          $room->verifyDatetimesAreWithinAvailabilitiesValidation($value['start_time'], $value['end_time'], $fail);
+        }
+      ]
+    ));
+
+    $date_format = "F j, Y, g:i a";
+
+    $booking = $reservation->bookingRequest()->first();
+    $booking->fill($request->except(['reference']))->save();
+
+    if($booking->wasChanged())
+    {
+      $log = '[' . date($date_format) . ']' . ' - Updated booking request location and/or date';
+      BookingRequestUpdated::dispatch($booking, $log);
+    }
+
+    if($request->file())
+    {
+      $referenceFolder = $request->room_id.'_'.strtotime($request->start_time).'_reference/';
+
+      if(isset($booking->reference["path"]))
+      {
+        $referenceFolder = $booking->reference["path"];
+      }
+      foreach($request->reference as $file)
+      {
+        $name = $file->getClientOriginalName();
+        Storage::disk('public')->putFileAs($referenceFolder, $file, $name);
+      }
+      $booking->reference = ['path' => $referenceFolder];
+      $booking->save();
+
+      $log = '[' . date($date_format) . ']' . ' - Updated booking request reference file(s)';
+      BookingRequestUpdated::dispatch($booking, $log);
+    }
+
+    //for now only one
+//    $reservation = $booking->reservations()->first();
     $reservation->room_id = $request->room_id;
-    $reservation->start_time = $request->start_time;
-    $reservation->end_time = $request->end_time;
+    $reservation->start_time = $request->recurrences[0]['start_time'];
+    $reservation->end_time = $request->recurrences[0]['end_time'];
     $reservation->save();
 
     return back();

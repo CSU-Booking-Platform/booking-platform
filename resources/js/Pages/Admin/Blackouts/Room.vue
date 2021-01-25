@@ -6,11 +6,11 @@
             </h2>
         </template>
         <div class="py-2">
-            <div class="flex flex-col lg:flex-row md:mx-auto md:w-2/3 my-3">
+            <div class="flex flex-col lg:flex-row md:mx-auto md:w-2/3 my-2">
                 <div>
                     <create-blackout-form :room='room'/>
                 </div>
-                <div v-if="blackouts.length > 0">
+                <div v-if="blackouts.length > 0" class = "w-full">
                     <jet-section-border/>
                     <blackout-list :blackouts="blackouts" class="w-full"/>
                 </div>

@@ -1,41 +1,23 @@
 <template>
     <div>
         <!-- Manage This Room's Blackouts -->
-        <div class="mt-10 sm:mt-0">
-            <jet-action-section>
-                <!-- Blackouts List -->
-                <template #content>
-                    <div class="space-y-6">
-                        <div v-for="blackout in blackouts" :key="blackout.id" class="flex items-center justify-between">
-                            <div class="flex items-center col-md-auto">
-                                <div class="md-6">
-                                    Name: {{ blackout.name}}
-                                </div>
-                                <div class="">
-                                    Start: {{ blackout.start_time | legible_date}}
-                                </div>
-                                <div class="">
-                                   End: {{ blackout.end_time | legible_date}}
-                                </div>
-                            </div>
+    <blackouts-table :blackouts="blackouts">
+      <template v-slot:blackout="{ blackout }">
+        <div class="flex items-center">
 
-                            <div class="flex items-center">
-                                <button class="cursor-pointer ml-4 text-sm focus:outline-none"
-                                        @click="openUpdateModal(blackout)">
-                                    Edit
-                                </button>
+          <button class="cursor-pointer ml-6 text-sm focus:outline-none"
+                  @click="openUpdateModal(blackout)">
+            Edit
+          </button>
 
-                                <button class="cursor-pointer ml-4 text-sm text-red-500 focus:outline-none"
-                                        @click="blackoutBeingDeleted = blackout">
-                                    Delete
-                                </button>
+          <button class="cursor-pointer ml-6 text-sm text-red-500 focus:outline-none"
+                  @click="blackoutBeingDeleted = blackout">
+            Delete
+          </button>
 
-                            </div>
-                        </div>
-                    </div>
-                </template>
-            </jet-action-section>
         </div>
+      </template>
+    </blackouts-table>
 
         <!--Update Blackout Form -->
         <jet-confirmation-modal :show="blackoutBeingUpdated != null" @close="blackoutBeingUpdated = null">
@@ -109,6 +91,7 @@ import JetInput from "@src/Jetstream/Input"
 import JetInputError from "@src/Jetstream/InputError"
 import JetLabel from "@src/Jetstream/Label"
 import Label from "@src/Jetstream/Label";
+import BlackoutsTable from "@src/Components/Tables/BlackoutsTable"
 
 export default {
     props: {
@@ -132,7 +115,8 @@ export default {
         JetModal,
         JetInput,
         JetLabel,
-        JetInputError
+        JetInputError,
+        BlackoutsTable
     },
 
     data() {
@@ -151,12 +135,6 @@ export default {
         }
     },
 
-    filters: {
-
-        legible_date: function (date) {
-            return moment(date).format("LLL");
-        },
-    },
 
     methods: {
         deleteBlackout() {

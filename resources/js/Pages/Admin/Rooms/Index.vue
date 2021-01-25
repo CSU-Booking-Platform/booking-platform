@@ -18,7 +18,6 @@ import JetSectionBorder from '@src/Jetstream/SectionBorder'
 import CreateRoomForm from './CreateRoomForm';
 import RoomsList from './RoomsList';
 import AppLayout from '@src/Layouts/AppLayout';
-import XSection from '@src/Components/XSection';
 import ViewActiveRoomsTable from '@src/Components/Tables/ViewActiveRoomsTable';
 
 export default {

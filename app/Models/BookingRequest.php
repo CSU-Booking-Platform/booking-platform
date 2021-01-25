@@ -17,6 +17,7 @@ class BookingRequest extends Model
         'end_time',
         'status',
         'reference',
+        'log',
     ];
 
     /**
@@ -27,7 +28,8 @@ class BookingRequest extends Model
     protected $casts = [
         'start_time' => 'datetime',
         'end_time' => 'datetime',
-        'reference' => 'array'
+        'reference' => 'array',
+        'log' => 'array',
     ];
 
     /**

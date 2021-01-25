@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSettingsTable extends Migration
+class AddLogToBookingRequestsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreateSettingsTable extends Migration
      */
     public function up()
     {
-        Schema::create('settings', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('slug');
-            $table->jsonb('data')->nullable();
-            $table->timestamps();
+        Schema::table('booking_requests', function (Blueprint $table) {
+            $table->json('log')->nullable();
         });
     }
 
@@ -28,6 +25,10 @@ class CreateSettingsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('settings');
+        Schema::table('booking_requests', function (Blueprint $table) {
+            $table->dropColumn(
+                ['log'], 
+            );
+        });
     }
 }

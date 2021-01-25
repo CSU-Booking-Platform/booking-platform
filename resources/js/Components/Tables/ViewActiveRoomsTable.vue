@@ -34,7 +34,7 @@
             <td class="text-center lt-grey p-3">
               <button
                     class="h-5 m-2 text-red-500 bg-lt-gray"
-                    @click="roomBeingUpdated = room"
+                    @click="roomBeingDeleted = room"
                   >Delete
               </button>
             </td>
@@ -54,6 +54,26 @@
         :available-room-types="availableRoomTypes" 
         @close="roomBeingUpdated = null">
     </update-room-form>
+
+    <jet-confirmation-modal
+      :show="roomBeingDeleted"
+      @close="roomBeingDeleted = null"
+    >
+      <template #title>Delete Room</template>
+
+      <template #content>Are you sure you would like to delete this room?</template>
+
+      <template #footer>
+        <jet-secondary-button @click.native="roomBeingDeleted = null">Nevermind</jet-secondary-button>
+
+        <jet-danger-button
+          class="ml-2"
+          @click.native="deleteRoom"
+          :class="{ 'opacity-25': deleteRoomForm.processing }"
+          :disabled="deleteRoomForm.processing"
+        >Delete</jet-danger-button>
+      </template>
+    </jet-confirmation-modal>
 
     <jet-confirmation-modal :show="roomRestBeingUpdated != null" @close="roomRestBeingUpdated = null">
       <template #title>
@@ -115,10 +135,18 @@ import Label from "@src/Jetstream/Label";
 export default {
   name: "RoomTable",
   props: {
+
     rooms: {
       type: Array,
       default: [],
       required: true
+    },
+
+    roles: {
+      type: Array,
+      default: function () {
+          return []
+      },
     },
 
     availableRoomTypes: {
@@ -144,9 +172,17 @@ export default {
   },
   data() {
       return {
+        deleteRoomForm: this.$inertia.form(),
         roomBeingUpdated: null,
-        filter: '',
+        roomBeingDeleted: null,
         roomRestBeingUpdated: null,
+        filter: '',
+        updateRoomRestForm: this.$inertia.form({
+            restrictions: [],
+        }, {
+            bag: 'updateRoomRestriction',
+            resetOnSuccess: true,
+        }),
       }
   },
 

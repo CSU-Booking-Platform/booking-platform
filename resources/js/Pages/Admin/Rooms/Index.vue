@@ -1,12 +1,12 @@
 <template>
     <app-layout>
-        <div class="flex flex-col lg:flex-row md:mx-auto md:w-2/3 my-3">
-            <div class="m-4 w-1/3">
+        <div class="flex flex-col lg:flex-row md:mx-auto md:w-11/12 ">
+            <div class="m-4 w-1/4 pt-12">
                 <create-room-form :available-room-types="availableRoomTypes" />
             </div>
-            <div v-if="rooms.length > 0" class="m-4 w-2/3">
+            <div v-if="rooms.length > 0" class="m-4 w-3/4">
                 <div class="py-12">
-                    <ViewActiveRoomsTable :rooms="rooms" :availableRoomTypes="availableRoomTypes"/>
+                    <ViewActiveRoomsTable :rooms="rooms" :availableRoomTypes="availableRoomTypes" :roles="roles"/>
                 </div>
             </div>
         </div>

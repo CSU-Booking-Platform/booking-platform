@@ -142,6 +142,52 @@ class ReservationControllerTest extends TestCase
 
   }
 
+  public function test_storing_too_early()
+  {
+    $user = User::factory()->create();
+    $room = Room::factory()->create();
+    $this->assertDatabaseCount('booking_requests', 0);
+    $this->assertDatabaseCount('reservations', 0);
+    $booking_request = $this->createBookingRequest( false);
+    $reservation = $this->createReservation($room,$booking_request, false);
+    $this->createReservationAvailabilities($reservation->start_time, $room);
+    Carbon::setTestNow(now()->subDays($room->max_days_advance + 1));
+
+    $response = $this->actingAs($user)->post('/reservation' , [
+      'room_id' => $room->id,
+      'recurrences' => [
+        ['start_time' => $reservation->start_time->format('Y-m-d\TH:i:00'), 'end_time' => $reservation->end_time->format('Y-m-d\TH:i:00')],
+      ]
+    ]);
+
+    $response->assertStatus(302);
+    $this->assertDatabaseCount('booking_requests', 0);
+    $this->assertDatabaseCount('reservations', 0);
+  }
+
+  public function test_storing_too_late()
+  {
+    $user = User::factory()->create();
+    $room = Room::factory()->create(['min_days_advance' => 10, 'max_days_advance' => 100, ]);
+    $this->assertDatabaseCount('booking_requests', 0);
+    $this->assertDatabaseCount('reservations', 0);
+    $booking_request = $this->createBookingRequest( false);
+    $reservation = $this->createReservation($room,$booking_request, false);
+    $this->createReservationAvailabilities($reservation->start_time, $room);
+    Carbon::setTestNow(Carbon::parse($reservation->start_time)->subDays( 1));
+
+    $response = $this->actingAs($user)->post('/reservation' , [
+      'room_id' => $room->id,
+      'recurrences' => [
+        ['start_time' => $reservation->start_time->format('Y-m-d\TH:i:00'), 'end_time' => $reservation->end_time->format('Y-m-d\TH:i:00')],
+      ]
+    ]);
+
+    $response->assertStatus(302);
+    $this->assertDatabaseCount('booking_requests', 0);
+    $this->assertDatabaseCount('reservations', 0);
+  }
+
   public function test_relations_set(){
     $room = Room::factory()->create();
     $booking_request = $this->createBookingRequest();

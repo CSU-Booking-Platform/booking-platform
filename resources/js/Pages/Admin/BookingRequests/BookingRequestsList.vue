@@ -182,13 +182,10 @@ export default {
   },
   computed: {
         availableRooms: function () {
-            return this.rooms.filter(room => room.status == "available");
+          return this.rooms.filter(room => room.status == "available");
         },
         href () {
-          if(this.bookingReference)
-          {
-            return 'bookings/download/' + this.bookingReference;
-          }          
+          return 'bookings/download/' + this.bookingReference;          
         }
     }
 };

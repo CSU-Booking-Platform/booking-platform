@@ -34,7 +34,7 @@ class CreateRoomBlackoutsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('blackouts')->cascadeOnDelete();
-		Schema::dropIfExists('blackout_room')->cascadeOnDelete();
+        Schema::dropIfExists('blackouts')->cascade();
+		Schema::dropIfExists('blackout_room')->cascade();
     }
 }

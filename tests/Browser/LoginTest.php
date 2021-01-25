@@ -17,7 +17,7 @@ class LoginTest extends DuskTestCase
    *
    * @return void
    */
-  public function testExample()
+  public function testWhenLoginWithCorrectPassword()
   {
     User::factory()->create([
       'email' => 'admin@example.com'

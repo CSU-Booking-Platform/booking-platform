@@ -108,13 +108,17 @@ jobs:
       - store_test_results:
           path: reports
       - store_artifacts:
+          path: tests/Browser/screnshots
+      - store_artifacts:
+          path: tests/Browser/console
+      - store_artifacts:
           path: reports
       - store_artifacts:
           path: storage/logs/laravel.log
       - persist_to_workspace:
           root: .
           paths:
-            - .
+            - reports/php
 
   test-js:
     executor: ci
@@ -131,7 +135,7 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-            - .
+            - reports/js
 
   sonar:
     executor: ci

@@ -129,7 +129,7 @@ export default {
                     _method: 'PUT'
                 },
                 {
-                    bag: "updateBookingRequest"
+                    bag: "updateBooking_request"
                 }
             ),
             
@@ -138,8 +138,8 @@ export default {
 
     methods: {
         closeModal() {
-            if (this.$page && this.$page.errorBags.updateBookingRequest) {
-                delete this.$page.errorBags.updateBookingRequest;
+            if (this.$page && this.$page.errorBags.updateBooking_request) {
+                delete this.$page.errorBags.updateBooking_request;
             }
             this.$emit("close");
         },

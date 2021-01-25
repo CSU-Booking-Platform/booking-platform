@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Availability;
 use App\Models\BookingRequest;
 use App\Models\Room;
+use App\Events\BookingRequestUpdated;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -67,7 +68,7 @@ class BookingRequestController extends Controller
         $room->verifyDatetimesAreWithinAvailabilities($request->get('start_time'), $request->get('end_time'));
         $room->verifyDatesAreWithinRoomRestrictions($request->get('start_time'), $request->get('end_time'));
 
-        BookingRequest::create([
+        $booking = BookingRequest::create([
             'room_id' => $room->id,
             'user_id' => $request->user()->id,
             'start_time' => $request->start_time,
@@ -75,6 +76,9 @@ class BookingRequestController extends Controller
             'status' => "review",
             'reference' => ["path" => $referenceFolder]
         ]);
+
+        $log = '[' . date("F j, Y, g:i a") . ']' . ' - Created booking request';
+        BookingRequestUpdated::dispatch($booking, $log);
 
         return back();
     }
@@ -109,7 +113,9 @@ class BookingRequestController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, BookingRequest $booking)
-    {
+    {   
+        $date_format = "F j, Y, g:i a";
+
         $request->validateWithBag('updateBookingRequest', array(
             'room_id' => ['required', 'integer'],
             'start_time' => ['required', 'string', 'max:255'],
@@ -122,6 +128,12 @@ class BookingRequestController extends Controller
 
         $booking->fill($request->except(['reference']))->save();
 
+        if($booking->wasChanged())
+        {
+            $log = '[' . date($date_format) . ']' . ' - Updated booking request location and/or date';
+            BookingRequestUpdated::dispatch($booking, $log);
+        }
+        
         if($request->file())
         {
             $referenceFolder = $request->room_id.'_'.strtotime($request->start_time).'_reference/';
@@ -137,8 +149,11 @@ class BookingRequestController extends Controller
             }
             $booking->reference = ['path' => $referenceFolder];
             $booking->save();
+            
+            $log = '[' . date($date_format) . ']' . ' - Updated booking request reference file(s)';
+            BookingRequestUpdated::dispatch($booking, $log);
         }
-
+  
         return back();
     }
 

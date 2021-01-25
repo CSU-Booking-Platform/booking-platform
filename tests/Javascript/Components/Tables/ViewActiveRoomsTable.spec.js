@@ -185,7 +185,7 @@ test('should filter properly', () => {
 
   wrapper.setData({ filter: 'thisfiltershouldnotwork' })
   expect(wrapper.vm.filter).toBe('thisfiltershouldnotwork')
-  expect(wrapper.vm.filteredRooms.length).toBe(0)
+  expect(wrapper.vm.filterRooms.length).toBe(0)
 
   
 

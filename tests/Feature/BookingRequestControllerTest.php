@@ -330,16 +330,25 @@ class BookingRequestControllerTest extends TestCase
 
         $room = Room::factory()->create(['status'=>'available']);
         $user = User::factory()->create();
-        $booking_request = $this->createBookingRequest($room, false);
+        $booking_request = $this->createBookingRequest(false);
+        $reservation = $this->createReservation($room, $booking_request, false);
 
-        $this->createBookingRequestAvailabilities($booking_request, $room);
+        $this->createReservationAvailabilities($reservation->start_time, $room);
 
-        $this->assertDatabaseMissing('booking_requests', ['room_id' => $booking_request->room_id, 'start_time' => $booking_request->start_time, 'end_time' => $booking_request->end_time]);
+        $this->assertDatabaseMissing('booking_requests', ['room_id' => $room->id, 'start_time' => $reservation->start_time, 'end_time' => $reservation->end_time]);
 
-        $response = $this->actingAs($user)->post('/bookings', ['room_id' => $booking_request->room_id, 'start_time' => $booking_request->start_time->toDateTimeString(), 'end_time' => $booking_request->end_time->toDateTimeString()]);
+        $response = $this->actingAs($user)->post('/bookings', [
+          'room_id' => $room->id,
+          'start_time' => $reservation->start_time->toDateTimeString(),
+          'end_time' => $reservation->end_time->toDateTimeString()
+        ]);
 
         $response->assertStatus(302);
-        $this->assertDatabaseHas('booking_requests', ['room_id' => $booking_request->room_id, 'start_time' => $booking_request->start_time, 'end_time' => $booking_request->end_time]);
+        $this->assertDatabaseHas('reservations', [
+          'room_id' => $room->id,
+          'start_time' => Carbon::parse($reservation->start_time)->toDateTimeString(),
+          'end_time' => Carbon::parse($reservation->end_time)->toDateTimeString(),
+        ]);
 
         Event::assertDispatched(BookingRequestUpdated::class);
     }

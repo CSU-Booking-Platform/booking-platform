@@ -113,8 +113,6 @@ import Label from "@src/Jetstream/Label";
 
 const moment= require('moment') 
 
-const moment= require('moment') 
-
 export default {
   props: {
     booking_requests: {
@@ -153,10 +151,7 @@ export default {
     return {
       deleteBookingRequestForm: this.$inertia.form(),
       bookingReference: '',
-<<<<<<< HEAD
       bookingRequestToTrack: null,
-=======
->>>>>>> 768732f... feat(#253): Download booking request reference files
       bookingRequestBeingUpdated: null,
       bookingRequestBeingDeleted: null,
       

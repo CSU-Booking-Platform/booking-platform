@@ -1,17 +1,13 @@
 <template>
     <app-layout>
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Rooms page
-            </h2>
-        </template>
-            <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
+        <div class="flex flex-col lg:flex-row md:mx-auto md:w-2/3 my-3">
+            <div class="m-4 w-1/3">
                 <create-room-form :available-room-types="availableRoomTypes" />
-                <div v-if="rooms.length > 0">
-                    <jet-section-border />
-                    <rooms-list :rooms="rooms"  :available-room-types="availableRoomTypes"  />
-                </div>
             </div>
+            <div v-if="rooms.length > 0" class="m-4 w-2/3">
+                <rooms-list :rooms="rooms"  :available-room-types="availableRoomTypes"  />
+            </div>
+        </div>
     </app-layout>
 </template>
 
@@ -20,6 +16,7 @@ import JetSectionBorder from '@src/Jetstream/SectionBorder'
 import CreateRoomForm from './CreateRoomForm';
 import RoomsList from './RoomsList';
 import AppLayout from '@src/Layouts/AppLayout';
+import XSection from '@src/Components/XSection';
 
 export default {
     components: {

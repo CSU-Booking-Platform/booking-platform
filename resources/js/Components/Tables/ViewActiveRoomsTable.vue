@@ -1,12 +1,17 @@
 <template>
   <div class="table-container">
-     
+    <div class="table-filter-container pb-10">
+      <input type="text"
+          placeholder="Search Rooms Table"
+          v-model="filter" 
+          />
+    </div>
     <table class="table-auto responsive-spaced">
       <caption></caption>
       <thead>
         <tr>
           <th class="lt-grey p-3" id="id_room_id">Room ID</th>
-          <th class="lt-grey p-3" id="id_room_type">Room Type</th>
+          <th class="lt-grey p-3" id="id_room_type">Room Name</th>
           <th class="lt-grey p-3" id="id_room_building">Building</th>
           <th class="lt-grey p-3" id="id_room_number">Number</th>
           <th class="lt-grey p-3" id="id_room_floor">Floor</th>
@@ -17,7 +22,7 @@
         </tr>
       </thead>
       <tbody>
-         <tr v-for="room in filteredRooms" :key="room.id">
+         <tr v-for="room in filterRooms" :key="room.id">
             <td class="text-center lt-grey p-3">{{room.id}}</td>
             <td class="text-center lt-grey p-3">{{room.name}}</td>
             <td class="text-center lt-grey p-3">{{room.building}}</td>
@@ -224,25 +229,24 @@ export default {
   },
 
   computed: {
-    filteredRooms() {
+    filterRooms() {
         return this.rooms.filter(room => {
-
-            
+          
             const building = room.building.toLowerCase();
             const status = room.status.toLowerCase();
-            const type = room.name.toLowerCase();
+            const name = room.name.toLowerCase();
             const floor = room.floor.toString();
             const number = room.number.toLowerCase();
             const id = room.id.toString();
 
-            const searchTerm = this.filter.toLowerCase();
+            const search = this.filter.toLowerCase();
 
-            return building.includes(searchTerm) || 
-                    floor.includes(searchTerm) || 
-                    type.includes(searchTerm) ||
-                    status.includes(searchTerm) ||
-                    number.includes(searchTerm) ||
-                    id.includes(searchTerm);
+            return building.includes(search) || 
+                    floor.includes(search) || 
+                    name.includes(search) ||
+                    status.includes(search) ||
+                    number.includes(search) ||
+                    id.includes(search);
 
         });
     }

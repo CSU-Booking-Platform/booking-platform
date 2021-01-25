@@ -16,7 +16,6 @@
 <script>
 import JetSectionBorder from '@src/Jetstream/SectionBorder'
 import CreateRoomForm from './CreateRoomForm';
-import RoomsList from './RoomsList';
 import AppLayout from '@src/Layouts/AppLayout';
 import ViewActiveRoomsTable from '@src/Components/Tables/ViewActiveRoomsTable';
 
@@ -24,7 +23,6 @@ export default {
     components: {
         CreateRoomForm,
         AppLayout,
-        RoomsList,
         JetSectionBorder,
         ViewActiveRoomsTable,
     },

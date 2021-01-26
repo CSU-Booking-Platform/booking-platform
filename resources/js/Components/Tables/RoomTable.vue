@@ -28,19 +28,44 @@
       <tbody>
          <tr v-for="room in filteredRooms" :key="room.id">
             <td class="text-center lt-grey">{{room.id}}</td>
-            <td class="text-center lt-grey">{{room.name}}</td>
+            <td class="text-center lt-grey">{{room.room_type}}</td>
             <td class="text-center lt-grey">{{room.building}}</td>
             <td class="text-center lt-grey">{{room.number}}</td>
             <td class="text-center lt-grey">{{room.floor}}</td>
             <td class="text-center lt-grey">{{room.status}}</td>
             <td class="text-center lt-grey">Reference</td>
-            <td class="text-center lt-grey">
-              <button
-                    class="h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800"
-                    @click="roomBeingBooked = room"
-                  >Book
-              </button>
-            </td>
+            <td class="lt-grey p-3">
+             <div class="text-md mx-2">
+               <jet-dropdown width="48">
+                 <template #trigger>
+                   <button
+                     class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out mx-auto"
+                   >
+                     <div class="text-3xl">. . .</div>
+                   </button>
+                 </template>
+
+                 <template #content>
+                   <div class="text-md mx-3">
+                     <button
+                       class="cursor-pointer text-sm text-blue-800 focus:outline-none"
+                       @click="roomBeingBooked = room"
+                     >
+                       Create Booking
+                     </button>
+                   </div>
+                   <div class="text-md mx-3">
+                     <button
+                       class="cursor-pointer text-sm text-blue-800 focus:outline-none"
+                       @click="roomBeingInspected = room"
+                     >
+                       View Details
+                     </button>
+                   </div>
+                 </template>
+               </jet-dropdown>
+             </div>
+           </td>
         </tr>
       </tbody>
     </table>
@@ -50,13 +75,19 @@
       @close="roomBeingBooked = null"
     ></CreateBookingRequestModal>
 
+    <RoomDetailedView
+      :room="roomBeingInspected"
+      @close="roomBeingInspected = null"
+    ></RoomDetailedView>
+
       <jet-dialog-modal :show="showFilterModal">
           <template #title>
               Additional Room Filters
           </template>
 
           <template #content>
-              <div class="flex">
+            <div class="overflow-y-auto h-96">
+              <div class="flex flex-row">
                   <div class="flex flex-col flex-1 py-2 px-3">
                       <div><h2>Capacity Standing</h2></div>
                       <div class="flex flex-row">
@@ -126,7 +157,6 @@
                           >
                       </div>
                   </div>
-
               </div>
 
               <div class="flex flex-row">
@@ -201,13 +231,73 @@
                   </div>
               </div>
 
+              <div class="flex flex-row">
+                <div class="flex flex-col flex-1 py-2 px-3">
+                  <div class="flex flex-row">
+                    <div class="m-2">
+                      <h2>
+                        Availabilities
+                      </h2>
+                    </div>
+                    <div class="m-2">
+                      <jet-secondary-button @click.native="addDate">
+                        Add Date
+                      </jet-secondary-button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-row">
+                <div class="flex flex-col flex-1 py-2 px-3 m-2" v-if="missingDates">
+                <jet-input-error
+                  :message="'Please make sure all date fields are entered'"
+                  class="mt-2"
+                />
+              </div>
+              </div>
+              <div class="flex flex-wrap grid grid-cols-2 gap-4">
+                <div v-for="(dates, index) in jsonFilters.recurrences" :key="index">
+                  <div class="m-6">
+                    <jet-label for="start_time" value="Start Time" />
+                    <jet-input
+                      id="start_time"
+                      type="datetime-local"
+                      class="mt-1 block w-full"
+                      v-model="dates.start_time"
+                      autofocus
+                    />
+                  </div>
+
+                  <div class="m-6">
+                    <jet-label for="end_time" value="End Time" />
+                    <jet-input
+                      id="end_time"
+                      type="datetime-local"
+                      class="mt-1 block w-full"
+                      v-model="dates.end_time"
+                      autofocus
+                    />
+                  </div>
+
+                  <div class="m-6">
+                    <jet-secondary-button v-if="numDates > 0" @click.native="removeDate(index)">
+                      Remove
+                    </jet-secondary-button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
 
           </template>
 
           <template #footer>
-              <button id="toggleFilters" @click="advancedFilters()">
+              <jet-button
+                class="ml-2"
+                @click.native="advancedFilters()"
+              >
                   Filter
-              </button>
+              </jet-button>
               <jet-secondary-button @click.native="toggleAdvancedFilters">
                   Close
               </jet-secondary-button>
@@ -224,6 +314,12 @@ import JetSecondaryButton from "@src/Jetstream/SecondaryButton";
 import Label from "@src/Jetstream/Label";
 import JetInput from "@src/Jetstream/Input";
 import Input from "@src/Jetstream/Input";
+import JetDropdown from "@src/Jetstream/Dropdown";
+import JetDropdownLink from "@src/Jetstream/DropdownLink";
+import RoomDetailedView from "@src/Components/RoomDetailedView";
+import JetButton from "@src/Jetstream/Button";
+import JetLabel from "@src/Jetstream/Label";
+import JetInputError from "@src/Jetstream/InputError";
 
 export default {
   name: "RoomTable",
@@ -241,12 +337,19 @@ export default {
       JetDialogModal,
       JetSecondaryButton,
       Label,
-      JetInput
+      JetInput,
+      JetDropdown,
+      JetDropdownLink,
+      RoomDetailedView,
+      JetButton,
+      JetLabel,
+      JetInputError
   },
   data() {
       return {
           filter: '',
           roomBeingBooked: null,
+          roomBeingInspected: null,
           jsonFilters: {
               capacity_standing: null,
               capacity_sitting: null,
@@ -263,10 +366,10 @@ export default {
               a_v_permitted: false,
               ambiant_music: false,
               sale_for_profit: false,
-              fundraiser: false
-
+              fundraiser: false,
+              recurrences:[]
           },
-          showFilterModal: false
+        showFilterModal: false,
       }
   },
     computed: {
@@ -276,7 +379,7 @@ export default {
 
                 const building = room.building.toLowerCase();
                 const status = room.status.toLowerCase();
-                const type = room.name.toLowerCase();
+                const type = room.room_type.toLowerCase();
                 const floor = room.floor.toString();
                 const number = room.number.toLowerCase();
                 const id = room.id.toString();
@@ -300,15 +403,42 @@ export default {
                 }
             }
             return activeJsonFilters;
+        },
+        numDates: function() {
+          return this.jsonFilters.recurrences.length;
+        },
+        missingDates: function(){
+          if(this.numDates > 0){
+            for(let i = 0; i < this.jsonFilters.recurrences.length; i++){
+              console.log(this.jsonFilters.recurrences[i].start_time)
+              if(!this.jsonFilters.recurrences[i].start_time || !this.jsonFilters.recurrences[i].end_time) {
+                return true;
+              }
+            }
+            return false;
+          }else{
+            return false;
+          }
         }
     },
     methods: {
         advancedFilters(){
+          if(!this.missingDates) {
             this.$emit('filterRoomsJson', this.activeJsonFilters);
             this.toggleAdvancedFilters();
+          }
         },
         toggleAdvancedFilters(){
-            this.showFilterModal = !this.showFilterModal;
+          this.showFilterModal = !this.showFilterModal;
+        },
+        removeDate(pos) {
+          this.jsonFilters.recurrences.splice(pos,1)
+        },
+        addDate() {
+          this.jsonFilters.recurrences.push({
+            start_time: "",
+            end_time: "",
+          })
         }
     },
 

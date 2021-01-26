@@ -36,7 +36,8 @@ test('should mount without crashing', () => {
             building: "building",
             number: "1",
             floor: 1,
-            status: "available"
+            status: "available",
+            room_type: "Mezzanine"
         }]
     }
   })
@@ -58,7 +59,8 @@ test('should filter properly', () => {
             building: "building",
             number: "1",
             floor: 1,
-            status: "available"
+            status: "available",
+            room_type: "Mezzanine"
         }]
     }
   })
@@ -90,7 +92,8 @@ test('should show advanced filters popup', () => {
                 building: "building",
                 number: "1",
                 floor: 1,
-                status: "available"
+                status: "available",
+                room_type: "Mezzanine"
             }]
         }
     });
@@ -108,13 +111,42 @@ test('should compute only active jsonfilter fields to send in post request', () 
                 building: "building",
                 number: "1",
                 floor: 1,
-                status: "available"
+                status: "available",
+                room_type: "Mezzanine"
             }]
         }
     });
 
     wrapper.vm.jsonFilters.food = true;
-    expect(wrapper.vm.activeJsonFilters).toStrictEqual({"food": true});
+    expect(wrapper.vm.activeJsonFilters).toStrictEqual({"food": true, "recurrences": []});
+})
+
+test('should change missingDates when date is added or removed', () => {
+  const wrapper = shallowMount(RoomTable, {
+    localVue,
+    propsData: {
+      rooms: [{
+        id: 1,
+        name: "name",
+        building: "building",
+        number: "1",
+        floor: 1,
+        status: "available",
+        room_type: "Mezzanine"
+      }]
+    }
+  });
+
+  wrapper.vm.addDate();
+  expect(wrapper.vm.missingDates).toBe(true);
+
+  wrapper.vm.removeDate(wrapper.vm.jsonFilters.recurrences[0]);
+  wrapper.vm.jsonFilters.recurrences.push({
+    "start_time": "Now",
+    "end_time": "tomorrow"
+  });
+
+  expect(wrapper.vm.missingDates).toBe(false);
 })
 
 

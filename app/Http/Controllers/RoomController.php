@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Availability;
+use App\Models\Reservation;
 use App\Models\Role;
 use App\Models\Room;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+use \Illuminate\Database\Eloquent\Builder;
 
 class RoomController extends Controller
 {
@@ -273,11 +276,33 @@ class RoomController extends Controller
         'ambiant_music' => ['boolean'],
         'sale_for_profit' => ['boolean'],
         'fundraiser' => ['boolean'],
+        'recurrences' => ['array']
       ]);
+
+
+
 
       // If param value boolean, filter for boolean and if
       // numeric filter greater than integer in that column
       $query = Room::query();
+      if($request->recurrences){
+        foreach ($request->recurrences as $pair){
+          $query->whereHas('availabilities', function (Builder $builder) use ($pair)
+          {
+            $start_day = Carbon::parse($pair['start_time']);
+            $end_day = Carbon::parse($pair['end_time']);
+
+            $builder
+              ->where('weekday', $start_day->format('l'))
+              ->where('weekday', $end_day->format('l'))
+              ->where('opening_hours', '<', $start_day)
+              ->where('closing_hours', '>', $end_day);
+          }
+          );
+        }
+      }
+
+
       foreach ($request->toArray() as $key => $value){
         if(is_numeric($value)){
           $query->where('attributes->' . $key, '>=', $value);

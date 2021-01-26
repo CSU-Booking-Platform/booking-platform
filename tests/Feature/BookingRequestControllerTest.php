@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Availability;
+use App\Models\Role;
 use App\Models\Reservation;
 use Faker\Factory;
 use Tests\TestCase;
@@ -316,6 +317,76 @@ class BookingRequestControllerTest extends TestCase
         $this->assertDatabaseMissing('reservations', ['booking_request_id'=>$booking_request->id]);
     }
 
+  /**
+   * @test
+   */
+  public function user_can_create_booking_request_if_he_did_not_exceed_his_booking_request_per_period()
+  {
+    $user = User::factory()->create();
+    $role = Role::factory()->create();
+    $user->assignRole($role);
+
+    $room = Room::factory()->create(['status' => 'available']);
+
+    $this->assertDatabaseCount('booking_requests', 0);
+    $this->assertDatabaseCount('reservations', 0);
+
+    $date = $this->faker->dateTimeInInterval('+'.$room->min_days_advance.' days', '+'.($room->max_days_advance-$room->min_days_advance).' days');
+
+    $this->createReservationAvailabilities($date, $room);
+
+    $response = $this->actingAs($user)->post('/bookings', [
+      'room_id' => $room->id,
+      'start_time' => $date->format('Y-m-d\TH:i:00'),
+      'end_time' => Carbon::parse($date)->addMinutes(1)->toDateTime()->format('Y-m-d\TH:i:00')
+    ]);
+
+    $response->assertStatus(302);
+    $this->assertDatabaseCount('booking_requests', 1);
+
+    $this->assertDatabaseHas('booking_requests', ['user_id' => $user->id, ]);
+    $booking = BookingRequest::first()->id;
+    $this->assertDatabaseHas('reservations', [
+      'room_id' => $room->id,
+      'start_time' => $date->format('Y-m-d H:i:00'),
+      'end_time' => Carbon::parse($date)->addMinutes(1)->toDateTime()->format('Y-m-d H:i:00'),
+      'booking_request_id' => $booking
+    ]);
+  }
+
+  /**
+   * @test
+   */
+  public function user_cannot_create_booking_request_if_he_did_not_exceed_his_booking_request_per_period()
+  {
+    $user = User::factory()->create();
+    $role = Role::factory()->create();
+    $user->assignRole($role);
+
+    $room = Room::factory()->create(['status' => 'available']);
+    $date = $this->faker->dateTimeInInterval('+'.$room->min_days_advance.' days', '+'.($room->max_days_advance-$room->min_days_advance).' days');
+
+    $this->createReservationAvailabilities($date, $room);
+    $booking = $this->createBookingRequest(true, ['status' => 'approved']);
+
+    Reservation::create([
+      'room_id' => $room->id,
+      'booking_request_id' => $booking->id,
+      'start_time' => $date->format('Y-m-d\TH:i:00'),
+      'end_time' => Carbon::parse($date)->addMinutes(1)->toDateTime()->format('Y-m-d\TH:i:00'),
+    ]);
+
+    $response = $this->actingAs($user)->post('/bookings', [
+      'room_id' => $room->id,
+      'start_time' => $date->format('Y-m-d\TH:i:00'),
+      'end_time' => Carbon::parse($date)->addMinutes(1)->toDateTime()->format('Y-m-d\TH:i:00'),
+      'status' => 'review'
+    ]);
+
+    $response->assertStatus(302);
+    $this->assertDatabaseCount('booking_requests', 1);
+  }
+
     /**
      * @test
      */
@@ -363,15 +434,18 @@ class BookingRequestControllerTest extends TestCase
         Event::assertDispatched(BookingRequestUpdated::class);
     }
 
-    /**
-     * helper function
-     */
-    private function createBookingRequest($create = true)
+  /**
+   * helper function
+   * @param bool $create
+   * @param array $input
+   * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|mixed
+   */
+    private function createBookingRequest($create = true, $input = [])
     {
         if ($create) {
-            $booking_request = BookingRequest::factory()->create();
+            $booking_request = BookingRequest::factory()->create($input);
         } else {
-            $booking_request = BookingRequest::factory()->make();
+            $booking_request = BookingRequest::factory()->make($input);
         }
         return $booking_request;
     }

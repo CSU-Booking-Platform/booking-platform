@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Availability;
 use App\Models\BookingRequest;
 use App\Models\Reservation;
 use App\Models\Room;
@@ -10,7 +9,6 @@ use App\Events\BookingRequestUpdated;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use ZipArchive;
 use File;
@@ -53,6 +51,16 @@ class BookingRequestController extends Controller
             'start_time' => ['required', 'date'],
             'end_time' => ['required', 'date'],
         ]);
+
+        if (!$request->user()->canMakeAnotherBookingRequest($request->start_time)) {
+            throw ValidationException::withMessages([
+                'booking_request_exceeded' => 'Cannot make more than ' .
+                    $request->user()->getUserNumberOfBookingRequestPerPeriod() .
+                    ' bookings in the next ' .
+                    $request->user()->getUserNumberOfDaysPerPeriod() .
+                    ' days.'
+            ]);
+        }
 
         $referenceFolder = NULL;
 
@@ -127,6 +135,16 @@ class BookingRequestController extends Controller
             'start_time' => ['required', 'string', 'max:255'],
             'end_time' => ['required', 'string', 'max:255'],
         ));
+
+        if (!$request->user()->canMakeAnotherBookingRequest($request->start_time)) {
+            throw ValidationException::withMessages([
+                'booking_request_exceeded' => 'Cannot make more than ' .
+                    $request->user()->getUserNumberOfBookingRequestPerPeriod() .
+                    ' bookings in the next ' .
+                    $request->user()->getUserNumberOfDaysPerPeriod() .
+                    ' days.'
+            ]);
+        }
 
         $room = Room::query()->findOrFail($request->room_id);
         $room->verifyDatetimesAreWithinAvailabilities($request->get('start_time'), $request->get('end_time'));

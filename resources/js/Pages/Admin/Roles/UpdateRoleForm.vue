@@ -26,9 +26,21 @@
                             <span class="ml-2 text-sm text-gray-600">{{ permission.guard_name }}</span>
                         </label>
                     </div>
-
-
                 </div>
+            </div>
+
+            <!-- Booking restrictions -->
+            <div class="col-span-6 sm:col-span-4">
+                <jet-label for="number_of_bookings_per_period" value="Number of bookings per period"/>
+                <jet-input id="number_of_bookings_per_period" type="number" class="mt-1 block w-full"
+                           v-model="form.number_of_bookings_per_period" min="1" autofocus/>
+                <jet-input-error :message="form.error('number_of_bookings_per_period')" class="mt-2"/>
+            </div>
+            <div class="col-span-6 sm:col-span-4">
+                <jet-label for="number_of_days_per_period" value="Number of days per period"/>
+                <jet-input id="number_of_days_per_period" type="number" class="mt-1 block w-full"
+                           v-model="form.number_of_days_per_period" min="1" autofocus/>
+                <jet-input-error :message="form.error('number_of_days_per_period')" class="mt-2"/>
             </div>
         </template>
 
@@ -85,6 +97,8 @@
                 form: this.$inertia.form({
                     name: '',
                     permissions: [],
+                    number_of_bookings_per_period: null,
+                    number_of_days_per_period: null
                 }, {
                     bag: 'updateRole',
                 })
@@ -108,6 +122,8 @@
             role (role) {
                 this.form.name = role?.name;
                 this.form.permissions = role?.permissions.map((o) => {return o.name; });
+                this.form.number_of_bookings_per_period = role?.number_of_bookings_per_period;
+                this.form.number_of_days_per_period = role?.number_of_days_per_period;
             }
         }
     }

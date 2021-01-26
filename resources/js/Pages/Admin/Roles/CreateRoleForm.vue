@@ -32,6 +32,20 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Booking restrictions -->
+            <div class="col-span-6 sm:col-span-4">
+                <jet-label for="number_of_bookings_per_period" value="Number of bookings per period (optional)"/>
+                <jet-input id="number_of_bookings_per_period" type="number" class="mt-1 block w-full"
+                           v-model="form.number_of_bookings_per_period" min="1" autofocus/>
+                <jet-input-error :message="form.error('number_of_bookings_per_period')" class="mt-2"/>
+            </div>
+            <div class="col-span-6 sm:col-span-4">
+                <jet-label for="number_of_days_per_period" value="Number of days per period (optional)"/>
+                <jet-input id="number_of_days_per_period" type="number" class="mt-1 block w-full"
+                           v-model="form.number_of_days_per_period" min="1" autofocus/>
+                <jet-input-error :message="form.error('number_of_days_per_period')" class="mt-2"/>
+            </div>
         </template>
 
         <template #actions>
@@ -78,6 +92,8 @@
                 form: this.$inertia.form({
                     name: '',
                     permissions: [],
+                    number_of_bookings_per_period: null,
+                    number_of_days_per_period: null
                 }, {
                     bag: 'createRole',
                     resetOnSuccess: true,

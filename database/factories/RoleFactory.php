@@ -24,6 +24,8 @@ class RoleFactory extends Factory
         return [
             'name' => $this->faker->unique()->word,
             'guard_name' => 'web',
+            'number_of_bookings_per_period' => 1,
+            'number_of_days_per_period' => $this->faker->numberBetween(15, 20),
         ];
     }
 }

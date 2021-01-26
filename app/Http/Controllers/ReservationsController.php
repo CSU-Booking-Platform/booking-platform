@@ -9,6 +9,7 @@ use App\Models\Room;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 
 class ReservationsController extends Controller
 {
@@ -146,6 +147,14 @@ class ReservationsController extends Controller
           $room->verifyDatesAreWithinRoomRestrictionsValidation($value['start_time'], $fail, $attribute);
           $room->verifyDatetimesAreWithinAvailabilitiesValidation($value['start_time'], $value['end_time'], $fail, $attribute);
           $room->verifyRoomIsFreeValidation($value['start_time'], $value['end_time'], $fail, $attribute, $reservation);
+
+          if (!$request->user()->canMakeAnotherBookingRequest($value['start_time'])) {
+            $fail($attribute . ' Cannot make more than ' .
+              $request->user()->getUserNumberOfBookingRequestPerPeriod() .
+              ' bookings in the next ' .
+              $request->user()->getUserNumberOfDaysPerPeriod() .
+              ' days.');
+          }
         }
       ]
     ));

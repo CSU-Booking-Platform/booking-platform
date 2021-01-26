@@ -22,16 +22,6 @@ class RoleController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response|\Inertia\Response
-     */
-    public function create()
-    {
-        return inertia('Admin/Roles/Index');
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request

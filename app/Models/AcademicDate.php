@@ -7,7 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class AcademicDate extends Model
 {
-    use HasFactory;
+  use HasFactory;
+
+  protected $casts = [
+    'start_date' => 'date',
+    'end_date' => 'date'
+  ];
 
   protected $fillable = [
     'semester',

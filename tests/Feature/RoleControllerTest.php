@@ -31,22 +31,6 @@ class RoleControllerTest extends TestCase
     /**
      * @test
      */
-    public function admins_can_see_roles_create_form()
-    {
-        $role = Role::factory()->create();
-        $user = User::factory()->make();
-
-        $this->assertDatabaseHas('roles', ['name' => $role->name]);
-
-        $response = $this->actingAs($user)->get('/roles/create');
-
-        $response->assertOk();
-        $response->assertSee("create");
-    }
-
-    /**
-     * @test
-     */
     public function admins_can_create_roles()
     {
         $role = Role::factory()->make();

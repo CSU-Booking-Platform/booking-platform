@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 
-class LoginTest extends DuskTestCase
+class AuthTest extends DuskTestCase
 {
 
   use DatabaseMigrations;
@@ -30,6 +30,23 @@ class LoginTest extends DuskTestCase
         ->type('password', 'password')
         ->press('login')
         ->assertSee('Dashboard');
+    });
+  }
+
+  public function testCanLogout()
+  {
+    $this->browse(function (Browser $browser) {
+      $browser->loginAs(User::factory()->create([
+        'email' => 'admin@example.com'
+      ]))->visit('/dashboard')
+        ->assertSee('Dashboard')
+        ->press('@nav-profile')
+        ->pause(3000)
+        ->waitForText('Logout')
+        ->press('@nav-logout')
+        ->pause(3000)
+        ->assertSee('Email')
+        ->assertSee('Password');
     });
   }
 }

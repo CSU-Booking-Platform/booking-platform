@@ -17,7 +17,7 @@
         <link rel="stylesheet" href="{{ asset('css/global.css') }}">
 
         <!-- Scripts -->
-        <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.7.0/dist/alpine.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/2.7.0/alpine.js" integrity="sha512-4NAupBbMu54EhzO7J0cpSgXTxvGR5X8SvWV/TANSUrxAq3AVmHO94ktDWxC6kRUvV42BNZTztZLfK4Q6/mFk+Q==" crossorigin="anonymous"></script>
     </head>
     <body>
         <div class="font-sans text-gray-900 antialiased">

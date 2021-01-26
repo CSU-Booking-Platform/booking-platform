@@ -53,25 +53,25 @@
                         </div>
                         <div class="flex-1 py-3">
                             <a href="https://www.facebook.com">
-                                <i class="fa"></i>
+                                <i class="fab fa-facebook pr-2"></i>
                                 Facebook
                             </a>
                         </div>
                         <div class="flex-1 py-3">
                             <a href="https://www.instagram.com">
-                                <i class="fa"></i>
+                                <i class="fab fa-instagram pr-2"></i>
                                 Instagram
                             </a>
                         </div>
                         <div class="flex-1 py-3">
                             <a href="https://www.twitter.com">
-                                <i class=""></i>
+                                <i class="fab fa-twitter pr-2"></i>
                                 Twitter
                             </a>
                         </div>
                         <div class="flex-1 py-3">
                             <a href="https://www.youtube.com">
-                                <i class=""></i>
+                                <i class="fab fa-youtube pr-2"></i>
                                 YouTube
                             </a>
                         </div>
@@ -128,15 +128,6 @@ export default {
             showingNavigationDropdown: false,
         }
     },
-
-    methods: {
-        logout() {
-            axios.post('/logout').then(response => {
-                window.location = '/';
-            })
-        },
-    },
-
     computed: {
         path() {
             return window.location.pathname

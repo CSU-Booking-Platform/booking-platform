@@ -8,7 +8,7 @@
             <div class="overflow-y-auto max-h-96">
                 <div class="m-6">
                     <jet-label for="name" value="Room name" />
-                    <jet-input 
+                    <jet-input
                         id="name"
                         type="name"
                         class="mt-1 block w-full"
@@ -84,60 +84,36 @@
 
 
                 <div class="m-6">
-                    <jet-label for="min_days_advance" value="Minimum Days Before Booking" />
-                    <jet-input
-                        id="min_days_advance"
-                        type="number"
-                        min="0"
-                        class="mt-1 block w-full"
-                        v-model="form.min_days_advance"
-                        autofocus
-                    />
-                    <jet-input-error :message="form.error('number')" class="mt-2" />
-                </div>
-                <div class="m-6">
-                    <jet-label for="max_days_advance" value="Maximum Days Before Booking" />
-                    <jet-input
-                        id="max_days_advance"
-                        type="number"
-                        min="0"
-                        class="mt-1 block w-full"
-                        v-model="form.max_days_advance"
-                        autofocus
-                    />
-                    <jet-input-error :message="form.error('number')" class="mt-2" />
-                </div>
-                <div class="m-6">  
                     <jet-label for="stand_capacity" value="Standing Capacity"/>
                     <jet-input id="stand_capacity" type="number" min="0" class="mt-1 block w-full" v-model="form.capacity_standing"/>
                     <jet-input-error :message="form.error('stand_capacity')" class="mt-2"/>
                 </div>
 
-                <div class="m-6">  
+                <div class="m-6">
                     <jet-label for="sit_capacity" value="Seating Capacity"/>
                     <jet-input id="sit_capacity" type="number" min="0" class="mt-1 block w-full" v-model="form.capacity_sitting"/>
                     <jet-input-error :message="form.error('sit_capacity')" class="mt-2"/>
                 </div>
 
-                <div class="m-6">  
+                <div class="m-6">
                     <jet-label for="food" value="Food"/>
-                    <input type="checkbox" id="checkbox" class="form-checkbox" v-model="form.food"/>
+                    <input type="checkbox" id="food" class="form-checkbox" v-model="form.food"/>
                     <jet-input-error :message="form.error('food')" class="mt-2"/>
                 </div>
 
-                <div class="m-6">  
+                <div class="m-6">
                     <jet-label for="alcohol" value="Alcohol"/>
-                    <input type="checkbox" id="checkbox" class="form-checkbox" v-model="form.alcohol"/>
+                    <input type="checkbox" id="alcohol" class="form-checkbox" v-model="form.alcohol"/>
                     <jet-input-error :message="form.error('alcohol')" class="mt-2"/>
                 </div>
 
-                <div class="m-6">  
+                <div class="m-6">
                     <jet-label for="a_v_permitted" value="A/V Equipment Permitted"/>
-                    <input type="checkbox" id="checkbox" class="form-checkbox" v-model="form.a_v_permitted"/>
+                    <input type="checkbox" id="a_v_permitted" class="form-checkbox" v-model="form.a_v_permitted"/>
                     <jet-input-error :message="form.error('a_v_permitted')" class="mt-2"/>
                 </div>
 
-                <div class="m-6">  
+                <div class="m-6">
                     <jet-label for="status" value="Status"/>
                     <select v-model="form.status" class="mt-1 block w-full" name="status" id="status">
                         <option value="" selected disabled hidden>Select Room Status</option>
@@ -147,62 +123,127 @@
                     <jet-input-error :message="form.error('status')" class="mt-2"/>
                 </div>
 
-                <div class="m-6">  
+                <div class="m-6">
                     <jet-label for="equippment" value="Equippment"/>
                     <br>
                     <label class="flex items-center">
                     <input type="checkbox" class="form-checkbox" v-model="form.projector"/>
-                    <span class="ml-2 text-sm text-black">Projector</span>    
-                    </label> 
+                    <span class="ml-2 text-sm text-black">Projector</span>
+                    </label>
                     <label class="flex items-center">
                     <input type="checkbox" class="form-checkbox" v-model="form.television"/>
-                    <span class="ml-2 text-sm text-black">Television</span>  
-                    </label> 
+                    <span class="ml-2 text-sm text-black">Television</span>
+                    </label>
                     <label class="flex items-center">
                     <input type="checkbox" class="form-checkbox" v-model="form.computer"/>
                     <span class="ml-2 text-sm text-black">Computer</span>
-                    </label>   
-                    <label class="flex items-center"> 
+                    </label>
+                    <label class="flex items-center">
                     <input type="checkbox" class="form-checkbox" v-model="form.whiteboard"/>
-                    <span class="ml-2 text-sm text-black">Whiteboard</span>    
-                    </label>                 
+                    <span class="ml-2 text-sm text-black">Whiteboard</span>
+                    </label>
                     <jet-input-error :message="form.error('equippment')" class="mt-2"/>
                 </div>
 
-                <div class="m-6">  
+                <div class="m-6">
                     <jet-label for="restrictions" value="Restrictions"/>
                     <br>
                     <label class="flex items-center">
                     <input type="checkbox" class="form-checkbox" v-model="form.ambiant_music"/>
-                    <span class="ml-2 text-sm text-black">Ambiance Music</span>    
-                    </label> 
+                    <span class="ml-2 text-sm text-black">Ambiance Music</span>
+                    </label>
                     <label class="flex items-center">
-                    <input type="checkbox" class="form-checkbox" v-model="form.sale_for_profit"/>                    
-                    <span class="ml-2 text-sm text-black">Sale for Profit</span>  
-                    </label> 
+                    <input type="checkbox" class="form-checkbox" v-model="form.sale_for_profit"/>
+                    <span class="ml-2 text-sm text-black">Sale for Profit</span>
+                    </label>
                     <label class="flex items-center">
                     <input type="checkbox" class="form-checkbox" v-model="form.fundraiser"/>
                     <span class="ml-2 text-sm text-black">Fundraiser</span>
-                    </label>    
+                    </label>
                     <jet-input-error :message="form.error('restrictions')" class="mt-2"/>
                 </div>
 
-                <div class="m-6">  
-                    <jet-label for="furniture" value="Furniture"/> 
-                    <br>                        
+                <div class="m-6">
+                    <jet-label for="furniture" value="Furniture"/>
+                    <br>
                     <label class="flex items-center text-sm">Sofa(s)</label>
-                    <jet-input  v-model.number="form.sofas" type="number" min="0"/> 
+                    <jet-input  v-model.number="form.sofas" type="number" min="0"/>
 
                     <label class="flex items-center">Coffee Table(s)</label>
                     <jet-input  v-model.number="form.coffee_tables" type="number" min="0"/>
 
-                    <label class="flex items-center">Table(s)</label> 
+                    <label class="flex items-center">Table(s)</label>
                     <jet-input  v-model.number="form.tables" type="number" min="0"/>
 
-                    <label class="flex items-center">Chair(s)</label> 
-                    <jet-input  v-model.number="form.chairs" type="number" min="0"/> 
+                    <label class="flex items-center">Chair(s)</label>
+                    <jet-input  v-model.number="form.chairs" type="number" min="0"/>
 
                     <jet-input-error :message="form.error('furniture')" class="mt-2"/>
+                </div>
+
+                <div
+                    v-on:click="toggle"
+                    class="m-6"
+                >
+                    <br>
+                    <h4>Availabilities</h4>
+                    <hr>
+                </div>
+
+                <div
+                    v-show="showAvailabilities"
+                    v-for="(value, key) in form.availabilities"
+                    class="m-6"
+                >
+                    <h3>{{ key }}</h3>
+
+                    <jet-label value="Opening hours"/>
+                    <jet-input
+                        type="time"
+                        class="mt-1 block w-full"
+                        v-model="value.opening_hours"
+                    />
+                    <jet-input-error
+                        :message="form.error('availabilities.' + key + '.opening_hours')"
+                        class="mt-2"
+                    />
+
+                    <jet-label value="Closing hours"/>
+                    <jet-input
+                        type="time"
+                        class="mt-1 block w-full"
+                        v-model="value.closing_hours"
+                    />
+                    <jet-input-error
+                        :message="form.error('availabilities.' + key + '.closing_hours')"
+                        class="mt-2"
+                    />
+                </div>
+
+                <div
+                    v-show="showAvailabilities"
+                    class="m-6"
+                >
+                    <jet-label for="min_days_advance" value="Minimum Days Before Booking"/>
+                    <jet-input
+                        id="min_days_advance"
+                        type="number"
+                        min="0"
+                        class="mt-1 block w-full"
+                        v-model="form.min_days_advance"
+                        autofocus
+                    />
+                    <jet-input-error :message="form.error('number')" class="mt-2"/>
+                    <jet-label for="max_days_advance" value="Maximum Days Before Booking"/>
+                    <jet-input
+                        id="max_days_advance"
+                        type="number"
+                        min="0"
+                        class="mt-1 block w-full"
+                        v-model="form.max_days_advance"
+                        autofocus
+                    />
+                    <jet-input-error :message="form.error('number')" class="mt-2"/>
                 </div>
             </div>
         </template>
@@ -285,12 +326,43 @@ export default {
                     status: "",
                     room_type: "",
                     min_days_advance:"",
-                    max_days_advance:""
+                    max_days_advance:"",
+                    availabilities: {
+                        Monday: {
+                            opening_hours: '',
+                            closing_hours: ''
+                        },
+                        Tuesday: {
+                            opening_hours: '',
+                            closing_hours: ''
+                        },
+                        Wednesday: {
+                            opening_hours: '',
+                            closing_hours: ''
+                        },
+                        Thursday: {
+                            opening_hours: '',
+                            closing_hours: ''
+                        },
+                        Friday: {
+                            opening_hours: '',
+                            closing_hours: ''
+                        },
+                        Saturday: {
+                            opening_hours: '',
+                            closing_hours: ''
+                        },
+                        Sunday: {
+                            opening_hours: '',
+                            closing_hours: ''
+                        },
+                    },
                 },
                 {
                     bag: "updateRoom"
                 }
-            )
+            ),
+            showAvailabilities: true
         };
     },
 
@@ -311,6 +383,41 @@ export default {
                         this.closeModal();
                     }
                 });
+        },
+        toggle() {
+            this.showAvailabilities = !this.showAvailabilities
+        },
+        resetAvailabilities(){
+            this.form.availabilities = {
+                Monday: {
+                    opening_hours: '',
+                    closing_hours: ''
+                },
+                Tuesday: {
+                    opening_hours: '',
+                    closing_hours: ''
+                },
+                Wednesday: {
+                    opening_hours: '',
+                    closing_hours: ''
+                },
+                Thursday: {
+                    opening_hours: '',
+                    closing_hours: ''
+                },
+                Friday: {
+                    opening_hours: '',
+                    closing_hours: ''
+                },
+                Saturday: {
+                    opening_hours: '',
+                    closing_hours: ''
+                },
+                Sunday: {
+                    opening_hours: '',
+                    closing_hours: ''
+                }
+            }
         }
     },
     watch: {
@@ -338,7 +445,12 @@ export default {
             this.form.status = room?.status;
             this.form.room_type = room?.room_type;
             this.form.min_days_advance = room?.min_days_advance;
-            this.form.max_days_advance = room?.max_days_advance;          
+            this.form.max_days_advance = room?.max_days_advance;
+            this.resetAvailabilities();
+            room?.availabilities.forEach((availability) => {
+                this.form.availabilities[availability.weekday].opening_hours = availability.opening_hours;
+                this.form.availabilities[availability.weekday].closing_hours = availability.closing_hours;
+            })
         }
     }
 };

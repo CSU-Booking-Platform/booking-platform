@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call(RolesAndPermissionsSeeder::class);
+        $this->call(AcademicDatesSeeder::class);
 
         if (app()->environment('local') || app()->environment('staging')) {
             $this->call([

@@ -42,9 +42,16 @@ class RoleController extends Controller
         $request->validateWithBag('createRole', [
             'name' => 'required|string|max:255|unique:roles',
             'permissions' => 'array',
+            'number_of_bookings_per_period' => 'integer|gt:0|nullable',
+            'number_of_days_per_period' => 'integer|gt:0|nullable'
         ]);
 
-        $role = Role::create(['name' => $request->name, 'guard_name' => 'web']);
+        $role = Role::create([
+            'name' => $request->name,
+            'guard_name' => 'web',
+            'number_of_bookings_per_period' => $request->number_of_bookings_per_period,
+            'number_of_days_per_period' => $request->number_of_days_per_period
+        ]);
 
         $role->syncPermissions($request->permissions);
 
@@ -85,9 +92,14 @@ class RoleController extends Controller
         $request->validateWithBag('updateRole', [
             'name' => 'required|string|max:255',
             'permissions' => 'required|array',
+            'number_of_bookings_per_period' => 'integer|gt:0|nullable',
+            'number_of_days_per_period' => 'integer|gt:0|nullable'
         ]);
 
         $role->name = $request->name;
+        $role->number_of_bookings_per_period = $request->number_of_bookings_per_period;
+        $role->number_of_days_per_period = $request->number_of_days_per_period;
+
         $role->save();
         $role->syncPermissions($request->permissions);
 

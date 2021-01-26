@@ -47,6 +47,9 @@
           <div class="m-6">
             <jet-input-error :message="createBookingRequestForm.error('availabilities')" class="mt-2" />
           </div>
+          <div class="m-6">
+              <jet-input-error :message="createBookingRequestForm.error('booking_request_exceeded')" class="mt-2" />
+          </div>
 
           <div class="m-6">
             <jet-input-error :message="createBookingRequestForm.error('booked_too_close')" class="mt-2" />

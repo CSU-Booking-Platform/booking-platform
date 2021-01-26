@@ -87,7 +87,12 @@ class BlackoutControllerTest extends TestCase
       'end_date' => Carbon::now()->addDays(10)->toDateString()
     ]);
 
-    $blackout = Blackout::factory()->make();
+    $blackout = Blackout::create([
+      'name' => 'test',
+      'start_time' => Carbon::today(),
+      'end_time' => Carbon::today()->addMinute()
+    ]);
+
     $room = Room::factory()->create(['status' => 'available']);
     $user = User::factory()->create();
 
@@ -102,7 +107,7 @@ class BlackoutControllerTest extends TestCase
     );
 
     $response->assertStatus(302);
-    $this->assertDatabaseCount('blackouts', 11);
+    $this->assertDatabaseCount('blackouts', 12);
   }
 
   /**

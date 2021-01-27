@@ -8,7 +8,7 @@
                     <jet-input id="label" type="hidden" class="mt-1 block w-full" value="app_name"/>
                 <div class="col-span-12 sm:col-span-6">
                     <jet-label for="app_name" value="Application Name"/>
-                    <jet-input id="app_name" type="text" class="mt-1 block w-full" v-model="updateNameSettingform.app_name"
+                    <jet-input id="app_name" name="app_name" type="text" class="mt-1 block w-full" v-model="updateNameSettingform.app_name"
                                autofocus/>
                     <jet-input-error :message="updateNameSettingform.error('app_name')" class="mt-2"/>
                 </div>
@@ -21,7 +21,7 @@
 
                 <jet-button :class="{ 'opacity-25': updateNameSettingform.processing }"
                             :disabled="updateNameSettingform.processing">
-                    Update
+                    Update Application Name
                 </jet-button>
             </template>
         </jet-form-section>

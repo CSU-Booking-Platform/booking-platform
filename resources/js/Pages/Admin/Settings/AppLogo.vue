@@ -9,7 +9,7 @@
                 <div class="col-span-12 sm:col-span-6">
                     <img :src="updateLogoSettingform.app_path" class="img-responsive" height="70" width="90" alt="Logo Image Preview">
                     <jet-label for="app_logo" value="Application Logo"/>
-                    <input type="file"  @change="selectFile">
+                    <input id="app_logo" name="app_logo" type="file"  @change="selectFile">
                     <jet-input-error :message="updateLogoSettingform.error('app_logo')" class="mt-2"/>
                 </div>
             </template>
@@ -21,7 +21,7 @@
 
                 <jet-button :class="{ 'opacity-25': updateLogoSettingform.processing }"
                             :disabled="updateLogoSettingform.processing">
-                    Update
+                    Update Application Logo
                 </jet-button>
             </template>
         </jet-form-section-image>
@@ -51,7 +51,7 @@ export default {
             updateLogoSettingform: this.$inertia.form({
                 label: 'app_logo',
                 app_logo: '',
-                app_path: this.settings.path,
+                app_path: this.settings?.path,
             }, {
                 bag: 'updateNameSetting',
                 resetOnSuccess: false,
@@ -69,7 +69,7 @@ export default {
             // the callback will be called immediately after the start of the observation
             immediate: true,
             handler (val, oldVal) {
-                this.updateLogoSettingform.app_path = this.settings.path
+                this.updateLogoSettingform.app_path = this.settings?.path
             }
         }
     },

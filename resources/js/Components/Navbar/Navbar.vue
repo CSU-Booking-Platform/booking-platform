@@ -1,5 +1,5 @@
 <template>
-    <header>
+    <header dusk="navbar">
       <div class="px-15 flex-shrink-0 flex">
         <div class="flex flex-row items-center py-4">
           <a href="/dashboard">

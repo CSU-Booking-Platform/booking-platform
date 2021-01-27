@@ -1,10 +1,13 @@
 <?php
 
-namespace Tests\Browser;
+namespace Tests\Browser\Tests;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
+use Tests\Browser\Pages\Dashboard;
+use Tests\Browser\Components\Navbar;
+use Tests\Browser\Pages\Login;
 use Tests\DuskTestCase;
 
 class AuthTest extends DuskTestCase
@@ -24,12 +27,8 @@ class AuthTest extends DuskTestCase
     ]);
 
     $this->browse(function (Browser $browser) {
-      $browser->visit('/login')
-        ->assertSee('Email')
-        ->type('email', 'admin@example.com')
-        ->type('password', 'password')
-        ->press('login')
-        ->assertSee('Dashboard');
+      $browser->visit(new Login)
+        ->loginWithForm('admin@example.com', 'password');
     });
   }
 
@@ -38,13 +37,11 @@ class AuthTest extends DuskTestCase
     $this->browse(function (Browser $browser) {
       $browser->loginAs(User::factory()->create([
         'email' => 'admin@example.com'
-      ]))->visit('/dashboard')
-        ->assertSee('Dashboard')
-        ->press('@nav-profile')
-        ->pause(3000)
-        ->waitForText('Logout')
-        ->press('@nav-logout')
-        ->pause(3000)
+      ]))->visit(new Dashboard)
+        ->within(new Navbar, function ($browser) {
+          $browser->openProfileMenu();
+          $browser->logoutAndWait();
+        })
         ->assertSee('Email')
         ->assertSee('Password');
     });

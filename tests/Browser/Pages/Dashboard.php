@@ -4,7 +4,7 @@ namespace Tests\Browser\Pages;
 
 use Laravel\Dusk\Browser;
 
-class HomePage extends Page
+class Dashboard extends Page
 {
     /**
      * Get the URL for the page.
@@ -13,18 +13,18 @@ class HomePage extends Page
      */
     public function url()
     {
-        return '/';
+        return '/dashboard';
     }
 
     /**
      * Assert that the browser is on the page.
      *
-     * @param  \Laravel\Dusk\Browser  $browser
+     * @param  Browser  $browser
      * @return void
      */
     public function assert(Browser $browser)
     {
-        //
+        $browser->assertPathIs($this->url());
     }
 
     /**
@@ -34,8 +34,6 @@ class HomePage extends Page
      */
     public function elements()
     {
-        return [
-            '@element' => '#selector',
-        ];
+        return [];
     }
 }

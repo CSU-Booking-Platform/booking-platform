@@ -22,7 +22,6 @@ class RoomControllerTest extends TestCase
     {
         $room = Room::factory()->make();
         $user = User::factory()->make();
-
         $this->assertDatabaseMissing('rooms', ['name' => $room->name]);
 
         $response = $this->actingAs($user)->post('/rooms', [
@@ -48,8 +47,10 @@ class RoomControllerTest extends TestCase
             'ambiant_music' => $room->attributes['ambiant_music'],
             'sale_for_profit' => $room->attributes['sale_for_profit'],
             'fundraiser' => $room->attributes['fundraiser'],
+            'min_days_advance' => $room->min_days_advance,
+            'max_days_advance' => $room->max_days_advance,
         ]);
-
+        $response->assertSessionHasNoErrors();
         $response->assertStatus(302);
         $this->assertDatabaseHas('rooms', [
             'name' => $room->name,
@@ -76,6 +77,8 @@ class RoomControllerTest extends TestCase
                 'sale_for_profit' => $room->attributes['sale_for_profit'],
                 'fundraiser' => $room->attributes['fundraiser'],
             ]),
+            'min_days_advance' => $room->min_days_advance,
+            'max_days_advance' => $room->max_days_advance,
         ]);
     }
 

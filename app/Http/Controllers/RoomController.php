@@ -83,7 +83,6 @@ class RoomController extends Controller
             'availabilities.Sunday.opening_hours' => 'nullable|required_with:availabilities.Sunday.closing_hours|before:availabilities.Sunday.closing_hours',
             'availabilities.Sunday.closing_hours' => 'nullable|required_with:availabilities.Sunday.opening_hours|after:availabilities.Sunday.opening_hours',
         ]);
-
         $room = Room::create([
             'name' => $request->name,
             'number' => $request->number,
@@ -108,7 +107,8 @@ class RoomController extends Controller
                 'sale_for_profit' => $request->sale_for_profit,
                 'fundraiser' => $request->fundraiser,
             ],
-
+            'min_days_advance' => $request->min_days_advance ?? 0,
+            'max_days_advance' => $request->max_days_advance ?? 30,
             'room_type' => $request->room_type
         ]);
 

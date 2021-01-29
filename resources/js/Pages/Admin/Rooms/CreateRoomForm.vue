@@ -27,50 +27,50 @@
                       <jet-input id="building" type="building" class="mt-1 block w-full" v-model="createRoomForm.building"/>
                       <jet-input-error :message="createRoomForm.error('building')" class="mt-2"/>
                   </div>
-                  <div 
+                  <div
                       v-on:click="toggle('attributes');"
                       class="col-span-6 sm:col-span-6 w-4/5"
                   >
                       <br>
-                      <h4>Attributes</h4>
+                      <h4 id="attributes">Attributes</h4>
                       <hr>
                   </div>
-              
+
                   <div
                       v-show="showAttributes"
                       class="col-span-6 sm:col-span-3 w-4/5"
                   >
-                    <div class="col-span-6 sm:col-span-3"><br> 
+                    <div class="col-span-6 sm:col-span-3"><br>
                         <jet-label for="stand_capacity" value="Standing Capacity"/>
                         <jet-input id="stand_capacity" type="number" min="0" class="mt-1 block w-full" v-model.number="createRoomForm.capacity_standing"/>
                         <jet-input-error :message="createRoomForm.error('capacity_standing')" class="mt-2"/>
                     </div>
 
-                    <div class="col-span-6 sm:col-span-3">  
+                    <div class="col-span-6 sm:col-span-3">
                         <jet-label for="sit_capacity" value="Seating Capacity"/>
                         <jet-input id="sit_capacity" type="number" min="0" class="mt-1 block w-full" v-model.number="createRoomForm.capacity_sitting"/>
                         <jet-input-error :message="createRoomForm.error('sit_capacity')" class="mt-2"/>
                     </div><br>
 
-                    <div class="col-span-6 sm:col-span-3">  
+                    <div class="col-span-6 sm:col-span-3">
                         <jet-label for="food" value="Food"/>
-                        <input type="checkbox" id="checkbox" class="form-checkbox" v-model="createRoomForm.food"/>
+                        <input type="checkbox" id="checkboxFood" class="form-checkbox" v-model="createRoomForm.food"/>
                         <jet-input-error :message="createRoomForm.error('food')" class="mt-2"/>
                     </div><br>
 
-                    <div class="col-span-6 sm:col-span-3">  
+                    <div class="col-span-6 sm:col-span-3">
                         <jet-label for="alcohol" value="Alcohol"/>
-                        <input type="checkbox" id="checkbox" class="form-checkbox" v-model="createRoomForm.alcohol"/>
+                        <input type="checkbox" id="checkboxAlcohol" class="form-checkbox" v-model="createRoomForm.alcohol"/>
                         <jet-input-error :message="createRoomForm.error('alcohol')" class="mt-2"/>
                     </div><br>
 
-                    <div class="col-span-6 sm:col-span-3">  
+                    <div class="col-span-6 sm:col-span-3">
                         <jet-label for="a_v_permitted" value="A/V Equipment Permitted"/>
-                        <input type="checkbox" id="checkbox" class="form-checkbox" v-model="createRoomForm.a_v_permitted"/>
+                        <input type="checkbox" id="checkboxAV" class="form-checkbox" v-model="createRoomForm.a_v_permitted"/>
                         <jet-input-error :message="createRoomForm.error('a_v_permitted')" class="mt-2"/>
                     </div><br>
 
-                    <div class="col-span-6 sm:col-span-3">  
+                    <div class="col-span-6 sm:col-span-3">
                         <jet-label for="status" value="Status"/>
                         <select v-model="createRoomForm.status" class="mt-1 block w-full" name="status" id="status">
                             <option value="" selected disabled hidden>Select Room Status</option>
@@ -79,7 +79,7 @@
                         </select>
                         <jet-input-error :message="createRoomForm.error('status')" class="mt-2"/>
                     </div><br>
-              
+
                     <div class="col-span-6 sm:col-span-3">
                       <jet-label for="room_type" value="Room type" />
                       <select
@@ -97,72 +97,72 @@
                       />
                     </div><br>
 
-                    <div class="col-span-6 sm:col-span-3">  
+                    <div class="col-span-6 sm:col-span-3">
                         <jet-label for="equippment" value="Equippment"/>
                         <label class="flex items-center">
                         <input type="checkbox" class="form-checkbox" v-model="createRoomForm.projector"/>
-                        <span class="ml-2 text-sm text-black">Projector</span>    
-                        </label> 
+                        <span class="ml-2 text-sm text-black">Projector</span>
+                        </label>
                         <label class="flex items-center">
                         <input type="checkbox" class="form-checkbox" v-model="createRoomForm.television"/>
-                        <span class="ml-2 text-sm text-black">Television</span>  
-                        </label> 
+                        <span class="ml-2 text-sm text-black">Television</span>
+                        </label>
                         <label class="flex items-center">
                         <input type="checkbox" class="form-checkbox" v-model="createRoomForm.computer"/>
                         <span class="ml-2 text-sm text-black">Computer</span>
-                        </label>   
-                        <label class="flex items-center"> 
+                        </label>
+                        <label class="flex items-center">
                         <input type="checkbox" class="form-checkbox" v-model="createRoomForm.whiteboard"/>
-                        <span class="ml-2 text-sm text-black">Whiteboard</span>    
-                        </label>                 
+                        <span class="ml-2 text-sm text-black">Whiteboard</span>
+                        </label>
                         <jet-input-error :message="createRoomForm.error('equippment')" class="mt-2"/>
                     </div><br>
 
-                    <div class="col-span-6 sm:col-span-3">  
+                    <div class="col-span-6 sm:col-span-3">
                         <jet-label for="restrictions" value="Restrictions"/>
                         <label class="flex items-center">
                         <input type="checkbox" class="form-checkbox" v-model="createRoomForm.ambiant_music"/>
-                        <span class="ml-2 text-sm text-black">Ambiance Music</span>    
-                        </label> 
+                        <span class="ml-2 text-sm text-black">Ambiance Music</span>
+                        </label>
                         <label class="flex items-center">
                         <input type="checkbox" class="form-checkbox" v-model="createRoomForm.sale_for_profit"/>
-                        <span class="ml-2 text-sm text-black">Sale for Profit</span>  
-                        </label> 
+                        <span class="ml-2 text-sm text-black">Sale for Profit</span>
+                        </label>
                         <label class="flex items-center">
                         <input type="checkbox" class="form-checkbox" v-model="createRoomForm.fundraiser"/>
                         <span class="ml-2 text-sm text-black">Fundraiser</span>
-                        </label>    
+                        </label>
                         <jet-input-error :message="createRoomForm.error('restrictions')" class="mt-2"/>
                     </div><br>
 
-                    <div class="col-span-6 sm:col-span-3">  
-                        <jet-label for="furniture" value="Furniture"/> 
-                        <br>                        
+                    <div class="col-span-6 sm:col-span-3">
+                        <jet-label for="furniture" value="Furniture"/>
+                        <br>
                         <label class="flex items-center text-sm">Sofa(s)</label>
-                        <jet-input  v-model.number="createRoomForm.sofas" type="number" min="0"/> 
+                        <jet-input  v-model.number="createRoomForm.sofas" type="number" min="0"/>
 
                         <label class="flex items-center text-sm">Coffee Table(s)</label>
                         <jet-input  v-model.number="createRoomForm.coffee_tables" type="number" min="0"/>
 
-                        <label class="flex items-center text-sm">Table(s)</label> 
+                        <label class="flex items-center text-sm">Table(s)</label>
                         <jet-input  v-model.number="createRoomForm.tables" type="number" min="0"/>
 
-                        <label class="flex items-center text-sm">Chair(s)</label> 
-                        <jet-input  v-model.number="createRoomForm.chairs" type="number" min="0"/> 
+                        <label class="flex items-center text-sm">Chair(s)</label>
+                        <jet-input  v-model.number="createRoomForm.chairs" type="number" min="0"/>
 
                         <jet-input-error :message="createRoomForm.error('furniture')" class="mt-2"/>
                     </div>
                   </div>
 
-                  <div 
+                  <div
                       v-on:click="toggle('');"
                       class="col-span-6 sm:col-span-6 w-4/5"
                   >
                       <br>
-                      <h4>Availabilities</h4>
+                      <h4 id="availabilities">Availabilities</h4>
                       <hr>
                   </div>
-              
+
                   <div
                       v-show="showAvailabilities"
                       v-for="(value, key) in createRoomForm.availabilities"
@@ -194,9 +194,9 @@
                   </div>
 
                   <div
-                      v-show="showAvailabilities" 
+                      v-show="showAvailabilities"
                       class="col-span-6 sm:col-span-3"
-                  ><br>   
+                  ><br>
                       <h3>Bookable Window</h3><br>
                       <jet-label for="min_days_advance" value="Minimum Days Before Booking"/>
                       <jet-input id="min_days_advance" type="number" min="0" class="mt-1 block w-full" v-model="createRoomForm.min_days_advance"/>
@@ -212,10 +212,10 @@
                     Created.
                 </jet-action-message>
 
-                <jet-button :class="{ 'opacity-25': createRoomForm.processing }" :disabled="createRoomForm.processing">
+                <jet-button id="create" :class="{ 'opacity-25': createRoomForm.processing }" :disabled="createRoomForm.processing">
                     Create
                 </jet-button>
-            </template>         
+            </template>
         </form-section>
     </div>
 </template>
@@ -330,7 +330,7 @@ export default {
       {
         this.showAvailabilities = !this.showAvailabilities;
       }
-      
+
     },
   },
 };

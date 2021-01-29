@@ -74,7 +74,7 @@
              <div class="m-6">
                 <jet-label for="room_type" value="Room Type" />
                 <select v-model="form.room_type" class="mt-1 block w-full" name="room_type" id="room_typeUpdate">
-                    <option v-for="roomType in availableRoomTypes" :key="roomType" :value="roomType" :selected="form.room_type===roomType">{{roomType}}</option> 
+                    <option v-for="roomType in availableRoomTypes" :key="roomType" :value="roomType" :selected="form.room_type===roomType">{{roomType}}</option>
                 </select>
                 <jet-input-error
                     :message="form.error('room_type')"
@@ -254,6 +254,7 @@
             </jet-secondary-button>
 
             <jet-button
+              id="updateRoom"
                 class="ml-2"
                 @click.native="updateRoom"
                 :class="{ 'opacity-25': form.processing }"

@@ -27,6 +27,20 @@ class BookingRequestFactory extends Factory
         return [
             'user_id' => User::inRandomOrder()->first()->id ?? User::factory(),
             'status' => $this->faker->randomElement(["review", "approved", "refused"]),
+            //'reference' => [],
+            'onsite_contact' => [
+                'name' => $this->faker->name,
+                'phone' => $this->faker->phoneNumber,
+                'email' => $this->faker->email,
+            ],
+            'event' => [
+                'title' => $this->faker->word,
+                'type' => $this->faker->word,
+                'description' => $this->faker->paragraph,
+                'guest_speakers' => $this->faker->name,
+                'attendees' => $this->faker->numberBetween(100),
+            ],
+            'notes' => $this->faker->paragraphs(3, true),
         ];
     }
 }

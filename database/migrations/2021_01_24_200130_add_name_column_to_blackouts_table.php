@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddAttributesColumnsToRoomsTable extends Migration
+class AddNameColumnToBlackoutsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,8 @@ class AddAttributesColumnsToRoomsTable extends Migration
      */
     public function up()
     {
-        Schema::table('rooms', function (Blueprint $table) {
-            $table->jsonb('attributes')->nullable();
-
+        Schema::table('blackouts', function (Blueprint $table) {
+            $table->text('name')->nullable();
         });
     }
 
@@ -26,10 +25,8 @@ class AddAttributesColumnsToRoomsTable extends Migration
      */
     public function down()
     {
-        Schema::table('rooms', function (Blueprint $table) {
-            $table->dropColumn(
-                ['attributes'],
-            );
+        Schema::table('blackouts', function (Blueprint $table) {
+            $table->dropColumn('name');
         });
     }
 }

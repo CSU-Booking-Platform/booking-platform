@@ -7,7 +7,9 @@ use Facade\Ignition\DumpRecorder\Dump;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Validation\ValidationException;
+use LaravelIdea\Helper\App\Models\_ReservationQueryBuilder;
 
 class Room extends Model
 {
@@ -39,12 +41,12 @@ class Room extends Model
         'attributes' => 'array',
     ];
 
-    public const ROOM_TYPES =['Lounge', 'Mezzazine', 'Conference'];
+    public const ROOM_TYPES =['Lounge', 'Mezzanine', 'Conference'];
 
     /**
      * The roles restricted from this room.
      */
-    public function restrictions(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function restrictions(): BelongsToMany
     {
         return $this->belongsToMany(Role::class, 'room_restrictions');
     }
@@ -140,24 +142,34 @@ class Room extends Model
     }
   }
 
+  private function verifyRoomQuery($startDate, $endDate, $reservation)
+  {
+    $query = Reservation::where('room_id', $this->id);
+    if ($reservation) {
+      $query = $query->where('id', '!=', $reservation->id);
+    }
+    return $query->where(function ($query) use ($startDate, $endDate) {
+      $query->whereBetween('start_time', [$startDate, $endDate])
+        ->orWhereBetween('end_time', [$startDate, $endDate])
+        ->orWhere(function ($query) use ($startDate, $endDate) {
+          $query->where('start_time', '<', $startDate)->where('end_time', '>', $endDate);
+        });
+    });
+  }
+
   public function verifyRoomIsFreeValidation($startDate, $endDate, $fail, $attribute, $reservation = null)
   {
-
-    $query = Reservation::where('room_id', $this->id);
-    if($reservation){
-      $query = $query->where('id','!=', $reservation->id);
-    }
-    $query = $query->where(function ($query) use ($startDate, $endDate) {
-      $query->whereBetween('start_time', [$startDate, $endDate])
-      ->orWhereBetween('end_time', [$startDate, $endDate])
-      ->orWhere(function ($query) use ($startDate, $endDate) {
-        $query->where('start_time', '<', $startDate)->where('end_time', '>', $endDate);
-      });
-    });
-      $conflict = $query->first();
+    $conflict = $this->verifyRoomQuery($startDate, $endDate, $reservation)->first();
 
     if ($conflict) {
       $fail($attribute . ' - Is blocked by another reservation.');
+    }
+  }
+
+  public function verifyRoomIsFree($startDate, $endDate, $reservation = null)
+  {
+    if ($this->verifyRoomQuery($startDate, $endDate, $reservation)->count() > 0) {
+      throw ValidationException::withMessages(['time_conflict' => "This is blocked by another reservation."]);
     }
   }
 

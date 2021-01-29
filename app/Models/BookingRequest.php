@@ -15,6 +15,9 @@ class BookingRequest extends Model
         'status',
         'reference',
         'log',
+        'event',
+        'notes',
+        'onsite_contact',
     ];
 
     /**
@@ -25,7 +28,19 @@ class BookingRequest extends Model
     protected $casts = [
         'reference' => 'array',
         'log' => 'array',
+        'event' => 'array',
+        'onsite_contact' => 'array',
     ];
+
+     /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'room',
+    ];
+
 
     /**
      * Get the rooms that are part of the booking request.
@@ -37,6 +52,16 @@ class BookingRequest extends Model
             'booking_request_id',
             'room_id');
     }
+
+    
+    /**
+     * Get the rooms that are part of the booking request.
+     */
+    public function getRoomAttribute()
+    {
+        return $this->rooms()->first();
+    }
+
 
     /**
      * Get the rooms that are part of the booking request.

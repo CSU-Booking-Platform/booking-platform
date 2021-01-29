@@ -23,7 +23,7 @@ class CreateReservationsTable extends Migration
         });
 
         Schema::table('booking_requests', function (Blueprint $table) {
-            $table->dropColumn('room_id');
+            $table->dropConstrainedForeignId('room_id');
         });
 
         Schema::table('booking_requests', function (Blueprint $table) {

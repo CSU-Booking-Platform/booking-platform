@@ -37,7 +37,6 @@ class BlackoutController extends Controller
    */
   public function store(Request $request)
   {
-
     $request->validateWithBag('createBlackout', [
       'room_id' => ['required', 'integer', 'exists:' . Room::class . ",id"],
       'start' => ['required', 'date'],

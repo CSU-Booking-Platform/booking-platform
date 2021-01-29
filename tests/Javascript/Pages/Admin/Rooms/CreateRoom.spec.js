@@ -1,7 +1,7 @@
 import {afterEach, beforeEach, jest, test} from "@jest/globals";
 
 jest.mock('laravel-jetstream')
-import {createLocalVue, mount} from '@vue/test-utils'
+import {createLocalVue, mount, shallowMount} from '@vue/test-utils'
 import {InertiaApp} from "@inertiajs/inertia-vue";
 import {InertiaForm} from "laravel-jetstream";
 import {InertiaFormMock} from "@test/__mocks__/laravel-jetstream";
@@ -37,7 +37,7 @@ test('should mount without crashing', () => {
                 floor: 1,
                 status: "available"
             }],
-            
+
             availableRoomTypes: ['test']
         }
     })
@@ -67,7 +67,7 @@ test('createRoom when no form errors', () => {
                 floor: 1,
                 status: "available"
             }],
-            
+
             availableRoomTypes: ['test']
         }
     })
@@ -100,7 +100,7 @@ test('createRoom when form errors', () => {
                 floor: 1,
                 status: "available"
             }],
-            
+
             availableRoomTypes: ['test']
         }
     })
@@ -124,7 +124,7 @@ test('toggle correctly toggles the boolean', () => {
                 floor: 1,
                 status: "available"
             }],
-            
+
             availableRoomTypes: ['test']
         }
     })

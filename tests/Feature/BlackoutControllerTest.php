@@ -107,6 +107,8 @@ class BlackoutControllerTest extends TestCase
     );
 
     $response->assertStatus(302);
+    $response->assertSessionHasNoErrors();
+
     $this->assertDatabaseCount('blackouts', 12);
   }
 

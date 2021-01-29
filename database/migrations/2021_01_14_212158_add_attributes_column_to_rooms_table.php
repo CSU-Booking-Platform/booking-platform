@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddStatusToRooms extends Migration
+class AddAttributesColumnToRoomsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,8 @@ class AddStatusToRooms extends Migration
     public function up()
     {
         Schema::table('rooms', function (Blueprint $table) {
-            $table->string('status')->default('');
+            $table->jsonb('attributes')->nullable();
+
         });
     }
 
@@ -26,7 +27,9 @@ class AddStatusToRooms extends Migration
     public function down()
     {
         Schema::table('rooms', function (Blueprint $table) {
-            $table->dropColumn('status');
+            $table->dropColumn(
+                ['attributes'],
+            );
         });
     }
 }

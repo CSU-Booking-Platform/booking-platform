@@ -21,7 +21,7 @@ beforeEach(() => {
           form: {
             booking_request_id: null,
             room_id: null,
-            recurrences: [{
+            reservations: [{
               start_time: null,
               end_time: null,
             }],
@@ -129,7 +129,7 @@ test('Testing empty file upload', () => {
                 form: {
                   booking_request_id: null,
                   room_id: null,
-                  recurrences: [{
+                  reservations: [{
                     start_time: null,
                     end_time: null,
                   }],

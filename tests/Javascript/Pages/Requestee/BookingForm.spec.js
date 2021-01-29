@@ -1,0 +1,101 @@
+import {beforeEach, jest, test} from "@jest/globals";
+
+jest.mock('laravel-jetstream')
+
+import {createLocalVue, mount, shallowMount} from '@vue/test-utils'
+import {InertiaApp} from '@inertiajs/inertia-vue'
+import {InertiaForm} from 'laravel-jetstream'
+import Component from '@src/Pages/Requestee/BookingForm'
+import moment from "moment";
+
+let localVue
+let wrapper
+
+beforeEach(() => {
+    localVue = createLocalVue()
+    localVue.use(InertiaApp)
+    localVue.use(InertiaForm)
+
+    wrapper = shallowMount(Component, {localVue,
+        propsData: {
+            room: {
+                id: 1,
+                name: 'a',
+                building: 'a',
+                floor: 'a',
+            },
+            reservations: [
+                { start_time: "2020-01-20T18:02", end_time: "2020-01-20T18:05" },
+                { start_time: "2020-01-21T18:02", end_time: "2020-01-21T18:05" },
+            ]
+        },
+        data() {
+            return {
+                accept_terms: false,
+                form: {
+                    onsite_contact: {},
+                    event: {
+                        title: '',
+                        type: '',
+                        description: '',
+                        speakers: '',
+                        attendees: '',
+                        food: {
+                            low_risk: false,
+                            high_risk: false,
+                        },
+                        alcohol: false,
+                        show: {},
+                    },
+                }
+            }
+        },
+    });
+
+});
+
+afterEach(() => {
+    wrapper = null;
+});
+
+test('should mount without crashing', () => {
+    expect(wrapper.text()).toBeDefined();
+    expect(wrapper.html()).toBeDefined();
+})
+
+test('computed reservation should match res[0]', () => {
+    expect(wrapper.vm.reservation).toStrictEqual({ start_time: "2020-01-20T18:02", end_time: "2020-01-20T18:05" });
+})
+
+test('computed isRecurring should be true based on given data', () => {
+    expect(wrapper.vm.isRecurring).toBe(true);
+})
+
+test('computed minStart and maxEnd should be true based on given data', () => {
+    expect(wrapper.vm.minStart).toBe(moment("2020-01-20T18:02").format("HH:mm"));
+    expect(wrapper.vm.maxEnd).toBe(moment("2020-01-20T18:05").format("HH:mm"));
+})
+
+test('uploads can be set via a method', () => {
+    wrapper.vm.uploadedFiles([]);
+
+    expect(wrapper.vm.form.files).toStrictEqual([]);
+})
+
+test('disabling question forms will save their state in the form', () => {
+    wrapper.vm.form.event.show = {contact:false, fee: false, music: false}
+
+    wrapper.vm.toggleNullableForms();
+
+    expect(wrapper.vm.form.event.show).toStrictEqual({contact:false, fee: false, music: false});
+})
+
+test('filter returns date', () => {
+
+    expect(wrapper.vm.only_date(moment())).toBe(moment().format("dddd, Do MMMM YYYY"));
+})
+
+test('filter returns time', () => {
+
+    expect(wrapper.vm.only_time(moment())).toBe(moment().format("LT"));
+})

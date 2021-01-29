@@ -15,7 +15,7 @@ beforeEach(() => {
     localVue.use(InertiaApp);
     localVue.use(InertiaForm);
 
-    wrapper = shallowMount(UpdateRoomForm, { 
+    wrapper = shallowMount(UpdateRoomForm, {
         localVue,
         propsData: {
             availableRoomTypes: ['test']
@@ -72,6 +72,7 @@ test('Room prop watcher updates form', () => {
         floor: '2009', 
         building: 'wiseau',
         status: 'Available',
+        room_status:'Lounge',
         attributes: {
             capacity_standing:'100',
             capacity_sitting: '80',
@@ -101,6 +102,7 @@ test('Room prop watcher updates form', () => {
         expect(wrapper.vm.form.floor).toBe(room.floor);
         expect(wrapper.vm.form.building).toBe(room.building);
         expect(wrapper.vm.form.status).toBe(room.status);
+        expect(wrapper.vm.form.room_type).toBe(room.room_type);
         expect(wrapper.vm.form.capacity_standing).toBe(room.attributes.capacity_standing);
         expect(wrapper.vm.form.capacity_sitting).toBe(room.attributes.capacity_sitting);
         expect(wrapper.vm.form.food).toBe(room.attributes.food);

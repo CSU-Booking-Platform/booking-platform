@@ -24,14 +24,14 @@
                 </jet-nav-link>
                 <jet-nav-link
                   v-if="$page.user.can.includes('bookings')"
-                  href="rooms"
+                  href="/rooms"
                   :active="$page.currentRouteName == 'rooms'"
                 >
                   Booking Management
                 </jet-nav-link>
                 <jet-nav-link
                   v-if="$page.user.can.includes('users')"
-                  href="users"
+                  href="/users"
                   :active="$page.currentRouteName == 'users'"
                 >
                   User Management

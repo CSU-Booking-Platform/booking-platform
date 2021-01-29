@@ -22,7 +22,7 @@ class EasyUserSeeder extends Seeder
                $admin->password = Hash::make('password');
                $admin->save();
         }else{
-            User::create([
+            User::factory()->create([
                 'name' => 'Joseph doe',
                 'email' => 'admin@email.com',
                 'password' => Hash::make('password'),

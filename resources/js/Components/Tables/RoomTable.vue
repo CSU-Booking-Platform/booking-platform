@@ -15,7 +15,7 @@
       <caption></caption>
       <thead>
         <tr>
-          <th class="lt-grey" id="id_room_id">Room ID</th>
+          <th class="lt-grey" id="id_room_id">Room Name</th>
           <th class="lt-grey" id="id_room_type">Room Type</th>
           <th class="lt-grey" id="id_room_building">Building</th>
           <th class="lt-grey" id="id_room_number">Number</th>
@@ -27,7 +27,7 @@
       </thead>
       <tbody>
          <tr v-for="room in filteredRooms" :key="room.id">
-            <td class="text-center lt-grey">{{room.id}}</td>
+            <td class="text-center lt-grey">{{room.name}}</td>
             <td class="text-center lt-grey">{{room.room_type}}</td>
             <td class="text-center lt-grey">{{room.building}}</td>
             <td class="text-center lt-grey">{{room.number}}</td>

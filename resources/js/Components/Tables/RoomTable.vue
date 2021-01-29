@@ -32,7 +32,11 @@
             <td class="text-center lt-grey">{{room.building}}</td>
             <td class="text-center lt-grey">{{room.number}}</td>
             <td class="text-center lt-grey">{{room.floor}}</td>
-            <td class="text-center lt-grey">{{room.status}}</td>
+            <td 
+            @click="seeRoomAvailability = room"
+            class="text-center lt-grey underline">
+            {{room.status}}
+            </td>
             <td class="text-center lt-grey">Reference</td>
             <td class="lt-grey p-3">
              <div class="text-md mx-2">
@@ -74,6 +78,12 @@
       :room="roomBeingBooked"
       @close="roomBeingBooked = null"
     ></CreateBookingRequestModal>
+
+    <AvailabilitiesModal
+      :room="seeRoomAvailability"
+      @close="seeRoomAvailability = null"
+    >
+    </AvailabilitiesModal>
 
     <RoomDetailedView
       :room="roomBeingInspected"
@@ -320,6 +330,7 @@ import RoomDetailedView from "@src/Components/RoomDetailedView";
 import JetButton from "@src/Jetstream/Button";
 import JetLabel from "@src/Jetstream/Label";
 import JetInputError from "@src/Jetstream/InputError";
+import AvailabilitiesModal from "@src/Components/AvailabilitiesModal";
 
 export default {
   name: "RoomTable",
@@ -343,13 +354,15 @@ export default {
       RoomDetailedView,
       JetButton,
       JetLabel,
-      JetInputError
+      JetInputError,
+      AvailabilitiesModal
   },
   data() {
       return {
           filter: '',
           roomBeingBooked: null,
           roomBeingInspected: null,
+          seeRoomAvailability: null,
           jsonFilters: {
               capacity_standing: null,
               capacity_sitting: null,

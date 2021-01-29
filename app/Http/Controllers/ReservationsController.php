@@ -6,6 +6,8 @@ use App\Events\BookingRequestUpdated;
 use App\Models\BookingRequest;
 use App\Models\Reservation;
 use App\Models\Room;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -129,6 +131,30 @@ class ReservationsController extends Controller
       $booking->delete();
     }
     return back();
+  }
+
+  /**
+   * Remove the specified resource from storage.
+   * @param Request $request
+   * @param Room $room
+   * @return \Illuminate\Http\Response
+   */
+  public function roomReservation(Request $request, Room $room)
+  {
+    $date = $request->get('date');
+
+    if (empty($date)) {
+      return response()->json([]);
+    }
+
+    $roomReservations = Reservation::query()->where('room_id', '=', $room->id)
+      ->whereDate('start_time', '=', Carbon::parse($date)->toDateString())
+      ->whereHas('bookingRequest', function (Builder $subQuery) {
+        $subQuery->where('status', 'like', '%approved%');
+      })
+      ->get();
+
+    return response()->json($roomReservations);
   }
 
   private function reservationValidate(Request $request, $function, $reservation = null){

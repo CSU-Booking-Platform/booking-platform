@@ -20,7 +20,7 @@ class RoomController extends Controller
     public function index()
     {
         return inertia('Admin/Rooms/Index', [
-            'rooms' => Room::with('restrictions', 'availabilities')->get(),
+            'rooms' => Room::with('restrictions', 'availabilities', 'blackouts')->get(),
             'roles' => Role::all(),
             'availableRoomTypes'=> Room::ROOM_TYPES,
         ]);

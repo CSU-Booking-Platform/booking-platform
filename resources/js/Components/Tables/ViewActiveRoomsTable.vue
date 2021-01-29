@@ -3,7 +3,7 @@
     <div class="table-filter-container pb-10">
       <input type="text"
           placeholder="Search Rooms Table"
-          v-model="filter" 
+          v-model="filter"
           />
     </div>
     <table class="table-auto responsive-spaced">
@@ -16,7 +16,7 @@
           <th class="lt-grey p-3" id="id_room_number">Number</th>
           <th class="lt-grey p-3" id="id_room_floor">Floor</th>
           <th class="lt-grey p-3" id="id_room_availability">Availability</th>
-          <th class="lt-grey p-3" id="id_room_availability">Action</th>
+          <th class="lt-grey p-3" id="id_room_action">Action</th>
         </tr>
       </thead>
       <tbody>
@@ -26,7 +26,11 @@
           <td class="text-center lt-grey p-3">{{room.building}}</td>
           <td class="text-center lt-grey p-3">{{room.number}}</td>
           <td class="text-center lt-grey p-3">{{room.floor}}</td>
-          <td class="text-center lt-grey p-3">{{room.status}}</td>
+          <td
+            @click="seeRoomAvailability = room"
+            class="text-center lt-grey p-3 underline">
+            {{room.status}}
+          </td>
           <td class="lt-grey p-3">
             <div class="text-md mx-2">
               <jet-dropdown width="48">
@@ -38,7 +42,7 @@
                   </button>
                 </template>
 
-                <template #content> 
+                <template #content>
                   <div class="text-md mx-3">
                     <button
                         class="cursor-pointer text-sm text-blue-800 focus:outline-none"
@@ -77,10 +81,16 @@
     </table>
 
     <update-room-form
-        :room="roomBeingUpdated" 
-        :available-room-types="availableRoomTypes" 
+        :room="roomBeingUpdated"
+        :available-room-types="availableRoomTypes"
         @close="roomBeingUpdated = null">
     </update-room-form>
+
+    <AvailabilitiesModal
+      :room="seeRoomAvailability"
+      @close="seeRoomAvailability = null"
+    >
+    </AvailabilitiesModal>
 
     <jet-confirmation-modal
       :show="roomBeingDeleted"
@@ -160,6 +170,7 @@ import UpdateRoomForm from "@src/Pages/Admin/Rooms/UpdateRoomForm";
 import Label from "@src/Jetstream/Label";
 import JetDropdown from "@src/Jetstream/Dropdown";
 import JetDropdownLink from "@src/Jetstream/DropdownLink";
+import AvailabilitiesModal from "@src/Components/AvailabilitiesModal";
 
 export default {
   name: "RoomTable",
@@ -184,6 +195,7 @@ export default {
     },
   },
   components: {
+    AvailabilitiesModal,
         Label,
         Dropdown,
         Input,
@@ -199,13 +211,14 @@ export default {
         JetInputError,
         UpdateRoomForm,
         JetDropdown,
-        JetDropdownLink  
+        JetDropdownLink
   },
   data() {
       return {
         deleteRoomForm: this.$inertia.form(),
         roomBeingUpdated: null,
         roomBeingDeleted: null,
+        seeRoomAvailability: null,
         roomRestBeingUpdated: null,
         filter: '',
         updateRoomRestForm: this.$inertia.form({
@@ -251,13 +264,13 @@ export default {
             }
         });
     },
-    
+
   },
 
   computed: {
     filterRooms() {
         return this.rooms.filter(room => {
-          
+
             const building = room.building.toLowerCase();
             const status = room.status.toLowerCase();
             const name = room.name.toLowerCase();
@@ -267,8 +280,8 @@ export default {
 
             const search = this.filter.toLowerCase();
 
-            return building.includes(search) || 
-                    floor.includes(search) || 
+            return building.includes(search) ||
+                    floor.includes(search) ||
                     name.includes(search) ||
                     status.includes(search) ||
                     number.includes(search) ||

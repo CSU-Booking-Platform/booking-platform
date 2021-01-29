@@ -336,6 +336,37 @@ class ReservationControllerTest extends TestCase
     $this->assertEquals(1, $reservation->bookingRequest()->count());
 
   }
+
+  public function test_retrieve_approved_reservations_on_given_date()
+  {
+    $user = User::factory()->create();
+    $room = Room::factory()->create();
+
+    $booking_request = $this->createBookingRequest(true, ['status' => "approved"]);
+    $reservation = $this->createReservation($room, $booking_request, true);
+    $this->createReservationAvailabilities($reservation->start_time, $room);
+
+    $response = $this->actingAs($user)->post('/api/reservations/' . $room->id, [
+      'date' => $reservation->start_time
+    ]);
+
+    $response->assertJsonCount(1);
+  }
+
+  public function test_retrieve_approved_reservations_with_no_date_return_empty()
+  {
+    $user = User::factory()->create();
+    $room = Room::factory()->create();
+
+    $booking_request = $this->createBookingRequest(true, ['status' => "approved"]);
+    $reservation = $this->createReservation($room, $booking_request, true);
+    $this->createReservationAvailabilities($reservation->start_time, $room);
+
+    $response = $this->actingAs($user)->post('/api/reservations/' . $room->id);
+
+    $response->assertJsonCount(0);
+  }
+
   /**
    * helper functions
    */
@@ -374,12 +405,12 @@ class ReservationControllerTest extends TestCase
     return $reservation;
   }
 
-  private function createBookingRequest($create = true)
+  private function createBookingRequest($create = true, $input = [])
   {
     if ($create) {
-      $booking_request = BookingRequest::factory()->create();
+      $booking_request = BookingRequest::factory()->create($input);
     } else {
-      $booking_request = BookingRequest::factory()->make();
+      $booking_request = BookingRequest::factory()->make($input);
     }
     return $booking_request;
   }

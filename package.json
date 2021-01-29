@@ -78,15 +78,19 @@
             "@babel/preset-env"
         ],
         "plugins": [
-          [
-            "@babel/plugin-transform-runtime", {
-            "corejs": false,
-            "regenerator": true
-          }
-          ]
+            [
+                "@babel/plugin-transform-runtime",
+                {
+                    "corejs": false,
+                    "regenerator": true
+                }
+            ]
         ]
-      },
+    },
     "jestSonar": {
         "reportPath": "reports/js"
+    },
+    "dependencies": {
+        "v-calendar": "^2.2.1"
     }
 }

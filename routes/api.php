@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ReservationsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\Room;
@@ -14,7 +15,9 @@ use App\Http\Controllers\RoomController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
 Route::post('/filterRooms', [RoomController::class, 'filter']);
+Route::post('/reservations/{room}', [ReservationsController::class, 'roomReservation']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

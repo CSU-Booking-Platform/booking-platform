@@ -19,7 +19,7 @@
                         leave-active-class="ease-in duration-200"
                         leave-class="opacity-100 translate-y-0 sm:scale-100"
                         leave-to-class="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
-                    <div v-show="show" class="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full" :class="maxWidthClass">
+                    <div v-show="show" class="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all" :class="maxWidthClass">
                         <slot></slot>
                     </div>
                 </transition>
@@ -80,11 +80,11 @@
         computed: {
             maxWidthClass() {
                 return {
-                    'sm': 'sm:max-w-sm',
-                    'md': 'sm:max-w-md',
-                    'lg': 'sm:max-w-lg',
-                    'xl': 'sm:max-w-xl',
-                    '2xl': 'sm:max-w-2xl',
+                    'sm': 'sm:w-full sm:max-w-sm',
+                    'md': 'sm:w-full sm:max-w-md',
+                    'lg': 'sm:w-full sm:max-w-lg',
+                    'xl': 'sm:w-full sm:max-w-xl',
+                    '2xl': 'sm:w-full sm:max-w-2xl',
                 }[this.maxWidth]
             }
         }

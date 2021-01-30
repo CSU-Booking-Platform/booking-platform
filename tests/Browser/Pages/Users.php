@@ -47,4 +47,16 @@ class Users extends Page
         ->type('#password_confirmation', $password)
         ->press('#create');
     }
+    public function updateUser(Browser $browser, string $name = "New Name") {
+      $browser
+        ->press('Edit')
+        ->type('.vue-portal-target #name', $name)
+        ->press('UPDATE');
+    }
+
+  public function deleteUser(Browser $browser) {
+
+    $browser->press('Delete')
+      ->press('.vue-portal-target #delete');
+  }
 }

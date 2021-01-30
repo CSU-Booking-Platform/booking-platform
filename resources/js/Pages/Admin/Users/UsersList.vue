@@ -81,7 +81,7 @@
           Nevermind
         </jet-secondary-button>
 
-        <jet-danger-button class="ml-2" @click.native="deleteUser"
+        <jet-danger-button id="delete" class="ml-2" @click.native="deleteUser"
                            :class="{ 'opacity-25': deleteUserForm.processing }"
                            :disabled="deleteUserForm.processing">
           Delete

@@ -10,7 +10,7 @@
         </header>
 
         <!-- Page Content -->
-        <main>
+        <main class="flex-grow">
             <slot></slot>
         </main>
 
@@ -112,7 +112,6 @@ import JetDropdownLink from '@src/Jetstream/DropdownLink'
 import JetNavLink from '@src/Components/Navbar/NavLink'
 import JetResponsiveNavLink from '@src/Jetstream/ResponsiveNavLink'
 import Navbar from '@src/Components/Navbar/Navbar'
-import axios from 'axios'
 
 export default {
     components: {

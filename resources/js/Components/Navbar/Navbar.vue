@@ -9,161 +9,163 @@
         </div>
       </div>
 
-      <nav class="px-15 flex flex-col bg-white border-b border-gray-100 top-nav" aria-label="Main navBar">
-        <!-- Primary Navigation Menu -->
-        <div class="flex-fill">
-          <div class="flex justify-between py-2">
-            <div class="flex">
-              <!-- Navigation Links -->
-              <div class="hidden space-x-8 sm:flex ">
-                <jet-nav-link
-                  href="/dashboard"
-                  :active="$page.currentRouteName == 'dashboard'"
-                >
-                  Home
-                </jet-nav-link>
-                <jet-nav-link
-                  v-if="$page.user.can.includes('bookings')"
-                  href="/rooms"
-                  :active="$page.currentRouteName == 'rooms'"
-                >
-                  Booking Management
-                </jet-nav-link>
-                <jet-nav-link
-                  v-if="$page.user.can.includes('users')"
-                  href="/users"
-                  :active="$page.currentRouteName == 'users'"
-                >
-                  User Management
-                </jet-nav-link>
-              </div>
+    <nav class="px-15 flex flex-col bg-white border-b border-gray-100 top-nav" aria-label="Main navBar">
+      <!-- Primary Navigation Menu -->
+      <div class="flex-fill">
+        <div class="flex justify-between py-2">
+          <div class="flex">
+            <!-- Navigation Links -->
+            <div class="hidden space-x-8 sm:flex ">
+              <jet-nav-link
+                href="/dashboard"
+                :active="$page.currentRouteName === 'dashboard'"
+              >
+                Home
+              </jet-nav-link>
+              <jet-nav-link
+                v-if="$page.user.can.includes('bookings')"
+                href="/bookings"
+                :active="$page.currentRouteName === 'rooms'"
+              >
+                Bookings
+              </jet-nav-link>
+              <!--                TODO: Adjust this permission-->
+              <jet-nav-link
+                v-if="$page.user.can.includes('users')"
+                href="/users"
+                :active="showAdminSubnav"
+              >
+                System Administration
+              </jet-nav-link>
             </div>
+          </div>
 
-            <!-- Settings Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ml-6">
-              <div class="ml-3 relative">
-                <jet-dropdown align="right" width="48">
-                  <template #trigger>
-                    <button
-                      dusk="nav-profile"
-                      v-if="$page.jetstream.managesProfilePhotos"
-                      class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition duration-150 ease-in-out"
-                    >
-                      <img
-                        class="h-8 w-8 rounded-full object-cover"
-                        :src="$page.user.profile_photo_url"
-                        :alt="$page.user.name"
-                      />
-                    </button>
+          <!-- Settings Dropdown -->
+          <div class="hidden sm:flex sm:items-center sm:ml-6">
+            <div class="ml-3 relative">
+              <jet-dropdown align="right" width="48">
+                <template #trigger>
+                  <button
+                    dusk="nav-profile"
+                    v-if="$page.jetstream.managesProfilePhotos"
+                    class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition duration-150 ease-in-out"
+                  >
+                    <img
+                      class="h-8 w-8 rounded-full object-cover"
+                      :src="$page.user.profile_photo_url"
+                      :alt="$page.user.name"
+                    />
+                  </button>
 
-                    <button
-                      dusk="nav-profile"
-                      v-else
-                      class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out"
-                    >
-                      <div>{{ $page.user.name }}</div>
+                  <button
+                    dusk="nav-profile"
+                    v-else
+                    class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out"
+                  >
+                    <span class="block">{{ $page.user.name }}</span>
 
-                      <div class="ml-1">
-                        <svg
-                          class="fill-current h-4 w-4"
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 20 20"
-                        >
-                          <path
-                            fill-rule="evenodd"
-                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                            clip-rule="evenodd"
-                          />
-                        </svg>
-                      </div>
-                    </button>
-                  </template>
+                    <span class="block ml-1">
+                      <svg
+                        class="fill-current h-4 w-4"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                          clip-rule="evenodd"
+                        />
+                      </svg>
+                    </span>
+                  </button>
+                </template>
 
-                  <template #content>
-                    <!-- Account Management -->
-                    <div class="block px-4 py-2 text-xs text-gray-400">
-                      Manage Account
-                    </div>
+                <template #content>
+                  <!-- Account Management -->
+                  <div class="block px-4 py-2 text-xs text-gray-400">
+                    Manage Account
+                  </div>
 
-                    <jet-dropdown-link href="/user/profile">
-                      Profile
-                    </jet-dropdown-link>
+                  <jet-dropdown-link href="/user/profile">
+                    Profile
+                  </jet-dropdown-link>
 
-                    <div class="border-t border-gray-100"></div>
+                  <div class="border-t border-gray-100"></div>
 
-                    <!-- Authentication -->
-                    <form @submit.prevent="logout" >
-                      <jet-dropdown-link as="button" dusk="nav-logout"> Logout</jet-dropdown-link>
-                    </form>
-                  </template>
-                </jet-dropdown>
-              </div>
+                  <!-- Authentication -->
+                  <form @submit.prevent="logout">
+                    <jet-dropdown-link as="button" dusk="nav-logout"> Logout</jet-dropdown-link>
+                  </form>
+                </template>
+              </jet-dropdown>
             </div>
           </div>
         </div>
-      </nav>
+      </div>
+    </nav>
 
-      <nav class="px-15 sub-nav" aria-label="SubnavBar">
-        <Subnavbar>
-          <div
-            v-if="$page.currentRouteName == 'dashboard'"
-            class="space-x-8 sm:flex">
-            <jet-nav-sub
-              href="/dashboard"
-              :active="$page.currentRouteName == 'dashboard'"
-            >
-              Dashboard
-            </jet-nav-sub>
-          </div>
-          <div
-            v-else-if="$page.currentRouteName == 'rooms.index'"
-            class="space-x-8 flex"
+    <nav class="px-15 sub-nav" aria-label="SubnavBar">
+      <Subnavbar>
+        <div
+          v-if="$page.currentRouteName === 'dashboard'"
+          class="space-x-8 sm:flex">
+          <jet-nav-sub
+            href="/dashboard"
+            :active="$page.currentRouteName === 'dashboard'"
           >
-            <jet-nav-sub
-              href="/rooms"
-              :active="$page.currentRouteName == 'rooms.index'"
-            >
-              Rooms
-            </jet-nav-sub>
-          </div>
-          <div
-            v-else-if="$page.currentRouteName == 'users.index'"
-            class="space-x-8 flex"
+            Dashboard
+          </jet-nav-sub>
+        </div>
+        <div
+          v-else-if="showBookingSubnav"
+          class="space-x-8 sm:flex"
+        >
+          <jet-nav-sub
+            href="/bookings/list"
+            :active="$page.currentRouteName === 'bookings.list'"
           >
-            <jet-nav-sub
-              href="/users"
-              :active="$page.currentRouteName == 'users.index'"
-            >
-              Users
-            </jet-nav-sub>
-            <jet-nav-sub
-              href="/roles"
-              :active="$page.currentRouteName == 'roles.index'"
-            >
-              Roles
-            </jet-nav-sub>
-          </div>
-          <div
-            v-else-if="$page.currentRouteName == 'roles.index'"
-            class="space-x-8 flex"
+            My Bookings
+          </jet-nav-sub>
+          <jet-nav-sub
+            href="/bookings"
+            :active="$page.currentRouteName === 'bookings.index'"
           >
-            <jet-nav-sub
-              href="/users"
-              :active="$page.currentRouteName == 'users.index'"
-            >
-              Users
-            </jet-nav-sub>
-            <jet-nav-sub
-              href="/roles"
-              :active="$page.currentRouteName == 'roles.index'"
-            >
-              Roles
-            </jet-nav-sub>
-          </div>
-        </Subnavbar>
+            Search
+          </jet-nav-sub>
+          <jet-nav-sub
+            href="/bookings/create"
+            :active="$page.currentRouteName === 'bookings.create'"
+          >
+            Create
+          </jet-nav-sub>
+        </div>
+        <div
+          v-else-if="showAdminSubnav"
+          class="space-x-8 flex"
+        >
+          <jet-nav-sub
+            href="/rooms"
+            :active="$page.currentRouteName === 'rooms.index'"
+          >
+            Rooms
+          </jet-nav-sub>
+          <jet-nav-sub
+            href="/users"
+            :active="$page.currentRouteName === 'users.index'"
+          >
+            Users
+          </jet-nav-sub>
+          <jet-nav-sub
+            href="/roles"
+            :active="$page.currentRouteName === 'roles.index'"
+          >
+            Roles
+          </jet-nav-sub>
+        </div>
+      </Subnavbar>
 
-      </nav>
-    </header>
+    </nav>
+  </header>
 </template>
 
 <script>
@@ -198,7 +200,7 @@ export default {
 
   methods: {
     logout() {
-      axios.post('/logout').then(response => {
+      axios.post('/logout').then(() => {
         window.location = '/';
       })
     },
@@ -208,6 +210,26 @@ export default {
     path() {
       return window.location.pathname;
     },
+    showAdminSubnav() {
+      switch (this.$page.currentRouteName) {
+        case 'users.index':
+        case 'rooms.index':
+        case 'roles.index':
+          return true;
+        default:
+          return false;
+      }
+    },
+    showBookingSubnav() {
+      switch (this.$page.currentRouteName) {
+        case 'bookings.index':
+        case 'bookings.create':
+        case 'bookings.list':
+          return true;
+        default:
+          return false;
+      }
+    }
   },
 };
 </script>

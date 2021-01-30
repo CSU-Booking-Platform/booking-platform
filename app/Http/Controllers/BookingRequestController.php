@@ -10,16 +10,13 @@ use App\Models\Room;
 use App\Events\BookingRequestUpdated;
 use DB;
 use Exception;
-use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Inertia\ResponseFactory;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use ZipArchive;
 use File;
 
@@ -80,7 +77,7 @@ class BookingRequestController extends Controller
     public function create()
     {
       if (!Session::has(self::RESERVATIONS_SESSION_KEY)) {
-        return redirect()->route('bookings.list');
+        return redirect()->route('bookings.index');
       } else {
         $data = Session::get(self::RESERVATIONS_SESSION_KEY)[0];
 
@@ -248,7 +245,7 @@ class BookingRequestController extends Controller
 
     }
 
-    public function list(Request $request)
+    public function list()
     {
         return inertia('Requestee/BookingsList', [
             'bookings' => BookingRequest::with('user', $this->reservationRoom)->get(),

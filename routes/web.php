@@ -42,7 +42,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
   Route::resource('rooms', RoomController::class)->only(['store', 'index', 'update', 'destroy']);
   Route::put('room/restrictions/{id}', [RestrictionsController::class, 'update'])
     ->name('room.restrictions.update')->middleware('permission:bookings.approve');
-  Route::resource('blackouts', BlackoutController::class)->only(['index', 'store', 'destroy', 'update']);
+  Route::resource('blackouts', BlackoutController::class)->only(['store', 'destroy', 'update']);
   Route::get('rooms/{room}/blackouts', [BlackoutController::class, 'room']);
 
   Route::resource('settings', SettingsController::class)->only(['index']);

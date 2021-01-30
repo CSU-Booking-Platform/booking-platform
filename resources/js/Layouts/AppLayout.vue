@@ -1,5 +1,5 @@
 <template>
-    <div class="min-h-screen bg-gray-100">
+    <div class="min-h-screen bg-gray-100 flex flex-col justify-between">
         <Navbar/>
 
         <!-- Page Heading -->
@@ -19,7 +19,7 @@
         </portal-target>
 
         <!-- Footer -->
-        <footer class="bg-black text-white text-xs font-bold pb-48">
+        <footer class="bg-black text-white text-xs font-bold pb-12">
             <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                 <div class="flex">
                     <div class="flex flex-col flex-1">
@@ -80,13 +80,15 @@
                         <div class="flex-1 py-3 font-black text-sm">
                             SUBSCRIBE TO OUR NEWSLETTER
                         </div>
-                        <div class="flex-1 py-3">
-                            <div class="mt-1 relative rounded-sm shadow-sm">
-                                <input type="text" name="email" id="email"
-                                       class="focus:ring-indigo-500 focus:border-indigo-500 block w-full py-2 pl-1 pr-12 sm:text-sm border-gray-300 rounded-md bg-black border-2 border-white"
-                                       placeholder="Email Address">
-                            </div>
+                      <div class="flex-1 py-3">
+                        <div class="mt-1 relative rounded-sm shadow-sm">
+                          <label for="email">
+                            <input type="text" name="email" id="email"
+                                   class="focus:ring-indigo-500 focus:border-indigo-500 block w-full py-2 pl-1 pr-12 sm:text-sm border-gray-300 rounded-md bg-black border-2 border-white"
+                                   placeholder="Email Address">
+                          </label>
                         </div>
+                      </div>
                         <div class="flex-1 py-3">
                             <div class="mt-1 relative rounded-sm shadow-sm">
                                 <button type="button"

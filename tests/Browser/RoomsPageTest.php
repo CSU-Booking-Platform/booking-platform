@@ -58,12 +58,32 @@ class RoomsPageTest extends DuskTestCase
         ->updateRoom($room, 'Not Ipsum');
       $browser->waitUntilMissingText('NEVERMIND');
 
-      $browser->assertDontSee($room->name);
+      $browser->assertSee('Not Ipsum');
     });
 
     $this->assertDatabaseCount('rooms', 1);
     $this->assertDatabaseHas('rooms', [
       'name' => 'Not Ipsum',
     ]);
+  }
+  public function testWhenDeleteRoom()
+  {
+    (new RolesAndPermissionsSeeder())->run();
+
+    $room = Room::factory()->create();
+    $this->browse(function (Browser $browser) use ($room) {
+
+      $admin = User::factory()->create();
+      $admin->assignRole('super-admin');
+      $browser->loginAs($admin);
+      $browser->visit(new Rooms)
+        ->assertSee($room->name)
+        ->deleteRoom()
+        ->waitUntilMissingText('NEVERMIND');
+
+      $browser->assertDontSee($room->name);
+    });
+
+    $this->assertDatabaseCount('rooms', 0);
   }
 }

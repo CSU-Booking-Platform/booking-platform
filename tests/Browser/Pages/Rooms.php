@@ -63,10 +63,17 @@ class Rooms extends Page
     public function updateRoom(Browser $browser, Room $room, string $name) {
 
       $browser
-        ->screenshot('Open list')
-        ->screenshot('update clicked')
+        ->press('. . .')
+        ->press('Update')
         ->type('.vue-portal-target #name', $name)
         ->press('#updateRoom');
 
+    }
+    public function deleteRoom(Browser $browser) {
+
+      $browser
+        ->press('. . .')
+        ->press('Delete')
+        ->press('#deleteRoom');
     }
 }

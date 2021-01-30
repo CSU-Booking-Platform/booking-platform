@@ -103,7 +103,7 @@
       <template #footer>
         <jet-secondary-button @click.native="roomBeingDeleted = null">Nevermind</jet-secondary-button>
 
-        <jet-danger-button
+        <jet-danger-button id="deleteRoom"
           class="ml-2"
           @click.native="deleteRoom"
           :class="{ 'opacity-25': deleteRoomForm.processing }"

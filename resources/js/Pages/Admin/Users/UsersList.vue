@@ -161,7 +161,7 @@ export default {
 
   methods: {
     deleteUser() {
-      this.deleteUserForm.delete('/users/' + this.userBeingDeleted.id, {
+      this.deleteUserForm.delete('/admin/users/' + this.userBeingDeleted.id, {
         preserveScroll: true,
         preserveState: true,
       }).then(() => {
@@ -177,7 +177,7 @@ export default {
     },
 
     updateUser() {
-      this.updateUserForm.put('/users/' + this.userBeingUpdated.id, {
+      this.updateUserForm.put('/admin/users/' + this.userBeingUpdated.id, {
         preserveScroll: true,
         preserveState: true,
       }).then(() => {

@@ -2,7 +2,7 @@ import {beforeEach, jest, test} from "@jest/globals";
 
 jest.mock('laravel-jetstream')
 
-import {createLocalVue, mount, shallowMount} from '@vue/test-utils'
+import {createLocalVue, shallowMount} from '@vue/test-utils'
 import {InertiaApp} from '@inertiajs/inertia-vue'
 import {InertiaForm} from 'laravel-jetstream'
 import Index from '@src/Pages/Admin/Roles/Index'
@@ -23,7 +23,7 @@ beforeEach(() => {
 });
 
 test('should mount without crashing', () => {
-    const wrapper = shallowMount(Index, {localVue})
+    shallowMount(Index, {localVue})
 })
 
 test('deleteRole()', () => {
@@ -49,7 +49,7 @@ test('deleteRole()', () => {
 
     wrapper.vm.deleteRole()
 
-    expect(InertiaFormMock.delete).toBeCalledWith('/roles/' + mockRoleBeingDeleted.id, {
+    expect(InertiaFormMock.delete).toBeCalledWith('/admin/roles/' + mockRoleBeingDeleted.id, {
         preserveScroll: true,
         preserveState: true,
     })

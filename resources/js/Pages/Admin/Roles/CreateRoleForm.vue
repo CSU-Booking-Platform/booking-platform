@@ -106,10 +106,8 @@
 
         methods: {
             createRole() {
-                this.form.post('/roles', {
+                this.form.post('/admin/roles', {
                     preserveScroll: true,
-                }).then(response => {
-                    //Handle response
                 })
             },
         }

@@ -120,6 +120,10 @@
         "ide:full": [
             "@ide",
             "@ide:models"
+        ],
+        "routes":
+        [
+          "@php artisan route:list --columns=name,uri,method"
         ]
     }
 }

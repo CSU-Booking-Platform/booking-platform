@@ -139,7 +139,7 @@
 
         methods: {
             deleteRole() {
-                this.deleteRoleForm.delete('/roles/' + this.roleBeingDeleted.id, {
+                this.deleteRoleForm.delete('/admin/roles/' + this.roleBeingDeleted.id, {
                     preserveScroll: true,
                     preserveState: true,
                 }).then(() => {

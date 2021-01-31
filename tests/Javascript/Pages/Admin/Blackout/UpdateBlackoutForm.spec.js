@@ -10,7 +10,7 @@ import BlackoutList from "@src/Pages/Admin/Blackouts/BlackoutList";
 
 let localVue;
 let wrapper;
-    
+
 
 beforeEach(() => {
     localVue = createLocalVue();
@@ -40,6 +40,9 @@ test('Update Blackout when no form errors', () => {
     );
     const wrapper = shallowMount(BlackoutList, {
         localVue,
+        propsData: {
+          room: {id: 1}
+        },
         data() {
             return {
                 blackoutBeingUpdated: {id: 10}
@@ -64,6 +67,9 @@ test('Update Blackout when form errors', () => {
 
     const wrapper = shallowMount(BlackoutList, {
         localVue,
+        propsData: {
+          room: {id: 1}
+        },
         data() {
             return {
                 blackoutBeingUpdated: {id: 10}
@@ -81,7 +87,7 @@ test('Update Blackout when form errors', () => {
 });
 
 test('Blackout prop watcher updates form', () => {
-    const Blackout = { 
+    const Blackout = {
         start_time: '2021-01-04T04:10',
         end_time:'2021-01-04T06:10'
 

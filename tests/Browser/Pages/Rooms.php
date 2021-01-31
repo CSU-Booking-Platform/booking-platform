@@ -14,7 +14,7 @@ class Rooms extends Page
      */
     public function url()
     {
-        return '/rooms';
+        return '/admin/rooms';
     }
 
     /**
@@ -60,7 +60,9 @@ class Rooms extends Page
         ->press('#create');
 
     }
-    public function updateRoom(Browser $browser, Room $room, string $name) {
+
+  /** @noinspection PhpUnusedParameterInspection */
+  public function updateRoom(Browser $browser, Room $room, string $name) {
 
       $browser
         ->press('. . .')

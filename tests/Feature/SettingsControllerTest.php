@@ -2,11 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\Models\Role;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -25,7 +23,7 @@ class SettingsControllerTest extends TestCase
     public function testSettings()
     {
         $user = User::factory()->make();
-        $response = $this->actingAs($user)->get('/settings');
+        $response = $this->actingAs($user)->get('/admin/settings');
         $response->assertOk();
     }
 
@@ -36,7 +34,7 @@ class SettingsControllerTest extends TestCase
      */
     public function testSettingsNotLoggedIn()
     {
-        $response = $this->get('/settings');
+        $response = $this->get('/admin/settings');
         $response->assertStatus(302);
     }
 
@@ -47,7 +45,7 @@ class SettingsControllerTest extends TestCase
         $random = Str::random(40);
         //test if fucntion creates if no option is there
         $this->assertDatabaseCount('settings', 0);
-        $response = $this->actingAs($user)->post('settings/app_name', [
+        $this->actingAs($user)->post('/admin/settings/app_name', [
             'label' => 'app_name',
             'app_name' => $random,
         ]);
@@ -61,7 +59,7 @@ class SettingsControllerTest extends TestCase
         $random = Str::random(40);
         //test if function edits if data is already there
 
-        $this->actingAs($user)->post('settings/app_name', [
+        $this->actingAs($user)->post('/admin/settings/app_name', [
             'label' => 'app_name',
             'app_name' => $random,
         ]);
@@ -86,7 +84,7 @@ class SettingsControllerTest extends TestCase
         //test if function creates if no option is there
         $file = UploadedFile::fake()->image($random.'.png');
         $this->assertDatabaseCount('settings', 0);
-        $this->actingAs($user)->post('settings/app_logo', [
+        $this->actingAs($user)->post('/admin/settings/app_logo', [
             'label' => 'app_logo',
             'app_logo' => $file,
         ]);
@@ -100,7 +98,7 @@ class SettingsControllerTest extends TestCase
         Carbon::setTestNow(now());
         //test if function overwrites if option is already there
         $file = UploadedFile::fake()->image($random.'.jpg');
-        $this->actingAs($user)->post('settings/app_logo', [
+        $this->actingAs($user)->post('/admin/settings/app_logo', [
             'label' => 'app_logo',
             'app_logo' => $file,
         ]);

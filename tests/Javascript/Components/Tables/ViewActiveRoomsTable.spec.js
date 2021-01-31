@@ -38,12 +38,12 @@ test('should mount without crashing', () => {
             floor: 1,
             status: "available"
         }],
-        
+
         availableRoomTypes: ['test']
     }
   })
 
-  
+
 
   expect(wrapper.text()).toBeDefined()
 })
@@ -71,7 +71,7 @@ test('deleteRoom()', () => {
                 floor: 1,
                 status: "available"
             }],
-            
+
             availableRoomTypes: ['test']
         },
         data() {
@@ -83,7 +83,7 @@ test('deleteRoom()', () => {
 
     wrapper.vm.deleteRoom()
 
-    expect(InertiaFormMock.delete).toBeCalledWith('/rooms/' + mockRoomBeingDeleted.id, {
+    expect(InertiaFormMock.delete).toBeCalledWith('/admin/rooms/' + mockRoomBeingDeleted.id, {
         preserveScroll: true,
         preserveState: true,
     })
@@ -106,7 +106,7 @@ test('openUpdateRestrictionsModal', () => {
                 floor: 1,
                 status: "available"
             }],
-            
+
             availableRoomTypes: ['test']
         }
     })
@@ -138,7 +138,7 @@ test('updateRoomRestrictions()', () => {
                 floor: 1,
                 status: "available"
             }],
-            
+
             availableRoomTypes: ['test']
         },
         data() {
@@ -150,7 +150,7 @@ test('updateRoomRestrictions()', () => {
 
     wrapper.vm.updateRestrictions()
 
-    expect(InertiaFormMock.put).toBeCalledWith('/room/restrictions/'  + mockRoomResBeingUpdated.id, {
+    expect(InertiaFormMock.put).toBeCalledWith('/admin/rooms/'  + mockRoomResBeingUpdated.id+ '/restrictions/', {
         preserveScroll: true,
         preserveState: true,
     })
@@ -177,8 +177,8 @@ test('should filter properly', () => {
 
   wrapper.setData({ filter: '' })
   expect(wrapper.html()).toContain('<td class="text-center lt-grey p-3">1</td>')
-  
-    
+
+
   wrapper.setData({ filter: 'building' })
   expect(wrapper.vm.filter).toBe('building')
   expect(wrapper.html()).toContain('<td class="text-center lt-grey p-3">1</td>')
@@ -187,7 +187,7 @@ test('should filter properly', () => {
   expect(wrapper.vm.filter).toBe('thisfiltershouldnotwork')
   expect(wrapper.vm.filterRooms.length).toBe(0)
 
-  
+
 
   expect(wrapper.text()).toBeDefined()
 })

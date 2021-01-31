@@ -22,7 +22,7 @@ beforeEach(() => {
 });
 
 test('should mount without crashing', () => {
-    const wrapper = shallowMount(BookingRequestsList, {localVue})
+    shallowMount(BookingRequestsList, {localVue})
 })
 
 test('deleteBookingRequest()', () => {
@@ -93,7 +93,7 @@ test('test computed href', () => {
 
     })
 
-    expect(wrapper.vm.href).toBe("bookings/download/test")
+    expect(wrapper.vm.href).toBe("/bookings/download/test")
 
 })
 

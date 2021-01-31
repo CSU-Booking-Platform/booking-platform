@@ -77,7 +77,7 @@ export default {
     },
     methods: {
         createUser() {
-            this.createUserForm.post('/users', {
+            this.createUserForm.post('/admin/users', {
                 preserveScroll: true,
             })
         },

@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -22,7 +21,7 @@ class UserControllerTest extends TestCase
     public function testUsersIndexPageLoads()
     {
         $user = User::factory()->make();
-        $response = $this->actingAs($user)->get('/users');
+        $response = $this->actingAs($user)->get('/admin/users');
         $response->assertOk();
         $response->assertSee("Users");
 
@@ -34,7 +33,7 @@ class UserControllerTest extends TestCase
         $random = Str::random(40);
         $this->assertDatabaseCount('users', 0);
 
-        $this->actingAs($user)->post('users', [
+        $this->actingAs($user)->post('/admin/users', [
             'name' => $user->name,
             'email' => $user->email,
             'password' => $random,
@@ -58,7 +57,7 @@ class UserControllerTest extends TestCase
 
         $roles = Role::factory()->count(20)->create();
 
-        $response = $this->actingAs(User::factory()->make())->put("users/{$user->id}", [
+        $response = $this->actingAs(User::factory()->make())->put("/admin/users/{$user->id}", [
             'name' => 'TESTING NAME',
             'email' => 'test@test.com',
             'roles' => $roles->random(5)->pluck('name')->toArray(),
@@ -84,7 +83,7 @@ class UserControllerTest extends TestCase
 
         $this->assertDatabaseHas('users', ['name' => $user->name]);
 
-        $response = $this->actingAs($user)->delete('/users/' . $user->id);
+        $response = $this->actingAs($user)->delete('/admin/users/' . $user->id);
 
         $response->assertStatus(302);
         $this->assertDatabaseMissing('users', ['name' => $user->name]);

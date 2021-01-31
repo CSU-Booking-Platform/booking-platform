@@ -49,7 +49,7 @@ class RoomRestrictionsTest extends TestCase
         $test_room = $this->rooms->random();
         $this->assertDatabaseCount('room_restrictions', 0);
 
-        $response = $this->actingAs($this->user)->put('room/restrictions/' . $test_room->id, [
+        $response = $this->actingAs($this->user)->put("/admin/rooms/{$test_room->id}/restrictions", [
             'restrictions' => [$this->test_role1->id],
         ]);
         $response->assertStatus(302);
@@ -73,7 +73,7 @@ class RoomRestrictionsTest extends TestCase
         $this->assertDatabaseCount('room_restrictions', 1);
 
         //Test if we can add another restriction if one is already there
-        $response = $this->actingAs($this->user)->put('room/restrictions/' . $test_room->id, [
+        $response = $this->actingAs($this->user)->put("/admin/rooms/{$test_room->id}/restrictions", [
             'restrictions' => [$this->test_role1->id, $this->test_role2->id],
         ]);
         $response->assertStatus(302);
@@ -94,7 +94,7 @@ class RoomRestrictionsTest extends TestCase
         $this->assertDatabaseCount('room_restrictions', 2);
 
         //Test if we can remove a restriction if there are multiple attached and not lose any
-        $response = $this->actingAs($this->user)->put('room/restrictions/' . $test_room->id, [
+        $response = $this->actingAs($this->user)->put("/admin/rooms/{$test_room->id}/restrictions", [
             'restrictions' => [$this->test_role2->id],
         ]);
         $response->assertStatus(302);
@@ -114,7 +114,7 @@ class RoomRestrictionsTest extends TestCase
         $this->assertDatabaseCount('room_restrictions', 2);
 
         //Test if we can remove restrictions
-        $response = $this->actingAs($this->user)->put('room/restrictions/' . $test_room->id, [
+        $response = $this->actingAs($this->user)->put("/admin/rooms/{$test_room->id}/restrictions", [
             'restrictions' => [],
         ]);
         $response->assertStatus(302);

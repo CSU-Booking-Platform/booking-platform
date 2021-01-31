@@ -82,16 +82,19 @@ export default {
   },
   methods: {
     createBlackout() {
-      this.form.post('/blackouts', {
+      this.form.post('/admin/rooms/' + this.room.id + '/blackouts', {
         preserveScroll: true,
       })
     },
   },
   mounted() {
-    this.form.room_id = this.room?.id;
+    this.form.room_id = this.room.id;
   },
   props: {
-    room: {}
+    room: {
+      type: Object,
+      required: true
+    }
   }
 }
 </script>

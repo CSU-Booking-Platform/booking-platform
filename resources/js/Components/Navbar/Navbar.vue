@@ -32,7 +32,7 @@
               <!--                TODO: Adjust this permission-->
               <jet-nav-link
                 v-if="$page.user.can.includes('users')"
-                href="/users"
+                href="/admin/rooms"
                 :active="showAdminSubnav"
               >
                 System Administration
@@ -144,20 +144,20 @@
           class="space-x-8 flex"
         >
           <jet-nav-sub
-            href="/rooms"
-            :active="$page.currentRouteName === 'rooms.index'"
+            href="/admin/rooms"
+            :active="$page.currentRouteName === 'admin.rooms.index'"
           >
             Rooms
           </jet-nav-sub>
           <jet-nav-sub
-            href="/users"
-            :active="$page.currentRouteName === 'users.index'"
+            href="/admin/users"
+            :active="$page.currentRouteName === 'admin.users.index'"
           >
             Users
           </jet-nav-sub>
           <jet-nav-sub
-            href="/roles"
-            :active="$page.currentRouteName === 'roles.index'"
+            href="/admin/roles"
+            :active="$page.currentRouteName === 'admin.roles.index'"
           >
             Roles
           </jet-nav-sub>
@@ -212,9 +212,9 @@ export default {
     },
     showAdminSubnav() {
       switch (this.$page.currentRouteName) {
-        case 'users.index':
-        case 'rooms.index':
-        case 'roles.index':
+        case 'admin.users.index':
+        case 'admin.rooms.index':
+        case 'admin.roles.index':
           return true;
         default:
           return false;

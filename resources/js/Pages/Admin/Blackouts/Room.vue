@@ -11,8 +11,7 @@
                     <create-blackout-form :room='room'/>
                 </div>
                 <div v-if="blackouts.length > 0" class = "w-full">
-                    <jet-section-border/>
-                    <blackout-list :blackouts="blackouts" class="w-full"/>
+                    <blackout-list :blackouts="blackouts" :room="room" class="w-full"/>
                 </div>
             </div>
         </div>

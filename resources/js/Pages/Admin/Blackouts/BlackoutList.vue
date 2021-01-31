@@ -84,7 +84,6 @@ import JetSecondaryButton from '@src/Jetstream/SecondaryButton'
 import JetDangerButton from '@src/Jetstream/DangerButton'
 import JetButton from '@src/Jetstream/Button'
 import JetModal from '@src/Jetstream/Modal'
-import moment from "moment";
 import Input from "@src/Jetstream/Input";
 import Dropdown from "@src/Jetstream/Dropdown";
 import JetInput from "@src/Jetstream/Input"
@@ -101,6 +100,10 @@ export default {
                 return []
             },
         },
+        room: {
+          type: Object,
+          default: {}
+        }
     },
 
     components: {
@@ -138,7 +141,7 @@ export default {
 
     methods: {
         deleteBlackout() {
-            this.deleteBlackoutForm.delete('/blackouts/'+ this.blackoutBeingDeleted.id, {
+            this.deleteBlackoutForm.delete('/admin/rooms/' + this.room.id + '/blackouts/' + this.blackoutBeingDeleted.id , {
                 preserveScroll: true,
                 preserveState: true,
             }).then(() => {
@@ -154,7 +157,7 @@ export default {
 
 
         updateBlackout() {
-            this.updateBlackoutForm.put('/blackouts/'+ this.blackoutBeingUpdated.id,{
+            this.updateBlackoutForm.put('/admin/rooms/' + this.room.id + '/blackouts/' + this.blackoutBeingUpdated.id,{
                 preserveScroll: true,
                 preserveState: true,
             }).then(() => {

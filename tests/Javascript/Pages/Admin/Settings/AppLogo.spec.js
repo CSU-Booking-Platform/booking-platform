@@ -2,19 +2,17 @@ import {beforeEach, jest, test} from "@jest/globals";
 
 jest.mock('laravel-jetstream')
 
-import {createLocalVue, mount, shallowMount} from '@vue/test-utils'
+import {createLocalVue, shallowMount} from '@vue/test-utils'
 import {InertiaApp} from '@inertiajs/inertia-vue'
 import {InertiaForm} from 'laravel-jetstream'
 import AppLogo from '@src/Pages/Admin/Settings/AppLogo'
 import {InertiaFormMock} from "@test/__mocks__/laravel-jetstream";
-import moment from "moment";
 
 let localVue
 
 beforeEach(() => {
     InertiaFormMock.error.mockClear()
     InertiaFormMock.post.mockClear()
-    // InertiaFormMock.delete.mockClear()
 
     localVue = createLocalVue()
     localVue.use(InertiaApp)
@@ -53,7 +51,7 @@ test('Testing file upload', () => {
 })
 
 test('should mount without crashing', () => {
-    const wrapper = shallowMount(AppLogo, {
+    shallowMount(AppLogo, {
         localVue,
         propsData: {
             settings: {}
@@ -98,5 +96,5 @@ test('updateLogo()', () => {
 
     // Manually trigger the component’s onChange() method
     wrapper.vm.updateLogoSetting()
-    expect(InertiaFormMock.post).toBeCalledWith('/settings/app_logo')
+    expect(InertiaFormMock.post).toBeCalledWith('/admin/settings/app_logo')
 })

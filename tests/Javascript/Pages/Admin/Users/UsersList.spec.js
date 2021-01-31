@@ -2,7 +2,7 @@ import {beforeEach, jest, test} from "@jest/globals";
 
 jest.mock('laravel-jetstream')
 
-import {createLocalVue, mount, shallowMount} from '@vue/test-utils'
+import {createLocalVue, shallowMount} from '@vue/test-utils'
 import {InertiaApp} from '@inertiajs/inertia-vue'
 import {InertiaForm} from 'laravel-jetstream'
 import UsersList from '@src/Pages/Admin/Users/UsersList'
@@ -23,7 +23,7 @@ beforeEach(() => {
 });
 
 test('should mount without crashing', () => {
-    const wrapper = shallowMount(UsersList, {localVue})
+    shallowMount(UsersList, {localVue})
 })
 
 test('deleteUser()', () => {
@@ -49,7 +49,7 @@ test('deleteUser()', () => {
 
     wrapper.vm.deleteUser()
 
-    expect(InertiaFormMock.delete).toBeCalledWith('/users/' + mockUserBeingDeleted.id, {
+    expect(InertiaFormMock.delete).toBeCalledWith('/admin/users/' + mockUserBeingDeleted.id, {
         preserveScroll: true,
         preserveState: true,
     })
@@ -97,7 +97,7 @@ test('updateUser()', () => {
 
     wrapper.vm.updateUser()
 
-    expect(InertiaFormMock.put).toBeCalledWith('/users/' + mockUserBeingUpdated.id, {
+    expect(InertiaFormMock.put).toBeCalledWith('/admin/users/' + mockUserBeingUpdated.id, {
         preserveScroll: true,
         preserveState: true,
     })
@@ -112,7 +112,7 @@ test('userBeingUpdated should not be null with the request fails', () => {
         id: 69
     }
 
-    InertiaFormMock.put.mockImplementationOnce(function (...args) {
+    InertiaFormMock.put.mockImplementationOnce(function () {
         InertiaFormMock.successful = false;
         return {
             then(callback) {
@@ -132,7 +132,7 @@ test('userBeingUpdated should not be null with the request fails', () => {
 
     wrapper.vm.updateUser()
 
-    expect(InertiaFormMock.put).toBeCalledWith('/users/' + mockUserBeingUpdated.id, {
+    expect(InertiaFormMock.put).toBeCalledWith('/admin/users/' + mockUserBeingUpdated.id, {
         preserveScroll: true,
         preserveState: true,
     })

@@ -64,7 +64,7 @@ export default {
     },
     methods: {
         updateNameSetting() {
-            this.updateNameSettingform.post('/settings/app_name', {
+            this.updateNameSettingform.post('/admin/settings/app_name', {
                 preserveScroll: true,
             })
         },

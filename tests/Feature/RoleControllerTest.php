@@ -22,7 +22,7 @@ class RoleControllerTest extends TestCase
 
         $this->assertDatabaseHas('roles', ['name' => $role->name]);
 
-        $response = $this->actingAs($user)->get('/roles');
+        $response = $this->actingAs($user)->get('/admin/roles');
 
         $response->assertOk();
         $response->assertSee($role->name);
@@ -38,7 +38,7 @@ class RoleControllerTest extends TestCase
 
         $this->assertDatabaseMissing('roles', ['name' => $role->name]);
 
-        $response = $this->actingAs($user)->post('/roles', ['name' => $role->name]);
+        $response = $this->actingAs($user)->post('/admin/roles', ['name' => $role->name]);
 
         $response->assertStatus(302);
         $this->assertDatabaseHas('roles', ['name' => $role->name]);
@@ -58,7 +58,7 @@ class RoleControllerTest extends TestCase
         $this->assertDatabaseHas('roles', ['name' => $role->name]);
         $this->assertEquals(0, $role->permissions()->count());
 
-        $response = $this->actingAs($user)->put('/roles/'. $role->id, [
+        $response = $this->actingAs($user)->put('/admin/roles/'. $role->id, [
             'name' => $role->name,
             'permissions' => $permissions->random(5)->pluck('name')->toArray(),
         ]);
@@ -77,7 +77,7 @@ class RoleControllerTest extends TestCase
 
         $this->assertDatabaseHas('roles', ['name' => $role->name]);
 
-        $response = $this->actingAs($user)->delete('/roles/' . $role->id);
+        $response = $this->actingAs($user)->delete('/admin/roles/' . $role->id);
 
         $response->assertStatus(302);
         $this->assertDatabaseMissing('roles', ['name' => $role->name]);

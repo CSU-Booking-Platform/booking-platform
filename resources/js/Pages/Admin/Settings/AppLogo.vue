@@ -68,14 +68,14 @@ export default {
         settings: {
             // the callback will be called immediately after the start of the observation
             immediate: true,
-            handler (val, oldVal) {
+            handler () {
                 this.updateLogoSettingform.app_path = this.settings?.path
             }
         }
     },
     methods: {
         updateLogoSetting() {
-            this.updateLogoSettingform.post('/settings/app_logo')
+            this.updateLogoSettingform.post('/admin/settings/app_logo')
         },
         selectFile(event) {
             this.updateLogoSettingform.app_logo = event.target.files[0];

@@ -3,19 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Models\Availability;
-use App\Models\Reservation;
 use App\Models\Role;
 use App\Models\Room;
+use Exception;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use \Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Response;
+use Illuminate\Routing\Redirector;
+use Inertia\ResponseFactory;
 
 class RoomController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Inertia\Response|\Inertia\ResponseFactory
+     * @return \Inertia\Response|ResponseFactory
      */
     public function index()
     {
@@ -29,7 +35,7 @@ class RoomController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     // public function create()
     // {
@@ -39,8 +45,8 @@ class RoomController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return RedirectResponse
      */
     public function store(Request $request)
     {
@@ -131,33 +137,11 @@ class RoomController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Room  $room
-     * @return \Illuminate\Http\Response
-     */
-    // public function show(Room $room)
-    // {
-    //     //
-    // }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Room  $room
-     * @return \Illuminate\Http\Response
-     */
-    // public function edit(Room $room)
-    // {
-    //     //
-    // }
-
-    /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Room  $room
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param Room $room
+     * @return Application|RedirectResponse|Response|Redirector
      */
     public function update(Request $request, Room $room)
     {
@@ -232,27 +216,28 @@ class RoomController extends Controller
             }
         }
 
-        return redirect(route('rooms.index'))->with('flash', ['updated' => $room]);
+        return redirect(route('admin.rooms.index'))->with('flash', ['updated' => $room]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Room  $room
-     * @return \Illuminate\Http\Response
-     */
+  /**
+   * Remove the specified resource from storage.
+   *
+   * @param Room $room
+   * @return Application|RedirectResponse|Response|Redirector
+   * @throws Exception
+   */
     public function destroy(Room $room)
     {
         $room->delete();
 
-        return redirect(route('rooms.index'));
+        return redirect(route('admin.rooms.index'));
     }
 
     /**
      * Filter room by given json payload
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return JsonResponse|Response
      */
     public function filter(Request $request)
     {

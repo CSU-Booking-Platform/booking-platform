@@ -2,7 +2,7 @@
   <div class="table-container">
     <div class="table-filter-container">
     </div>
-     
+
     <table class="table-auto responsive-spaced">
       <caption></caption>
       <thead>
@@ -76,11 +76,11 @@ export default {
               setReference(e) {
                 this.bookingReference = e.reference.path;
               }
-                    
+
         },
         computed: {
         href () {
-          return 'bookings/download/' + this.bookingReference;
+          return '/bookings/download/' + this.bookingReference;
         },
     }
 

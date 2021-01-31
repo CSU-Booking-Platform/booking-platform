@@ -8,7 +8,7 @@
             <div class="m-6">
                 <jet-label for="name" value="Room" />
                 <select v-model="form.room_id" class="mt-1 block w-full" name="rooms" id="room_id">
-                    <option v-for="room in availableRooms" :key="room.id" :value="room.id" :selected="{ selected: room.id == form.room_id}">{{room.name}}</option>
+                    <option v-for="room in availableRooms" :key="room.id" :value="room.id" :selected="{ selected: room.id === form.room_id}">{{room.name}}</option>
                 </select>
                 <jet-input-error :message="form.error('room_id')" class="mt-2" />
             </div>
@@ -151,7 +151,7 @@ export default {
             this.form.post("/reservation/" + this.booking_request?.id, {
                     preserveState: true
                 })
-                .then(response => {
+                .then(() => {
                     if (this.form.successful) {
                         this.closeModal();
                     }

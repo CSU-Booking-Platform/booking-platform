@@ -14,7 +14,7 @@ class Users extends Page
      */
     public function url()
     {
-        return '/users';
+        return '/admin/users';
     }
 
     /**

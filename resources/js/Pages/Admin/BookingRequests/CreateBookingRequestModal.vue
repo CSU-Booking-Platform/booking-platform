@@ -174,7 +174,7 @@ export default {
     createBookingRequest() {
       this.createBookingRequestForm.post("/bookings/create", {
         preserveScroll: true
-      }).then(response => {
+      }).then(() => {
         if (! this.createBookingRequestForm.hasErrors()) {
           this.closeModal();
         }

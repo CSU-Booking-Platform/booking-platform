@@ -111,7 +111,7 @@
                 this.$emit('close');
             },
             updateRole() {
-                this.form.put('/roles/' + this.role?.id, {
+                this.form.put('/admin/roles/' + this.role?.id, {
                     preserveState: true,
                 }).then(() => {
                     this.closeModel();

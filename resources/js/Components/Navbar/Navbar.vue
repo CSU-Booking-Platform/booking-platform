@@ -117,7 +117,7 @@
           </jet-nav-sub>
         </div>
         <div
-          v-else-if="showBookingSubnav"
+          v-else-if="showBookingSubnav()"
           class="space-x-8 sm:flex"
         >
           <jet-nav-sub
@@ -140,7 +140,7 @@
           </jet-nav-sub>
         </div>
         <div
-          v-else-if="showAdminSubnav"
+          v-else-if="showAdminSubnav()"
           class="space-x-8 flex"
         >
           <jet-nav-sub
@@ -209,12 +209,6 @@ export default {
       axios.post('/logout').then(() => {
         window.location = '/';
       })
-    },
-  },
-
-  computed: {
-    path() {
-      return window.location.pathname;
     },
     showAdminSubnav() {
       switch (this.$page.currentRouteName) {

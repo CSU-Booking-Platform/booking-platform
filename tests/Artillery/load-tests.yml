@@ -1,0 +1,60 @@
+# https://artillery.io/docs
+config:
+  target: "{{ $processEnvironment.APP_URL }}" # env variable needs to be available on the system
+  plugins:
+    metrics-by-endpoint: {} # split metrics per endpoint
+  #  fuzzer: {} # simulate random attacker input
+  phases:
+    # phases allow you to specify the stress load on your target
+    - duration: 60 # duration in seconds
+      arrivalRate: 3 # new users / sec
+      maxVusers: 50 # max concurrent users
+      name: Warm up
+    # - pause: 5
+    - duration: 120
+      arrivalRate: 3 # start at 3 users / sec
+      rampTo: 25 # ramp to 25 users / sec over 120 sec
+      name: Ramp up load
+    - duration: 600
+      arrivalRate: 25
+      maxVusers: 50 # max concurrent users
+      name: Sustained load
+  # environments:
+    # environments are meant as a way to silo different stress phases to different targets
+    # different environments can be loaded with artillery run -e <env name>
+  payload:
+    # Load search keywords from an external CSV file and make them available
+    # to virtual user scenarios as variable "keywords":
+    path: "logins.csv"
+    fields:
+      - "username"
+      - "password"
+  ensure:
+    # latency checks by using min, max, median, p95, and p99
+    maxErrorRate: 25 # exit with non 0 if x% of requests error out. this stops CI
+scenarios:
+  # scenarios are flows of data transfer meant to simulate user interaction with the system
+  # normally you would model common or time sensitive behavior to track performance as the codebase evolves
+  - name: "Basic Login Check"
+    # weight: # bias virtual users towards / away from some specific scenarios
+    flow:
+      # - log: "Running Login Scenario on {{ $processEnvironment.APP_URL }}"
+      - get:
+          url: "/login"
+          capture:
+            - selector: "meta[name='csrf-token']"
+              attr: "content"
+              as: "csrfToken"
+            - selector: "form"
+              attr: "action"
+              as: "loginPostUrl"
+      - think: 2
+      # - log: "sending post to {{ loginPostUrl }}, with {{ username }}, csrf: {{ csrfToken }}"
+      - post:
+          url: "{{ loginPostUrl }}"
+          headers:
+            X-CSRF-TOKEN: "{{ csrfToken }}"
+          form:
+            - "_token": "{{ csrfToken }}"
+            - email: "{{ username }}"
+            - password: "{{ password }}"

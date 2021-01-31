@@ -161,6 +161,12 @@
           >
             Roles
           </jet-nav-sub>
+          <jet-nav-sub
+            href="/admin/settings"
+            :active="$page.currentRouteName === 'admin.settings.index'"
+          >
+            Settings
+          </jet-nav-sub>
         </div>
       </Subnavbar>
 
@@ -215,6 +221,7 @@ export default {
         case 'admin.users.index':
         case 'admin.rooms.index':
         case 'admin.roles.index':
+        case 'admin.settings.index':
           return true;
         default:
           return false;

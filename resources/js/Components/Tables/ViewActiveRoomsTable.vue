@@ -52,7 +52,7 @@
                     </button>
                   </div>
                   <div class="text-md mx-3">
-                    <jet-dropdown-link :href="'/rooms/'+room.id+'/blackouts'">
+                    <jet-dropdown-link :href="'/admin/rooms/'+room.id+'/blackouts'">
                         <div class="cursor-pointer text-sm text-blue-800 focus:outline-none">
                           Blackout
                         </div>

@@ -1,13 +1,13 @@
 <template>
-    <jet-dialog-modal :show="booking_request" @close="closeModal">
+    <jet-dialog-modal :show="booking" @close="closeModal">
         <template #title>
             Booking Request Status
         </template>
 
         <template #content>
-            <div v-if="booking_request">
+            <div v-if="booking">
                 <div class="overflow-y-auto max-h-96 h-48">
-                    <div v-for="log in booking_request.log" class="text-md mx-3">
+                    <div v-for="log in booking.log" class="text-md mx-3">
                         <div>{{log}}</div>
                     </div>
                 </div>
@@ -18,7 +18,7 @@
                         </div>
 
                         <!-- Request sent -->
-                        <div v-if="booking_request.status" class="flex-1">
+                        <div v-if="booking.status" class="flex-1">
                             <div class="w-10 h-10 bg-green-500  mx-auto rounded-full">
                             </div>
                         </div>
@@ -27,7 +27,7 @@
                             </div>
                         </div>
                         
-                        <div v-if="booking_request.status" class="w-1/5 align-center items-center align-middle content-center flex">
+                        <div v-if="booking.status" class="w-1/5 align-center items-center align-middle content-center flex">
                             <div class="w-full bg-green-500 rounded items-center align-middle align-center flex-1 z-10">
                                 <div class="bg-green-500 text-xs leading-none py-1 rounded "></div>
                             </div>
@@ -39,7 +39,7 @@
                         </div>           
 
                         <!-- Under Review -->
-                        <div v-if="booking_request.status == 'review'||booking_request.status == 'approved'" class="flex-1">
+                        <div v-if="booking.status == 'review'||booking.status == 'approved'" class="flex-1">
                             <div class="w-10 h-10 bg-green-500  mx-auto rounded-full">
                             </div>
                         </div>
@@ -48,7 +48,7 @@
                             </div>
                         </div>
 
-                        <div v-if="booking_request.status == 'approved'" class="w-1/5 align-center items-center align-middle content-center flex">
+                        <div v-if="booking.status == 'approved'" class="w-1/5 align-center items-center align-middle content-center flex">
                             <div class="w-full bg-green-500 rounded items-center align-middle align-center flex-1 z-10">
                                 <div class="bg-green-500 text-xs leading-none py-1 rounded "></div>
                             </div>
@@ -60,7 +60,7 @@
                         </div>
                         
                         <!-- Approved -->
-                        <div v-if="booking_request.status == 'approved'" class="flex-1">
+                        <div v-if="booking.status == 'approved'" class="flex-1">
                             <div class="w-10 h-10 bg-green-500  mx-auto rounded-full">
                             </div>
                         </div>
@@ -119,7 +119,7 @@ export default {
     },
 
     props: {
-        booking_request: {
+        booking: {
             type: Object,
             required: false
         },

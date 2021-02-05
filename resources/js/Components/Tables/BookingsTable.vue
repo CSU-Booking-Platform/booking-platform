@@ -16,11 +16,18 @@
         </tr>
       </thead>
       <tbody>
-         <tr v-for="booking in bookings" :key="booking.id">
+        <tr v-for="booking in bookings" :key="booking.id">
             <td class="text-center lt-grey">{{booking.reservations[0].room.name}}</td>
             <td class="text-center lt-grey">{{booking.reservations[0].room.number}}</td>
             <td class="text-center lt-grey">{{formatDateMonth(booking.reservations[0].start_time)}} From:  {{formatDateTime(booking.reservations[0].start_time)}} To: {{formatDateTime(booking.reservations[0].end_time)}}</td>
-            <td class="text-center lt-grey">{{booking.status}}</td>
+            <td class="text-center lt-grey">
+              <div class="text-md mx-3">
+                <button
+                  class="h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800"
+                  @click="bookingRequestToTrack = booking"
+                >View</button>
+              </div>
+            </td>
             <td class="text-center lt-grey">
             <a :href="'/bookings/'+booking.id+'/edit'">
               <button class="h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800">
@@ -44,12 +51,17 @@
             </td>
         </tr>
       </tbody>
-    </table>
+    </table> 
+    <ViewBookingRequestStatusModal
+    :booking="bookingRequestToTrack"
+    @close="bookingRequestToTrack = null"
+    ></ViewBookingRequestStatusModal>   
   </div>
 </template>
 
 <script>
 import moment from "moment";
+import ViewBookingRequestStatusModal from "@src/Pages/Admin/BookingRequests/ViewBookingRequestStatusModal";
 
 export default {
   props: {
@@ -59,11 +71,17 @@ export default {
       required: true
     },
   },
+
+  components: {
+    ViewBookingRequestStatusModal,
+  },
+
   data() {
       return {
           filter: '',
           roomBeingBooked: null,
-           bookingReference: '',
+          bookingRequestToTrack: null,
+          bookingReference: '',
       }
   },
       methods: {

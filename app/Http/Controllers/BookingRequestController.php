@@ -203,6 +203,8 @@ class BookingRequestController extends Controller
                 $name = $file->getClientOriginalName();
                 Storage::disk('public')->putFileAs($booking->reference['path'] . '/', $file, $name);
             }
+            $log = '[' . date("F j, Y, g:i a"). '] - Updated booking request reference files';
+            BookingRequestUpdated::dispatch($booking, $log);
         }
 
         return redirect(route('bookings.list'))

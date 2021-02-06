@@ -38,12 +38,13 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request)
     {
-        Config::set('app.name', Settings::where('slug', 'app_name')->first()->data['name'] ?? 'Laravel');
-
-        $logo = Settings::where('slug', 'app_logo')->first()->data['path'] ?? null;
+      $name = Settings::where('slug', 'app_name')->first()->data['name'] ?? 'CSU Booking Platform';
+      Config::set('app.name', $name);
+      $logo = Settings::where('slug', 'app_logo')->first()->data['path'] ?? null;
 
         return array_merge(parent::share($request), [
             'app_logo' => $logo,
+            'app_name' => $name
         ]);
     }
 }

@@ -28,8 +28,9 @@ class BookingRequestController extends Controller
    */
   private string $reservationRoom = 'reservations.room';
 
-
   private const RESERVATIONS_SESSION_KEY = "create_booking_form";
+
+  private const DATE_FORMAT = "F j, Y, g:i a";
 
   /**
    * Display a listing of the resource.
@@ -155,7 +156,7 @@ class BookingRequestController extends Controller
 
         DB::commit();
 
-        $log = '[' . date("F j, Y, g:i a") . '] - Created booking request';
+        $log = '[' . date(self::DATE_FORMAT) . '] - Created booking request';
         BookingRequestUpdated::dispatch($booking, $log);
 
         return redirect()->route('bookings.list')->with('flash', ['banner' => 'Your Booking Request was submitted']);
@@ -189,7 +190,7 @@ class BookingRequestController extends Controller
         $booking->fill($update->toArray())->save();
 
         if($booking->wasChanged()) {
-            $log = '[' . date("F j, Y, g:i a"). '] - Updated booking request location and/or date';
+            $log = '[' . date(self::DATE_FORMAT). '] - Updated booking request location and/or date';
             BookingRequestUpdated::dispatch($booking, $log);
         }
 
@@ -203,7 +204,7 @@ class BookingRequestController extends Controller
                 $name = $file->getClientOriginalName();
                 Storage::disk('public')->putFileAs($booking->reference['path'] . '/', $file, $name);
             }
-            $log = '[' . date("F j, Y, g:i a"). '] - Updated booking request reference files';
+            $log = '[' . date(self::DATE_FORMAT). '] - Updated booking request reference files';
             BookingRequestUpdated::dispatch($booking, $log);
         }
 

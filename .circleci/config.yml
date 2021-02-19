@@ -12,12 +12,12 @@ executors:
   ci:
     working_directory: /workspace
     docker:
-      - image: ghcr.io/csu-booking-platform/devcontainer:0.0.4
+      - image: ghcr.io/csu-booking-platform/devcontainer:0.0.6
         command: [ ]
   ci-db:
     working_directory: /workspace
     docker:
-      - image: ghcr.io/csu-booking-platform/devcontainer:0.0.4
+      - image: ghcr.io/csu-booking-platform/devcontainer:0.0.6
         command: [ ]
       - image: circleci/postgres:10.15
         environment:
@@ -82,9 +82,7 @@ jobs:
       - run:
           name: "Prepare Environment"
           command: |
-            sudo apt update
             echo -e "xdebug.mode=coverage" | sudo tee /usr/local/etc/php/php.ini > /dev/null
-      - browser-tools/install-chrome
       - run:
           name: install dockerize
           command: wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && sudo tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
@@ -218,8 +216,10 @@ workflows:
       - validate-commits:
           filters:
             branches:
-              # only from forks
-              only: /^pull\/.*$/
+              # only from forks & dependabot branches
+              only: 
+                - /^pull\/.*$/
+                - /^dependabot\/.*$/
       - tag-and-release:
           requires:
             - sonar

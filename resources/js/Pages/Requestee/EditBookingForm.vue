@@ -599,7 +599,7 @@ export default {
 
     methods: {
         submitBooking() {
-            this.form.put('/bookings/' + this.booking.id, {
+            this.form.post('/bookings/' + this.booking.id, {
                 preserveScroll: true,
             }).then(response => {
                 this.form.processing = false;

@@ -31,13 +31,15 @@ class SettingsPageTest extends DuskTestCase
   {
     $this->browse(function (Browser $browser) {
       $browser->loginAs(User::first())->visit('/admin/settings')
-        ->assertSourceHas('<title>Laravel</title>')
+        ->assertSourceHas('<title>CSU Booking Platform</title>')
         ->assertSee('Settings')
         ->assertSee('Application Name')
         ->type('app_name', 'New Name')
         ->pressAndWaitFor('UPDATE APPLICATION NAME', 3)
         ->refresh()->pause(3000)
-        ->assertSourceHas('<title>New Name</title>');
+        ->assertSourceHas('<title>New Name</title>')
+        ->assertSee('New Name');
+
     });
   }
 
@@ -51,7 +53,7 @@ class SettingsPageTest extends DuskTestCase
         ->attach('app_logo', __DIR__ . '/test.jpg')
         ->pressAndWaitFor('UPDATE APPLICATION LOGO', 3)
         ->refresh()->pause(3000)
-        ->assertSourceHas('<a href="/dashboard"><img src="storage/logos/');
+        ->assertSourceHas('<a href="/dashboard"><img src="/storage/logos/');
     });
   }
 }

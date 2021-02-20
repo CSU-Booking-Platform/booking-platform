@@ -38,7 +38,8 @@
 
                                     <div class="flex items-center">
                                         <div v-if="role.created_at" class="text-sm text-gray-400">
-                                            Created {{ fromNow(role.created_at) }}
+                                            Created {{ $fromNow(role.created_at) }}
+
                                         </div>
 
                                         <button class="cursor-pointer ml-6 text-sm text-blue-800 focus:outline-none"
@@ -99,7 +100,6 @@
     import JetButton from '@src/Jetstream/Button'
     import CreateRoleForm from "./CreateRoleForm";
     import UpdateRoleForm from "./UpdateRoleForm";
-    import moment from "moment";
 
     export default {
         props: {
@@ -146,11 +146,6 @@
                     this.roleBeingDeleted = null
                 })
             },
-
-            fromNow(timestamp) {
-                return moment(timestamp).local().fromNow()
-            },
-
         }
     }
 </script>

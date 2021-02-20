@@ -56,15 +56,3 @@ test('deleteRole()', () => {
 
     expect(wrapper.vm.$data.roleBeingDeleted).toBe(null)
 })
-
-test('fromNow(timestamp)', () => {
-    //TODO: Build moment mock and test this better
-
-    const input = '2020-05-10T05:05:00.00Z'
-
-    const wrapper = shallowMount(Index, {localVue})
-
-    const result = wrapper.vm.fromNow(input)
-    expect(result).toBe(moment(input).local().fromNow())
-
-})

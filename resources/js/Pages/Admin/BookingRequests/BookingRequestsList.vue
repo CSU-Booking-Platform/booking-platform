@@ -28,8 +28,8 @@
               <div class="grid grid-cols-8" v-for="reservation in booking_request.reservations">
                 <div class="text-md mx-2">{{ booking_request.user.name }}</div>
                 <div class="text-md mx-3">{{reservation.room.name}}</div>
-                <div class="text-md mx-3">{{ calendar(reservation.start_time) }}</div>
-                <div class="text-md mx-3">{{ calendar(reservation.end_time) }}</div>
+                <div class="text-md mx-3">{{ $calendar(reservation.start_time) }}</div>
+                <div class="text-md mx-3">{{ $calendar(reservation.end_time) }}</div>
                 <div class="text-md mx-3">{{ booking_request.status }}</div>
                 <div class="text-md mx-3">
                   <a
@@ -168,9 +168,6 @@ export default {
         .then(() => {
           this.bookingRequestBeingDeleted = null;
         });
-    },
-    calendar(timestamp) {
-      return moment(timestamp).local().format('LLL');
     },
     setReference(e) {
       this.bookingReference = e.reference.path;

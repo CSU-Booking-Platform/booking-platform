@@ -216,10 +216,9 @@ workflows:
       - validate-commits:
           filters:
             branches:
-              # only from forks & dependabot branches
+              # only from forks
               only: 
                 - /^pull\/.*$/
-                - /^dependabot\/.*$/
       - tag-and-release:
           requires:
             - sonar

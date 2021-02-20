@@ -57,13 +57,6 @@ test('deleteUser()', () => {
     expect(wrapper.vm.$data.userBeingDeleted).toBe(null)
 })
 
-test('fromNow(timestamp)', () => {
-    //TODO::add function to base vue component and only test once
-    const input = '2020-05-10T05:05:00.00Z'
-    const wrapper = shallowMount(UsersList, {localVue})
-    const result = wrapper.vm.fromNow(input)
-    expect(result).toBe(moment(input).local().fromNow())
-})
 
 test('openUpdateModal', () => {
     let user = {

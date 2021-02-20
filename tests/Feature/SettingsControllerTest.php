@@ -88,11 +88,11 @@ class SettingsControllerTest extends TestCase
             'label' => 'app_logo',
             'app_logo' => $file,
         ]);
-        Storage::disk('public')->assertExists('logos/' . now()->format('d-m-y-H-i-s').'.'.$file->extension());
+        Storage::disk('public')->assertExists('logos/' . $file->hashName());
         $this->assertDatabaseCount('settings', 1);
         $this->assertDatabaseHas('settings', [
             'slug' => 'app_logo',
-            'data' => json_encode(['path'=>'storage/logos/' . now()->format('d-m-y-H-i-s').'.'.$file->extension()]),
+            'data' => json_encode(['path'=>'/storage/logos/' . $file->hashName()]),
         ]);
         $random = Str::random(10);
         Carbon::setTestNow(now());
@@ -102,11 +102,11 @@ class SettingsControllerTest extends TestCase
             'label' => 'app_logo',
             'app_logo' => $file,
         ]);
-        Storage::disk('public')->assertExists('logos/' . now()->format('d-m-y-H-i-s').'.'.$file->extension());
+        Storage::disk('public')->assertExists('logos/' . $file->hashName());
         $this->assertDatabaseCount('settings', 1);
         $this->assertDatabaseHas('settings', [
             'slug' => 'app_logo',
-            'data' => json_encode(['path'=>'storage/logos/' . now()->format('d-m-y-H-i-s').'.'.$file->extension()]),
+            'data' => json_encode(['path'=>'/storage/logos/' . $file->hashName()]),
         ]);
     }
 

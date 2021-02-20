@@ -57,7 +57,8 @@
         "collectCoverageFrom": [
             "<rootDir>/resources/js/Pages/**/*.{js,vue}",
             "<rootDir>/resources/js/Components/**/*.{js,vue}",
-            "<rootDir>/resources/js/Layouts/**/*.{js,vue}"
+            "<rootDir>/resources/js/Layouts/**/*.{js,vue}",
+            "<rootDir>/resources/js/Plugins/**/*.{js,vue}"
         ],
         "moduleFileExtensions": [
             "js",

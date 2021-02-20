@@ -99,7 +99,6 @@ import JetSecondaryButton from '@src/Jetstream/SecondaryButton'
 import JetDangerButton from '@src/Jetstream/DangerButton'
 import JetButton from '@src/Jetstream/Button'
 import JetModal from '@src/Jetstream/Modal'
-import moment from "moment";
 import Input from "@src/Jetstream/Input";
 import Dropdown from "@src/Jetstream/Dropdown";
 import JetInput from "@src/Jetstream/Input"
@@ -185,10 +184,6 @@ export default {
           this.userBeingUpdated = null;
         }
       });
-    },
-
-    fromNow(timestamp) {
-      return moment(timestamp).local().fromNow()
     },
 
     setSelectedRoles(user) {

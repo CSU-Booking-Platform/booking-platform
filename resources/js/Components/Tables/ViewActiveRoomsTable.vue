@@ -160,7 +160,7 @@
       </template>
 
       <template #content>
-        <!-- Permissions -->
+        <!-- Custom Date Restrictions -->
         <div class="mt-2 col-span-12" v-if="roles.length > 0">
           <div class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-4">
             <div v-for="role in roles">

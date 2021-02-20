@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\RoomCollection;
+use App\Http\Resources\RoomResource;
 use App\Models\Availability;
 use App\Models\Role;
 use App\Models\Room;
@@ -26,7 +28,7 @@ class RoomController extends Controller
     public function index()
     {
         return inertia('Admin/Rooms/Index', [
-            'rooms' => Room::with('restrictions', 'availabilities', 'blackouts')->get(),
+            'rooms' => new RoomCollection(Room::with('restrictions', 'availabilities', 'blackouts', 'dateRestrictions')->get()),
             'roles' => Role::all(),
             'availableRoomTypes'=> Room::ROOM_TYPES,
         ]);

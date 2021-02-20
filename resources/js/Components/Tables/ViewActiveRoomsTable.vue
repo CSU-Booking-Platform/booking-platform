@@ -58,18 +58,24 @@
                         </div>
                     </jet-dropdown-link>
                   </div>
+                  <div class="text-md mx-2">
+                    <button class="cursor-pointer text-sm text-blue-800 focus:outline-none"
+                            @click="openEditRestrictionsModal(room)">
+                      Restricted Roles
+                    </button>
+                  </div>
+                  <div class="text-md mx-2">
+                    <button class="cursor-pointer text-sm text-blue-800 focus:outline-none"
+                            @click="openEditDateRestrictionsModal(room)">
+                      Customize Role Date Restrictions
+                    </button>
+                  </div>
                   <div class="text-md mx-3">
                     <button
                         class="cursor-pointer text-sm text-red-800 focus:outline-none"
                         @click="roomBeingDeleted = room"
                     >
                         Delete
-                    </button>
-                  </div>
-                  <div class="text-md mx-2">
-                    <button class="cursor-pointer text-sm text-blue-800 focus:outline-none"
-                            @click="openEditModal(room)">
-                        Restricted Roles
                     </button>
                   </div>
                 </template>
@@ -148,6 +154,51 @@
       </template>
     </jet-confirmation-modal>
 
+    <jet-confirmation-modal v-if="roomDateRestrictionsBeingUpdated != null" :show="roomDateRestrictionsBeingUpdated != null" @close="roomDateRestrictionsBeingUpdated = null">
+      <template #title>
+          Update Room Date Restrictions: {{ roomDateRestrictionsBeingUpdated != null && roomDateRestrictionsBeingUpdated.name }}
+      </template>
+
+      <template #content>
+        <!-- Permissions -->
+        <div class="mt-2 col-span-12" v-if="roles.length > 0">
+          <div class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div v-for="role in roles">
+              <label class="flex items-center">
+                <span class="ml-2 text-md text-black">{{ role.name }}</span>
+              </label>
+              <div class="col-span-6 sm:col-span-3">
+              <jet-label :for="'min_days_advance_'+role.id" value="Minimum Days Before Booking"/>
+                <jet-input :id="'min_days_advance_'+role.id" type="number" min="0" class="mt-1 block w-full"
+                           v-model="updateRoomDateRestrictionsForm.date_restrictions[role.id][0]"/>
+                <jet-input-error :message="updateRoomDateRestrictionsForm.error('min_'+role.id)" class="mt-2"/>
+              </div>
+
+              <div class="col-span-6 sm:col-span-3">
+                <jet-label :for="'max_days_advance_'+role.id" value="Maximum Days Before Booking"/>
+                <jet-input :id="'max_days_advance_'+role.id" type="number" min="0" class="mt-1 block w-full"
+                           v-model="updateRoomDateRestrictionsForm.date_restrictions[role.id][1]"/>
+                <jet-input-error :message="updateRoomDateRestrictionsForm.error('max_'+role.id)" class="mt-2"/>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </template>
+
+      <template #footer>
+          <jet-secondary-button @click.native="roomDateRestrictionsBeingUpdated = null">
+              Nevermind
+          </jet-secondary-button>
+
+          <jet-button class="ml-2" @click.native="updateDateRestrictions"
+                      :class="{ 'opacity-25': updateRoomDateRestrictionsForm.processing }"
+                      :disabled="updateRoomDateRestrictionsForm.processing">
+              Update
+          </jet-button>
+      </template>
+    </jet-confirmation-modal>
+
   </div>
 
 </template>
@@ -220,11 +271,18 @@ export default {
         roomBeingDeleted: null,
         seeRoomAvailability: null,
         roomRestBeingUpdated: null,
+        roomDateRestrictionsBeingUpdated: null,
         filter: '',
         updateRoomRestForm: this.$inertia.form({
             restrictions: [],
         }, {
             bag: 'updateRoomRestriction',
+            resetOnSuccess: true,
+        }),
+        updateRoomDateRestrictionsForm: this.$inertia.form({
+          date_restrictions: [],
+        }, {
+            bag: 'updateRoomDateRestrictions',
             resetOnSuccess: true,
         }),
       }
@@ -240,13 +298,22 @@ export default {
         })
     },
 
-    openEditModal(room) {
+    openEditRestrictionsModal(room) {
         this.setSelectedRestrictions(room)
         this.roomRestBeingUpdated = room;
     },
 
+    openEditDateRestrictionsModal(room) {
+      this.setSelectedDateRestrictions(room)
+      this.roomDateRestrictionsBeingUpdated = room;
+    },
+
     setSelectedRestrictions(room) {
         this.updateRoomRestForm.restrictions = this.mapRoomRestrictions(room.restrictions)
+    },
+
+    setSelectedDateRestrictions(room) {
+      this.updateRoomDateRestrictionsForm.date_restrictions = this.mapRoomDateRestrictions(room.date_restrictions)
     },
 
     mapRoomRestrictions(restrictions) {
@@ -254,6 +321,19 @@ export default {
             return o.id;
         });
     },
+
+    mapRoomDateRestrictions(date_restrictions) {
+      var rolesRes = this.roles;
+      var finalRolesRes = [];
+      rolesRes.forEach((role) => {
+        if (typeof date_restrictions[role.id] !== 'undefined')
+          finalRolesRes[role.id] = [date_restrictions[role.id]['min'], date_restrictions[role.id]['max']];
+        else
+          finalRolesRes[role.id] = [null, null];
+      })
+      return finalRolesRes;
+    },
+
     updateRestrictions() {
       this.updateRoomRestForm.put('/admin/rooms/' + this.roomRestBeingUpdated.id + '/restrictions/', {
         preserveScroll: true,
@@ -265,6 +345,16 @@ export default {
       });
     },
 
+    updateDateRestrictions() {
+      this.updateRoomRestForm.put('/admin/rooms/' + this.roomDateRestrictionsBeingUpdated.id + '/dateRestrictions/', {
+        preserveScroll: true,
+        preserveState: true,
+      }).then(() => {
+        if (this.roomDateRestrictionsBeingUpdated.successful) {
+          this.roomDateRestrictionsBeingUpdated = null;
+        }
+      });
+    },
   },
 
   computed: {

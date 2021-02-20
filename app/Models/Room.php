@@ -52,6 +52,15 @@ class Room extends Model
     }
 
     /**
+     * The roles restricted from this room.
+     */
+    public function dateRestrictions(): BelongsToMany
+    {
+      return $this->belongsToMany(Role::class, 'custom_date_restrictions')
+        ->withPivot('min_days_advance', 'max_days_advance');
+    }
+
+    /**
      * Get the rooms that are part of the booking request.
      */
     public function bookingRequests()

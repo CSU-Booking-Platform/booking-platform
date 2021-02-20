@@ -110,7 +110,7 @@ test('openUpdateRestrictionsModal', () => {
             availableRoomTypes: ['test']
         }
     })
-    wrapper.vm.openEditModal(room)
+    wrapper.vm.openEditRestrictionsModal(room)
     expect(wrapper.vm.$data.roomRestBeingUpdated).toBe(room);
 })
 

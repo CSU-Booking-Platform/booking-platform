@@ -180,12 +180,12 @@ class RoomCustomDateRestrictionsTest extends TestCase
   /**
    * Test the room resource class that is used to convert a room into json.
    * Allows making date restrictions into simpler data
+   * Normal room controller does not cover this since there are no date restrictions initially
    */
   public function test_room_resource_class(){
     $test_room = $this->rooms->random();
     $this->createInitialDataForRoom($test_room);
-    $user = User::factory()->make();
-    $response = $this->actingAs($user)->get('/admin/rooms');
+    $response = $this->actingAs($this->user)->get('/admin/rooms');
     $response->assertOk();
     $room_response = json_decode(json_encode(collect($response->getOriginalContent()
       ->getData()['page']['props']['rooms'])

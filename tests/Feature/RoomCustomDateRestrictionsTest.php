@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Http\Resources\RoomResource;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\Room;
@@ -40,7 +41,7 @@ class RoomCustomDateRestrictionsTest extends TestCase
   }
 
   /**
-   * Test if the route can create restrictions from the system
+   * Test if the route can create date restrictions from the system
    *
    * @return void
    */
@@ -76,11 +77,11 @@ class RoomCustomDateRestrictionsTest extends TestCase
   }
 
   /**
-   * Test if the route can update number of restrictions from the system
+   * Test if the route can update date restrictions
    *
    * @return void
    */
-  public function test_restrictions_controller_update()
+  public function test_date_restrictions_controller_update()
   {
     $test_room = $this->rooms->random();
     $this->createInitialDataForRoom($test_room);
@@ -116,11 +117,11 @@ class RoomCustomDateRestrictionsTest extends TestCase
   }
 
   /**
-   * Test if the route can update number of restrictions, by reducing, from the system
+   * Test if the route can remove date restrictions
    *
    * @return void
    */
-  public function test_restrictions_controller_remove()
+  public function test_date_restrictions_controller_remove()
   {
     $test_room = $this->rooms->random();
     $this->createInitialDataForRoom($test_room);
@@ -144,7 +145,10 @@ class RoomCustomDateRestrictionsTest extends TestCase
 
   }
 
-
+  /**
+   * @param Room $test_room
+   * helper function that simply creates date restrictions
+   */
   private function createInitialDataForRoom(Room &$test_room){
     $test_room->dateRestrictions()->sync([
       $this->test_role1->id=>[
@@ -171,6 +175,25 @@ class RoomCustomDateRestrictionsTest extends TestCase
       "max_days_advance" => 20
     ]);
 
+  }
+
+  /**
+   * Test the room resource class that is used to convert a room into json.
+   * Allows making date restrictions into simpler data
+   */
+  public function test_room_resource_class(){
+    $test_room = $this->rooms->random();
+    $this->createInitialDataForRoom($test_room);
+    $user = User::factory()->make();
+    $response = $this->actingAs($user)->get('/admin/rooms');
+    $response->assertOk();
+    $room_response = json_decode(json_encode(collect($response->getOriginalContent()
+      ->getData()['page']['props']['rooms'])
+      ->where('id', $test_room->id)->pluck('date_restrictions')->first()), true);
+    $this->assertEquals(1, $room_response[$this->test_role1->id]['min']);
+    $this->assertEquals(10, $room_response[$this->test_role1->id]['max']);
+    $this->assertEquals(2, $room_response[$this->test_role2->id]['min']);
+    $this->assertEquals(20, $room_response[$this->test_role2->id]['max']);
   }
 
   //TODO::When date validation bug is fixed create test to see if validation checks for custom dates restrictions

@@ -1,11 +1,14 @@
 <template>
-    <jet-dialog-modal :show="room" @close="closeModal">
-        <template #title>
-            Create Booking Request
-        </template>
-
+    <jet-dialog-modal :show="room" @close="closeModal" max-width="">
         <template #content>
+          
           <div class="overflow-y-auto h-96">
+            <h2 class="pb-1">Availabilities</h2>
+            <Availabilities :room="room" />
+            <div class="pt-5 pb-5">
+              <hr/>
+            </div>
+            <h2>Create a booking request</h2>
             <div class="m-6">
                 <jet-label for="name" value="Room" />
                 <jet-input
@@ -101,6 +104,7 @@ import JetDropdownLink from "@src/Jetstream/DropdownLink";
 import JetNavLink from "@src/Components/Navbar/NavLink";
 import JetSecondaryButton from "@src/Jetstream/SecondaryButton";
 import DialogModal from "@src/Jetstream/DialogModal";
+import Availabilities from "@src/Components/Availabilities";
 
 export default {
   components: {
@@ -115,7 +119,8 @@ export default {
     JetDropdownLink,
     JetNavLink,
     JetDialogModal,
-    JetSecondaryButton
+    JetSecondaryButton,
+    Availabilities
   },
 
   props: {

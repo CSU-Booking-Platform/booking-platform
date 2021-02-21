@@ -6,6 +6,7 @@ use App\Http\Controllers\ReservationsController;
 use App\Http\Controllers\RestrictionsController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RoomController;
+use App\Http\Controllers\RoomDateRestrictionsController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -38,6 +39,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::resource('rooms', RoomController::class)->only(['store', 'index', 'update', 'destroy']);
     Route::put('rooms/{room}/restrictions', [RestrictionsController::class, 'update'])
       ->name('room.restrictions.update')->middleware('permission:bookings.approve');
+    Route::put('rooms/{room}/date-restrictions', RoomDateRestrictionsController::class)
+      ->name('room.date.restrictions.update')->middleware('permission:bookings.approve');
     Route::resource('rooms.blackouts', BlackoutController::class)->only(['index', 'store', 'destroy', 'update']);
 
     Route::name('settings.')->prefix('settings')->group(function () {

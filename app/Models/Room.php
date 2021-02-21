@@ -57,7 +57,7 @@ class Room extends Model
     public function dateRestrictions(): BelongsToMany
     {
       return $this->belongsToMany(Role::class, 'custom_date_restrictions')
-        ->withPivot('min_days_advance', 'max_days_advance');
+        ->withPivot('min_days_advance', 'max_days_advance')->withTimestamps();
     }
 
     /**

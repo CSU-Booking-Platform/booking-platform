@@ -161,26 +161,27 @@
 
       <template #content>
         <!-- Custom Date Restrictions -->
-        <div class="mt-2 col-span-12" v-if="roles.length > 0">
-          <div class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="mt-2 col-span-12" v-if="roles.length > 0" >
+          <div class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-4" >
             <div v-for="role in roles">
+              <div v-if="typeof updateRoomDateRestrictionsForm.date_restrictions[role.id] !== 'undefined'">
               <label class="flex items-center">
                 <span class="ml-2 text-md text-black">{{ role.name }}</span>
               </label>
               <div class="col-span-6 sm:col-span-3">
               <jet-label :for="'min_days_advance_'+role.id" value="Minimum Days Before Booking"/>
-                <jet-input :id="'min_days_advance_'+role.id" type="number" min="0" class="mt-1 block w-full"
-                           v-model="updateRoomDateRestrictionsForm.date_restrictions[role.id][0]"/>
-                <jet-input-error :message="updateRoomDateRestrictionsForm.error('min_'+role.id)" class="mt-2"/>
+                <jet-input :id="'min_days_advance_'+role.id"  class="mt-1 block w-full"
+                           v-model="updateRoomDateRestrictionsForm.date_restrictions[role.id].min_days_advance"/>
+                <jet-input-error :message="updateRoomDateRestrictionsForm.error('date_restrictions.'+role.id+'.min_days_advance')" class="mt-2"/>
               </div>
 
               <div class="col-span-6 sm:col-span-3">
                 <jet-label :for="'max_days_advance_'+role.id" value="Maximum Days Before Booking"/>
-                <jet-input :id="'max_days_advance_'+role.id" type="number" min="0" class="mt-1 block w-full"
-                           v-model="updateRoomDateRestrictionsForm.date_restrictions[role.id][1]"/>
-                <jet-input-error :message="updateRoomDateRestrictionsForm.error('max_'+role.id)" class="mt-2"/>
+                <jet-input :id="'max_days_advance_'+role.id"  class="mt-1 block w-full"
+                           v-model="updateRoomDateRestrictionsForm.date_restrictions[role.id].max_days_advance"/>
+                <jet-input-error :message="updateRoomDateRestrictionsForm.error('date_restrictions.'+role.id+'.max_days_advance')" class="mt-2"/>
               </div>
-
+              </div>
             </div>
           </div>
         </div>
@@ -327,9 +328,9 @@ export default {
       var finalRolesRes = [];
       rolesRes.forEach((role) => {
         if (typeof date_restrictions[role.id] !== 'undefined')
-          finalRolesRes[role.id] = [date_restrictions[role.id]['min'], date_restrictions[role.id]['max']];
+          finalRolesRes[role.id] = {min_days_advance:date_restrictions[role.id]['min'], max_days_advance:date_restrictions[role.id]['max']};
         else
-          finalRolesRes[role.id] = [null, null];
+          finalRolesRes[role.id] = {min_days_advance:null, max_days_advance:null};
       })
       return finalRolesRes;
     },
@@ -346,11 +347,11 @@ export default {
     },
 
     updateDateRestrictions() {
-      this.updateRoomRestForm.put('/admin/rooms/' + this.roomDateRestrictionsBeingUpdated.id + '/dateRestrictions/', {
+      this.updateRoomDateRestrictionsForm.put('/admin/rooms/' + this.roomDateRestrictionsBeingUpdated.id + '/date-restrictions/', {
         preserveScroll: true,
         preserveState: true,
       }).then(() => {
-        if (this.roomDateRestrictionsBeingUpdated.successful) {
+        if (this.updateRoomDateRestrictionsForm.successful) {
           this.roomDateRestrictionsBeingUpdated = null;
         }
       });

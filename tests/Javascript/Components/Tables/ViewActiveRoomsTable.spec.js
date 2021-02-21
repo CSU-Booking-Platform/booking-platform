@@ -191,3 +191,72 @@ test('should filter properly', () => {
 
   expect(wrapper.text()).toBeDefined()
 })
+
+
+test('openUpdateDateRestrictionsModal', () => {
+  let mockRoomDateResBeingUpdated = {
+    id: 10,
+    date_restrictions: []
+  }
+  const wrapper = shallowMount(ViewActiveRoomsTable, {
+    localVue,
+    propsData: {
+      rooms: [{
+        id: 1,
+        name: "name",
+        building: "building",
+        number: "1",
+        floor: 1,
+        status: "available"
+      }],
+      roles :  ["role1", "role2"],
+      availableRoomTypes: ['test']
+    }
+  })
+  wrapper.vm.openEditDateRestrictionsModal(mockRoomDateResBeingUpdated)
+  expect(wrapper.vm.$data.roomDateRestrictionsBeingUpdated).toBe(mockRoomDateResBeingUpdated);
+})
+
+test('updateRoomDateRestrictions()', () => {
+
+  let mockRoomDateResBeingUpdated = {
+    id: 10,
+    roles:['role1', 'roles2']
+  }
+
+  InertiaFormMock.put.mockReturnValueOnce({
+    then(callback) {
+      callback({})
+    }
+  })
+
+  const wrapper = shallowMount(ViewActiveRoomsTable, {
+    localVue,
+    propsData: {
+      rooms: [{
+        id: 1,
+        name: "name",
+        building: "building",
+        number: "1",
+        floor: 1,
+        status: "available"
+      }],
+
+      availableRoomTypes: ['test']
+    },
+    data() {
+      return {
+        roomDateRestrictionsBeingUpdated: mockRoomDateResBeingUpdated
+      }
+    }
+  })
+
+  wrapper.vm.updateDateRestrictions()
+
+  expect(InertiaFormMock.put).toBeCalledWith('/admin/rooms/'  + mockRoomDateResBeingUpdated.id+ '/date-restrictions/', {
+    preserveScroll: true,
+    preserveState: true,
+  })
+
+  expect(wrapper.vm.$data.roomDateRestrictionsBeingUpdated).toBe(null)
+})

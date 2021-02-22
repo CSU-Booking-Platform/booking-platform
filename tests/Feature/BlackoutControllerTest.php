@@ -123,12 +123,12 @@ class BlackoutControllerTest extends TestCase
       'end_date' => Carbon::now()->addWeeks(10)->toDateString()
     ]);
 
-    $blackout = Blackout::factory()->make();
     $blackout = Blackout::create([
       'name' => 'test',
       'start_time' => Carbon::today(),
       'end_time' => Carbon::today()->addMinute()
     ]);
+    $room = Room::factory()->create(['status' => 'available']);
     $user = User::factory()->create();
 
     $response = $this->actingAs($user)->post("/admin/rooms/{$room->id}/blackouts/",

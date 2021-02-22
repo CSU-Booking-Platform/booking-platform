@@ -142,7 +142,7 @@ class BlackoutControllerTest extends TestCase
     );
 
     $response->assertStatus(302);
-    $this->assertDatabaseCount('blackouts', 9);
+    $this->assertDatabaseCount('blackouts', 11);
   }
 
 }

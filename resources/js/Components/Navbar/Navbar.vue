@@ -1,7 +1,7 @@
 <template>
     <header dusk="navbar">
       <div class="px-15 grid flex-wrap grid-cols-3 py-2">
-        <div class="flex flex-1 ">
+        <div class="flex flex-1 py-2">
           <a href="/dashboard">
             <jet-application-mark class="block h-15 w-auto"/>
           </a>

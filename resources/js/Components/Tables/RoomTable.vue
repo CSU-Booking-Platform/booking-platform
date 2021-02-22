@@ -7,7 +7,7 @@
       <div class="border shadow-md">
         <input type="text" v-model="filter"/>
       </div>
-      <div class="bg-yellow shadow-md">
+      <div class="bg-yellow-300 shadow-md">
         <em class="fas fa-search m-2"></em>
       </div>
       
@@ -18,7 +18,7 @@
       <div class="mx-6">
         <h3 class="font-black">ADVANCED</h3>
       </div>
-      <div class="mx-2 border shadow-md bg-yellow min-w-24">
+      <div class="mx-2 border shadow-md bg-yellow-300 min-w-24">
         <button @click="toggleAdvancedFilters()">
           <em class="fas fa-filter mx-2 pt-2 max-w"></em>
         </button>
@@ -50,8 +50,8 @@
             class="text-center underline">
             {{room.status}}
             </td>
-            <td class="">
-             <div class="">
+            <td>
+             <div>
                <jet-dropdown width="20">
                  <template #trigger>
                    <button

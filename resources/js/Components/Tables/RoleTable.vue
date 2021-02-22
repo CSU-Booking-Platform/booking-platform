@@ -29,7 +29,7 @@
               </template>
             </jet-dropdown>
           </td>
-          <td class= "">
+          <td>
             <div class="text-md mx-2">
               <jet-dropdown width="48">
                 <template #trigger>

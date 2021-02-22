@@ -13,11 +13,6 @@ h2 {
   margin: 0 auto 0 auto;
 }
 
-/*All purpose yellow background*/
-.bg-yellow {
-  background-color: #FFC82B;
-}
-
 /*For Error Toast or Danger Action Button*/
 .danger {
   background-color: #f20000;

@@ -4,7 +4,7 @@
       <div class="ml-3 mr-6">
         <h3 class="font-black">ROOMS</h3>
       </div>
-      <div class="mx-2 border shadow-md bg-yellow">
+      <div class="mx-2 border shadow-md bg-yellow-300">
         <input type="text" v-model="filter">
           <em class="fas fa-search ml-1 mr-2"></em>
         </input>

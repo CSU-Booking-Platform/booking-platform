@@ -41,7 +41,7 @@ class BookingRequestController extends Controller
     public function index(Request $request)
     {
         return inertia('Admin/BookingRequests/Index', [
-            'booking_requests' => BookingRequest::with('user', 'reservations', $this->reservationRoom)->get(),
+            'booking_requests' => BookingRequest::with('requester', 'reservations', $this->reservationRoom)->get(),
             'rooms' => Room::hideUserRestrictions($request->user())->with('availabilities', 'blackouts')->get(),
         ]);
     }
@@ -171,7 +171,7 @@ class BookingRequestController extends Controller
     public function edit(BookingRequest $booking)
     {
         return inertia('Requestee/EditBookingForm', [
-            'booking' => $booking->load('user', 'reservations', $this->reservationRoom),
+            'booking' => $booking->load('requester', 'reservations', $this->reservationRoom),
         ]);
     }
 
@@ -251,7 +251,7 @@ class BookingRequestController extends Controller
     public function list()
     {
         return inertia('Requestee/BookingsList', [
-            'bookings' => BookingRequest::with('user', $this->reservationRoom)->get(),
+            'bookings' => BookingRequest::with('requester', $this->reservationRoom)->get(),
 
         ]);
     }

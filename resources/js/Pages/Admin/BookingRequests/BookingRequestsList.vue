@@ -26,7 +26,7 @@
             >
 <!--        Will list all reservations-->
               <div class="grid grid-cols-8" v-for="reservation in booking_request.reservations">
-                <div class="text-md mx-2">{{ booking_request.user.name }}</div>
+                <div class="text-md mx-2">{{ booking_request.requester.name }}</div>
                 <div class="text-md mx-3">{{reservation.room.name}}</div>
                 <div class="text-md mx-3">{{ $calendar(reservation.start_time) }}</div>
                 <div class="text-md mx-3">{{ $calendar(reservation.end_time) }}</div>

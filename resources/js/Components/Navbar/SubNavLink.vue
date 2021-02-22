@@ -10,9 +10,9 @@ export default {
 
   computed: {
     classes() {
-      let common = "inline-flex items-center px-1 pt-1 text-sm font-medium leading-5 text-gray-200 transition duration-150 ease-in-out hover:font-bold ";
+      let common = "inline-flex items-center px-1 pt-1 text-sm font-medium leading-5 text-black transition duration-150 ease-in-out hover:font-bold ";
       return this.active
-        ? common + 'underline'
+        ? common + 'underline text-yellow-300'
         : common
     }
   }

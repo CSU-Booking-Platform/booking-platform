@@ -38,7 +38,7 @@
                         <div class="col-span-6">
                             <jet-label value="Organization"/>
                             <h3 class="text-lg font-medium text-gray-900 py-2">
-                                {{ $page.user.organization }}
+                                {{ booking.requester.organization }}
                             </h3>
                         </div>
 
@@ -46,7 +46,7 @@
                         <div class="col-span-6">
                             <jet-label value="Booking Officer"/>
                             <h3 class="text-lg font-medium text-gray-900">
-                                {{ $page.user.name }}
+                                {{ booking.requester.name }}
                             </h3>
                         </div>
 
@@ -54,7 +54,7 @@
                         <div class="col-span-3">
                             <jet-label value="Email"/>
                             <h3 class="text-lg font-medium text-gray-900">
-                                {{ $page.user.email }}
+                                {{ booking.requester.email }}
                             </h3>
                         </div>
 
@@ -62,7 +62,7 @@
                         <div class="col-span-3">
                             <jet-label value="Phone"/>
                             <h3 class="text-lg font-medium text-gray-900">
-                                {{ $page.user.phone }}
+                                {{ booking.requester.phone }}
                             </h3>
                         </div>
 
@@ -287,7 +287,7 @@
                               <jet-input-error :message="form.error('event.music')" class="mt-2"/>
                           </app-question>
                       </div>
-                            
+
 
                         <!-- Food -->
                       <div class="col-span-6">
@@ -427,7 +427,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- Mezzanine booking.room dependent fillables -->
 
                         <!-- bake sale -->
@@ -469,7 +469,7 @@
                                                  @change="uploadedFiles($event)"/>
                             <jet-input-error :message="form.error('files')" class="mt-2"/>
                         </div>
-                        
+
                         <!-- Additional Info -->
                         <div class="col-span-6">
                             <jet-label for="notes" value="Additional Information (Optional)"/>
@@ -566,7 +566,7 @@ export default {
         booking: {
             type: Object,
             required: true,
-        },      
+        },
     },
 
     data() {

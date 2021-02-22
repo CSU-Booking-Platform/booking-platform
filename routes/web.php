@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BlackoutController;
 use App\Http\Controllers\BookingRequestController;
+use App\Http\Controllers\BookingReviewController;
 use App\Http\Controllers\ReservationsController;
 use App\Http\Controllers\RestrictionsController;
 use App\Http\Controllers\RoleController;
@@ -55,6 +56,12 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('create', [BookingRequestController::class, 'createInit'])->name('createInit');
     Route::get('list', [BookingRequestController::class, 'list'])->name('list');
     Route::get('download/{folder}', [BookingRequestController::class, 'downloadReferenceFiles'])->name('download');
+
+    Route::name('reviews.')->middleware('can:bookings.approve')->group(function () {
+      Route::get('review', [BookingReviewController::class, 'index'])->name('index');
+      Route::get('{booking}/review', [BookingReviewController::class, 'show'])->name('show');
+      Route::post('{booking}/review', [BookingReviewController::class, 'review'])->name('update');
+    });
   });
 
   Route::resource('reservation', ReservationsController::class);

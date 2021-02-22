@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class BookingRequest extends Model
@@ -50,10 +51,10 @@ class BookingRequest extends Model
         return $this->belongsToMany(Room::class,
             'reservations',
             'booking_request_id',
-            'room_id');
+            'room_id')->withTimestamps();
     }
 
-    
+
     /**
      * Get the rooms that are part of the booking request.
      */
@@ -74,8 +75,12 @@ class BookingRequest extends Model
     /**
      * Get the user that created the booking request.
      */
-    public function user()
+    public function requester()
     {
-        return $this->belongsTo('App\Models\User');
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function scopePending(Builder $query) {
+        $query->where('status', 'review');
     }
 }

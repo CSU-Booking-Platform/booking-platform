@@ -6,7 +6,7 @@
       </div>
       <div class="mx-2 border shadow-md bg-yellow">
         <input type="text" v-model="filter">
-          <i class="fas fa-search ml-1 mr-2"></i>
+          <em class="fas fa-search ml-1 mr-2"></em>
         </input>
       </div>   
     </div>

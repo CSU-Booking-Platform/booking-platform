@@ -4,11 +4,14 @@
       <div class="ml-3 mr-6">
         <h3 class="font-black">ROOMS</h3>
       </div>
-      <div class="mx-2 border shadow-md bg-yellow">
-        <input type="text" v-model="filter">
-          <i class="fas fa-search ml-1 mr-2"></i>
-        </input>
+      <div class="border shadow-md">
+        <input type="text" v-model="filter"/>
       </div>
+      <div class="bg-yellow shadow-md">
+        <em class="fas fa-search m-2"></em>
+      </div>
+      
+      
       <!--vertical line-->
       <div class="border mx-16">
       </div>
@@ -17,7 +20,7 @@
       </div>
       <div class="mx-2 border shadow-md bg-yellow min-w-24">
         <button @click="toggleAdvancedFilters()">
-          <i class="fas fa-filter mx-2 max-w"></i>
+          <em class="fas fa-filter mx-2 pt-2 max-w"></em>
         </button>
       </div>    
     </div>

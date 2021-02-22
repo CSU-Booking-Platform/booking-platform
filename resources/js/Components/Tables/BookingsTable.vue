@@ -7,20 +7,20 @@
       <caption></caption>
       <thead>
         <tr>
-          <th class="lt-grey" id="id_room_name">Room Name</th>
-          <th class="lt-grey" id="id_room_number">Room Number</th>
-          <th class="lt-grey" id="id_booking_date">Date/Time</th>
-          <th class="lt-grey" id="id_booking_status">Status</th>
-          <th class="lt-grey" id="id_booking_action">Action</th>
-          <th class="lt-grey" id="id_booking_download">Download</th>
+          <th id="id_room_name">Room Name</th>
+          <th id="id_room_number">Room Number</th>
+          <th id="id_booking_date">Date/Time</th>
+          <th id="id_booking_status">Status</th>
+          <th id="id_booking_action">Action</th>
+          <th id="id_booking_download">Download</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="booking in bookings" :key="booking.id">
-            <td class="text-center lt-grey">{{booking.reservations[0].room.name}}</td>
-            <td class="text-center lt-grey">{{booking.reservations[0].room.number}}</td>
-            <td class="text-center lt-grey">{{formatDateMonth(booking.reservations[0].start_time)}} From:  {{formatDateTime(booking.reservations[0].start_time)}} To: {{formatDateTime(booking.reservations[0].end_time)}}</td>
-            <td class="text-center lt-grey">
+            <td class="text-center">{{booking.reservations[0].room.name}}</td>
+            <td class="text-center">{{booking.reservations[0].room.number}}</td>
+            <td class="text-center">{{formatDateMonth(booking.reservations[0].start_time)}} From:  {{formatDateTime(booking.reservations[0].start_time)}} To: {{formatDateTime(booking.reservations[0].end_time)}}</td>
+            <td class="text-center">
               <div class="text-md mx-3">
                 <button
                   class="h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800"
@@ -28,14 +28,14 @@
                 >View</button>
               </div>
             </td>
-            <td class="text-center lt-grey">
+            <td class="text-center">
             <a :href="'/bookings/'+booking.id+'/edit'">
               <button class="h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800">
                 Edit
               </button>
             </a>
             </td>
-            <td class="text-center lt-grey">
+            <td class="text-center">
             <div class="text-md mx-3">
                   <a
                     v-if="booking.reference.path"

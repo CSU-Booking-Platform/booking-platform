@@ -1,51 +1,60 @@
 <template>
   <div class="table-container">
-    <div class="table-filter-container">
-      <input type="text"
-         placeholder="Search Rooms Table"
-         v-model="filter"
-         />
-        <button
-            class="btn submit-btn"
-            @click="toggleAdvancedFilters()"
-        >Additional Search</button>
+    <div class="table-filter-container mb-12 flex flex-row">
+      <div class="ml-3 mr-6">
+        <h3 class="font-black">ROOMS</h3>
+      </div>
+      <div class="mx-2 border shadow-md bg-yellow">
+        <input type="text" v-model="filter">
+          <i class="fas fa-search ml-1 mr-2"></i>
+        </input>
+      </div>
+      <!--vertical line-->
+      <div class="border mx-16">
+      </div>
+      <div class="mx-6">
+        <h3 class="font-black">ADVANCED</h3>
+      </div>
+      <div class="mx-2 border shadow-md bg-yellow min-w-24">
+        <button @click="toggleAdvancedFilters()">
+          <i class="fas fa-filter mx-2 max-w"></i>
+        </button>
+      </div>    
     </div>
 
     <table class="table-auto responsive-spaced">
       <caption></caption>
       <thead>
         <tr>
-          <th class="lt-grey" id="id_room_id">Room Name</th>
-          <th class="lt-grey" id="id_room_type">Room Type</th>
-          <th class="lt-grey" id="id_room_building">Building</th>
-          <th class="lt-grey" id="id_room_number">Number</th>
-          <th class="lt-grey" id="id_room_floor">Floor</th>
-          <th class="lt-grey" id="id_room_availability">Availability</th>
-          <th class="lt-grey" id="id_room_reference">Reference</th>
-          <th class="lt-grey" id="id_room_action">Action</th>
+          <th  id="id_room_id">Room ID</th>
+          <th  id="id_room_type">Room Type</th>
+          <th  id="id_room_building">Building</th>
+          <th  id="id_room_number">Number</th>
+          <th  id="id_room_floor">Floor</th>
+          <th  id="id_room_availability">Availability</th>
+          <th  id="id_room_action">Action</th>
         </tr>
       </thead>
       <tbody>
          <tr v-for="room in filteredRooms" :key="room.id">
-            <td class="text-center lt-grey">{{room.name}}</td>
-            <td class="text-center lt-grey">{{room.room_type}}</td>
-            <td class="text-center lt-grey">{{room.building}}</td>
-            <td class="text-center lt-grey">{{room.number}}</td>
-            <td class="text-center lt-grey">{{room.floor}}</td>
+            <td class="text-center ">{{room.name}}</td>
+            <td class="text-center ">{{room.room_type}}</td>
+            <td class="text-center ">{{room.building}}</td>
+            <td class="text-center ">{{room.number}}</td>
+            <td class="text-center ">{{room.floor}}</td>
             <td 
             @click="seeRoomAvailability = room"
-            class="text-center lt-grey underline">
+            class="text-center underline">
             {{room.status}}
             </td>
-            <td class="text-center lt-grey">Reference</td>
-            <td class="lt-grey p-3">
-             <div class="text-md mx-2">
-               <jet-dropdown width="48">
+            <td class="">
+             <div class="">
+               <jet-dropdown width="20">
                  <template #trigger>
                    <button
-                     class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out mx-auto"
+                     class="flex text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out"
                    >
-                     <div class="text-3xl">. . .</div>
+                     <div>Action</div>
                    </button>
                  </template>
 

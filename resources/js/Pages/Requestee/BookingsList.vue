@@ -1,11 +1,6 @@
 <template>
     <app-layout>
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Booking List Page
-            </h2>
-        </template>
-        <div class="py-12">
+        <div class="m-24">
              <BookingsTable 
             :bookings="bookings"
             />

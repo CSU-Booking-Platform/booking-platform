@@ -5,7 +5,7 @@
                 <create-role-form :availablePermissions="permissions" />
             </div>
             <div v-if="roles.length > 0" class="m-4 w-3/4">
-                <div class="py-12">
+                <div class="m-12">
                     <role-table :roles="roles" :permissions="permissions"/>
                 </div>
             </div>

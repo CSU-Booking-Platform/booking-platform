@@ -1,5 +1,5 @@
 <template>
-    <div class="min-h-screen bg-gray-100 flex flex-col justify-between">
+    <div class="min-h-screen flex flex-col justify-between">
         <Navbar/>
 
         <!-- Page Heading -->

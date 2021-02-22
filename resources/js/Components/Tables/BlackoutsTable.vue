@@ -4,18 +4,18 @@
       <caption></caption>
       <thead>
       <tr>
-        <th class="lt-grey" id="id_blackout_name">Name</th>
-        <th class="lt-grey" id="id_blackout_name">Start Time</th>
-        <th class="lt-grey" id="id_blackout_email">End Time</th>
-        <th class="lt-grey" id="id_actions">Actions</th>
+        <th id="id_blackout_name">Name</th>
+        <th id="id_blackout_name">Start Time</th>
+        <th id="id_blackout_email">End Time</th>
+        <th id="id_actions">Actions</th>
       </tr>
       </thead>
       <tbody>
       <tr v-for="blackout in blackouts" :key="blackout.id">
-        <td class="text-center lt-grey">{{ blackout.name }}</td>
-        <td class="text-center lt-grey">{{ blackout.start_time | legible_date}}</td>
-        <td class="text-center lt-grey">{{ blackout.end_time | legible_date }}</td>
-        <td class="text-center lt-grey">
+        <td class="text-center">{{ blackout.name }}</td>
+        <td class="text-center">{{ blackout.start_time | legible_date}}</td>
+        <td class="text-center">{{ blackout.end_time | legible_date }}</td>
+        <td class="text-center">
           <slot name="blackout" v-bind:blackout="blackout"></slot>
         </td>
       </tr>

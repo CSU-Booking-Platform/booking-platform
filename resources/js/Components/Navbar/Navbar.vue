@@ -1,21 +1,21 @@
 <template>
     <header dusk="navbar">
-      <div class="px-15 flex-shrink-0 flex">
-        <div class="flex flex-row items-center py-4">
+      <div class="px-15 grid flex-wrap grid-cols-3 py-2">
+        <div class="flex flex-1 ">
           <a href="/dashboard">
             <jet-application-mark class="block h-15 w-auto"/>
           </a>
           <h1 class="ml-3 pl-3 border-l-2 border-gray-600 text-2xl"> {{$page.app_name}} </h1>
         </div>
-      </div>
+      
 
-    <nav class="px-15 flex flex-col bg-white border-b border-gray-100 top-nav" aria-label="Main navBar">
+    <nav class="col-start-3 bg-white border-b border-gray-100 top-nav" aria-label="Main navBar">
       <!-- Primary Navigation Menu -->
       <div class="flex-fill">
         <div class="flex justify-between py-2">
           <div class="flex">
             <!-- Navigation Links -->
-            <div class="hidden space-x-8 sm:flex ">
+            <div class="hidden space-x-8 sm:flex">
               <jet-nav-link
                 href="/dashboard"
                 :active="$page.currentRouteName === 'dashboard'"
@@ -103,12 +103,11 @@
         </div>
       </div>
     </nav>
-
-    <nav class="px-15 sub-nav" aria-label="SubnavBar">
+       <nav class="sub-nav col-start-3" aria-label="SubnavBar">
       <Subnavbar>
         <div
           v-if="$page.currentRouteName === 'dashboard'"
-          class="space-x-8 sm:flex">
+          class="space-x-8 sm:flex justify-start">
           <jet-nav-sub
             href="/dashboard"
             :active="$page.currentRouteName === 'dashboard'"
@@ -169,8 +168,8 @@
           </jet-nav-sub>
         </div>
       </Subnavbar>
-
     </nav>
+  </div>
   </header>
 </template>
 

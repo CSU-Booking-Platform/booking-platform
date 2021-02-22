@@ -66,11 +66,11 @@ test('should filter properly', () => {
   })
 
   wrapper.setData({ filter: '' })
-  expect(wrapper.html()).toContain('<td class="text-center lt-grey">1</td>')
+  expect(wrapper.html()).toContain('<td class="text-center">1</td>')
 
   wrapper.setData({ filter: 'building' })
   expect(wrapper.vm.filter).toBe('building')
-  expect(wrapper.html()).toContain('<td class="text-center lt-grey">1</td>')
+  expect(wrapper.html()).toContain('<td class="text-center">1</td>')
 
   wrapper.setData({ filter: 'thisfiltershouldnotwork' })
   expect(wrapper.vm.filter).toBe('thisfiltershouldnotwork')

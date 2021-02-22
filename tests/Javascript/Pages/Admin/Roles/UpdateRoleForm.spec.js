@@ -80,8 +80,5 @@ test('Role prop watcher updates form', () => {
         expect(wrapper.vm.form.permissions).toContain(role.permissions[0].name)
         expect(wrapper.vm.form.permissions).toContain(role.permissions[1].name)
     })
-
-    expect(wrapper.vm.role).toBe(role)
-
 })
 

@@ -120,6 +120,4 @@ test('Room prop watcher updates form', () => {
         expect(wrapper.vm.form.sale_for_profit).toBe(room.attributes.sale_for_profit);
         expect(wrapper.vm.form.fundraiser).toBe(room.attributes.fundraiser);
     })
-
-    expect(wrapper.vm.room).toBe(room);
 });

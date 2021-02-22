@@ -83,8 +83,6 @@ test('Booking request Modal prop watcher updates form', () => {
         expect(wrapper.vm.room_name).toBe(room.name)
     })
 
-    expect(wrapper.vm.room).toBe(room)
-
 })
 
 test('Testing file upload', () => {

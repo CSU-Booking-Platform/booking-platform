@@ -173,7 +173,7 @@
                 <span class="ml-2 text-md text-black">{{ role.name }}</span>
               </label>
               <div class="col-span-6 sm:col-span-3">
-              <jet-label :for="'min_days_advance_'+role.id" value="Minimum Days Before Booking"/>
+                <jet-label :for="'min_days_advance_'+role.id" value="Minimum Days Before Booking"/>
                 <jet-input :id="'min_days_advance_'+role.id"  class="mt-1 block w-full"
                            v-model="updateRoomDateRestrictionsForm.date_restrictions[role.id].min_days_advance"/>
                 <jet-input-error :message="updateRoomDateRestrictionsForm.error('date_restrictions.'+role.id+'.min_days_advance')" class="mt-2"/>
@@ -203,9 +203,7 @@
           </jet-button>
       </template>
     </jet-confirmation-modal>
-
   </div>
-
 </template>
 
 <script>
@@ -386,4 +384,5 @@ export default {
     }
   },
 };
+
 </script>

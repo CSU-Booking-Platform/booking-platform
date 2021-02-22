@@ -87,8 +87,6 @@ test('Booking request prop watcher updates form', () => {
         expect(wrapper.vm.form.end_time).toBe(booking_request.end_time)
     })
 
-    expect(wrapper.vm.booking_request).toBe(booking_request)
-
 })
 
 test('Testing file upload', () => {

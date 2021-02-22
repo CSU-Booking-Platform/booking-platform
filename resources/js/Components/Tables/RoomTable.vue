@@ -37,11 +37,11 @@
       </thead>
       <tbody>
          <tr v-for="room in filteredRooms" :key="room.id">
-            <td class="text-center ">{{room.name}}</td>
-            <td class="text-center ">{{room.room_type}}</td>
-            <td class="text-center ">{{room.building}}</td>
-            <td class="text-center ">{{room.number}}</td>
-            <td class="text-center ">{{room.floor}}</td>
+            <td class="text-center">{{room.name}}</td>
+            <td class="text-center">{{room.room_type}}</td>
+            <td class="text-center">{{room.building}}</td>
+            <td class="text-center">{{room.number}}</td>
+            <td class="text-center">{{room.floor}}</td>
             <td 
             @click="seeRoomAvailability = room"
             class="text-center underline">

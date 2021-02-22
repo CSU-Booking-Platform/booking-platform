@@ -65,7 +65,7 @@ class Rooms extends Page
   public function updateRoom(Browser $browser, Room $room, string $name) {
 
       $browser
-        ->press('. . .')
+        ->press('Action')
         ->press('Update')
         ->type('.vue-portal-target #name', $name)
         ->press('#updateRoom');
@@ -74,7 +74,7 @@ class Rooms extends Page
     public function deleteRoom(Browser $browser) {
 
       $browser
-        ->press('. . .')
+        ->press('Action')
         ->press('Delete')
         ->press('#deleteRoom');
     }

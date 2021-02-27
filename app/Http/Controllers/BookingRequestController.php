@@ -254,7 +254,7 @@ class BookingRequestController extends Controller
                     $room = Room::query()->findOrFail($request->room_id);
                     $room->verifyDatesAreWithinRoomRestrictionsValidation($value['start_time'], $fail, $user);//
                     $room->verifyDatetimesAreWithinAvailabilitiesValidation($value['start_time'], $value['end_time'], $fail);//
-                    $room->verifyRoomIsFreeValidation($value['start_time'], $value['end_time'], $fail, $attribute);
+                    $room->verifyRoomIsFreeValidation($value['start_time'], $value['end_time'], $fail);
                     if (!$request->user()->canMakeAnotherBookingRequest($value['start_time'])) {
                         $fail('You cannot have more than ' .
                             $user->getUserNumberOfBookingRequestPerPeriod() .

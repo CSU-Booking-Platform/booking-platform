@@ -294,7 +294,7 @@ class BookingRequestControllerTest extends TestCase
         'attendees' => $this->faker->numberBetween(100),
       ]
     ]);
-    $response->assertSessionHasErrors(['availabilities']);
+    $response->assertSessionHasErrors(['reservations.*']);
     $this->assertDatabaseCount('booking_requests', 0);
     $this->assertDatabaseCount('reservations', 0);
     $this->assertDatabaseMissing('reservations', [

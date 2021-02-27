@@ -173,7 +173,7 @@ class Room extends Model
     });
   }
 
-  public function verifyRoomIsFreeValidation($startDate, $endDate, $fail, $attribute, $reservation = null)
+  public function verifyRoomIsFreeValidation($startDate, $endDate, $fail, $reservation = null)
   {
     $conflict = $this->verifyRoomQuery($startDate, $endDate, $reservation)->first();
 

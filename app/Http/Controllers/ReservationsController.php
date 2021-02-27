@@ -168,16 +168,17 @@ class ReservationsController extends Controller
     $request->validateWithBag($function.'ReservationsRequest', array(
       'reservations.*' => ['array', 'size:2',
         function ($attribute, $value, $fail) use ($request, $reservation){
+          $user = $request->user();
           $room = Room::query()->findOrFail($request->room_id);
-          $room->verifyDatesAreWithinRoomRestrictionsValidation($value['start_time'], $fail);
+          $room->verifyDatesAreWithinRoomRestrictionsValidation($value['start_time'], $fail, $user);
           $room->verifyDatetimesAreWithinAvailabilitiesValidation($value['start_time'], $value['end_time'], $fail);
-          $room->verifyRoomIsFreeValidation($value['start_time'], $value['end_time'], $fail, $attribute, $reservation);
+          $room->verifyRoomIsFreeValidation($value['start_time'], $value['end_time'], $fail, $reservation);
 
-          if (!$request->user()->canMakeAnotherBookingRequest($value['start_time'])) {
+          if (!$user->canMakeAnotherBookingRequest($value['start_time'])) {
             $fail($attribute . ' Cannot make more than ' .
-              $request->user()->getUserNumberOfBookingRequestPerPeriod() .
+                $user->getUserNumberOfBookingRequestPerPeriod() .
               ' bookings in the next ' .
-              $request->user()->getUserNumberOfDaysPerPeriod() .
+                $user->getUserNumberOfDaysPerPeriod() .
               ' days.');
           }
         }

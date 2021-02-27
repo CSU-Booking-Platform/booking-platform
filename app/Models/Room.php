@@ -132,22 +132,29 @@ class Room extends Model
             throw ValidationException::withMessages(['booked_too_far' => 'You cannot book events farther than '.$max_days.' days from the event']);
         }
     }
-    public function verifyDatesAreWithinRoomRestrictionsValidation($startDate, $fail, $attribute)
+    public function verifyDatesAreWithinRoomRestrictionsValidation($startDate, $fail, User $user)
     {
-        $startTime = Carbon::parse($startDate)->toDateString();
-        $min_days = $this->min_days_advance;
-        $max_days = $this->max_days_advance;
 
-        if(Carbon::today()-> diffInDays($startTime) < $min_days) {
-            $fail($attribute.' - You can not book events closer than ' .$min_days.' days to the event');
-        } elseif(Carbon::today()-> diffInDays($startTime) > $max_days) {
-          $fail($attribute.' - You cannot book events farther than '.$max_days.' days from the event');
+        $startTime = Carbon::parse($startDate)->toDateString();
+
+        $roles = $user->roles()->select('id')->get()->pluck('id');
+        $specialRules = $this->dateRestrictions()->whereIn('role_id', $roles)->get(['min_days_advance', 'max_days_advance']);
+        $special_min = $specialRules->pluck('min_days_advance')->max();
+        $special_max = $specialRules->pluck('max_days_advance')->min();
+        $min_days = $special_min ?? $this->min_days_advance;
+        $max_days = $special_max ?? $this->max_days_advance;
+
+        if (Carbon::today()->diffInDays($startTime) < $min_days) {
+            $fail('You can not book this room later than ' . $min_days . ' days in advance');
+        } elseif (Carbon::today()->diffInDays($startTime) > $max_days) {
+            $fail('You can not book this room sooner than ' . $max_days . ' days in advance');
         }
     }
-    public function verifyDatetimesAreWithinAvailabilitiesValidation($startDate, $endDate, $fail, $attribute)
+
+    public function verifyDatetimesAreWithinAvailabilitiesValidation($startDate, $endDate, $fail)
   {
     if ($this->notWithinAvailabilities($startDate, $endDate)) {
-        $fail($attribute.' - Booking request not within availabilities!');
+        $fail('These dates and times are not within the room\'s availabilities!');
     }
   }
 
@@ -171,10 +178,11 @@ class Room extends Model
     $conflict = $this->verifyRoomQuery($startDate, $endDate, $reservation)->first();
 
     if ($conflict) {
-      $fail($attribute . ' - Is blocked by another reservation.');
+      $fail('The room cannot be booked at this time - Conflicting schedule');
     }
   }
 
+  //TODO:: check - might be a dead function
   public function verifyRoomIsFree($startDate, $endDate, $reservation = null)
   {
     if ($this->verifyRoomQuery($startDate, $endDate, $reservation)->count() > 0) {

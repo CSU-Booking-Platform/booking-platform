@@ -169,8 +169,8 @@ class ReservationsController extends Controller
       'reservations.*' => ['array', 'size:2',
         function ($attribute, $value, $fail) use ($request, $reservation){
           $room = Room::query()->findOrFail($request->room_id);
-          $room->verifyDatesAreWithinRoomRestrictionsValidation($value['start_time'], $fail, $attribute);
-          $room->verifyDatetimesAreWithinAvailabilitiesValidation($value['start_time'], $value['end_time'], $fail, $attribute);
+          $room->verifyDatesAreWithinRoomRestrictionsValidation($value['start_time'], $fail);
+          $room->verifyDatetimesAreWithinAvailabilitiesValidation($value['start_time'], $value['end_time'], $fail);
           $room->verifyRoomIsFreeValidation($value['start_time'], $value['end_time'], $fail, $attribute, $reservation);
 
           if (!$request->user()->canMakeAnotherBookingRequest($value['start_time'])) {

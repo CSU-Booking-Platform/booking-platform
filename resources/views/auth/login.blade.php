@@ -43,6 +43,14 @@
                     {{ __('Login') }}
                 </x-jet-button>
             </div>
+            
+        </form>
+        <form method="GET" action="{{ route('login/microsoft') }}">
+            <div>
+                <x-jet-button class="mt-4 w-full" name="o365">
+                            {{ __('Office 365') }}
+                </x-jet-button>
+            </div>
         </form>
     </x-jet-authentication-card>
        <!-- Footer -->

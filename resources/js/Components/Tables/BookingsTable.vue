@@ -29,11 +29,26 @@
               </div>
             </td>
             <td class="text-center">
-            <a :href="'/bookings/'+booking.id+'/edit'">
+            <a v-if="booking.status == 'pending'" :href="'/bookings/'+booking.id+'/edit'">
               <button class="h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800">
                 Edit
               </button>
             </a>
+              <a v-else-if="booking.status == 'review'" style="cursor:pointer;">
+                <button aria-disabled="true" class="h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-500 rounded-lg focus:shadow-outline ">
+                  In Review
+                </button>
+              </a>
+              <a v-else-if="booking.status == 'denied'" >
+                <button aria-disabled="true" class="h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-red-900 rounded-lg focus:shadow-outline">
+                  Denied
+                </button>
+              </a>
+              <a v-else-if="booking.status == 'approved'" >
+                <button aria-disabled="true" class="h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-green-500 rounded-lg focus:shadow-outline">
+                  Approved
+                </button>
+              </a>
             </td>
             <td class="text-center">
             <div class="text-md mx-3">
@@ -51,17 +66,18 @@
             </td>
         </tr>
       </tbody>
-    </table> 
+    </table>
     <ViewBookingRequestStatusModal
     :booking="bookingRequestToTrack"
     @close="bookingRequestToTrack = null"
-    ></ViewBookingRequestStatusModal>   
+    ></ViewBookingRequestStatusModal>
   </div>
 </template>
 
 <script>
 import moment from "moment";
 import ViewBookingRequestStatusModal from "@src/Pages/Admin/BookingRequests/ViewBookingRequestStatusModal";
+import Button from "@src/Jetstream/Button";
 
 export default {
   props: {
@@ -73,6 +89,7 @@ export default {
   },
 
   components: {
+    Button,
     ViewBookingRequestStatusModal,
   },
 

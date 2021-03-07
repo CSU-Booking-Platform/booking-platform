@@ -160,6 +160,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
             ->name('edit')
             ->middleware(['permission:bookings.update']);
 
+        Route::get('{booking}/view', [BookingRequestController::class, 'show'])->name('view');
+
         Route::put('/{booking}', [BookingRequestController::class, 'update'])
             ->name('update')
             ->middleware(['permission:bookings.update']);

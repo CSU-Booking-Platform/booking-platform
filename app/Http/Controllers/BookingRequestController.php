@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateBookingRequest;
 use App\Http\Requests\UpdateBookingRequest;
+use App\Http\Resources\BookingResource;
 use App\Models\BookingRequest;
 use App\Models\Reservation;
 use App\Models\Room;
@@ -125,7 +126,7 @@ class BookingRequestController extends Controller
             'user_id' => $request->user()->id,
             'start_time' => $reservation['start_time'],
             'end_time' => $reservation['end_time'],
-            'status' => 'review',
+            'status' => 'pending',
             'event' => $data['event'],
             'onsite_contact' => $data['onsite_contact'] ?? [],
             'notes' => $data['notes'] ?? '',
@@ -151,14 +152,26 @@ class BookingRequestController extends Controller
         return redirect()->route('bookings.index')->with('flash', ['banner' => 'Your Booking Request was submitted']);
     }
 
-  /**
+    public function show(BookingRequest $booking)
+    {
+        $booking->loadMissing('requester', 'reservations', 'reservations.room');
+        return inertia('Requestee/ViewBooking', [
+            'booking' => new BookingResource($booking)
+        ]);
+    }
+
+    /**
    * Show the form for editing the specified resource.
    *
    * @param BookingRequest $booking
-   * @return Response|\Inertia\Response|ResponseFactory
+   * @return RedirectResponse|Response|\Inertia\Response|ResponseFactory
    */
     public function edit(BookingRequest $booking)
     {
+        if ($booking->status == "review" || $booking->status == "approved" )
+            return redirect()->route('bookings.view', ['booking'=>$booking]);
+
+
         return inertia('Requestee/EditBookingForm', [
             'booking' => $booking->load('requester', 'reservations', $this->reservationRoom),
         ]);
@@ -173,10 +186,18 @@ class BookingRequestController extends Controller
      */
     public function update(UpdateBookingRequest $request, BookingRequest $booking)
     {
+
+        //If comments don't call this
+        if ($booking->status == "review" || $booking->status == "approved" )
+            return redirect()->route('bookings.view', ['booking'=>$booking]);
+
+
         $reservation = $booking->reservations->first();
 
         $update = collect($request->validated())->except(['files']);
-        $booking->fill($update->toArray())->save();
+        $booking->fill($update->toArray());
+        $booking->status = "pending";
+        $booking->save();
 
         if($booking->wasChanged()) {
             $log = '[' . date(self::DATE_FORMAT). '] - Updated booking request location and/or date';
@@ -240,8 +261,9 @@ class BookingRequestController extends Controller
     public function list()
     {
         return inertia('Requestee/BookingsList', [
-            'bookings' => BookingRequest::with('requester', $this->reservationRoom)->get(),
-
+            'bookings' => BookingRequest::with('requester', $this->reservationRoom)
+                ->where('user_id', auth()->user()->id)
+                ->get(),
         ]);
     }
 

@@ -20,6 +20,11 @@ class BookingReviewController extends Controller
 
     public function show(BookingRequest $booking)
     {
+        //Will change when enums are made
+        if ($booking->status == "pending"){
+            $booking->update(['status' => 'review']);
+        }
+
         $booking->loadMissing('requester', 'reviewers', 'reservations', 'reservations.room');
 
         return inertia('Approval/ReviewBooking', [

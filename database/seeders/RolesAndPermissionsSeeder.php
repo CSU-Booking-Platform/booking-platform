@@ -21,29 +21,31 @@ class RolesAndPermissionsSeeder extends Seeder
 
         // Permissions map, separated by relevant model object
         $permissions = [
-            'users',
             'users.select',
             'users.select.same-role',
             'users.create',
             'users.update',
             'users.delete',
 
-            'permissions',
-            'permissions.assign', // to roles
-            'permissions.create',
-            'permissions.update',
-            'permissions.delete',
-
-            'roles',
             'roles.assign', // to users
             'roles.create',
             'roles.update',
             'roles.delete',
 
-            'bookings',
-            'bookings.request', // create & update
+            'bookings.create',
+            'bookings.update',
             'bookings.approve', // view & respond
             'bookings.delete',
+
+            'rooms.create',
+            'rooms.update',
+            'rooms.delete',
+
+            'rooms.blackouts.create',
+            'rooms.blackouts.update',
+            'rooms.blackouts.delete',
+
+            'settings.edit'
         ];
 
         foreach ($permissions as $permission) {
@@ -51,8 +53,6 @@ class RolesAndPermissionsSeeder extends Seeder
         }
 
         // Create roles
-        Role::create(['name' => 'super-admin'])->givePermissionTo([
-            'users', 'roles', 'permissions', 'bookings'
-        ]);
+        Role::create(['name' => 'super-admin'])->givePermissionTo($permissions);
     }
 }

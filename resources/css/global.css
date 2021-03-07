@@ -41,7 +41,6 @@ h2 {
 
 /*Sub Nav-Bar*/
 .sub-nav {
-  background-color: #f4f5f7;
   font-size: 0.9rem;
   font-weight: bold;
 }
@@ -67,8 +66,6 @@ h2 {
 
 /*Main Nav-Bar*/
 .top-nav {
-  /*background-color: #FFC82B;*/
-  background-color: #f4f5f7;
   font-size: 1.2rem;
   font-weight: bold;
 }

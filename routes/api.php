@@ -16,8 +16,11 @@ use App\Http\Controllers\RoomController;
 |
 */
 
-Route::post('/filterRooms', [RoomController::class, 'filter']);
-Route::post('/reservations/{room}', [ReservationsController::class, 'roomReservation']);
+
+Route::middleware('auth:sanctum')->group(function() {
+    Route::post('/filterRooms', [RoomController::class, 'filter'])->middleware(['permission:bookings.create']);
+    Route::post('/reservations/{room}', [ReservationsController::class, 'roomReservation'])->middleware(['permission:bookings.create']);
+});
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

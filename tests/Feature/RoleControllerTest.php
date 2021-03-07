@@ -34,11 +34,10 @@ class RoleControllerTest extends TestCase
     public function admins_can_create_roles()
     {
         $role = Role::factory()->make();
-        $user = User::factory()->make();
 
         $this->assertDatabaseMissing('roles', ['name' => $role->name]);
 
-        $response = $this->actingAs($user)->post('/admin/roles', ['name' => $role->name]);
+        $response = $this->actingAs($this->createUserWithPermissions(['roles.create']))->post('/admin/roles', ['name' => $role->name]);
 
         $response->assertStatus(302);
         $this->assertDatabaseHas('roles', ['name' => $role->name]);
@@ -53,12 +52,10 @@ class RoleControllerTest extends TestCase
 
         $role = Role::factory()->create();
 
-        $user = User::factory()->make();
-
         $this->assertDatabaseHas('roles', ['name' => $role->name]);
         $this->assertEquals(0, $role->permissions()->count());
 
-        $response = $this->actingAs($user)->put('/admin/roles/'. $role->id, [
+        $response = $this->actingAs($this->createUserWithPermissions(['roles.update']))->put('/admin/roles/' . $role->id, [
             'name' => $role->name,
             'permissions' => $permissions->random(5)->pluck('name')->toArray(),
         ]);
@@ -73,11 +70,10 @@ class RoleControllerTest extends TestCase
     public function admins_can_delete_roles()
     {
         $role = Role::factory()->create();
-        $user = User::factory()->make();
 
         $this->assertDatabaseHas('roles', ['name' => $role->name]);
 
-        $response = $this->actingAs($user)->delete('/admin/roles/' . $role->id);
+        $response = $this->actingAs($this->createUserWithPermissions(['roles.delete']))->delete('/admin/roles/' . $role->id);
 
         $response->assertStatus(302);
         $this->assertDatabaseMissing('roles', ['name' => $role->name]);

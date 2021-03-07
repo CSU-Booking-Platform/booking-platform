@@ -51,7 +51,7 @@ test('showBookingNav should be true for booking pages', () => {
         currentRouteName: "bookings.index",
         user: {
           can: [
-            'users'
+            'bookings.create'
           ]
         }
       }

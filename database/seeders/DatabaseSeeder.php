@@ -27,7 +27,8 @@ class DatabaseSeeder extends Seeder
             $users->first()->assignRole('super-admin');
 
             $this->call([
-                RoomSeeder::class
+                RoomSeeder::class,
+                BookingRequestsSeeder::class
             ]);
 
         }

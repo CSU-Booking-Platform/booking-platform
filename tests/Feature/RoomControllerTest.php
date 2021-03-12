@@ -18,16 +18,15 @@ class RoomControllerTest extends TestCase
     public function admins_can_create_rooms()
     {
         $room = Room::factory()->make();
-        $user = User::factory()->make();
         $this->assertDatabaseMissing('rooms', ['name' => $room->name]);
 
-        $response = $this->actingAs($user)->post('/admin/rooms', [
+        $response = $this->actingAs($this->createUserWithPermissions(['rooms.create']))->post('/admin/rooms', [
             'name' => $room->name,
             'number' => $room->number,
             'floor' => $room->floor,
             'building' => $room->building,
             'status' => $room->status,
-            'room_type'  => $room->room_type,
+            'room_type' => $room->room_type,
             'capacity_standing' => $room->attributes['capacity_standing'],
             'capacity_sitting' => $room->attributes['capacity_sitting'],
             'food' => $room->attributes['food'],
@@ -85,11 +84,10 @@ class RoomControllerTest extends TestCase
     public function admins_can_create_rooms_with_availabilities()
     {
         $room = Room::factory()->make();
-        $user = User::factory()->make();
 
         $this->assertDatabaseMissing('rooms', ['name' => $room->name]);
 
-        $response = $this->actingAs($user)->post(
+        $response = $this->actingAs($this->createUserWithPermissions(['rooms.create']))->post(
             '/admin/rooms',
             [
                 'name' => $room->name,
@@ -113,7 +111,7 @@ class RoomControllerTest extends TestCase
                 'ambiant_music' => $room->attributes['ambiant_music'],
                 'sale_for_profit' => $room->attributes['sale_for_profit'],
                 'fundraiser' => $room->attributes['fundraiser'],
-                'room_type'  => $room->room_type,
+                'room_type' => $room->room_type,
                 'availabilities' => [
                     'Monday' => [
                         'opening_hours' => '12:00:00',
@@ -131,7 +129,7 @@ class RoomControllerTest extends TestCase
             'floor' => $room->floor,
             'building' => $room->building,
             'status' => $room->status,
-            'room_type'  => $room->room_type,
+            'room_type' => $room->room_type,
             'attributes' => json_encode([
                 'capacity_standing' => $room->attributes['capacity_standing'],
                 'capacity_sitting' => $room->attributes['capacity_sitting'],
@@ -180,21 +178,20 @@ class RoomControllerTest extends TestCase
     public function admins_can_update_rooms()
     {
         $room = Room::factory()->create();
-        $user = User::factory()->make();
 
         $this->assertDatabaseHas('rooms', [
             'name' => $room->name, 'number' => $room->number,
             'floor' => $room->floor, 'building' => $room->building,
-            'status' => $room->status,'attributes' => json_encode($room->attributes),
+            'status' => $room->status, 'attributes' => json_encode($room->attributes),
         ]);
 
-        $response = $this->actingAs($user)->put('/admin/rooms/' . $room->id, [
+        $response = $this->actingAs($this->createUserWithPermissions(['rooms.update']))->put('/admin/rooms/' . $room->id, [
             'name' => 'the room',
             'number' => '24',
             'floor' => '2009',
             'building' => 'wiseau',
             'status' => 'available',
-            'room_type'  => 'Lounge',
+            'room_type' => 'Lounge',
             'capacity_standing' => '100',
             'capacity_sitting' => '80',
             'food' => 'true',
@@ -221,7 +218,7 @@ class RoomControllerTest extends TestCase
             'floor' => '2009',
             'building' => 'wiseau',
             'status' => 'available',
-            'room_type'  => 'Lounge',
+            'room_type' => 'Lounge',
             'attributes' => json_encode([
                 'capacity_standing' => '100',
                 'capacity_sitting' => '80',
@@ -249,7 +246,6 @@ class RoomControllerTest extends TestCase
     public function admins_can_update_rooms_with_availabilities()
     {
         $room = Room::factory()->create();
-        $user = User::factory()->make();
 
         $this->assertDatabaseHas('rooms', [
             'name' => $room->name, 'number' => $room->number,
@@ -257,7 +253,7 @@ class RoomControllerTest extends TestCase
             'status' => $room->status, 'attributes' => json_encode($room->attributes),
         ]);
 
-        $response = $this->actingAs($user)->put('/admin/rooms/' . $room->id, [
+        $response = $this->actingAs($this->createUserWithPermissions(['rooms.update']))->put('/admin/rooms/' . $room->id, [
             'name' => 'the room',
             'number' => '24',
             'floor' => '2009',
@@ -279,7 +275,7 @@ class RoomControllerTest extends TestCase
             'ambiant_music' => 'true',
             'sale_for_profit' => 'false',
             'fundraiser' => 'false',
-            'room_type'  => 'Lounge',
+            'room_type' => 'Lounge',
             'availabilities' => [
                 'Monday' => [
                     'opening_hours' => '12:00:00',
@@ -326,139 +322,139 @@ class RoomControllerTest extends TestCase
         );
     }
 
-  /**
-   * @test
-   */
-  public function admins_can_update_rooms_with_availabilities_that_already_has_availabilities()
-  {
-    $room = Room::factory()->create();
-    $user = User::factory()->make();
+    /**
+     * @test
+     */
+    public function admins_can_update_rooms_with_availabilities_that_already_has_availabilities()
+    {
+        $room = Room::factory()->create();
+        $user = $this->createUserWithPermissions(['rooms.update']);
 
-    $this->assertDatabaseHas('rooms', [
-      'name' => $room->name, 'number' => $room->number,
-      'floor' => $room->floor, 'building' => $room->building,
-      'status' => $room->status, 'attributes' => json_encode($room->attributes),
-    ]);
+        $this->assertDatabaseHas('rooms', [
+            'name' => $room->name, 'number' => $room->number,
+            'floor' => $room->floor, 'building' => $room->building,
+            'status' => $room->status, 'attributes' => json_encode($room->attributes),
+        ]);
 
-    $response = $this->actingAs($user)->put('/admin/rooms/' . $room->id, [
-      'name' => 'the room',
-      'number' => '24',
-      'floor' => '2009',
-      'building' => 'wiseau',
-      'status' => 'available',
-      'capacity_standing' => '100',
-      'capacity_sitting' => '80',
-      'food' => 'true',
-      'alcohol' => 'true',
-      'a_v_permitted' => 'false',
-      'projector' => 'true',
-      'television' => 'true',
-      'computer' => 'true',
-      'whiteboard' => 'true',
-      'sofas' => '1',
-      'coffee_tables' => '1',
-      'tables' => '1',
-      'chairs' => '1',
-      'ambiant_music' => 'true',
-      'sale_for_profit' => 'false',
-      'fundraiser' => 'false',
-      'room_type'  => 'Lounge',
-      'availabilities' => [
-        'Monday' => [
-          'opening_hours' => '12:00:00',
-          'closing_hours' => '13:00:00'
-        ]
-      ]
-    ]);
+        $response = $this->actingAs($user)->put('/admin/rooms/' . $room->id, [
+            'name' => 'the room',
+            'number' => '24',
+            'floor' => '2009',
+            'building' => 'wiseau',
+            'status' => 'available',
+            'capacity_standing' => '100',
+            'capacity_sitting' => '80',
+            'food' => 'true',
+            'alcohol' => 'true',
+            'a_v_permitted' => 'false',
+            'projector' => 'true',
+            'television' => 'true',
+            'computer' => 'true',
+            'whiteboard' => 'true',
+            'sofas' => '1',
+            'coffee_tables' => '1',
+            'tables' => '1',
+            'chairs' => '1',
+            'ambiant_music' => 'true',
+            'sale_for_profit' => 'false',
+            'fundraiser' => 'false',
+            'room_type' => 'Lounge',
+            'availabilities' => [
+                'Monday' => [
+                    'opening_hours' => '12:00:00',
+                    'closing_hours' => '13:00:00'
+                ]
+            ]
+        ]);
 
-    $response->assertStatus(302);
+        $response->assertStatus(302);
 
-    $this->assertDatabaseHas('rooms', [
-      'name' => 'the room',
-      'number' => '24',
-      'floor' => '2009',
-      'building' => 'wiseau',
-      'status' => 'available',
-      'attributes' => json_encode([
-        'capacity_standing' => '100',
-        'capacity_sitting' => '80',
-        'food' => 'true',
-        'alcohol' => 'true',
-        'a_v_permitted' => 'false',
-        'projector' => 'true',
-        'television' => 'true',
-        'computer' => 'true',
-        'whiteboard' => 'true',
-        'sofas' => '1',
-        'coffee_tables' => '1',
-        'tables' => '1',
-        'chairs' => '1',
-        'ambiant_music' => 'true',
-        'sale_for_profit' => 'false',
-        'fundraiser' => 'false'
-      ]),
-    ]);
+        $this->assertDatabaseHas('rooms', [
+            'name' => 'the room',
+            'number' => '24',
+            'floor' => '2009',
+            'building' => 'wiseau',
+            'status' => 'available',
+            'attributes' => json_encode([
+                'capacity_standing' => '100',
+                'capacity_sitting' => '80',
+                'food' => 'true',
+                'alcohol' => 'true',
+                'a_v_permitted' => 'false',
+                'projector' => 'true',
+                'television' => 'true',
+                'computer' => 'true',
+                'whiteboard' => 'true',
+                'sofas' => '1',
+                'coffee_tables' => '1',
+                'tables' => '1',
+                'chairs' => '1',
+                'ambiant_music' => 'true',
+                'sale_for_profit' => 'false',
+                'fundraiser' => 'false'
+            ]),
+        ]);
 
-    $this->assertDatabaseHas(
-      'availabilities',
-      [
-        'weekday' => 'Monday',
-        'opening_hours' => '12:00:00',
-        'closing_hours' => '13:00:00'
-      ]
-    );
+        $this->assertDatabaseHas(
+            'availabilities',
+            [
+                'weekday' => 'Monday',
+                'opening_hours' => '12:00:00',
+                'closing_hours' => '13:00:00'
+            ]
+        );
 
-    $response = $this->actingAs($user)->put('/admin/rooms/' . $room->id, [
-      'name' => 'the room',
-      'number' => '24',
-      'floor' => '2009',
-      'building' => 'wiseau',
-      'status' => 'available',
-      'capacity_standing' => '100',
-      'capacity_sitting' => '80',
-      'food' => 'true',
-      'alcohol' => 'true',
-      'a_v_permitted' => 'false',
-      'projector' => 'true',
-      'television' => 'true',
-      'computer' => 'true',
-      'whiteboard' => 'true',
-      'sofas' => '1',
-      'coffee_tables' => '1',
-      'tables' => '1',
-      'chairs' => '1',
-      'ambiant_music' => 'true',
-      'sale_for_profit' => 'false',
-      'fundraiser' => 'false',
-      'room_type'  => 'Lounge',
-      'availabilities' => [
-        'Monday' => [
-          'opening_hours' => '13:00:00',
-          'closing_hours' => '14:00:00'
-        ]
-      ]
-    ]);
+        $response = $this->actingAs($user)->put('/admin/rooms/' . $room->id, [
+            'name' => 'the room',
+            'number' => '24',
+            'floor' => '2009',
+            'building' => 'wiseau',
+            'status' => 'available',
+            'capacity_standing' => '100',
+            'capacity_sitting' => '80',
+            'food' => 'true',
+            'alcohol' => 'true',
+            'a_v_permitted' => 'false',
+            'projector' => 'true',
+            'television' => 'true',
+            'computer' => 'true',
+            'whiteboard' => 'true',
+            'sofas' => '1',
+            'coffee_tables' => '1',
+            'tables' => '1',
+            'chairs' => '1',
+            'ambiant_music' => 'true',
+            'sale_for_profit' => 'false',
+            'fundraiser' => 'false',
+            'room_type' => 'Lounge',
+            'availabilities' => [
+                'Monday' => [
+                    'opening_hours' => '13:00:00',
+                    'closing_hours' => '14:00:00'
+                ]
+            ]
+        ]);
 
-    $response->assertStatus(302);
+        $response->assertStatus(302);
 
-    $this->assertDatabaseHas(
-      'availabilities',
-      [
-        'weekday' => 'Monday',
-        'opening_hours' => '13:00:00',
-        'closing_hours' => '14:00:00'
-      ]
-    );
+        $this->assertDatabaseHas(
+            'availabilities',
+            [
+                'weekday' => 'Monday',
+                'opening_hours' => '13:00:00',
+                'closing_hours' => '14:00:00'
+            ]
+        );
 
-    $this->assertDatabaseMissing(
-      'availabilities',
-      [
-        'weekday' => 'Monday',
-        'opening_hours' => '12:00:00',
-        'closing_hours' => '13:00:00'
-      ]
-    );
-  }
+        $this->assertDatabaseMissing(
+            'availabilities',
+            [
+                'weekday' => 'Monday',
+                'opening_hours' => '12:00:00',
+                'closing_hours' => '13:00:00'
+            ]
+        );
+    }
 
     /**
      * @test
@@ -466,14 +462,13 @@ class RoomControllerTest extends TestCase
     public function admins_can_delete_rooms()
     {
         $room = Room::factory()->create();
-        $user = User::factory()->make();
 
         $this->assertDatabaseHas('rooms', [
             'name' => $room->name, 'number' => $room->number,
             'floor' => $room->floor, 'building' => $room->building
         ]);
 
-        $response = $this->actingAs($user)->delete('/admin/rooms/' . $room->id);
+        $response = $this->actingAs($this->createUserWithPermissions(['rooms.delete']))->delete('/admin/rooms/' . $room->id);
 
         $response->assertStatus(302);
         $this->assertDatabaseMissing('rooms', ['name' => $room->name]);

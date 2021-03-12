@@ -75,6 +75,14 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\BookingRequest');
     }
 
+    /**
+     * Get all booking requests created by this user.
+     */
+    public function bookingsToReview()
+    {
+        return $this->belongsToMany(BookingRequest::class, 'booking_reviewers');
+    }
+
     public function getCanAttribute()
     {
         return $this->getAllPermissions()->pluck('name');

@@ -14,6 +14,10 @@ class BookingRequestsSeeder extends Seeder
      */
     public function run()
     {
-        BookingRequest::factory()->count(10)->create();
+        BookingRequest::factory()
+            ->hasReservations(random_int(1, 3))
+            ->hasReviewers(random_int(1, 3))
+            ->count(10)
+            ->create();
     }
 }

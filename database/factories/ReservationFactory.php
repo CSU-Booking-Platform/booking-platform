@@ -2,8 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Models\BookingRequest;
 use App\Models\Reservation;
+use App\Models\Room;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Carbon;
 
 class ReservationFactory extends Factory
 {
@@ -22,7 +25,12 @@ class ReservationFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'room_id' => Room::inRandomOrder()->first()->id ?? Room::factory(),
+            'booking_request_id' => BookingRequest::factory(),
+            'start_time' => $this->faker->dateTimeBetween('now', '+1 month'),
+            'end_time' => function (array $attributes) {
+                return Carbon::parse($attributes['start_time'])->addHours(2);
+            },
         ];
     }
 }

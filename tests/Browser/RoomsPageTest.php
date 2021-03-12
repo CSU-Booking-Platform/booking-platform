@@ -70,7 +70,7 @@ class RoomsPageTest extends DuskTestCase
   {
     (new RolesAndPermissionsSeeder())->run();
 
-    $room = Room::factory()->create();
+    $room = Room::factory()->create(['name' => 'test-room-name-test']);
     $this->browse(function (Browser $browser) use ($room) {
 
       $admin = User::factory()->create();

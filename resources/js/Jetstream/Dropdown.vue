@@ -19,7 +19,7 @@
                     class="absolute z-50 mt-2 rounded-md shadow-lg"
                     :class="[widthClass, alignmentClasses]"
                     style="display: none;"
-                    @click="open = false">
+                    @click="open = (keepOpen || false)">
                 <div class="rounded-md shadow-xs" :class="contentClasses">
                     <slot name="content"></slot>
                 </div>
@@ -36,6 +36,9 @@
             },
             width: {
                 default: '48'
+            },
+            keepOpen: {
+                default: false
             },
             contentClasses: {
                 default: () => ['py-1', 'bg-white']
@@ -66,6 +69,7 @@
             widthClass() {
                 return {
                     '48': 'w-48',
+                    'full': 'w-full',
                 }[this.width.toString()]
             },
 
@@ -78,6 +82,16 @@
                     return 'origin-top'
                 }
             },
+        },
+
+        watch: {
+            open(opened) {
+                if(opened) {
+                    this.$emit('opened')
+                } else if(!opened) {
+                    this.$emit('closed');
+                }
+            }
         }
     }
 </script>

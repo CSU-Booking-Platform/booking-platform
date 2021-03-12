@@ -64,6 +64,8 @@ class BookingRequestController extends Controller
       ],
     ]);
 
+    $this->reservationValidate($request);
+
     Session::remove(self::RESERVATIONS_SESSION_KEY);
     Session::push(self::RESERVATIONS_SESSION_KEY, $data);
 
@@ -78,7 +80,7 @@ class BookingRequestController extends Controller
     public function create()
     {
       if (!Session::has(self::RESERVATIONS_SESSION_KEY)) {
-        return redirect()->route('bookings.index');
+        return redirect()->route('bookings.search');
       } else {
         $data = Session::get(self::RESERVATIONS_SESSION_KEY)[0];
 
@@ -100,24 +102,11 @@ class BookingRequestController extends Controller
     public function store(CreateBookingRequest $request)
     {
         $data = $request->validated();
-        $room = Room::findOrFail($data['room_id']);
-        $reservation = $data['reservations'][0];
 
-        // validate room still available at given times
-        foreach ($data['reservations'] as $value) {
-          $room->verifyDatesAreWithinRoomRestrictions($value['start_time']);
-          $room->verifyDatetimesAreWithinAvailabilities($value['start_time'], $value['end_time']);
-          $room->verifyRoomIsFree($value['start_time'], $value['end_time']);
-          if (!$request->user()->canMakeAnotherBookingRequest($value['start_time'])) {
-            throw ValidationException::withMessages([
-              'booking_request_exceeded' => 'Cannot make more than ' .
-                $request->user()->getUserNumberOfBookingRequestPerPeriod() .
-                ' bookings in the next ' .
-                $request->user()->getUserNumberOfDaysPerPeriod() .
-                ' days.'
-            ]);
-          }
-        }
+        $this->reservationValidate($request);
+
+        $reservation = $data['reservations'][0];
+        $room = Room::findOrFail($data['room_id']);
 
         $referenceFolder = null;
         if (array_key_exists('files', $data)) {
@@ -159,7 +148,7 @@ class BookingRequestController extends Controller
         $log = '[' . date(self::DATE_FORMAT) . '] - Created booking request';
         BookingRequestUpdated::dispatch($booking, $log);
 
-        return redirect()->route('bookings.list')->with('flash', ['banner' => 'Your Booking Request was submitted']);
+        return redirect()->route('bookings.index')->with('flash', ['banner' => 'Your Booking Request was submitted']);
     }
 
   /**
@@ -208,7 +197,7 @@ class BookingRequestController extends Controller
             BookingRequestUpdated::dispatch($booking, $log);
         }
 
-        return redirect(route('bookings.list'))
+        return redirect(route('bookings.index'))
             ->with('flash', ['banner' => 'Your Booking Request was updated!']);
     }
 
@@ -224,7 +213,7 @@ class BookingRequestController extends Controller
         Reservation::where('booking_request_id', $booking->id)->delete();
         $booking->delete();
 
-        return redirect()->route('bookings.index');
+        return redirect()->back();
     }
 
     public function downloadReferenceFiles($folder)
@@ -256,6 +245,27 @@ class BookingRequestController extends Controller
         ]);
     }
 
+    private function reservationValidate(Request $request)
+    {
+        $request->validate(array(
+            'reservations.*' => ['array', 'size:2',
+                function ($attribute, $value, $fail) use ($request) {
+                    $user =  $request->user();
+                    $room = Room::query()->findOrFail($request->room_id);
+                    $room->verifyDatesAreWithinRoomRestrictionsValidation($value['start_time'], $fail, $user);//
+                    $room->verifyDatetimesAreWithinAvailabilitiesValidation($value['start_time'], $value['end_time'], $fail);//
+                    $room->verifyRoomIsFreeValidation($value['start_time'], $value['end_time'], $fail);
+                    if (!$request->user()->canMakeAnotherBookingRequest($value['start_time'])) {
+                        $fail('You cannot have more than ' .
+                            $user->getUserNumberOfBookingRequestPerPeriod() .
+                            ' booking(s) in the next ' .
+                            $user->getUserNumberOfDaysPerPeriod() .
+                            ' days.');
+                    }
+                }
+            ]
+        ));
+    }
 
 
 }

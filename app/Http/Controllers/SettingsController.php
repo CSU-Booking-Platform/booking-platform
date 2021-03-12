@@ -64,5 +64,27 @@ class SettingsController extends Controller
     return back();
   }
 
+  public function setAppSSO(Request $request)
+  {
+    $request->validateWithBag('updateSetting', [
+        'label' => ['required'],
+        'client_secret' => ['required', 'string'],
+        'client_id' => ['required', 'string'],
+        'redirect_uri' => ['required', 'string'],
+        'tenant' => ['required', 'string']
+    ]);
+    Settings::updateOrCreate(
+        ['slug' => $request->label],
+        ['data' => [
+            'secret' => $request->client_secret,
+            'id' => $request->client_id,
+            'uri' => $request->redirect_uri,
+            'tenant' => $request->tenant
+            ]]
+    );
+    
+    return back();
+  }
+
 
 }

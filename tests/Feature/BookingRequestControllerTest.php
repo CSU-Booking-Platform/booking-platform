@@ -309,7 +309,7 @@ class BookingRequestControllerTest extends TestCase
     public function users_can_update_booking_request()
     {
         $room = Room::factory()->create(['status' => 'available']);
-        $booking_request = $this->createBookingRequest();
+        $booking_request = $this->createBookingRequest(true, ['status'=>"pending"]);
         $reservation = $this->createReservation($room, $booking_request);
         $this->createReservationAvailabilities($reservation->start_time, $room);
 
@@ -351,7 +351,7 @@ class BookingRequestControllerTest extends TestCase
     {
         Storage::fake('public');
         $room = Room::factory()->create();
-        $booking_request = $this->createBookingRequest();
+        $booking_request = $this->createBookingRequest(true, ['status'=>"pending"]);
         $reservation = $this->createReservation($room, $booking_request);
         $this->createReservationAvailabilities($reservation->start_time, $room);
 

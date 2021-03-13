@@ -137,6 +137,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
             Route::get('/', [SettingsController::class, 'index'])->name('index');
             Route::post('app_logo', [SettingsController::class, 'storeAppLogo'])->name('app.logo');
             Route::post('app_name', [SettingsController::class, 'storeAppName'])->name('app.name');
+            Route::post('app_config', [SettingsController::class, 'setAppConfig'])->name('app.config');
         });
     });
 

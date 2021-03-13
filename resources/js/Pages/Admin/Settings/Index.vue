@@ -13,7 +13,7 @@
                 <app-logo :settings="settings.app_logo"/>
             </div>
             <div class="mb-5">
-                <app-sso :settings="settings.app_sso"/>
+                <app-config :settings="settings.app_config"/>
             </div>
         </div>
     </app-layout>
@@ -24,15 +24,15 @@ import JetSectionBorder from '@src/Jetstream/SectionBorder'
 import AppLayout from '@src/Layouts/AppLayout';
 import AppName from "@src/Pages/Admin/Settings/AppName";
 import AppLogo from "@src/Pages/Admin/Settings/AppLogo";
-import AppSSO from "@src/Pages/Admin/Settings/AppSSO";
+import AppConfig from "@src/Pages/Admin/Settings/AppConfig";
 
 export default {
     components: {
         AppName,
         AppLogo,
+        AppConfig,
         AppLayout,
         JetSectionBorder,
-        'app-sso' : AppSSO,
     },
     props: {
         settings: {
@@ -41,7 +41,7 @@ export default {
                 return {
                     app_name: {},
                     app_logo: {},
-                    app_sso: {}
+                    app_config: {}
                 }
             },
         },

@@ -64,7 +64,7 @@ class SettingsController extends Controller
     return back();
   }
 
-  public function setAppSSO(Request $request)
+  public function setAppConfig(Request $request)
   {
     $request->validateWithBag('updateSetting', [
         'label' => ['required'],

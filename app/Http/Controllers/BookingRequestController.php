@@ -168,9 +168,9 @@ class BookingRequestController extends Controller
    */
     public function edit(BookingRequest $booking)
     {
-        if ($booking->status == "review" || $booking->status == "approved" )
-            return redirect()->route('bookings.view', ['booking'=>$booking]);
-
+        if ($booking->status == "review" || $booking->status == "approved" ) {
+            return redirect()->route('bookings.view', ['booking' => $booking]);
+        }
 
         return inertia('Requestee/EditBookingForm', [
             'booking' => $booking->load('requester', 'reservations', $this->reservationRoom),
@@ -188,9 +188,9 @@ class BookingRequestController extends Controller
     {
 
         //If comments don't call this
-        if ($booking->status == "review" || $booking->status == "approved" )
-            return redirect()->route('bookings.view', ['booking'=>$booking]);
-
+        if ($booking->status == "review" || $booking->status == "approved" ) {
+            return redirect()->route('bookings.view', ['booking' => $booking]);
+        }
 
         $reservation = $booking->reservations->first();
 

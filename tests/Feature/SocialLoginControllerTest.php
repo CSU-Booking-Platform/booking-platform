@@ -45,6 +45,12 @@ class SocialLoginControllerTest extends TestCase
         $response->assertStatus(302);
     }
 
+    public function test_failed_redirect_to_microsoft_login()
+    {
+        $response = $this->get('/login/microsoft');
+        $response->assertStatus(302);
+    }
+
     public function test_callback_from_microsoft_login()
     {
         //create a config in the db to attatch to the O365 login request

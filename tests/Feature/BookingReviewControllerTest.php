@@ -64,6 +64,30 @@ class BookingReviewControllerTest extends TestCase
     /**
      * @test
      */
+    public function booking_details_view_page_loads()
+    {
+        $this->seed(RolesAndPermissionsSeeder::class);
+        $user = User::factory()->make();
+        $user->givePermissionTo('bookings.approve')->save();
+
+        $booking = BookingRequest::factory()->hasReviewers(1)->create();
+        $room = Room::factory()->create();
+        $booking->rooms()->attach($room->id, [
+            'created_at' => now(),
+            'updated_at' => now(),
+            'start_time' => now(),
+            'end_time' => now()->addHours(2),
+        ]);
+
+        $response = $this->actingAs($user)->get(route('bookings.view', ['booking' => $booking]));
+        $response->assertOk();
+        $response->assertSee("bookings.view");
+        $response->assertSee($booking->event['description']);
+    }
+
+    /**
+     * @test
+     */
     public function can_approve_booking_request()
     {
         $this->seed(RolesAndPermissionsSeeder::class);

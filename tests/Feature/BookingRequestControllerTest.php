@@ -70,8 +70,18 @@ class BookingRequestControllerTest extends TestCase
      */
     public function user_can_view_booking_edit()
     {
-        $booking = BookingRequest::factory()->create();
+        $booking = BookingRequest::factory()->create(['status'=>'pending']);
         $response = $this->actingAs($this->createUserWithPermissions(['bookings.update']))->get(route('bookings.edit', $booking));
+        $response->assertSessionHasNoErrors();
+    }
+
+    /**
+     * @test
+     */
+    public function user_can_view_booking_view()
+    {
+        $booking = BookingRequest::factory()->create(['status'=>'review']);
+        $response = $this->actingAs($this->createUserWithPermissions(['bookings.update']))->get(route('bookings.view', $booking));
         $response->assertSessionHasNoErrors();
     }
 

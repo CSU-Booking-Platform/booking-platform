@@ -34,11 +34,9 @@ import JetActionMessage from '@src/Jetstream/ActionMessage'
 import JetFormSection from '@src/Jetstream/FormSection'
 import JetInputError from '@src/Jetstream/InputError'
 import JetLabel from '@src/Jetstream/Label'
-import AppName from "@src/Pages/Admin/Settings/AppName";
 
 export default {
     components: {
-        AppName,
         JetButton,
         JetInput,
         JetFormSection,
@@ -50,7 +48,7 @@ export default {
         return {
             updateNameSettingform: this.$inertia.form({
                 label: 'app_name',
-                app_name: this.settings.name,
+                app_name: this.settings?.name,
             }, {
                 bag: 'updateNameSetting',
                 resetOnSuccess: false,

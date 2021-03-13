@@ -78,6 +78,17 @@ class BookingRequestControllerTest extends TestCase
     /**
      * @test
      */
+    public function user_redirects_to_view_when_under_review()
+    {
+        $booking = BookingRequest::factory()->create(['status'=>'review']);
+        $response = $this->actingAs($this->createUserWithPermissions(['bookings.update']))->get(route('bookings.edit', $booking));
+        $response->assertSessionHasNoErrors();
+        $response->assertRedirect(route('bookings.view', $booking));
+    }
+
+    /**
+     * @test
+     */
     public function user_can_view_booking_view()
     {
         $booking = BookingRequest::factory()->create(['status'=>'review']);

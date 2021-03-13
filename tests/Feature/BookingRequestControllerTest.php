@@ -347,6 +347,46 @@ class BookingRequestControllerTest extends TestCase
     /**
      * @test
      */
+    public function users_can_not_update_booking_request_when_in_review()
+    {
+        $room = Room::factory()->create(['status' => 'available']);
+        $booking_request = $this->createBookingRequest(true, ['status'=>"review"]);
+        $reservation = $this->createReservation($room, $booking_request);
+        $this->createReservationAvailabilities($reservation->start_time, $room);
+
+        $this->assertDatabaseCount('booking_requests', 1);
+        $this->assertDatabaseCount('reservations', 1);
+        $this->assertDatabaseHas('reservations', [
+            'room_id' => $room->id,
+            'start_time' => Carbon::parse($reservation->start_time)->toDateTimeString(),
+            'end_time' => Carbon::parse($reservation->end_time)->toDateTimeString(),
+            'booking_request_id' => $booking_request->id
+        ]);
+
+        $old_title = $booking_request->event['title'];
+        $new_title = $old_title . 'v2';
+
+        $response = $this->actingAs($this->createUserWithPermissions(['bookings.update']))->put('/bookings/' . $booking_request->id, [
+            'event' => [
+                'start_time' => $reservation->start_time->format('H:i'),
+                'end_time' => $reservation->end_time->format('H:i'),
+                'title' => $new_title,
+                'type' => $booking_request->event['type'],
+                'description' => $booking_request->event['description'],
+                'guest_speakers' => $booking_request->event['guest_speakers'],
+                'attendees' => $booking_request->event['attendees'],
+            ]
+        ]);
+
+        $response->assertSessionHasNoErrors();
+        $response->assertRedirect("bookings/".$booking_request->id."/view");
+        $this->assertEquals(BookingRequest::where('event->title', $old_title)->count(), 1);
+        $this->assertEquals(BookingRequest::where('event->title', $new_title)->count(), 0);
+    }
+
+    /**
+     * @test
+     */
     public function users_can_update_reference_on_booking_request()
     {
         Storage::fake('public');

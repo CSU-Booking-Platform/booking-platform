@@ -43,7 +43,7 @@ class BookingReviewControllerTest extends TestCase
         $user = User::factory()->make();
         $user->givePermissionTo('bookings.approve')->save();
 
-        $booking = BookingRequest::factory()->hasReviewers(1)->create();
+        $booking = BookingRequest::factory()->hasReviewers(1)->create(['status'=>'pending']);
         $room = Room::factory()->create();
         $booking->rooms()->attach($room->id, [
             'created_at' => now(),
@@ -57,6 +57,8 @@ class BookingReviewControllerTest extends TestCase
         $response->assertSee("bookings.reviews.show");
         $response->assertSee($booking->event['description']);
 
+        $booking = $booking->fresh();
+        $this->assertEquals('review', $booking->status);
     }
 
     /**

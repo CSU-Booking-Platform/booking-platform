@@ -17,10 +17,17 @@ class SocialLoginController extends Controller
      */
     public function redirectToProvider()
     {
-        $data = Settings::where('slug', 'app_config')->pluck('data')->toArray()[0];
-        $config = new \SocialiteProviders\Manager\Config($data['id'], $data['secret'], $data['uri'], ['tenant' => $data['tenant']]);
+        try
+        {
+            $data = Settings::where('slug', 'app_config')->pluck('data')->toArray()[0];
+            $config = new \SocialiteProviders\Manager\Config($data['id'], $data['secret'], $data['uri'], ['tenant' => $data['tenant']]);
+            return Socialite::driver('microsoft')->setConfig($config)->stateless()->redirect();
+        }
+        catch (\Exception $e)
+        {
+            return redirect('/');
+        }
 
-        return Socialite::driver('microsoft')->setConfig($config)->stateless()->redirect();
     }
 
     /**
@@ -30,17 +37,24 @@ class SocialLoginController extends Controller
      */
     public function handleProviderCallback()
     {
-        $data = Settings::where('slug', 'app_config')->pluck('data')->toArray()[0];
-        $config = new \SocialiteProviders\Manager\Config($data['id'], $data['secret'], $data['uri'], ['tenant' => $data['tenant']]);
-        
-        $msUser = Socialite::driver('microsoft')->setConfig($config)->stateless()->user();
-    
-        $isUser = User::where(['email' => $msUser->getEmail()])->first();
-
-        if($isUser) 
+        try
         {
-            Auth::login($isUser);
-            return redirect('/dashboard');
+            $data = Settings::where('slug', 'app_config')->pluck('data')->toArray()[0];
+            $config = new \SocialiteProviders\Manager\Config($data['id'], $data['secret'], $data['uri'], ['tenant' => $data['tenant']]);
+            
+            $msUser = Socialite::driver('microsoft')->setConfig($config)->stateless()->user();
+        
+            $isUser = User::where(['email' => $msUser->getEmail()])->first();
+
+            if($isUser) 
+            {
+                Auth::login($isUser);
+                return redirect('/dashboard');
+            }
+        }
+        catch (\Exception $e)
+        {
+            return redirect('/');
         }
 
     }

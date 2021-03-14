@@ -10,7 +10,7 @@ use App\Http\Controllers\RoomController;
 use App\Http\Controllers\RoomDateRestrictionsController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\LoginController;
+use App\Http\Controllers\SocialLoginController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,6 +30,9 @@ Route::get('/', function () {
 
 Route::get('login/microsoft', [LoginController::class, 'redirectToProvider'])->name('login/microsoft');
 Route::get('login/microsoft/callback', [LoginController::class, 'handleProviderCallback']);
+
+Route::get('login/microsoft', [SocialLoginController::class, 'redirectToProvider'])->name('login/microsoft');
+Route::get('login/microsoft/callback', [SocialLoginController::class, 'handleProviderCallback'])->name('login/microsoft/callback');
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/dashboard', function () {

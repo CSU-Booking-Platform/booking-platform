@@ -27,7 +27,17 @@ beforeEach(() => {
             reservations: [
                 { start_time: "2020-01-20T18:02", end_time: "2020-01-20T18:05" },
                 { start_time: "2020-01-21T18:02", end_time: "2020-01-21T18:05" },
-            ]
+            ],
+            bookings_general_information: {
+                data: {
+                    html: "okidoki"
+                },
+            },
+            bookings_event_description: {
+                data: {
+                    html: "ok"
+                },
+            }
         },
         data() {
             return {

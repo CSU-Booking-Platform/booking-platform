@@ -15,6 +15,10 @@
             <div class="mb-5">
                 <app-config :settings="settings.app_config"/>
             </div>
+            <BookingInformations 
+                :general_information="settings.general_information" 
+                :event_description="settings.event_description" 
+            />
         </div>
     </app-layout>
 </template>
@@ -25,6 +29,7 @@ import AppLayout from '@src/Layouts/AppLayout';
 import AppName from "@src/Pages/Admin/Settings/AppName";
 import AppLogo from "@src/Pages/Admin/Settings/AppLogo";
 import AppConfig from "@src/Pages/Admin/Settings/AppConfig";
+import BookingInformations from "@src/Pages/Admin/Settings/BookingInformations";
 
 export default {
     components: {
@@ -32,6 +37,7 @@ export default {
         AppLogo,
         AppConfig,
         AppLayout,
+        BookingInformations,
         JetSectionBorder,
     },
     props: {
@@ -41,7 +47,9 @@ export default {
                 return {
                     app_name: {},
                     app_logo: {},
-                    app_config: {}
+                    app_config: {},
+                    general_information: {},
+                    event_description: {}
                 }
             },
         },

@@ -9,6 +9,7 @@ use App\Models\BookingRequest;
 use App\Models\Reservation;
 use App\Models\Room;
 use App\Events\BookingRequestUpdated;
+use App\Models\Settings;
 use DB;
 use Exception;
 use Illuminate\Http\RedirectResponse;
@@ -89,6 +90,8 @@ class BookingRequestController extends Controller
           // example of the expected reservations format
           'room' => Room::findOrFail($data['room_id']),
           'reservations' => $data['reservations'],
+          'bookings_general_information' => Settings::select('data')->where('slug', '=', 'general_information')->first(),
+          'bookings_event_description' => Settings::select('data')->where('slug', '=', 'event_description')->first()
         ]);
       }
     }
@@ -174,6 +177,8 @@ class BookingRequestController extends Controller
 
         return inertia('Requestee/EditBookingForm', [
             'booking' => $booking->load('requester', 'reservations', $this->reservationRoom),
+            'bookings_general_information' => Settings::select('data')->where('slug', '=', 'general_information')->first(),
+            'bookings_event_description' => Settings::select('data')->where('slug', '=', 'event_description')->first()
         ]);
     }
 

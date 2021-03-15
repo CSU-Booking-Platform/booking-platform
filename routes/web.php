@@ -11,6 +11,7 @@ use App\Http\Controllers\RoomDateRestrictionsController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\SocialLoginController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,6 +28,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return redirect()->route('login');
 });
+
+Route::get('login/microsoft', [LoginController::class, 'redirectToProvider'])->name('login/microsoft');
+Route::get('login/microsoft/callback', [LoginController::class, 'handleProviderCallback']);
+
+Route::get('login/microsoft', [SocialLoginController::class, 'redirectToProvider'])->name('login/microsoft');
+Route::get('login/microsoft/callback', [SocialLoginController::class, 'handleProviderCallback'])->name('login/microsoft/callback');
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/dashboard',[DashboardController::class, 'index'])->name('dashboard');
@@ -129,6 +136,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
             Route::get('/', [SettingsController::class, 'index'])->name('index');
             Route::post('app_logo', [SettingsController::class, 'storeAppLogo'])->name('app.logo');
             Route::post('app_name', [SettingsController::class, 'storeAppName'])->name('app.name');
+            Route::post('app_config', [SettingsController::class, 'setAppConfig'])->name('app.config');
         });
     });
 

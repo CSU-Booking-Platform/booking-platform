@@ -110,5 +110,52 @@ class SettingsControllerTest extends TestCase
         ]);
     }
 
+    public function testFormUpdateCreateAppConfig()
+    {
+        $user = $this->createUserWithPermissions(['settings.edit']);
+        $random = Str::random(40);
+        //test if fucntion creates if no option is there
+        $this->assertDatabaseCount('settings', 0);
+        $this->actingAs($user)->post('/admin/settings/app_config', [
+            'label' => 'app_config',
+            'client_secret' => $random,
+            'client_id' => $random,
+            'redirect_uri' => $random,
+            'tenant' => $random
+        ]);
 
+        $this->assertDatabaseCount('settings', 1);
+
+        $this->assertDatabaseHas('settings', [
+            'slug' => 'app_config',
+            'data' => json_encode([
+                'secret' => $random,
+                'id' => $random,
+                'uri' => $random,
+                'tenant' => $random
+            ]),
+        ]);
+        $random = Str::random(40);
+        //test if function edits if data is already there
+
+        $this->actingAs($user)->post('/admin/settings/app_config', [
+            'label' => 'app_config',
+            'client_secret' => $random,
+            'client_id' => $random,
+            'redirect_uri' => $random,
+            'tenant' => $random
+        ]);
+
+        $this->assertDatabaseCount('settings', 1);
+
+        $this->assertDatabaseHas('settings', [
+            'slug' => 'app_config',
+            'data' => json_encode([
+                'secret' => $random,
+                'id' => $random,
+                'uri' => $random,
+                'tenant' => $random
+            ]),
+        ]);
+    }
 }

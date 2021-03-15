@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Blackout;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Carbon;
 
 class BlackoutFactory extends Factory
 {
@@ -21,11 +22,13 @@ class BlackoutFactory extends Factory
      */
     public function definition()
     {
-        
+
         return [
             'name' => $this->faker->word,
             'start_time' => $this->faker->dateTimeBetween('now', '+2 hours'),
-            'end_time' => $this->faker->dateTimeBetween('now +2 hours', '+4 hours')
+            'end_time' => function (array $attributes) {
+                return Carbon::parse($attributes['start_time'])->addHours(2);
+            },
         ];
     }
 }

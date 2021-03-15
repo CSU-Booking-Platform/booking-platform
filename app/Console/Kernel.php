@@ -2,8 +2,10 @@
 
 namespace App\Console;
 
+use App\Console\Commands\MakeUser;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Laravel\Telescope\Telescope;
 
 
 /**
@@ -20,17 +22,18 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         //
+        MakeUser::class,
     ];
 
     /**
      * Define the application's command schedule.
      *
-     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
+     * @param Schedule $schedule
      * @return void
      */
     protected function schedule(Schedule $schedule)
     {
-        if (class_exists(\Laravel\Telescope\Telescope::class)) {
+        if (class_exists(Telescope::class)) {
             $schedule->command('telescope:prune')->daily();
         }
     }

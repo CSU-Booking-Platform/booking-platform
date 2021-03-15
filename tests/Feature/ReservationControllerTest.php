@@ -29,11 +29,9 @@ class ReservationControllerTest extends TestCase
     }
 
     /**
-     * A basic feature test example.
-     *
-     * @return void
+     * @test
      */
-    public function test_storing_multiple_reservations()
+    public function user_can_store_multiple_reservations()
     {
         $room = Room::factory()->create();
 
@@ -66,7 +64,10 @@ class ReservationControllerTest extends TestCase
         ]);
     }
 
-    public function test_deleting_reservations()
+    /**
+     * @test
+     */
+    public function deleting_reservations()
     {
         $room = Room::factory()->create();
 
@@ -83,7 +84,10 @@ class ReservationControllerTest extends TestCase
 
     }
 
-    public function test_update_reservations()
+    /**
+     * @test
+     */
+    public function update_reservations()
     {
         $room = Room::factory()->create();
 
@@ -115,7 +119,10 @@ class ReservationControllerTest extends TestCase
         ]);
     }
 
-    public function test_conflict_block_case_A()
+    /**
+     * @test
+     */
+    public function conflict_block_case_A()
     {
         //Case A: The reservation ends after another is supposed to start
         $room = Room::factory()->create();
@@ -148,7 +155,10 @@ class ReservationControllerTest extends TestCase
         ]);
     }
 
-    public function test_conflict_block_case_B()
+    /**
+     * @test
+     */
+    public function conflict_block_case_B()
     {
         //Case B: The reservation starts after another is supposed to end
         $room = Room::factory()->create();
@@ -181,7 +191,10 @@ class ReservationControllerTest extends TestCase
         ]);
     }
 
-    public function test_conflict_block_case_C()
+    /**
+     * @test
+     */
+    public function conflict_block_case_C()
     {
         //Case C: The new reservation starts before and ends after
         $room = Room::factory()->create();
@@ -214,7 +227,10 @@ class ReservationControllerTest extends TestCase
         ]);
     }
 
-    public function test_conflict_block_case_D()
+    /**
+     * @test
+     */
+    public function conflict_block_case_D()
     {
         //Case D: The reservation is inside another one.
         $room = Room::factory()->create();
@@ -247,7 +263,10 @@ class ReservationControllerTest extends TestCase
         ]);
     }
 
-    public function test_storing_multiple_reservations_fail_if_one_is_denied()
+    /**
+     * @test
+     */
+    public function storing_multiple_reservations_fail_if_one_is_denied()
     {
         $user = User::factory()->create();
         $room = Room::factory()->create();
@@ -267,12 +286,17 @@ class ReservationControllerTest extends TestCase
         ]);
 
         $response->assertStatus(302);
+        $response->assertSessionHasErrorsIn('storeReservationsRequest');
+        $response->dumpSession();
         $this->assertDatabaseCount('booking_requests', 0);
         $this->assertDatabaseCount('reservations', 0);
 
     }
 
-    public function test_storing_too_early()
+    /**
+     * @test
+     */
+    public function storing_too_early()
     {
         $user = User::factory()->create();
         $room = Room::factory()->create();
@@ -295,7 +319,10 @@ class ReservationControllerTest extends TestCase
         $this->assertDatabaseCount('reservations', 0);
     }
 
-    public function test_storing_too_late()
+    /**
+     * @test
+     */
+    public function storing_too_late()
     {
         $user = User::factory()->create();
         $room = Room::factory()->create(['min_days_advance' => 10, 'max_days_advance' => 100,]);
@@ -318,7 +345,10 @@ class ReservationControllerTest extends TestCase
         $this->assertDatabaseCount('reservations', 0);
     }
 
-    public function test_relations_set()
+    /**
+     * @test
+     */
+    public function relations_set()
     {
         $room = Room::factory()->create();
         $booking_request = $this->createBookingRequest();
@@ -331,7 +361,10 @@ class ReservationControllerTest extends TestCase
 
     }
 
-    public function test_retrieve_approved_reservations_on_given_date()
+    /**
+     * @test
+     */
+    public function retrieve_approved_reservations_on_given_date()
     {
         $user = User::factory()->create();
         $room = Room::factory()->create();
@@ -347,7 +380,10 @@ class ReservationControllerTest extends TestCase
         $response->assertJsonCount(1);
     }
 
-    public function test_retrieve_approved_reservations_with_no_date_return_empty()
+    /**
+     * @test
+     */
+    public function retrieve_approved_reservations_with_no_date_return_empty()
     {
         $user = User::factory()->create();
         $room = Room::factory()->create();
@@ -411,11 +447,10 @@ class ReservationControllerTest extends TestCase
 
     private function createReservationCopy(Reservation $reservation, bool $create = true)
     {
-        $data = $reservation->attributesToArray();
-        $data = [
-            'start_time' => Carbon::parse($data['start_time'])->addMinute()->format('Y-m-d\TH:i'),
-            'end_time' => Carbon::parse($data['end_time'])->addMinute()->format('Y-m-d\TH:i'),
-        ];
+        $data = array_merge($reservation->attributesToArray(), [
+            'start_time' => $reservation->start_time->addMinute(),
+            'end_time' => $reservation->end_time->addMinute(),
+        ]);
         if ($create) {
             $reservation = Reservation::factory()->create($data);
         } else {

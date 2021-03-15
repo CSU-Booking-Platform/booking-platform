@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\BookingCollection;
 use App\Http\Resources\BookingResource;
 use App\Models\BookingRequest;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class BookingReviewController extends Controller
@@ -19,7 +20,7 @@ class BookingReviewController extends Controller
 
     public function show(BookingRequest $booking)
     {
-        $booking->loadMissing('requester', 'reservations', 'reservations.room');
+        $booking->loadMissing('requester', 'reviewers', 'reservations', 'reservations.room');
 
         return inertia('Approval/ReviewBooking', [
             'booking' => new BookingResource($booking)
@@ -40,6 +41,23 @@ class BookingReviewController extends Controller
 
         return redirect(route('bookings.reviews.index'))
             ->with('flash', ['banner' => "This request was successfully $request->status."]);
+    }
+
+    public function assign(Request $request, BookingRequest $booking)
+    {
+        $request->validateWithBag('setBookingReviewers', [
+            'reviewers_ids' => ['array'],
+            'reviewers_ids.*' => ['distinct', 'exists:' . User::class.',id']
+        ]);
+
+        $booking->reviewers()->sync($request->reviewers_ids);
+
+        return back()->with('flash', ['banner' => "Reviewers successfully were updated."]);
+    }
+
+    public function assignable()
+    {
+        return User::permission(['bookings.approve'])->get();
     }
 
 }

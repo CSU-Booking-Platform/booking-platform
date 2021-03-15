@@ -80,6 +80,11 @@ class BookingRequest extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function reviewers()
+    {
+        return $this->belongsToMany(User::class, 'booking_reviewers');
+    }
+
     public function scopePending(Builder $query) {
         $query->where('status', 'review');
     }

@@ -2,7 +2,7 @@
   <div>
 
     <!-- Booking -->
-    <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+    <div class="bg-white shadow sm:rounded-lg">
       <div class="px-4 py-5 sm:px-6">
         <h3 class="text-lg leading-6 font-medium text-gray-900">
           Booking Overview
@@ -40,13 +40,23 @@
               Request Status
             </dt>
             <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-              <span class="bg-indigo-500 rounded-full py-2 px-6 text-white text-center font-bold"
+              <span class="rounded-full py-2 px-6 text-white text-center font-bold"
                     :class="{ 'bg-green-700': (booking.status === 'Approved'),
                               'bg-red-700': (booking.status === 'Refused'),
-                              'bg-yellow-500': (booking.status === 'Review'),
+                              'bg-yellow-400': (booking.status === 'Review'),
+                              'bg-indigo-500': (booking.status !== 'Approved' && booking.status !== 'Refused' && booking.status !== 'Review' ),
               }">
                 {{ booking.status }}
               </span>
+            </dd>
+          </div>
+          <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">
+              Request Reviewers
+            </dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+              <booking-reviewers-field :reviewers="booking.reviewers" :booking_request_id="booking.id"
+                                       :editing="(booking.status === 'Review' && this.$page.user.can.includes('bookings.approve')) || false" />
             </dd>
           </div>
         </dl>
@@ -540,9 +550,11 @@ import JetSectionBorder from '@src/Jetstream/SectionBorder'
 import JetActionSection from '@src/Jetstream/ActionSection'
 import JetFormSection from '@src/Jetstream/FormSection';
 import AppWarning from '@src/Components/Form/Warning';
+import BookingReviewersField from "@src/Components/BookingReviewersField";
 
 export default {
   components: {
+    BookingReviewersField,
     AppWarning,
     JetSectionBorder,
     JetActionSection,

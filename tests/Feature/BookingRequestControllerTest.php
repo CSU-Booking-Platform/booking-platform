@@ -330,7 +330,7 @@ class BookingRequestControllerTest extends TestCase
     public function users_can_update_booking_request()
     {
         $room = Room::factory()->create(['status' => 'available']);
-        $booking_request = $this->createBookingRequest(true, ['status'=>"pending"]);
+        $booking_request = $this->createBookingRequest(true, ['status'=>BookingRequest::PENDING]);
         $reservation = $this->createReservation($room, $booking_request);
         $this->createReservationAvailabilities($reservation->start_time, $room);
 
@@ -371,7 +371,7 @@ class BookingRequestControllerTest extends TestCase
     public function users_can_not_update_booking_request_when_in_review()
     {
         $room = Room::factory()->create(['status' => 'available']);
-        $booking_request = $this->createBookingRequest(true, ['status'=>"review"]);
+        $booking_request = $this->createBookingRequest(true, ['status'=>BookingRequest::REVIEW]);
         $reservation = $this->createReservation($room, $booking_request);
         $this->createReservationAvailabilities($reservation->start_time, $room);
 
@@ -412,7 +412,7 @@ class BookingRequestControllerTest extends TestCase
     {
         Storage::fake('public');
         $room = Room::factory()->create();
-        $booking_request = $this->createBookingRequest(true, ['status'=>"pending"]);
+        $booking_request = $this->createBookingRequest(true, ['status'=>BookingRequest::PENDING]);
         $reservation = $this->createReservation($room, $booking_request);
         $this->createReservationAvailabilities($reservation->start_time, $room);
 

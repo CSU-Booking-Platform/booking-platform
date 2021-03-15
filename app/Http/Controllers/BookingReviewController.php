@@ -21,7 +21,7 @@ class BookingReviewController extends Controller
     public function show(BookingRequest $booking)
     {
         //Will change when enums are made
-        if ($booking->status == "pending"){
+        if ($booking->status == BookingRequest::PENDING){
             $booking->update(['status' => BookingRequest::REVIEW]);
         }
 

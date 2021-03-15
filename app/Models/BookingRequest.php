@@ -11,6 +11,16 @@ class BookingRequest extends Model
     use HasFactory;
 
 
+    /**
+     * Constant types of booking request statuses
+     */
+    public const REVIEW = 'review';
+    public const APPROVED = 'approved';
+    public const REFUSED = 'refused';
+    public const PENDING = 'pending';
+
+    public const STATUS_TYPES = [self::REVIEW, self::APPROVED, self::REFUSED, self::PENDING];
+
     protected $fillable = [
         'user_id',
         'status',
@@ -32,17 +42,6 @@ class BookingRequest extends Model
         'event' => 'array',
         'onsite_contact' => 'array',
     ];
-
-    /**
-     * Constant types of booking request statuses
-     */
-    public const REVIEW = 'review';
-    public const APPROVED = 'approved';
-    public const REFUSED = 'refused';
-    public const PENDING = 'pending';
-
-    public const STATUS_TYPES = [self::REVIEW, self::APPROVED, self::REFUSED, self::PENDING];
-
 
      /**
      * The accessors to append to the model's array form.

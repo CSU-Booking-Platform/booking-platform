@@ -3,7 +3,7 @@
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-8 items-center" v-if="showAdvancedDash()">
-                  <h3 v-if='showSpecificDash("room")'>
+                  <h3 v-if='showSpecificDash("rooms")'>
                    Room Types
                   <DashboardMetrics :metrics="rooms" />
                   </h3>
@@ -59,8 +59,7 @@ export default {
     },
     showAdvancedDash() {
       return this.userHasPermissionWithPrefix("users")||
-      this.userHasPermissionWithPrefix("bookings")||
-      this.userHasPermissionWithPrefix("rooms");
+      this.userHasPermissionWithPrefix("bookings")
     },
     showSpecificDash(role)
     {

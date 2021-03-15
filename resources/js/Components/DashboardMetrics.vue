@@ -1,22 +1,8 @@
-<!-- component -->
-<!-- 
-    =======================================================================
-    Name    :   Dashboard Metrics - Default
-    Author  :   Surjith S M
-    Twitter :   @surjithctly
-
-    Other Variations Available: Stacked, Minimal, with icons
-
-    Get more components here 👉 https://web3templates.com/components
-
-    Copyright © 2021
-    =======================================================================
- -->
 <template>
-	<div class="container max-w-6xl px-5 mx-auto">
+	<div class="container max-w-6xl px-5 mx-auto" >
 		<div class="grid gap-7 sm:grid-cols-2 lg:grid-cols-4">
 			<div class="p-5 bg-white rounded shadow-sm" v-for="(value, name) in metrics" :key="name">
-				<div class="text-base text-gray-400 ">{{name}}</div>
+				<div class="text-base text-gray-400 capitalize">{{name}}</div>
 				<div class="flex items-center pt-1">
 					<div class="text-2xl font-bold text-gray-900 ">{{value}}</div>
 					<!--<span class="flex items-center px-2 py-0.5 mx-2 text-sm text-green-600 bg-green-100 rounded-full"> 

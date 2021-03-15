@@ -27,6 +27,12 @@ beforeEach(() => {
                     size: 2267483,
                     type: "application/pdf",
                     webkitRelativePath: "",
+                },{
+                  lastModified: 1610336108413,
+                  name: "Sprint 6 Review.pdf",
+                  size: 2267483,
+                  type: "application/pdf",
+                  webkitRelativePath: "",
                 }],
             }
         }
@@ -82,6 +88,12 @@ test('should change when remove', () => {
 
     wrapper.vm.remove(1);
 
+    expect(wrapper.emitted().change).toBeTruthy();
+
+    wrapper.vm.remove(1);
+    expect(wrapper.emitted().change).toBeTruthy();
+
+    wrapper.vm.remove(1);
     expect(wrapper.emitted().change).toBeTruthy();
 })
 

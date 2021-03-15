@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Settings;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -123,7 +124,7 @@ class SettingsControllerTest extends TestCase
             'redirect_uri' => $random,
             'tenant' => $random
         ]);
-
+        
         $this->assertDatabaseCount('settings', 1);
 
         $this->assertDatabaseHas('settings', [
@@ -157,5 +158,28 @@ class SettingsControllerTest extends TestCase
                 'tenant' => $random
             ]),
         ]);
+    }
+    
+        /**
+     * @test
+     */
+    public function testCanEditBookingInformations()
+    {
+        $setting = Settings::create([
+            'slug' => 'event_description',
+            'data' => json_encode([
+                'html' => '<p>This is a test</p>'
+            ])
+        ]);
+        $response = $this->actingAs($this->createUserWithPermissions(['bookings.update']))->patch('api/booking-setting', [
+            'slug' => 'event_description',
+            'data' => '<p>holla</p>'
+        ]);
+
+        $response->assertStatus(200);
+
+        $this->assertDatabaseHas('settings', ['slug' => $setting->slug, 'data' => json_encode([
+            'html' => '<p>holla</p>'
+        ])]);
     }
 }

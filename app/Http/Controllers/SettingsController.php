@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Settings;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Response;
 use Inertia\ResponseFactory;
@@ -85,6 +84,19 @@ class SettingsController extends Controller
     
     return back();
   }
+  public function storeBookingGeneralInformation(Request $request)
+  {
+    $request->validate([
+      'slug' => 'required',
+      'data' => 'required'
+    ]);
 
+    Settings::updateOrCreate(
+      ['slug' => $request->slug],
+      ['data' => ['html' => $request->data]]
+    );
+
+    return response()->json();
+  }
 
 }

@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\ReservationsController;
 use App\Http\Controllers\BookingReviewController;
+use App\Http\Controllers\SettingsController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -16,14 +18,13 @@ use App\Http\Controllers\BookingReviewController;
 |
 */
 
-
-Route::middleware('auth:sanctum')->group(function() {
+Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/filterRooms', [RoomController::class, 'filter'])->middleware(['permission:bookings.create']);
     Route::post('/reservations/{room}', [ReservationsController::class, 'roomReservation'])->middleware(['permission:bookings.create']);
+    Route::patch('/booking-setting', [SettingsController::class, 'storeBookingGeneralInformation']);
 
     Route::name('bookings.reviews.assignable')->middleware(['permission:bookings.approve'])
         ->get('/bookings/assignable', [BookingReviewController::class, 'assignable']);
-
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

@@ -53,7 +53,7 @@
             <td class="text-center">
             <div class="text-md mx-3">
                   <a
-                    v-if="booking.reference.path"
+                    v-if="booking.reference && booking.reference.path"
                     @click="setReference(booking);"
                     class="cursor-pointer text-sm text-blue-800 focus:outline-none"
                     :href="href"

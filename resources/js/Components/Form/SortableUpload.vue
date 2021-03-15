@@ -131,6 +131,9 @@ import createFileList from "create-file-list";
                 files.splice(index, 1);
 
                 this.files = createFileList(files);
+                if (!this.files?.length) {
+                    this.files = [];
+                }
                 this.$emit("change", this.files);
             },
             drop(e) {

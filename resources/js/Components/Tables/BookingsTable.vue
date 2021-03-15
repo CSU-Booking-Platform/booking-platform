@@ -39,9 +39,9 @@
                   In Review
                 </button>
               </a>
-              <a v-else-if="booking.status == 'denied'" >
+              <a v-else-if="booking.status == 'refused'" >
                 <button aria-disabled="true" class="h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-red-900 rounded-lg focus:shadow-outline">
-                  Denied
+                  Refused
                 </button>
               </a>
               <a v-else-if="booking.status == 'approved'" >

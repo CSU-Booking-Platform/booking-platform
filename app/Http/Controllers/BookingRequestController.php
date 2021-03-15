@@ -126,7 +126,7 @@ class BookingRequestController extends Controller
             'user_id' => $request->user()->id,
             'start_time' => $reservation['start_time'],
             'end_time' => $reservation['end_time'],
-            'status' => 'pending',
+            'status' => BookingRequest::PENDING,
             'event' => $data['event'],
             'onsite_contact' => $data['onsite_contact'] ?? [],
             'notes' => $data['notes'] ?? '',
@@ -168,7 +168,7 @@ class BookingRequestController extends Controller
    */
     public function edit(BookingRequest $booking)
     {
-        if ($booking->status == "review" || $booking->status == "approved" ) {
+        if ($booking->status == BookingRequest::REVIEW || $booking->status == BookingRequest::APPROVED ) {
             return redirect()->route('bookings.view', ['booking' => $booking]);
         }
 
@@ -188,7 +188,7 @@ class BookingRequestController extends Controller
     {
 
         //If comments don't call this
-        if ($booking->status == "review" || $booking->status == "approved" ) {
+        if ($booking->status == BookingRequest::REVIEW || $booking->status == BookingRequest::APPROVED ) {
             return redirect()->route('bookings.view', ['booking' => $booking]);
         }
 
@@ -196,7 +196,7 @@ class BookingRequestController extends Controller
 
         $update = collect($request->validated())->except(['files']);
         $booking->fill($update->toArray());
-        $booking->status = "pending";
+        $booking->status = BookingRequest::PENDING;
         $booking->save();
 
         if($booking->wasChanged()) {

@@ -43,7 +43,7 @@ class BookingReviewControllerTest extends TestCase
         $user = User::factory()->make();
         $user->givePermissionTo('bookings.approve')->save();
 
-        $booking = BookingRequest::factory()->hasReviewers(1)->create(['status'=>'pending']);
+        $booking = BookingRequest::factory()->hasReviewers(1)->create(['status'=>BookingRequest::PENDING]);
         $room = Room::factory()->create();
         $booking->rooms()->attach($room->id, [
             'created_at' => now(),
@@ -58,7 +58,7 @@ class BookingReviewControllerTest extends TestCase
         $response->assertSee($booking->event['description']);
 
         $booking = $booking->fresh();
-        $this->assertEquals('review', $booking->status);
+        $this->assertEquals(BookingRequest::REVIEW, $booking->status);
     }
 
     /**
@@ -94,7 +94,7 @@ class BookingReviewControllerTest extends TestCase
         $user = User::factory()->make();
         $user->givePermissionTo('bookings.approve')->save();
 
-        $booking = BookingRequest::factory()->create(['status' => 'review']);
+        $booking = BookingRequest::factory()->create(['status' => BookingRequest::REVIEW]);
         $room = Room::factory()->create();
         $booking->rooms()->attach($room->id, [
             'created_at' => now(),
@@ -103,12 +103,12 @@ class BookingReviewControllerTest extends TestCase
             'end_time' => now()->addHours(2),
         ]);
 
-        $this->assertNotEquals('approved', $booking->status);
+        $this->assertNotEquals(BookingRequest::APPROVED, $booking->status);
         $response = $this->actingAs($user)->post(route('bookings.reviews.update', ['booking' => $booking]), [
-            'status' => 'approved'
+            'status' => BookingRequest::APPROVED
         ]);
         $response->assertRedirect(route('bookings.reviews.index'));
-        $this->assertEquals('approved', $booking->refresh()->status);
+        $this->assertEquals(BookingRequest::APPROVED, $booking->refresh()->status);
 
     }
 
@@ -121,7 +121,7 @@ class BookingReviewControllerTest extends TestCase
         $user = User::factory()->make();
         $user->givePermissionTo('bookings.approve')->save();
 
-        $booking = BookingRequest::factory()->create(['status' => 'review']);
+        $booking = BookingRequest::factory()->create(['status' => BookingRequest::REVIEW]);
         $room = Room::factory()->create();
         $booking->rooms()->attach($room->id, [
             'created_at' => now(),
@@ -130,12 +130,12 @@ class BookingReviewControllerTest extends TestCase
             'end_time' => now()->addHours(2),
         ]);
 
-        $this->assertNotEquals('refused', $booking->status);
+        $this->assertNotEquals(BookingRequest::REFUSED, $booking->status);
         $response = $this->actingAs($user)->post(route('bookings.reviews.update', ['booking' => $booking]), [
-            'status' => 'refused'
+            'status' => BookingRequest::REFUSED
         ]);
         $response->assertRedirect(route('bookings.reviews.index'));
-        $this->assertEquals('refused', $booking->refresh()->status);
+        $this->assertEquals(BookingRequest::REFUSED, $booking->refresh()->status);
     }
 
     /**

@@ -70,7 +70,7 @@ class BookingRequestControllerTest extends TestCase
      */
     public function user_can_view_booking_edit()
     {
-        $booking = BookingRequest::factory()->create(['status'=>'pending']);
+        $booking = BookingRequest::factory()->create(['status'=>BookingRequest::PENDING]);
         $response = $this->actingAs($this->createUserWithPermissions(['bookings.update']))->get(route('bookings.edit', $booking));
         $response->assertSessionHasNoErrors();
     }
@@ -80,7 +80,7 @@ class BookingRequestControllerTest extends TestCase
      */
     public function user_redirects_to_view_when_under_review()
     {
-        $booking = BookingRequest::factory()->create(['status'=>'review']);
+        $booking = BookingRequest::factory()->create(['status'=>BookingRequest::REVIEW]);
         $response = $this->actingAs($this->createUserWithPermissions(['bookings.update']))->get(route('bookings.edit', $booking));
         $response->assertSessionHasNoErrors();
         $response->assertRedirect(route('bookings.view', $booking));
@@ -91,7 +91,7 @@ class BookingRequestControllerTest extends TestCase
      */
     public function user_can_view_booking_view()
     {
-        $booking = BookingRequest::factory()->create(['status'=>'review']);
+        $booking = BookingRequest::factory()->create(['status'=>BookingRequest::REVIEW]);
         $response = $this->actingAs($this->createUserWithPermissions(['bookings.update']))->get(route('bookings.view', $booking));
         $response->assertSessionHasNoErrors();
     }
@@ -543,7 +543,7 @@ class BookingRequestControllerTest extends TestCase
         $end = $start->copy()->addMinutes(4);
 
         $this->createReservationAvailabilities($date, $room);
-        $booking = $this->createBookingRequest(true, ['status' => 'approved']);
+        $booking = $this->createBookingRequest(true, ['status' => BookingRequest::APPROVED]);
 
         Reservation::create([
             'room_id' => $room->id,

@@ -39,7 +39,7 @@
                         </div>
 
                         <!-- Under Review -->
-                        <div v-if="booking.status == 'review'||booking.status == 'approved'||booking.status == 'denied'" class="flex-1">
+                        <div v-if="booking.status == 'review'||booking.status == 'approved'||booking.status == 'refused'" class="flex-1">
                             <div class="w-10 h-10 bg-green-500  mx-auto rounded-full">
                             </div>
                         </div>
@@ -53,7 +53,7 @@
                                 <div class="bg-green-500 text-xs leading-none py-1 rounded "></div>
                             </div>
                         </div>
-                      <div v-else-if="booking.status == 'denied'" class="w-1/5 align-center items-center align-middle content-center flex">
+                      <div v-else-if="booking.status == 'refused'" class="w-1/5 align-center items-center align-middle content-center flex">
                         <div class="w-full bg-red-600 rounded items-center align-middle align-center flex-1 z-10">
                           <div class="bg-red-600 text-xs leading-none py-1 rounded "></div>
                         </div>
@@ -69,7 +69,7 @@
                             <div class="w-10 h-10 bg-green-500  mx-auto rounded-full">
                             </div>
                         </div>
-                      <div v-else-if="booking.status == 'denied'" class="flex-1">
+                      <div v-else-if="booking.status == 'refused'" class="flex-1">
                         <div class="w-10 h-10 bg-red-600  mx-auto rounded-full">
                         </div>
                       </div>

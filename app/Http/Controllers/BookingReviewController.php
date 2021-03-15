@@ -22,7 +22,7 @@ class BookingReviewController extends Controller
     {
         //Will change when enums are made
         if ($booking->status == "pending"){
-            $booking->update(['status' => 'review']);
+            $booking->update(['status' => BookingRequest::REVIEW]);
         }
 
         $booking->loadMissing('requester', 'reviewers', 'reservations', 'reservations.room');

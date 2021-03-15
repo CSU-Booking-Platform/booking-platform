@@ -23,6 +23,10 @@ class EventServiceProvider extends ServiceProvider
         BookingRequestUpdated::class => [
             SendRequestChangeLog::class,
         ],
+        \SocialiteProviders\Manager\SocialiteWasCalled::class => [
+            // ... other providers
+            'SocialiteProviders\\Microsoft\\MicrosoftExtendSocialite@handle',
+        ],
     ];
 
     /**

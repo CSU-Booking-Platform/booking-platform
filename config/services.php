@@ -30,4 +30,11 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'microsoft' => [
+        'client_id' => '',
+        'client_secret' => '',
+        'redirect' => '',
+        'tenant' => ''
+    ]
+
 ];

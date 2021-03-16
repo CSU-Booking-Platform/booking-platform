@@ -21,6 +21,8 @@ use Illuminate\Validation\ValidationException;
 use Inertia\ResponseFactory;
 use ZipArchive;
 use File;
+use App\Http\Resources\BookingCollection;
+
 
 class BookingRequestController extends Controller
 {
@@ -292,6 +294,56 @@ class BookingRequestController extends Controller
                 }
             ]
         ));
+    }
+
+
+    /**
+     * Filter booking requests by given json payload
+     *
+     * @param Request $request
+     * @return JsonResponse|Response
+     */
+    public function filter(Request $request)
+    {
+        // None of the request fields are mandatory, only
+        // filter the ones provided from request
+        $request->validate([
+            'status_list.*' => ['boolean'],
+            'date_range_start' => ['string'],
+            'date_range_end' => ['string'],
+            'data_reviewers' => ['array']
+        ]);
+
+        // Filter by status, assignee, dates if present in query
+        $query = BookingRequest::with('requester');
+
+
+
+        if($request->status_list){
+            $activeStatuses = [];
+            foreach ($request->status_list as $key => $value) {
+                if ($value) {
+                    array_push($activeStatuses, $key);
+                }
+            }
+            $query->whereIn('status', $activeStatuses);
+        }
+
+
+        if($request->date_range_start){
+            $query->where('created_at', '<', $request->date_range_start);
+        }
+
+        if($request->date_range_end){
+            $query->where('created_at', '>', $request->date_range_end);
+        }
+
+        if($request->data_reviewers){
+            $uids = collect($request->data_reviewers)->pluck('text');
+            $query->whereIn('id', $uids);
+        }
+
+        return response()->json(new BookingCollection($query->get()));
     }
 
 

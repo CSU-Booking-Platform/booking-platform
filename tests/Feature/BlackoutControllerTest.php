@@ -141,4 +141,29 @@ class BlackoutControllerTest extends TestCase
         $this->assertDatabaseCount('blackouts', 11);
     }
 
+    /**
+     * @test
+     */
+    public function users_can_create_blackout_for_every_room()
+    {
+        $blackout = Blackout::create([
+            'name' => 'test',
+            'start_time' => Carbon::today(),
+            'end_time' => Carbon::today()->addMinute()
+        ]);
+
+        Room::factory()->count(10)->create();
+
+        $response = $this->actingAs($this->createUserWithPermissions(['rooms.blackouts.create']))->post("/admin/rooms/blackouts/all",
+            [
+                'start_date' => $blackout->start_time->toDateTimeString(),
+                'end_date' => $blackout->end_time->toDateTimeString(),
+            ]
+        );
+
+        $response->assertStatus(302);
+        $this->assertDatabaseCount('blackouts', 11);
+        $this->assertDatabaseCount('blackout_room', 10);
+    }
+
 }

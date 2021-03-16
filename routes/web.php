@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AcademicDateController;
 use App\Http\Controllers\BlackoutController;
 use App\Http\Controllers\BookingRequestController;
 use App\Http\Controllers\BookingReviewController;
@@ -111,6 +112,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
                 ->name('date.restrictions.update')
                 ->middleware('permission:bookings.approve');
 
+            Route::post('/blackouts/all', [BlackoutController::class,  'createBlackoutForEveryRoom'])
+                ->name('all_blackout')
+                ->middleware(['permission:rooms.blackouts.create']);
+
             Route::name('blackouts.')->prefix('{room}/blackouts')->group(function() {
                 Route::get('/', [BlackoutController::class, 'index'])
                     ->name('index');
@@ -137,6 +142,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
             Route::post('app_logo', [SettingsController::class, 'storeAppLogo'])->name('app.logo');
             Route::post('app_name', [SettingsController::class, 'storeAppName'])->name('app.name');
             Route::post('app_config', [SettingsController::class, 'setAppConfig'])->name('app.config');
+            Route::post('/academic_date/{academicDate}', [AcademicDateController::class, 'updateAcademicDate'])->name('app.academic_date');
         });
     });
 

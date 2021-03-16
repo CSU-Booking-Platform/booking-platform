@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AcademicDate;
 use App\Models\Settings;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -20,12 +21,14 @@ class SettingsController extends Controller
         $settings = Settings::all()->pluck('data', 'slug');
         if ($settings->isNotEmpty()) {
             return inertia('Admin/Settings/Index', [
-                'settings' => $settings
+                'settings' => $settings,
+                'academic_dates' => AcademicDate::select('id', 'start_date', 'end_date', 'semester')->orderBy('semester', 'ASC')->get()
             ]);
         } else {
-            return inertia('Admin/Settings/Index');
+            return inertia('Admin/Settings/Index', [
+                'academic_dates' => AcademicDate::select('id', 'start_date', 'end_date', 'semester')->orderBy('semester', 'ASC')->get()
+            ]);
         }
-
     }
 
     /**
@@ -81,7 +84,7 @@ class SettingsController extends Controller
             'tenant' => $request->tenant
             ]]
     );
-    
+
     return back();
   }
   public function storeBookingGeneralInformation(Request $request)

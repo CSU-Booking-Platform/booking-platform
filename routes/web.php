@@ -11,6 +11,7 @@ use App\Http\Controllers\RoomController;
 use App\Http\Controllers\RoomDateRestrictionsController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SocialLoginController;
 use Illuminate\Support\Facades\Route;
 
@@ -36,9 +37,7 @@ Route::get('login/microsoft', [SocialLoginController::class, 'redirectToProvider
 Route::get('login/microsoft/callback', [SocialLoginController::class, 'handleProviderCallback'])->name('login/microsoft/callback');
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-    Route::get('/dashboard', function () {
-        return Inertia\Inertia::render('Dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard',[DashboardController::class, 'index'])->name('dashboard');
 
     /**
      * ADMIN

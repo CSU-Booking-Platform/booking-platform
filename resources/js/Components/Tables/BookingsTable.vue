@@ -1,7 +1,17 @@
 <template>
   <div class="table-container">
-    <div class="table-filter-container">
+    <div class="table-filter-container mb-12 flex flex-row">
+      <div class="ml-3 mr-6">
+        <h3 class="font-black">My Bookings</h3>
+      </div>
+      <div class="border shadow-md">
+        <input type="text" v-model="filter"/>
+      </div>
+      <div class="bg-yellow-300 shadow-md">
+        <em class="fas fa-search m-2"></em>
+      </div>
     </div>
+
 
     <table class="table-auto responsive-spaced">
       <caption></caption>
@@ -16,7 +26,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="booking in bookings" :key="booking.id">
+        <tr v-for="booking in filteredBookings" :key="booking.id">
             <td class="text-center">{{booking.reservations[0].room.name}}</td>
             <td class="text-center">{{booking.reservations[0].room.number}}</td>
             <td class="text-center">{{formatDateMonth(booking.reservations[0].start_time)}} From:  {{formatDateTime(booking.reservations[0].start_time)}} To: {{formatDateTime(booking.reservations[0].end_time)}}</td>
@@ -96,17 +106,22 @@ export default {
   data() {
       return {
           filter: '',
-          roomBeingBooked: null,
           bookingRequestToTrack: null,
           bookingReference: '',
       }
   },
       methods: {
             formatDateTime(date) {
-                return moment(date).format('h:mm:ss a')
+                return moment(date).format('h:mm a')
             },
             formatDateMonth(date) {
                 return moment(date).format('MMM Do YYYY')
+            },
+            formatDateMonthRobust(date) {
+                return moment(date).format('LLLL')
+            },
+            formatDateMonthRobust2(date) {
+                return moment(date).format('llll')
             },
               setReference(e) {
                 this.bookingReference = e.reference.path;
@@ -117,6 +132,22 @@ export default {
         href () {
           return '/bookings/download/' + this.bookingReference;
         },
+          filteredBookings() {
+            return this.bookings.filter(booking => {
+              const number = booking.room.number.toLowerCase();
+              const status = booking.status.toLowerCase();
+              const name = booking.room.name.toLowerCase();
+              const date1 = this.formatDateMonthRobust(booking.reservations[0].start_time).toLowerCase()
+              const date2 = this.formatDateMonthRobust2(booking.reservations[0].start_time).toLowerCase()
+              const searchTerm = this.filter.toLowerCase();
+
+              return number.includes(searchTerm) ||
+                name.includes(searchTerm) ||
+                status.includes(searchTerm)||
+                date1.includes(searchTerm)||
+                date2.includes(searchTerm)
+            });
+          },
     }
 
 

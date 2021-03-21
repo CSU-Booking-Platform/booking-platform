@@ -29,13 +29,5 @@ export default {
             },
         },
     },
-  methods:{
-    filterBookingsJson(e) {
-      axios.post('/api/filterBookings', e)
-        .then((response)=>{
-          this.bookings = response.data;
-        })
-    }
-  }
 }
 </script>

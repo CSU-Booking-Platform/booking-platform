@@ -144,8 +144,8 @@ export default {
               return number.includes(searchTerm) ||
                 name.includes(searchTerm) ||
                 status.includes(searchTerm)||
-                date1.includes(searchTerm)||
-                date2.includes(searchTerm)
+                date2.includes(searchTerm)||
+                date1.includes(searchTerm)
             });
           },
     }

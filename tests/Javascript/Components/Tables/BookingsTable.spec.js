@@ -38,9 +38,140 @@ test('should mount without crashing', () => {
             room: {"id":8, "status": "pending", "name": "CSU Room", "number": "h-619"},
             reservations:  [{"id":1,"room_id":8,"booking_request_id":1,"start_time":"2021-01-26T05:29:15.000000Z","end_time":"2021-01-26T05:31:15.000000Z","created_at":"2021-01-26T05:29:28.000000Z","updated_at":"2021-01-26T05:29:28.000000Z","room":{"id":8,"name":"event3","number":"3","floor":3,"building":"3","created_at":"2021-01-26T05:25:15.000000Z","updated_at":"2021-01-26T05:25:15.000000Z","status":"available","min_days_advance":null,"max_days_advance":null,"attributes":{"food":false,"sofas":null,"chairs":null,"tables":null,"alcohol":false,"computer":false,"projector":false,"fundraiser":false,"television":false,"whiteboard":false,"a_v_permitted":false,"ambiant_music":false,"coffee_tables":null,"sale_for_profit":false,"capacity_sitting":null,"capacity_standing":3},"room_type":"Mezzanine"}}],
             reference:{"path":"9_1611689494_reference"}
-        }]
+        }],
+      data() {
+        return {
+          filter: ''
+        }
+      }
     }
   })
 
   expect(wrapper.text()).toBeDefined()
 })
+test('check filter 1', () => {
+
+  const wrapper = shallowMount(BookingsTable, {
+    localVue,
+    propsData: {
+        bookings: [{
+            name: "name",
+            number: "3",
+            start_time: "15:00",
+            end_time: "15:05",
+            status: "available",
+            room: {"id":8, "status": "pending", "name": "CSU Room", "number": "h-619"},
+            reservations:  [{"id":1,"room_id":8,"booking_request_id":1,"start_time":"2021-01-26T05:29:15.000000Z","end_time":"2021-01-26T05:31:15.000000Z","created_at":"2021-01-26T05:29:28.000000Z","updated_at":"2021-01-26T05:29:28.000000Z","room":{"id":8,"name":"event3","number":"3","floor":3,"building":"3","created_at":"2021-01-26T05:25:15.000000Z","updated_at":"2021-01-26T05:25:15.000000Z","status":"available","min_days_advance":null,"max_days_advance":null,"attributes":{"food":false,"sofas":null,"chairs":null,"tables":null,"alcohol":false,"computer":false,"projector":false,"fundraiser":false,"television":false,"whiteboard":false,"a_v_permitted":false,"ambiant_music":false,"coffee_tables":null,"sale_for_profit":false,"capacity_sitting":null,"capacity_standing":3},"room_type":"Mezzanine"}}],
+            reference:{"path":"9_1611689494_reference"}
+        }],
+      data() {
+        return {
+          filter: '6'
+        }
+      }
+    }
+  })
+
+  expect(wrapper.text()).toBeDefined()
+})
+test('check filter 2', () => {
+
+  const wrapper = shallowMount(BookingsTable, {
+    localVue,
+    propsData: {
+        bookings: [{
+            name: "name",
+            number: "3",
+            start_time: "15:00",
+            end_time: "15:05",
+            status: "available",
+            room: {"id":8, "status": "pending", "name": "CSU Room", "number": "h-619"},
+            reservations:  [{"id":1,"room_id":8,"booking_request_id":1,"start_time":"2021-01-26T05:29:15.000000Z","end_time":"2021-01-26T05:31:15.000000Z","created_at":"2021-01-26T05:29:28.000000Z","updated_at":"2021-01-26T05:29:28.000000Z","room":{"id":8,"name":"event3","number":"3","floor":3,"building":"3","created_at":"2021-01-26T05:25:15.000000Z","updated_at":"2021-01-26T05:25:15.000000Z","status":"available","min_days_advance":null,"max_days_advance":null,"attributes":{"food":false,"sofas":null,"chairs":null,"tables":null,"alcohol":false,"computer":false,"projector":false,"fundraiser":false,"television":false,"whiteboard":false,"a_v_permitted":false,"ambiant_music":false,"coffee_tables":null,"sale_for_profit":false,"capacity_sitting":null,"capacity_standing":3},"room_type":"Mezzanine"}}],
+            reference:{"path":"9_1611689494_reference"}
+        }],
+      data() {
+        return {
+          filter: 'CSU'
+        }
+      }
+    }
+  })
+
+  expect(wrapper.text()).toBeDefined()
+})
+test('check filter 3', () => {
+
+  const wrapper = shallowMount(BookingsTable, {
+    localVue,
+    propsData: {
+        bookings: [{
+            name: "name",
+            number: "3",
+            start_time: "15:00",
+            end_time: "15:05",
+            status: "available",
+            room: {"id":8, "name": "CSU Room", "number": "h-619"},
+            reservations:  [{"id":1,"room_id":8,"booking_request_id":1,"start_time":"2021-01-26T05:29:15.000000Z","end_time":"2021-01-26T05:31:15.000000Z","created_at":"2021-01-26T05:29:28.000000Z","updated_at":"2021-01-26T05:29:28.000000Z","room":{"id":8,"name":"event3","number":"3","floor":3,"building":"3","created_at":"2021-01-26T05:25:15.000000Z","updated_at":"2021-01-26T05:25:15.000000Z","status":"available","min_days_advance":null,"max_days_advance":null,"attributes":{"food":false,"sofas":null,"chairs":null,"tables":null,"alcohol":false,"computer":false,"projector":false,"fundraiser":false,"television":false,"whiteboard":false,"a_v_permitted":false,"ambiant_music":false,"coffee_tables":null,"sale_for_profit":false,"capacity_sitting":null,"capacity_standing":3},"room_type":"Mezzanine"}}],
+            reference:{"path":"9_1611689494_reference"}
+        }],
+      data() {
+        return {
+          filter: 'available'
+        }
+      }
+    }
+  })
+
+  expect(wrapper.text()).toBeDefined()
+})
+test('check filter 4', () => {
+
+  const wrapper = shallowMount(BookingsTable, {
+    localVue,
+    propsData: {
+        bookings: [{
+            name: "name",
+            number: "3",
+            start_time: "15:00",
+            end_time: "15:05",
+            status: "available",
+            room: {"id":8, "status": "pending", "name": "CSU Room", "number": "h-619"},
+            reservations:  [{"id":1,"room_id":8,"booking_request_id":1,"start_time":"2021-01-26T05:29:15.000000Z","end_time":"2021-01-26T05:31:15.000000Z","created_at":"2021-01-26T05:29:28.000000Z","updated_at":"2021-01-26T05:29:28.000000Z","room":{"id":8,"name":"event3","number":"3","floor":3,"building":"3","created_at":"2021-01-26T05:25:15.000000Z","updated_at":"2021-01-26T05:25:15.000000Z","status":"available","min_days_advance":null,"max_days_advance":null,"attributes":{"food":false,"sofas":null,"chairs":null,"tables":null,"alcohol":false,"computer":false,"projector":false,"fundraiser":false,"television":false,"whiteboard":false,"a_v_permitted":false,"ambiant_music":false,"coffee_tables":null,"sale_for_profit":false,"capacity_sitting":null,"capacity_standing":3},"room_type":"Mezzanine"}}],
+            reference:{"path":"9_1611689494_reference"}
+        }],
+      data() {
+        return {
+          filter: 'jan'
+        }
+      }
+    }
+  })
+
+  expect(wrapper.text()).toBeDefined()
+})
+test('check filter 5', () => {
+
+  const wrapper = shallowMount(BookingsTable, {
+    localVue,
+    propsData: {
+        bookings: [{
+            name: "name",
+            number: "3",
+            start_time: "15:00",
+            end_time: "15:05",
+            status: "available",
+            room: {"id":8, "status": "pending", "name": "CSU Room", "number": "h-619"},
+            reservations:  [{"id":1,"room_id":8,"booking_request_id":1,"start_time":"2021-01-26T05:29:15.000000Z","end_time":"2021-01-26T05:31:15.000000Z","created_at":"2021-01-26T05:29:28.000000Z","updated_at":"2021-01-26T05:29:28.000000Z","room":{"id":8,"name":"event3","number":"3","floor":3,"building":"3","created_at":"2021-01-26T05:25:15.000000Z","updated_at":"2021-01-26T05:25:15.000000Z","status":"available","min_days_advance":null,"max_days_advance":null,"attributes":{"food":false,"sofas":null,"chairs":null,"tables":null,"alcohol":false,"computer":false,"projector":false,"fundraiser":false,"television":false,"whiteboard":false,"a_v_permitted":false,"ambiant_music":false,"coffee_tables":null,"sale_for_profit":false,"capacity_sitting":null,"capacity_standing":3},"room_type":"Mezzanine"}}],
+            reference:{"path":"9_1611689494_reference"}
+        }],
+      data() {
+        return {
+          filter: 'january'
+        }
+      }
+    }
+  })
+
+  expect(wrapper.text()).toBeDefined()
+})
+

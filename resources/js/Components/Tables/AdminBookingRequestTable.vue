@@ -47,7 +47,17 @@
             <img v-for="reviewer in booking.reviewers " class="relative z-30 inline object-cover w-12 h-12 border-2 border-white rounded-full" :src="reviewer.profile_photo_url" :alt="reviewer.name"/>
           </div>
         </td>
-        <td class="text-center capitalize">{{ booking.status }}</td>
+        <td class="text-center capitalize">
+          <span v-if="booking.status == 'Review'" class="rounded-full py-2 px-6 text-white text-center font-bold bg-yellow-300">
+            {{ booking.status }}
+          </span>
+          <span v-if="booking.status == 'Approved'" class="rounded-full py-2 px-6 text-white text-center font-bold bg-green-600">
+            {{ booking.status }}
+          </span>
+          <span v-if="booking.status == 'Refused'" class="rounded-full py-2 px-6 text-white text-center font-bold bg-red-700">
+            {{ booking.status }}
+          </span>
+        </td>
         <td class="text-center">Created {{ booking.created_diff }}</td>
         <td class="text-center">Last Updated {{ booking.updated_diff }}</td>
         <td>

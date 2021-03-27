@@ -126,7 +126,7 @@
                   </h2>
                 </div>
                 <div class="m-2">
-                  <jet-input id="date-check" type="date" class="mt-1 block" v-model="jsonForm.dateCheck"/>
+                  <input id="date-check" type="date" class="mt-1 block" v-model="jsonForm.dateCheck"/>
                   <jet-secondary-button
                     class="ml-2"
                     @click.native="clearDate()"
@@ -139,12 +139,12 @@
       </template>
 
       <template #footer>
-        <jet-button
+        <button
           class="ml-2"
           @click.native="advancedFilters()"
         >
           Filter
-        </jet-button>
+        </button>
         <jet-secondary-button @click.native="toggleAdvancedFilters">
           Close
         </jet-secondary-button>
@@ -161,9 +161,7 @@ import ViewBookingRequestStatusModal from "@src/Pages/Admin/BookingRequests/View
 import Button from "@src/Jetstream/Button";
 import JetDialogModal from "@src/Jetstream/DialogModal";
 import JetSecondaryButton from "@src/Jetstream/SecondaryButton";
-import JetButton from "@src/Jetstream/Button";
 import Input from "@src/Jetstream/Input";
-import JetInput from '@src/Jetstream/Input';
 
 export default {
   props: {
@@ -179,9 +177,7 @@ export default {
     Button,
     ViewBookingRequestStatusModal,
     JetDialogModal,
-    JetSecondaryButton,
-    JetButton,
-    JetInput,
+    JetSecondaryButton
   },
 
   data() {
@@ -222,13 +218,6 @@ export default {
               setReference(e) {
                 this.bookingReference = e.reference.path;
               },
-            addDate() {
-              this.jsonFilters.recurrences.push({
-                start_time: "",
-              })
-            }
-
-
       },
         computed: {
     uniqueStatuses: function (){
@@ -261,8 +250,6 @@ export default {
             });
           },
     }
-
-
 
 };
 </script>

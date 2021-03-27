@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AcademicDateController;
 use App\Http\Controllers\BlackoutController;
 use App\Http\Controllers\BookingRequestController;
 use App\Http\Controllers\BookingReviewController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\RoomController;
 use App\Http\Controllers\RoomDateRestrictionsController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SocialLoginController;
 use Illuminate\Support\Facades\Route;
 
@@ -35,9 +37,7 @@ Route::get('login/microsoft', [SocialLoginController::class, 'redirectToProvider
 Route::get('login/microsoft/callback', [SocialLoginController::class, 'handleProviderCallback'])->name('login/microsoft/callback');
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-    Route::get('/dashboard', function () {
-        return Inertia\Inertia::render('Dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard',[DashboardController::class, 'index'])->name('dashboard');
 
     /**
      * ADMIN
@@ -112,6 +112,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
                 ->name('date.restrictions.update')
                 ->middleware('permission:bookings.approve');
 
+            Route::post('/blackouts/all', [BlackoutController::class,  'createBlackoutForEveryRoom'])
+                ->name('all_blackout')
+                ->middleware(['permission:rooms.blackouts.create']);
+
             Route::name('blackouts.')->prefix('{room}/blackouts')->group(function() {
                 Route::get('/', [BlackoutController::class, 'index'])
                     ->name('index');
@@ -138,6 +142,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
             Route::post('app_logo', [SettingsController::class, 'storeAppLogo'])->name('app.logo');
             Route::post('app_name', [SettingsController::class, 'storeAppName'])->name('app.name');
             Route::post('app_config', [SettingsController::class, 'setAppConfig'])->name('app.config');
+            Route::post('/academic_date/{academicDate}', [AcademicDateController::class, 'updateAcademicDate'])->name('app.academic_date');
         });
     });
 

@@ -10,8 +10,8 @@
       <div class="bg-yellow-300 shadow-md">
         <em class="fas fa-search m-2"></em>
       </div>
-      
-      
+
+
       <!--vertical line-->
       <div class="border mx-16">
       </div>
@@ -22,7 +22,7 @@
         <button @click="toggleAdvancedFilters()">
           <em class="fas fa-filter mx-2 pt-2 max-w"></em>
         </button>
-      </div>    
+      </div>
     </div>
 
     <table class="table-auto responsive-spaced">
@@ -45,7 +45,7 @@
             <td class="text-center">{{room.building}}</td>
             <td class="text-center">{{room.number}}</td>
             <td class="text-center">{{room.floor}}</td>
-            <td 
+            <td
             @click="seeRoomAvailability = room"
             class="text-center underline">
             {{room.status}}
@@ -435,7 +435,6 @@ export default {
         missingDates: function(){
           if(this.numDates > 0){
             for(let i = 0; i < this.jsonFilters.recurrences.length; i++){
-              console.log(this.jsonFilters.recurrences[i].start_time)
               if(!this.jsonFilters.recurrences[i].start_time || !this.jsonFilters.recurrences[i].end_time) {
                 return true;
               }

@@ -10,8 +10,8 @@ class AcademicDate extends Model
   use HasFactory;
 
   protected $casts = [
-    'start_date' => 'date',
-    'end_date' => 'date'
+    'start_date' => 'date:Y-m-d',
+    'end_date' => 'date:Y-m-d'
   ];
 
   protected $fillable = [

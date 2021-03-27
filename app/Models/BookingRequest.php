@@ -53,6 +53,7 @@ class BookingRequest extends Model
     ];
 
 
+
     /**
      * Get the rooms that are part of the booking request.
      */

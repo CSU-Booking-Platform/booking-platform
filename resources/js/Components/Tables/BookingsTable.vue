@@ -10,6 +10,18 @@
       <div class="bg-yellow-300 shadow-md">
         <em class="fas fa-search m-2"></em>
       </div>
+
+      <!--vertical line-->
+      <div class="border mx-16">
+      </div>
+      <div class="mx-6">
+        <h3 class="font-black">Advanced filter</h3>
+      </div>
+      <div class="mx-2 border shadow-md bg-yellow-300 min-w-24">
+        <button @click="toggleAdvancedFilters()">
+          <em class="fas fa-filter mx-2 pt-2 max-w"></em>
+        </button>
+      </div>
     </div>
 
 
@@ -44,17 +56,17 @@
                 Edit
               </button>
             </a>
-              <a v-else-if="booking.status == 'review'" style="cursor:pointer;">
+              <a v-else-if="booking.status == 'review'" :href="'/bookings/'+booking.id+'/view'" style="cursor:pointer;">
                 <button aria-disabled="true" class="h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-500 rounded-lg focus:shadow-outline ">
                   In Review
                 </button>
               </a>
-              <a v-else-if="booking.status == 'refused'" >
+              <a v-else-if="booking.status == 'refused'" :href="'/bookings/'+booking.id+'/view'" style="cursor:pointer;">
                 <button aria-disabled="true" class="h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-red-900 rounded-lg focus:shadow-outline">
                   Refused
                 </button>
               </a>
-              <a v-else-if="booking.status == 'approved'" >
+              <a v-else-if="booking.status == 'approved'" :href="'/bookings/'+booking.id+'/view'" style="cursor:pointer;">
                 <button aria-disabled="true" class="h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-green-500 rounded-lg focus:shadow-outline">
                   Approved
                 </button>
@@ -81,6 +93,65 @@
     :booking="bookingRequestToTrack"
     @close="bookingRequestToTrack = null"
     ></ViewBookingRequestStatusModal>
+
+    <jet-dialog-modal :show="showFilterModal">
+      <template #title>
+        Advanced Booking Request Filters
+      </template>
+
+      <template #content>
+        <div class="overflow-y-auto h-60">
+          <div class="flex flex-row">
+            <div class="flex flex-col flex-1 py-2 px-3">
+              <div class="flex flex-row">
+                <div class="m-2">
+                  <h2>
+                    Status
+                  </h2>
+                </div>
+                <div class="m-2">
+
+                  <select v-model="jsonForm.selectStatus">
+                    <option value="">None Selected</option>
+                    <option v-for="(item) in uniqueStatuses" :value="item">
+                      {{item}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="flex flex-row">
+                <div class="m-2">
+                  <h2>
+                    Check Date
+                  </h2>
+                </div>
+                <div class="m-2">
+                  <jet-input id="date-check" type="date" class="mt-1 block" v-model="jsonForm.dateCheck"/>
+                  <jet-secondary-button
+                    class="ml-2"
+                    @click.native="clearDate()"
+                  >Clear Selected Date</jet-secondary-button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+
+      <template #footer>
+        <jet-button
+          class="ml-2"
+          @click.native="advancedFilters()"
+        >
+          Filter
+        </jet-button>
+        <jet-secondary-button @click.native="toggleAdvancedFilters">
+          Close
+        </jet-secondary-button>
+      </template>
+    </jet-dialog-modal>
+
+
   </div>
 </template>
 
@@ -88,6 +159,11 @@
 import moment from "moment";
 import ViewBookingRequestStatusModal from "@src/Pages/Admin/BookingRequests/ViewBookingRequestStatusModal";
 import Button from "@src/Jetstream/Button";
+import JetDialogModal from "@src/Jetstream/DialogModal";
+import JetSecondaryButton from "@src/Jetstream/SecondaryButton";
+import JetButton from "@src/Jetstream/Button";
+import Input from "@src/Jetstream/Input";
+import JetInput from '@src/Jetstream/Input';
 
 export default {
   props: {
@@ -99,8 +175,13 @@ export default {
   },
 
   components: {
+    Input,
     Button,
     ViewBookingRequestStatusModal,
+    JetDialogModal,
+    JetSecondaryButton,
+    JetButton,
+    JetInput,
   },
 
   data() {
@@ -108,9 +189,24 @@ export default {
           filter: '',
           bookingRequestToTrack: null,
           bookingReference: '',
+          showFilterModal: false,
+        jsonForm:{
+          selectStatus: "",
+          dateCheck: null
+        }
       }
   },
       methods: {
+            clearDate(){
+              this.jsonForm.dateCheck = null
+            },
+            advancedFilters(){
+              this.$emit('filterBookingsJson', this.jsonForm);
+              this.toggleAdvancedFilters();
+            },
+            toggleAdvancedFilters(){
+              this.showFilterModal = !this.showFilterModal;
+            },
             formatDateTime(date) {
                 return moment(date).format('h:mm a')
             },
@@ -125,10 +221,26 @@ export default {
             },
               setReference(e) {
                 this.bookingReference = e.reference.path;
-              }
+              },
+            addDate() {
+              this.jsonFilters.recurrences.push({
+                start_time: "",
+              })
+            }
 
-        },
+
+      },
         computed: {
+    uniqueStatuses: function (){
+      var output = [];
+      this.filteredBookings.forEach(function (booking) {
+        var key = booking.status;
+        if (output.indexOf(key) === -1) {
+          output.push(key);
+        }
+      });
+      return output;
+    },
         href () {
           return '/bookings/download/' + this.bookingReference;
         },

@@ -20,6 +20,7 @@ use App\Http\Controllers\SettingsController;
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/filterBookingRequests', [BookingRequestController::class, 'filter'])->middleware(['permission:bookings.approve']);
+    Route::post('/filterMyBookingRequests', [BookingRequestController::class, 'myFilter'])->middleware(['permission:bookings.create']);
     Route::post('/filterRooms', [RoomController::class, 'filter'])->middleware(['permission:bookings.create']);
     Route::post('/reservations/{room}', [ReservationsController::class, 'roomReservation'])->middleware(['permission:bookings.create']);
     Route::patch('/booking-setting', [SettingsController::class, 'storeBookingGeneralInformation']);

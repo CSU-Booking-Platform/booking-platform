@@ -2,7 +2,7 @@
     <app-layout>
         <div class="m-24">
              <BookingsTable
-            :bookings="bookings"
+            :bookings="dataBookings"
             @filterBookingsJson="filterBookingsJson($event)"
             />
         </div>
@@ -29,5 +29,21 @@ export default {
             },
         },
     },
+  mounted(){
+    this.dataBookings = this.bookings ?? [];
+  },
+  data() {
+    return {
+      dataBookings: []
+    }
+  },
+  methods:{
+    filterBookingsJson(e) {
+      axios.post('/api/filterMyBookingRequests', e)
+        .then((response)=>{
+          this.dataBookings = response.data;
+        })
+    }
+  }
 }
 </script>

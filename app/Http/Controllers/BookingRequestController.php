@@ -17,6 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Inertia\ResponseFactory;
 use ZipArchive;
@@ -348,6 +349,40 @@ class BookingRequestController extends Controller
         }
 
         return response()->json(new BookingCollection($query->get()));
+    }
+
+
+
+    /**
+     * Filter booking requests by given json payload for a specific user
+     *
+     * @param Request $request
+     * @return JsonResponse|Response
+     */
+    public function myFilter(Request $request)
+    {
+        // None of the request fields are mandatory, only
+        // filter the ones provided from request
+        $request->validate([
+            'dateCheck' => ['date','nullable'],
+            'selectStatus' => ['string','nullable', Rule::in(BookingRequest::STATUS_TYPES)],
+        ]);
+
+        $query = BookingRequest::with('requester', $this->reservationRoom)
+            ->where('user_id', auth()->user()->id);
+
+        if ($request->selectStatus){
+            $query = $query->where('status', $request->selectStatus);
+        }
+
+        if ($request->dateCheck){
+            $query = $query->whereHas('reservations', function($q) use ($request)
+            {
+                $q->whereDate('start_time', $request->dateCheck);
+            });
+        }
+
+        return response()->json($query->get());
     }
 
 

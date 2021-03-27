@@ -15,6 +15,16 @@
             <div class="mb-5">
                 <app-config :settings="settings.app_config"/>
             </div>
+            <div class="mb-5">
+              <BookingInformations
+                :general_information="settings.general_information"
+                :event_description="settings.event_description"
+              />
+            </div>
+            <div class="mb-5" v-for="academicDate in academic_dates">
+              <AcademicDate :academicDate="academicDate"/>
+            </div>
+            <CivicHoliday />
         </div>
     </app-layout>
 </template>
@@ -25,6 +35,9 @@ import AppLayout from '@src/Layouts/AppLayout';
 import AppName from "@src/Pages/Admin/Settings/AppName";
 import AppLogo from "@src/Pages/Admin/Settings/AppLogo";
 import AppConfig from "@src/Pages/Admin/Settings/AppConfig";
+import BookingInformations from "@src/Pages/Admin/Settings/BookingInformations";
+import AcademicDate from "@src/Pages/Admin/Settings/AcademicDate"
+import CivicHoliday from "@src/Pages/Admin/Settings/CivicHoliday"
 
 export default {
     components: {
@@ -32,7 +45,10 @@ export default {
         AppLogo,
         AppConfig,
         AppLayout,
+        BookingInformations,
         JetSectionBorder,
+        AcademicDate,
+        CivicHoliday
     },
     props: {
         settings: {
@@ -41,10 +57,15 @@ export default {
                 return {
                     app_name: {},
                     app_logo: {},
-                    app_config: {}
+                    app_config: {},
+                    general_information: {},
+                    event_description: {}
                 }
             },
         },
+        academic_dates: {
+          type: Array
+        }
     },
 }
 </script>

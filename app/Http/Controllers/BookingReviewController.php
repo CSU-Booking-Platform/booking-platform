@@ -15,11 +15,18 @@ class BookingReviewController extends Controller
 
         return inertia('Approval/Index', [
             'bookings' => new BookingCollection($bookings),
+            'statuses' => BookingRequest::STATUS_TYPES,
+            'reviewers' => $this->assignable(),
         ]);
     }
 
     public function show(BookingRequest $booking)
     {
+        //Will change when enums are made
+        if ($booking->status == BookingRequest::PENDING){
+            $booking->update(['status' => BookingRequest::REVIEW]);
+        }
+
         $booking->loadMissing('requester', 'reviewers', 'reservations', 'reservations.room');
 
         return inertia('Approval/ReviewBooking', [

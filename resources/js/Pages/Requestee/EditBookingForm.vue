@@ -14,22 +14,7 @@
                 </template>
 
                 <template #description>
-                    <p class="py-2">
-                        In order to book the 7th floor large lounge or cafeteria, please complete and return the
-                        attached form a full <strong>ten (10) business days</strong> prior to your event.
-                    </p>
-
-                    <p class="py-2">
-                        For an event where alcohol is part of the menu, your space request form along with an
-                        Alcohol Waiver and Responsibilities Regarding the Sale/Service of Alcohol on Campus
-                        (the “Alcohol Waiver”) must be received at least <strong>twenty (20) business days</strong>
-                        prior to your event.
-                    </p>
-                    <p class="py-2">
-                        For an event requiring a Special Events permit from MAPAQ (refer to Sale or Service of Food on
-                        Campus Waiver Form for Self-Catered Events, the “Food Waiver”), your application must be
-                        received at least <strong>twenty five (25) business days</strong> prior to your event.
-                    </p>
+                    <p v-html="bookings_general_information.data.html"></p>
                 </template>
 
                 <template #content>
@@ -114,40 +99,7 @@
                 </template>
 
                 <template #description>
-                    <section class="pt-4">
-                        <strong>NOTE:</strong>
-                        <p class="py-2">
-                            A Food Waiver is not required for events where 1. lower risk food (refer to Definitions below)
-                            is served/sold, or 2. food is provided by an University approved caterer.
-                        </p>
-                        <p class="py-2">
-                            For an exhibition, indicate the theme and objects of display, along with materials and equipment
-                            used to display these objects. Sample pictures are required for exhibit of paintings, drawings
-                            and photographs. A layout of the arrangement may be requested. Where applicable, indicate how
-                            the exhibition will be secured overnight
-                        </p>
-                        <p class="py-2">
-                            Please re-submit a new space request if the main components of your event are modified.
-                        </p>
-                    </section>
-                    <section class="pt-4">
-                        <strong>DEFINITIONS:</strong>
-                        <p class="py-2">
-                            <strong>Lower Risk Foods</strong> are foods that pathogens have trouble surviving in because
-                            they are drier, have a high sugar or salt content, or are more acidic. These foods do not
-                            need to be kept hot or cold. Ex: cakes (except cheesecake or cream/dairy filled cakes),
-                            fruit pies, tarts, breads, candies, popcorns, chocolates, fudge, and brownies.
-                        </p>
-                        <p class="py-2">
-                            <strong>Higher Risk Foods</strong> are foods that can support the growth of pathogens and/or
-                            foods that have been associated with causing food borne illness. These foods must be kept
-                            and served hot or cold (ex: cheesecake, pumpkin and meringue pies, frostings or fillings
-                            with cream cheese, custards, whipped cream or cheese, meats, samosas, rice, cooked
-                            vegetables, tofu, sprouted grains and dairy products).
-                        </p>
-                    </section>
-
-
+                    <p v-html="bookings_event_description.data.html"></p>
                 </template>
 
                 <template #content>
@@ -567,6 +519,12 @@ export default {
             type: Object,
             required: true,
         },
+        bookings_general_information: {
+          type: Object,
+        },
+        bookings_event_description: {
+          type: Object,
+        }
     },
 
     data() {

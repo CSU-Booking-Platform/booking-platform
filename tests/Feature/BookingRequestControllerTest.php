@@ -70,8 +70,29 @@ class BookingRequestControllerTest extends TestCase
      */
     public function user_can_view_booking_edit()
     {
-        $booking = BookingRequest::factory()->create();
+        $booking = BookingRequest::factory()->create(['status'=>BookingRequest::PENDING]);
         $response = $this->actingAs($this->createUserWithPermissions(['bookings.update']))->get(route('bookings.edit', $booking));
+        $response->assertSessionHasNoErrors();
+    }
+
+    /**
+     * @test
+     */
+    public function user_redirects_to_view_when_under_review()
+    {
+        $booking = BookingRequest::factory()->create(['status'=>BookingRequest::REVIEW]);
+        $response = $this->actingAs($this->createUserWithPermissions(['bookings.update']))->get(route('bookings.edit', $booking));
+        $response->assertSessionHasNoErrors();
+        $response->assertRedirect(route('bookings.view', $booking));
+    }
+
+    /**
+     * @test
+     */
+    public function user_can_view_booking_view()
+    {
+        $booking = BookingRequest::factory()->create(['status'=>BookingRequest::REVIEW]);
+        $response = $this->actingAs($this->createUserWithPermissions(['bookings.update']))->get(route('bookings.view', $booking));
         $response->assertSessionHasNoErrors();
     }
 
@@ -309,7 +330,7 @@ class BookingRequestControllerTest extends TestCase
     public function users_can_update_booking_request()
     {
         $room = Room::factory()->create(['status' => 'available']);
-        $booking_request = $this->createBookingRequest();
+        $booking_request = $this->createBookingRequest(true, ['status'=>BookingRequest::PENDING]);
         $reservation = $this->createReservation($room, $booking_request);
         $this->createReservationAvailabilities($reservation->start_time, $room);
 
@@ -347,11 +368,51 @@ class BookingRequestControllerTest extends TestCase
     /**
      * @test
      */
+    public function users_can_not_update_booking_request_when_in_review()
+    {
+        $room = Room::factory()->create(['status' => 'available']);
+        $booking_request = $this->createBookingRequest(true, ['status'=>BookingRequest::REVIEW]);
+        $reservation = $this->createReservation($room, $booking_request);
+        $this->createReservationAvailabilities($reservation->start_time, $room);
+
+        $this->assertDatabaseCount('booking_requests', 1);
+        $this->assertDatabaseCount('reservations', 1);
+        $this->assertDatabaseHas('reservations', [
+            'room_id' => $room->id,
+            'start_time' => Carbon::parse($reservation->start_time)->toDateTimeString(),
+            'end_time' => Carbon::parse($reservation->end_time)->toDateTimeString(),
+            'booking_request_id' => $booking_request->id
+        ]);
+
+        $old_title = $booking_request->event['title'];
+        $new_title = $old_title . 'v2';
+
+        $response = $this->actingAs($this->createUserWithPermissions(['bookings.update']))->put('/bookings/' . $booking_request->id, [
+            'event' => [
+                'start_time' => $reservation->start_time->format('H:i'),
+                'end_time' => $reservation->end_time->format('H:i'),
+                'title' => $new_title,
+                'type' => $booking_request->event['type'],
+                'description' => $booking_request->event['description'],
+                'guest_speakers' => $booking_request->event['guest_speakers'],
+                'attendees' => $booking_request->event['attendees'],
+            ]
+        ]);
+
+        $response->assertSessionHasNoErrors();
+        $response->assertRedirect("bookings/".$booking_request->id."/view");
+        $this->assertEquals(BookingRequest::where('event->title', $old_title)->count(), 1);
+        $this->assertEquals(BookingRequest::where('event->title', $new_title)->count(), 0);
+    }
+
+    /**
+     * @test
+     */
     public function users_can_update_reference_on_booking_request()
     {
         Storage::fake('public');
         $room = Room::factory()->create();
-        $booking_request = $this->createBookingRequest();
+        $booking_request = $this->createBookingRequest(true, ['status'=>BookingRequest::PENDING]);
         $reservation = $this->createReservation($room, $booking_request);
         $this->createReservationAvailabilities($reservation->start_time, $room);
 
@@ -482,7 +543,7 @@ class BookingRequestControllerTest extends TestCase
         $end = $start->copy()->addMinutes(4);
 
         $this->createReservationAvailabilities($date, $room);
-        $booking = $this->createBookingRequest(true, ['status' => 'approved']);
+        $booking = $this->createBookingRequest(true, ['status' => BookingRequest::APPROVED]);
 
         Reservation::create([
             'room_id' => $room->id,

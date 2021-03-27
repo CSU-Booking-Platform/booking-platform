@@ -8,6 +8,8 @@ use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvi
 use Illuminate\Support\Facades\Event;
 use App\Events\BookingRequestUpdated;
 use App\Listeners\SendRequestChangeLog;
+use App\Models\BookingRequest;
+use App\Observers\BookingObserver;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -36,6 +38,6 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        BookingRequest::observe(BookingObserver::class);
     }
 }

@@ -1,5 +1,5 @@
-import {beforeEach, jest, test} from "@jest/globals";
-
+import {beforeEach, expect, jest, test} from "@jest/globals";
+import * as axios from "axios";
 jest.mock('laravel-jetstream')
 
 import {createLocalVue, mount, shallowMount} from '@vue/test-utils'
@@ -13,6 +13,271 @@ let localVue;
 const bookTest = [
   {
     "id": 5,
+    "user_id": 1,
+    "status": "approved",
+    "created_at": "2021-03-28T17:52:29.000000Z",
+    "updated_at": "2021-03-28T17:52:29.000000Z",
+    "reference": [],
+    "log": null,
+    "onsite_contact": {
+      "name": "Gilberto Kuvalis",
+      "email": "montana.jacobson@yahoo.com",
+      "phone": "(438) 315-9854 x8903"
+    },
+    "event": {
+      "type": "praesentium",
+      "title": "et",
+      "attendees": 296670193,
+      "description": "Et voluptatibus dolor nostrum et voluptatem. Nihil et eum maxime aut qui sint. Explicabo ipsum dolorem occaecati aut fugiat.",
+      "guest_speakers": "Favian Wyman"
+    },
+    "notes": "Reprehenderit corrupti pariatur ut occaecati rem. Est itaque iusto non vero. Officiis corrupti eligendi nihil voluptatem.\n\nQuis quia doloremque magnam omnis. Voluptas reiciendis quam architecto ea libero aut doloribus. Animi libero inventore ducimus et. Amet iste excepturi aut.\n\nQuis cumque cum odit rem maiores. Velit repellendus nihil ratione eaque aliquam in.",
+    "room": {
+      "id": 1,
+      "name": "CSU Lounge",
+      "number": "H-709",
+      "floor": 7,
+      "building": "Hall",
+      "created_at": "2021-03-28T17:52:28.000000Z",
+      "updated_at": "2021-03-28T17:52:28.000000Z",
+      "status": "available",
+      "min_days_advance": 10,
+      "max_days_advance": 25,
+      "attributes": {
+        "food": true,
+        "sofas": 3,
+        "chairs": 0,
+        "tables": 0,
+        "alcohol": true,
+        "computer": false,
+        "projector": false,
+        "fundraiser": false,
+        "television": false,
+        "whiteboard": false,
+        "a_v_permitted": true,
+        "ambiant_music": false,
+        "coffee_tables": 3,
+        "sale_for_profit": false,
+        "capacity_sitting": "150",
+        "capacity_standing": "450"
+      },
+      "room_type": "Lounge",
+      "pivot": {
+        "booking_request_id": 5,
+        "room_id": 1,
+        "created_at": "2021-03-28T17:52:29.000000Z",
+        "updated_at": "2021-03-28T17:52:29.000000Z"
+      }
+    },
+    "requester": {
+      "id": 1,
+      "name": "Joseph doe",
+      "email": "admin@email.com",
+      "email_verified_at": "2021-03-28T17:52:28.000000Z",
+      "current_team_id": null,
+      "profile_photo_path": null,
+      "created_at": "2021-03-28T17:52:28.000000Z",
+      "updated_at": "2021-03-28T17:52:28.000000Z",
+      "phone": "341-262-3829",
+      "organization": "Batz-Heidenreich",
+      "profile_photo_url": "https://ui-avatars.com/api/?name=Joseph+doe&color=7F9CF5&background=EBF4FF",
+      "can": ["users.select", "users.select.same-role", "users.create", "users.update", "users.delete", "roles.assign", "roles.create", "roles.update", "roles.delete", "bookings.create", "bookings.update", "bookings.approve", "bookings.delete", "rooms.create", "rooms.update", "rooms.delete", "rooms.blackouts.create", "rooms.blackouts.update", "rooms.blackouts.delete", "settings.edit"],
+      "permissions": [],
+      "roles": [{
+        "id": 1,
+        "name": "super-admin",
+        "guard_name": "web",
+        "created_at": "2021-03-28T17:52:28.000000Z",
+        "updated_at": "2021-03-28T17:52:28.000000Z",
+        "number_of_bookings_per_period": null,
+        "number_of_days_per_period": null,
+        "pivot": {"model_id": 1, "role_id": 1, "model_type": "App\\Models\\User"},
+        "permissions": [{
+          "id": 1,
+          "name": "users.select",
+          "guard_name": "web",
+          "created_at": "2021-03-28T17:52:27.000000Z",
+          "updated_at": "2021-03-28T17:52:27.000000Z",
+          "pivot": {"role_id": 1, "permission_id": 1}
+        }, {
+          "id": 2,
+          "name": "users.select.same-role",
+          "guard_name": "web",
+          "created_at": "2021-03-28T17:52:27.000000Z",
+          "updated_at": "2021-03-28T17:52:27.000000Z",
+          "pivot": {"role_id": 1, "permission_id": 2}
+        }, {
+          "id": 3,
+          "name": "users.create",
+          "guard_name": "web",
+          "created_at": "2021-03-28T17:52:27.000000Z",
+          "updated_at": "2021-03-28T17:52:27.000000Z",
+          "pivot": {"role_id": 1, "permission_id": 3}
+        }, {
+          "id": 4,
+          "name": "users.update",
+          "guard_name": "web",
+          "created_at": "2021-03-28T17:52:27.000000Z",
+          "updated_at": "2021-03-28T17:52:27.000000Z",
+          "pivot": {"role_id": 1, "permission_id": 4}
+        }, {
+          "id": 5,
+          "name": "users.delete",
+          "guard_name": "web",
+          "created_at": "2021-03-28T17:52:27.000000Z",
+          "updated_at": "2021-03-28T17:52:27.000000Z",
+          "pivot": {"role_id": 1, "permission_id": 5}
+        }, {
+          "id": 6,
+          "name": "roles.assign",
+          "guard_name": "web",
+          "created_at": "2021-03-28T17:52:27.000000Z",
+          "updated_at": "2021-03-28T17:52:27.000000Z",
+          "pivot": {"role_id": 1, "permission_id": 6}
+        }, {
+          "id": 7,
+          "name": "roles.create",
+          "guard_name": "web",
+          "created_at": "2021-03-28T17:52:27.000000Z",
+          "updated_at": "2021-03-28T17:52:27.000000Z",
+          "pivot": {"role_id": 1, "permission_id": 7}
+        }, {
+          "id": 8,
+          "name": "roles.update",
+          "guard_name": "web",
+          "created_at": "2021-03-28T17:52:27.000000Z",
+          "updated_at": "2021-03-28T17:52:27.000000Z",
+          "pivot": {"role_id": 1, "permission_id": 8}
+        }, {
+          "id": 9,
+          "name": "roles.delete",
+          "guard_name": "web",
+          "created_at": "2021-03-28T17:52:27.000000Z",
+          "updated_at": "2021-03-28T17:52:27.000000Z",
+          "pivot": {"role_id": 1, "permission_id": 9}
+        }, {
+          "id": 10,
+          "name": "bookings.create",
+          "guard_name": "web",
+          "created_at": "2021-03-28T17:52:27.000000Z",
+          "updated_at": "2021-03-28T17:52:27.000000Z",
+          "pivot": {"role_id": 1, "permission_id": 10}
+        }, {
+          "id": 11,
+          "name": "bookings.update",
+          "guard_name": "web",
+          "created_at": "2021-03-28T17:52:27.000000Z",
+          "updated_at": "2021-03-28T17:52:27.000000Z",
+          "pivot": {"role_id": 1, "permission_id": 11}
+        }, {
+          "id": 12,
+          "name": "bookings.approve",
+          "guard_name": "web",
+          "created_at": "2021-03-28T17:52:27.000000Z",
+          "updated_at": "2021-03-28T17:52:27.000000Z",
+          "pivot": {"role_id": 1, "permission_id": 12}
+        }, {
+          "id": 13,
+          "name": "bookings.delete",
+          "guard_name": "web",
+          "created_at": "2021-03-28T17:52:28.000000Z",
+          "updated_at": "2021-03-28T17:52:28.000000Z",
+          "pivot": {"role_id": 1, "permission_id": 13}
+        }, {
+          "id": 14,
+          "name": "rooms.create",
+          "guard_name": "web",
+          "created_at": "2021-03-28T17:52:28.000000Z",
+          "updated_at": "2021-03-28T17:52:28.000000Z",
+          "pivot": {"role_id": 1, "permission_id": 14}
+        }, {
+          "id": 15,
+          "name": "rooms.update",
+          "guard_name": "web",
+          "created_at": "2021-03-28T17:52:28.000000Z",
+          "updated_at": "2021-03-28T17:52:28.000000Z",
+          "pivot": {"role_id": 1, "permission_id": 15}
+        }, {
+          "id": 16,
+          "name": "rooms.delete",
+          "guard_name": "web",
+          "created_at": "2021-03-28T17:52:28.000000Z",
+          "updated_at": "2021-03-28T17:52:28.000000Z",
+          "pivot": {"role_id": 1, "permission_id": 16}
+        }, {
+          "id": 17,
+          "name": "rooms.blackouts.create",
+          "guard_name": "web",
+          "created_at": "2021-03-28T17:52:28.000000Z",
+          "updated_at": "2021-03-28T17:52:28.000000Z",
+          "pivot": {"role_id": 1, "permission_id": 17}
+        }, {
+          "id": 18,
+          "name": "rooms.blackouts.update",
+          "guard_name": "web",
+          "created_at": "2021-03-28T17:52:28.000000Z",
+          "updated_at": "2021-03-28T17:52:28.000000Z",
+          "pivot": {"role_id": 1, "permission_id": 18}
+        }, {
+          "id": 19,
+          "name": "rooms.blackouts.delete",
+          "guard_name": "web",
+          "created_at": "2021-03-28T17:52:28.000000Z",
+          "updated_at": "2021-03-28T17:52:28.000000Z",
+          "pivot": {"role_id": 1, "permission_id": 19}
+        }, {
+          "id": 20,
+          "name": "settings.edit",
+          "guard_name": "web",
+          "created_at": "2021-03-28T17:52:28.000000Z",
+          "updated_at": "2021-03-28T17:52:28.000000Z",
+          "pivot": {"role_id": 1, "permission_id": 20}
+        }]
+      }]
+    },
+    "reservations": [{
+      "id": 5,
+      "room_id": 1,
+      "booking_request_id": 5,
+      "start_time": "2021-04-01T12:46:00.000000Z",
+      "end_time": "2021-04-01T14:46:00.000000Z",
+      "created_at": "2021-03-28T17:52:29.000000Z",
+      "updated_at": "2021-03-28T17:52:29.000000Z",
+      "room": {
+        "id": 1,
+        "name": "CSU Lounge",
+        "number": "H-709",
+        "floor": 7,
+        "building": "Hall",
+        "created_at": "2021-03-28T17:52:28.000000Z",
+        "updated_at": "2021-03-28T17:52:28.000000Z",
+        "status": "available",
+        "min_days_advance": 10,
+        "max_days_advance": 25,
+        "attributes": {
+          "food": true,
+          "sofas": 3,
+          "chairs": 0,
+          "tables": 0,
+          "alcohol": true,
+          "computer": false,
+          "projector": false,
+          "fundraiser": false,
+          "television": false,
+          "whiteboard": false,
+          "a_v_permitted": true,
+          "ambiant_music": false,
+          "coffee_tables": 3,
+          "sale_for_profit": false,
+          "capacity_sitting": "150",
+          "capacity_standing": "450"
+        },
+        "room_type": "Lounge"
+      }
+    }]
+  },
+  {
+    "id": 6,
     "user_id": 1,
     "status": "approved",
     "created_at": "2021-03-28T17:52:29.000000Z",
@@ -804,6 +1069,8 @@ const bookTest = [
   }
 ];
 
+jest.mock("axios");
+
 beforeEach(() => {
   InertiaFormMock.error.mockClear()
   InertiaFormMock.post.mockClear()
@@ -864,13 +1131,296 @@ test('should clear json form date', () => {
   expect(wrapper.vm.jsonForm.dateCheck).toBe(null);
 })
 
+test('should emit filterBookingsJson', () => {
+  const wrapper = shallowMount(BookingsTable, {
+    localVue,
+    propsData: {
+      bookings: bookTest
+    }
+  });
+
+  wrapper.vm.advancedFilters();
+
+  expect(wrapper.emitted().filterBookingsJson).toBeTruthy()
+})
+
 test('post sent to filterRooms route', () => {
+  const mocked =  {
+    "id": 5,
+    "user_id": 1,
+    "status": "approved",
+    "created_at": "2021-03-28T17:52:29.000000Z",
+    "updated_at": "2021-03-28T17:52:29.000000Z",
+    "reference": [],
+    "log": null,
+    "onsite_contact": {
+      "name": "Gilberto Kuvalis",
+      "email": "montana.jacobson@yahoo.com",
+      "phone": "(438) 315-9854 x8903"
+    },
+    "event": {
+      "type": "praesentium",
+      "title": "et",
+      "attendees": 296670193,
+      "description": "Et voluptatibus dolor nostrum et voluptatem. Nihil et eum maxime aut qui sint. Explicabo ipsum dolorem occaecati aut fugiat.",
+      "guest_speakers": "Favian Wyman"
+    },
+    "notes": "Reprehenderit corrupti pariatur ut occaecati rem. Est itaque iusto non vero. Officiis corrupti eligendi nihil voluptatem.\n\nQuis quia doloremque magnam omnis. Voluptas reiciendis quam architecto ea libero aut doloribus. Animi libero inventore ducimus et. Amet iste excepturi aut.\n\nQuis cumque cum odit rem maiores. Velit repellendus nihil ratione eaque aliquam in.",
+    "room": {
+      "id": 1,
+      "name": "CSU Lounge",
+      "number": "H-709",
+      "floor": 7,
+      "building": "Hall",
+      "created_at": "2021-03-28T17:52:28.000000Z",
+      "updated_at": "2021-03-28T17:52:28.000000Z",
+      "status": "available",
+      "min_days_advance": 10,
+      "max_days_advance": 25,
+      "attributes": {
+        "food": true,
+        "sofas": 3,
+        "chairs": 0,
+        "tables": 0,
+        "alcohol": true,
+        "computer": false,
+        "projector": false,
+        "fundraiser": false,
+        "television": false,
+        "whiteboard": false,
+        "a_v_permitted": true,
+        "ambiant_music": false,
+        "coffee_tables": 3,
+        "sale_for_profit": false,
+        "capacity_sitting": "150",
+        "capacity_standing": "450"
+      },
+      "room_type": "Lounge",
+      "pivot": {
+        "booking_request_id": 5,
+        "room_id": 1,
+        "created_at": "2021-03-28T17:52:29.000000Z",
+        "updated_at": "2021-03-28T17:52:29.000000Z"
+      }
+    },
+    "requester": {
+      "id": 1,
+      "name": "Joseph doe",
+      "email": "admin@email.com",
+      "email_verified_at": "2021-03-28T17:52:28.000000Z",
+      "current_team_id": null,
+      "profile_photo_path": null,
+      "created_at": "2021-03-28T17:52:28.000000Z",
+      "updated_at": "2021-03-28T17:52:28.000000Z",
+      "phone": "341-262-3829",
+      "organization": "Batz-Heidenreich",
+      "profile_photo_url": "https://ui-avatars.com/api/?name=Joseph+doe&color=7F9CF5&background=EBF4FF",
+      "can": ["users.select", "users.select.same-role", "users.create", "users.update", "users.delete", "roles.assign", "roles.create", "roles.update", "roles.delete", "bookings.create", "bookings.update", "bookings.approve", "bookings.delete", "rooms.create", "rooms.update", "rooms.delete", "rooms.blackouts.create", "rooms.blackouts.update", "rooms.blackouts.delete", "settings.edit"],
+      "permissions": [],
+      "roles": [{
+        "id": 1,
+        "name": "super-admin",
+        "guard_name": "web",
+        "created_at": "2021-03-28T17:52:28.000000Z",
+        "updated_at": "2021-03-28T17:52:28.000000Z",
+        "number_of_bookings_per_period": null,
+        "number_of_days_per_period": null,
+        "pivot": {"model_id": 1, "role_id": 1, "model_type": "App\\Models\\User"},
+        "permissions": [{
+          "id": 1,
+          "name": "users.select",
+          "guard_name": "web",
+          "created_at": "2021-03-28T17:52:27.000000Z",
+          "updated_at": "2021-03-28T17:52:27.000000Z",
+          "pivot": {"role_id": 1, "permission_id": 1}
+        }, {
+          "id": 2,
+          "name": "users.select.same-role",
+          "guard_name": "web",
+          "created_at": "2021-03-28T17:52:27.000000Z",
+          "updated_at": "2021-03-28T17:52:27.000000Z",
+          "pivot": {"role_id": 1, "permission_id": 2}
+        }, {
+          "id": 3,
+          "name": "users.create",
+          "guard_name": "web",
+          "created_at": "2021-03-28T17:52:27.000000Z",
+          "updated_at": "2021-03-28T17:52:27.000000Z",
+          "pivot": {"role_id": 1, "permission_id": 3}
+        }, {
+          "id": 4,
+          "name": "users.update",
+          "guard_name": "web",
+          "created_at": "2021-03-28T17:52:27.000000Z",
+          "updated_at": "2021-03-28T17:52:27.000000Z",
+          "pivot": {"role_id": 1, "permission_id": 4}
+        }, {
+          "id": 5,
+          "name": "users.delete",
+          "guard_name": "web",
+          "created_at": "2021-03-28T17:52:27.000000Z",
+          "updated_at": "2021-03-28T17:52:27.000000Z",
+          "pivot": {"role_id": 1, "permission_id": 5}
+        }, {
+          "id": 6,
+          "name": "roles.assign",
+          "guard_name": "web",
+          "created_at": "2021-03-28T17:52:27.000000Z",
+          "updated_at": "2021-03-28T17:52:27.000000Z",
+          "pivot": {"role_id": 1, "permission_id": 6}
+        }, {
+          "id": 7,
+          "name": "roles.create",
+          "guard_name": "web",
+          "created_at": "2021-03-28T17:52:27.000000Z",
+          "updated_at": "2021-03-28T17:52:27.000000Z",
+          "pivot": {"role_id": 1, "permission_id": 7}
+        }, {
+          "id": 8,
+          "name": "roles.update",
+          "guard_name": "web",
+          "created_at": "2021-03-28T17:52:27.000000Z",
+          "updated_at": "2021-03-28T17:52:27.000000Z",
+          "pivot": {"role_id": 1, "permission_id": 8}
+        }, {
+          "id": 9,
+          "name": "roles.delete",
+          "guard_name": "web",
+          "created_at": "2021-03-28T17:52:27.000000Z",
+          "updated_at": "2021-03-28T17:52:27.000000Z",
+          "pivot": {"role_id": 1, "permission_id": 9}
+        }, {
+          "id": 10,
+          "name": "bookings.create",
+          "guard_name": "web",
+          "created_at": "2021-03-28T17:52:27.000000Z",
+          "updated_at": "2021-03-28T17:52:27.000000Z",
+          "pivot": {"role_id": 1, "permission_id": 10}
+        }, {
+          "id": 11,
+          "name": "bookings.update",
+          "guard_name": "web",
+          "created_at": "2021-03-28T17:52:27.000000Z",
+          "updated_at": "2021-03-28T17:52:27.000000Z",
+          "pivot": {"role_id": 1, "permission_id": 11}
+        }, {
+          "id": 12,
+          "name": "bookings.approve",
+          "guard_name": "web",
+          "created_at": "2021-03-28T17:52:27.000000Z",
+          "updated_at": "2021-03-28T17:52:27.000000Z",
+          "pivot": {"role_id": 1, "permission_id": 12}
+        }, {
+          "id": 13,
+          "name": "bookings.delete",
+          "guard_name": "web",
+          "created_at": "2021-03-28T17:52:28.000000Z",
+          "updated_at": "2021-03-28T17:52:28.000000Z",
+          "pivot": {"role_id": 1, "permission_id": 13}
+        }, {
+          "id": 14,
+          "name": "rooms.create",
+          "guard_name": "web",
+          "created_at": "2021-03-28T17:52:28.000000Z",
+          "updated_at": "2021-03-28T17:52:28.000000Z",
+          "pivot": {"role_id": 1, "permission_id": 14}
+        }, {
+          "id": 15,
+          "name": "rooms.update",
+          "guard_name": "web",
+          "created_at": "2021-03-28T17:52:28.000000Z",
+          "updated_at": "2021-03-28T17:52:28.000000Z",
+          "pivot": {"role_id": 1, "permission_id": 15}
+        }, {
+          "id": 16,
+          "name": "rooms.delete",
+          "guard_name": "web",
+          "created_at": "2021-03-28T17:52:28.000000Z",
+          "updated_at": "2021-03-28T17:52:28.000000Z",
+          "pivot": {"role_id": 1, "permission_id": 16}
+        }, {
+          "id": 17,
+          "name": "rooms.blackouts.create",
+          "guard_name": "web",
+          "created_at": "2021-03-28T17:52:28.000000Z",
+          "updated_at": "2021-03-28T17:52:28.000000Z",
+          "pivot": {"role_id": 1, "permission_id": 17}
+        }, {
+          "id": 18,
+          "name": "rooms.blackouts.update",
+          "guard_name": "web",
+          "created_at": "2021-03-28T17:52:28.000000Z",
+          "updated_at": "2021-03-28T17:52:28.000000Z",
+          "pivot": {"role_id": 1, "permission_id": 18}
+        }, {
+          "id": 19,
+          "name": "rooms.blackouts.delete",
+          "guard_name": "web",
+          "created_at": "2021-03-28T17:52:28.000000Z",
+          "updated_at": "2021-03-28T17:52:28.000000Z",
+          "pivot": {"role_id": 1, "permission_id": 19}
+        }, {
+          "id": 20,
+          "name": "settings.edit",
+          "guard_name": "web",
+          "created_at": "2021-03-28T17:52:28.000000Z",
+          "updated_at": "2021-03-28T17:52:28.000000Z",
+          "pivot": {"role_id": 1, "permission_id": 20}
+        }]
+      }]
+    },
+    "reservations": [{
+      "id": 5,
+      "room_id": 1,
+      "booking_request_id": 5,
+      "start_time": "2021-04-01T12:46:00.000000Z",
+      "end_time": "2021-04-01T14:46:00.000000Z",
+      "created_at": "2021-03-28T17:52:29.000000Z",
+      "updated_at": "2021-03-28T17:52:29.000000Z",
+      "room": {
+        "id": 1,
+        "name": "CSU Lounge",
+        "number": "H-709",
+        "floor": 7,
+        "building": "Hall",
+        "created_at": "2021-03-28T17:52:28.000000Z",
+        "updated_at": "2021-03-28T17:52:28.000000Z",
+        "status": "available",
+        "min_days_advance": 10,
+        "max_days_advance": 25,
+        "attributes": {
+          "food": true,
+          "sofas": 3,
+          "chairs": 0,
+          "tables": 0,
+          "alcohol": true,
+          "computer": false,
+          "projector": false,
+          "fundraiser": false,
+          "television": false,
+          "whiteboard": false,
+          "a_v_permitted": true,
+          "ambiant_music": false,
+          "coffee_tables": 3,
+          "sale_for_profit": false,
+          "capacity_sitting": "150",
+          "capacity_standing": "450"
+        },
+        "room_type": "Lounge"
+      }
+    }]
+  }
+
   const wrapper = shallowMount(Index, {
     localVue,
     propsData: {
       bookings: bookTest
     }
   });
+  axios.post.mockResolvedValue([
+    mocked
+  ]);
+
   wrapper.vm.filterBookingsJson({"selectStatus": 'approved'});
   expect(wrapper.vm.dataBookings).toStrictEqual(
     bookTest
@@ -882,126 +1432,11 @@ test('should set dataBookings from props', () => {
   const wrapper = shallowMount(Index, {
     localVue,
     propsData: {
-      bookings: [
-        {
-          "id": 5,
-          "user_id": 1,
-          "status": "review",
-          "created_at": "2021-03-28T17:52:29.000000Z",
-          "updated_at": "2021-03-28T17:52:29.000000Z",
-          "room": {
-            "id": 1,
-            "name": "CSU Lounge",
-            "number": "H-709",
-            "floor": 7,
-            "building": "Hall",
-            "created_at": "2021-03-28T17:52:28.000000Z",
-            "updated_at": "2021-03-28T17:52:28.000000Z",
-            "status": "available",
-            "min_days_advance": 10,
-            "max_days_advance": 25,
-            "room_type": "Lounge",
-          },
-          "reservations": [{
-            "id": 5,
-            "room_id": 1,
-            "booking_request_id": 5,
-            "start_time": "2021-04-01T12:46:00.000000Z",
-            "end_time": "2021-04-01T14:46:00.000000Z",
-            "created_at": "2021-03-28T17:52:29.000000Z",
-            "updated_at": "2021-03-28T17:52:29.000000Z",
-          }]
-        },
-        {
-          "id": 7,
-          "user_id": 1,
-          "status": "approved",
-          "created_at": "2021-03-28T17:52:29.000000Z",
-          "updated_at": "2021-03-28T17:52:29.000000Z",
-          "room": {
-            "id": 2,
-            "name": "CSU Cafeteria",
-            "number": "H-718",
-            "floor": 7,
-            "building": "Hall",
-            "created_at": "2021-03-28T17:52:28.000000Z",
-            "updated_at": "2021-03-28T17:52:28.000000Z",
-            "status": "available",
-            "min_days_advance": 10,
-            "max_days_advance": 25,
-          },
-          "reservations": [{
-            "id": 7,
-            "room_id": 2,
-            "booking_request_id": 7,
-            "start_time": "2021-04-24T21:21:25.000000Z",
-            "end_time": "2021-04-24T23:21:25.000000Z",
-            "created_at": "2021-03-28T17:52:30.000000Z",
-            "updated_at": "2021-03-28T17:52:30.000000Z",
-          }]
-        }
-      ]
+      bookings: bookTest
     }
   })
 
   expect(wrapper.vm.dataBookings).toStrictEqual(
-    [
-      {
-        "id": 5,
-        "user_id": 1,
-        "status": "review",
-        "created_at": "2021-03-28T17:52:29.000000Z",
-        "updated_at": "2021-03-28T17:52:29.000000Z",
-        "room": {
-          "id": 1,
-          "name": "CSU Lounge",
-          "number": "H-709",
-          "floor": 7,
-          "building": "Hall",
-          "created_at": "2021-03-28T17:52:28.000000Z",
-          "updated_at": "2021-03-28T17:52:28.000000Z",
-          "status": "available",
-          "min_days_advance": 10,
-          "max_days_advance": 25,
-          "room_type": "Lounge",
-        },
-        "reservations": [{
-          "id": 5,
-          "room_id": 1,
-          "booking_request_id": 5,
-          "start_time": "2021-04-01T12:46:00.000000Z",
-          "end_time": "2021-04-01T14:46:00.000000Z",
-          "created_at": "2021-03-28T17:52:29.000000Z",
-          "updated_at": "2021-03-28T17:52:29.000000Z",
-        }]
-      },
-      {
-        "id": 7,
-        "user_id": 1,
-        "status": "approved",
-        "created_at": "2021-03-28T17:52:29.000000Z",
-        "updated_at": "2021-03-28T17:52:29.000000Z",
-        "room": {
-          "id": 2,
-          "name": "CSU Cafeteria",
-          "number": "H-718",
-          "floor": 7,
-          "building": "Hall",
-          "created_at": "2021-03-28T17:52:28.000000Z",
-          "updated_at": "2021-03-28T17:52:28.000000Z",
-          "status": "available",
-          "min_days_advance": 10,
-          "max_days_advance": 25,
-        },
-        "reservations": [{
-          "id": 7,
-          "room_id": 2,
-          "booking_request_id": 7,
-          "start_time": "2021-04-24T21:21:25.000000Z",
-          "end_time": "2021-04-24T23:21:25.000000Z",
-          "created_at": "2021-03-28T17:52:30.000000Z",
-          "updated_at": "2021-03-28T17:52:30.000000Z",
-        }]
-      }
-    ]);
+    bookTest);
 })
+

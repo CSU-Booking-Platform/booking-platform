@@ -37,7 +37,10 @@ test('should mount without crashing', () => {
             number: "1",
             floor: 1,
             status: "available",
-            room_type: "Mezzanine"
+            room_type: "Mezzanine",
+            attributes: {
+              "capacity_sitting":5
+            }
         }]
     }
   })
@@ -60,7 +63,10 @@ test('should filter properly', () => {
             number: "1",
             floor: 1,
             status: "available",
-            room_type: "Mezzanine"
+            room_type: "Mezzanine",
+            attributes: {
+              "capacity_sitting":5
+            }
         }]
     }
   })
@@ -93,7 +99,10 @@ test('should show advanced filters popup', () => {
                 number: "1",
                 floor: 1,
                 status: "available",
-                room_type: "Mezzanine"
+                room_type: "Mezzanine",
+                attributes: {
+                  "capacity_sitting":5
+                }
             }]
         }
     });
@@ -112,7 +121,10 @@ test('should compute only active jsonfilter fields to send in post request', () 
                 number: "1",
                 floor: 1,
                 status: "available",
-                room_type: "Mezzanine"
+                room_type: "Mezzanine",
+                attributes: {
+                  "capacity_sitting":5
+                }
             }]
         }
     });
@@ -132,7 +144,10 @@ test('should change missingDates when date is added or removed', () => {
         number: "1",
         floor: 1,
         status: "available",
-        room_type: "Mezzanine"
+        room_type: "Mezzanine",
+        attributes: {
+          "capacity_sitting":5
+        }
       }]
     }
   });
@@ -149,4 +164,129 @@ test('should change missingDates when date is added or removed', () => {
   expect(wrapper.vm.missingDates).toBe(false);
 })
 
+test('should sort rooms based on sorting component data', () => {
+  const wrapper = shallowMount(RoomTable, {
+    localVue,
+    propsData: {
+      rooms: [{
+        id: 1,
+        name: "name",
+        building: "building",
+        number: "1",
+        floor: 1,
+        status: "available",
+        room_type: "Mezzanine",
+        attributes: {
+          "capacity_sitting":10
+        }
+      },
+        {
+          id: 2,
+          name: "zzz",
+          building: "zzz",
+          number: "1",
+          floor: 1,
+          status: "available",
+          room_type: "Mezzanine",
+          attributes: {
+            "capacity_sitting":5
+          }
+        }]
+    }
+  });
 
+  wrapper.vm.sort('building');
+  expect(wrapper.vm.currentSort).toBe('building');
+  expect(wrapper.vm.currentSortDir).toBe('asc');
+
+
+  expect(wrapper.vm.sortedRooms).toStrictEqual([
+    {
+      id: 1,
+      name: "name",
+      building: "building",
+      number: "1",
+      floor: 1,
+      status: "available",
+      room_type: "Mezzanine",
+      attributes: {
+        "capacity_sitting":10
+      }
+    },
+    {
+      id: 2,
+      name: "zzz",
+      building: "zzz",
+      number: "1",
+      floor: 1,
+      status: "available",
+      room_type: "Mezzanine",
+      attributes: {
+        "capacity_sitting":5
+      }
+    }
+  ]);
+
+  wrapper.vm.sort('building');
+  expect(wrapper.vm.currentSort).toBe('building');
+  expect(wrapper.vm.currentSortDir).toBe('desc');
+
+  expect(wrapper.vm.sortedRooms).toStrictEqual([
+    {
+      id: 2,
+      name: "zzz",
+      building: "zzz",
+      number: "1",
+      floor: 1,
+      status: "available",
+      room_type: "Mezzanine",
+      attributes: {
+        "capacity_sitting":5
+      }
+    },
+    {
+      id: 1,
+      name: "name",
+      building: "building",
+      number: "1",
+      floor: 1,
+      status: "available",
+      room_type: "Mezzanine",
+      attributes: {
+        "capacity_sitting":10
+      }
+    }
+  ]);
+
+  wrapper.vm.sort('attributes.capacity_sitting');
+  expect(wrapper.vm.currentSort).toBe('attributes.capacity_sitting');
+  expect(wrapper.vm.currentSortDir).toBe('desc');
+
+  expect(wrapper.vm.sortedRooms).toStrictEqual([
+    {
+      id: 1,
+      name: "name",
+      building: "building",
+      number: "1",
+      floor: 1,
+      status: "available",
+      room_type: "Mezzanine",
+      attributes: {
+        "capacity_sitting":10
+      }
+    },
+    {
+      id: 2,
+      name: "zzz",
+      building: "zzz",
+      number: "1",
+      floor: 1,
+      status: "available",
+      room_type: "Mezzanine",
+      attributes: {
+        "capacity_sitting":5
+      }
+    }
+  ]);
+
+})

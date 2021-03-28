@@ -4,7 +4,7 @@
             <template #title>
                 Create a Role
             </template>
-            
+
             <template #form>
                 <div class="w-full pb-3">
 
@@ -21,7 +21,7 @@
                         <div class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div v-for="permission in availablePermissions">
                                 <label class="flex items-center">
-                                    <jet-checkbox :value="permission.name" v-model="form.permissions"/>
+                                    <jet-checkbox :dusk="'check-'+permission.name" :value="permission.name" v-model="form.permissions"/>
                                     <span class="ml-2 text-md text-black">{{ permission.name }}</span>
                                 </label>
                             </div>
@@ -49,7 +49,7 @@
                     Created
                 </jet-action-message>
 
-                <jet-button :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                <jet-button id="create-role" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                     Create
                 </jet-button>
             </template>

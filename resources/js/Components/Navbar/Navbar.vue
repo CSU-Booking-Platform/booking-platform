@@ -132,7 +132,7 @@
               Search
             </jet-nav-sub>
             <jet-nav-sub
-              v-if="userHasOneOf(['bookings.create'])"
+              v-if="userHasOneOf(['bookings.create']) && userStartedCreate()"
               href="/bookings/create"
               :active="$page.currentRouteName === 'bookings.create'"
             >
@@ -275,7 +275,13 @@ export default {
     },
     showBookingSubnav() {
       return this.userHasPermissionWithPrefix("bookings");
+    },
+    userStartedCreate() {      
+      if (localStorage.create == "true") {
+        return true;
+      }
+      return false;
     }
-  },
+  }, 
 };
 </script>

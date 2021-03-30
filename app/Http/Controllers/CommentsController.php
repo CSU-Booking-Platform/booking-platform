@@ -19,7 +19,7 @@ class CommentsController extends Controller
     public function store(Request $request, BookingRequest $booking)
     {
         $request->validateWithBag('createComment', [
-            'comment' => 'required|string:255',
+            'comment' => 'required|string:65535',
         ]);
 
         $comment = new Comment;

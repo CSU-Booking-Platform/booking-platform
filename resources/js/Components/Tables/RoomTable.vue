@@ -25,7 +25,34 @@
       </div>
     </div>
 
-    <table class="table-auto responsive-spaced">
+    <ul class="list-reset flex border-b">
+      <li v-if="listViewSelected" class="-mb-px mr-1">
+        <a @click="listViewSelected = true"
+          class="bg-white inline-block border-l border-t border-r rounded-t py-2 px-4 text-blue-dark font-semibold"
+          href="#">List View</a
+        >
+      </li>
+      <li v-else class="mr-1">
+        <a @click="listViewSelected = true"
+          class="bg-white inline-block py-2 px-4 text-blue hover:text-blue-darker font-semibold"
+          href="#">List View</a
+        >
+      </li>
+      <li v-if="listViewSelected" class="mr-1">
+        <a @click="listViewSelected = false"
+          class="bg-white inline-block py-2 px-4 text-blue hover:text-blue-darker font-semibold"
+          href="#">Calendar View</a
+        >
+      </li>
+      <li v-else class="-mb-px mr-1">
+        <a @click="listViewSelected = false"
+          class="bg-white inline-block border-l border-t border-r rounded-t py-2 px-4 text-blue-dark font-semibold"
+          href="#">Calendar View</a
+        >
+      </li>
+    </ul>
+
+    <table v-if="listViewSelected" class="table-auto responsive-spaced">
       <caption></caption>
       <thead>
         <tr>
@@ -139,6 +166,8 @@
         </tr>
       </tbody>
     </table>
+
+    <span v-if="!listViewSelected">Put your godamn table component here</span>
 
     <CreateBookingRequestModal
       :room="roomBeingBooked"
@@ -450,7 +479,8 @@ export default {
           },
         showFilterModal: false,
         currentSort: 'name',
-        currentSortDir: 'asc'
+        currentSortDir: 'asc',
+        listViewSelected: true
       }
   },
     computed: {

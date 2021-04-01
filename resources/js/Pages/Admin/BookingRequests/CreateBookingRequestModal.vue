@@ -205,7 +205,7 @@ export default {
     },
     setCreate(val) {
       localStorage.create = val;
-    }
+    },
     setDuration()
     {
       for (let reservation of this.createBookingRequestForm.reservations)

@@ -15,13 +15,13 @@
       <tr>
         <td class="lt-grey p-3">Opening Hours</td>
         <template v-for="availability in availabilities">
-          <td class="lt-grey p-3">{{ availability.opening_hours }}</td>
+          <td class="lt-grey p-3">{{ formatAvailability(availability.opening_hours) }}</td>
         </template>
       </tr>
       <tr>
         <td class="lt-grey p-3">Closing Hours</td>
         <template v-for="availability in availabilities">
-          <td class="lt-grey p-3">{{ availability.closing_hours }}</td>
+          <td class="lt-grey p-3">{{ formatAvailability(availability.closing_hours) }}</td>
         </template>
       </tr>
     </table>
@@ -258,6 +258,9 @@ export default {
       }
 
       return attributes;
+    },
+    formatAvailability(date){
+      return moment(date, 'HH:mm:ss').format("HH:mm");
     }
   },
   watch: {

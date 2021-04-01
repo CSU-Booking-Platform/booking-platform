@@ -138,3 +138,7 @@ test('Select date should update attributes', () => {
         expect(wrapper.vm.days[0]).toBe(day);
     })
 });
+
+test('should format date correctly', () => {
+    expect(wrapper.vm.formatAvailability('07:50:15')).toBe('07:50');
+})

@@ -52,7 +52,6 @@ class BookingRequestController extends Controller
 
   public function createInit(Request $request)
   {
-
     $data = $request->validate([
       'room_id' => ['integer', 'exists:rooms,id'],
       'reservations' => ['required'],
@@ -66,8 +65,13 @@ class BookingRequestController extends Controller
         'date',
         'date_format:Y-m-d\TH:i',
       ],
+      'reservations.*.duration' => [
+        'required',
+        'integer',
+        'min:30',
+      ],
     ]);
-
+ 
     $this->reservationValidate($request);
 
     Session::remove(self::RESERVATIONS_SESSION_KEY);
@@ -277,7 +281,7 @@ class BookingRequestController extends Controller
     private function reservationValidate(Request $request)
     {
         $request->validate(array(
-            'reservations.*' => ['array', 'size:2',
+            'reservations.*' => ['array', 'size:3',
                 function ($attribute, $value, $fail) use ($request) {
                     $user =  $request->user();
                     $room = Room::query()->findOrFail($request->room_id);

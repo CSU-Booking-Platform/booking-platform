@@ -1,4 +1,4 @@
-import {beforeEach, jest, test} from "@jest/globals";
+import {beforeEach, afterEach, jest, test} from "@jest/globals";
 
 jest.mock('@inertiajs/inertia-vue')
 
@@ -8,9 +8,36 @@ import Navbar from "@src/Components/Navbar/Navbar";
 
 let localVue
 
+const localStorageMock = (function() {
+  let store = {};
+  
+  return {
+    getItem(key) {
+      return store[key];
+    },
+ 
+    setItem(key, value) {
+      store[key] = value;
+    },
+  
+    clear() {
+      store = {};
+    },
+
+    removeItem(key) {
+      delete store[key];
+    },
+  };
+})();
+
 beforeEach(() => {
   localVue = createLocalVue()
   localVue.use(InertiaApp)
+  Object.defineProperty(window, 'localStorage', { value: localStorageMock });
+});
+
+afterEach(() => {
+  window.localStorage.clear();
 });
 
 test('should mount without crashing', () => {
@@ -60,4 +87,24 @@ test('showBookingNav should be true for booking pages', () => {
 
   expect(wrapper.vm.showAdminSubnav()).toBe(false);
   expect(wrapper.vm.showBookingSubnav()).toBe(true);
+})
+
+test('isCreatingBooking should be true when creating a booking', () => {
+
+  const wrapper = shallowMount(Navbar, {localVue,
+    mocks: {
+      $page: {
+        currentRouteName: "bookings.index",
+        user: {
+          can: [
+            'bookings.create'
+          ]
+        }
+      }
+    },
+  })
+  
+  localStorage.create = "true";
+  wrapper.vm.setIsCreatingBooking();
+  expect(wrapper.vm.isCreatingBooking).toBe(true); 
 })

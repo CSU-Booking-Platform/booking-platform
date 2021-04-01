@@ -190,7 +190,7 @@ export default {
           this.closeModal();
         }
         else{
-          this.setCreate(true);
+          this.setCreate(false);
         }
       });
     },

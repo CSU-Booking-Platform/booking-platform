@@ -230,13 +230,7 @@ export default {
   },
 
   mounted() {
-
-    if (localStorage.create == "true") {
-      this.isCreatingBooking = true;
-    }
-    else {
-      this.isCreatingBooking = false;
-    }
+      this.setIsCreatingBooking();
   },
 
   methods: {
@@ -287,6 +281,15 @@ export default {
     showBookingSubnav() {
       return this.userHasPermissionWithPrefix("bookings");
     },
+    
+    setIsCreatingBooking() {
+      if (localStorage.create == "true") {
+        this.isCreatingBooking = true;
+      }
+      else {
+        this.isCreatingBooking = false;
+      }
+    }
   }, 
 };
 </script>

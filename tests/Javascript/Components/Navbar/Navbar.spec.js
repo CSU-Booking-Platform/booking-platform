@@ -104,7 +104,7 @@ test('isCreatingBooking should be true when creating a booking', () => {
     },
   })
   
-  localStorage.create = "true";
+  localStorage.isCreatingBooking = "true";
   wrapper.vm.setIsCreatingBooking();
   expect(wrapper.vm.isCreatingBooking).toBe(true); 
 })

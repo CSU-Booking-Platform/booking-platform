@@ -5,6 +5,7 @@ jest.mock('laravel-jetstream')
 import {createLocalVue, mount, shallowMount} from '@vue/test-utils'
 import {InertiaApp} from '@inertiajs/inertia-vue'
 import {InertiaForm} from 'laravel-jetstream'
+import {InertiaFormMock} from "@test/__mocks__/laravel-jetstream";
 import Component from '@src/Pages/Requestee/BookingForm'
 import moment from "moment";
 
@@ -66,6 +67,9 @@ beforeEach(() => {
 
 afterEach(() => {
     wrapper = null;
+
+    InertiaFormMock.error.mockClear()
+    InertiaFormMock.post.mockClear()
 });
 
 test('should mount without crashing', () => {
@@ -108,4 +112,27 @@ test('filter returns date', () => {
 test('filter returns time', () => {
 
     expect(wrapper.vm.only_time(moment())).toBe(moment().format("LT"));
+})
+
+test('setCreate correctly sets value', () => {
+    wrapper.vm.setCreate(true);
+    expect(localStorage.create).toBe("true");
+
+    wrapper.vm.setCreate(false);
+    expect(localStorage.create).toBe("false");
+})
+
+test('should not submit with form errors', () => {
+    InertiaFormMock.post.mockReturnValueOnce({
+        then(callback) {
+            callback({})
+        }
+    })
+
+    InertiaFormMock.hasErrors.mockReturnValueOnce(true)
+    InertiaFormMock.error.mockReturnValueOnce("Some name error")
+
+    wrapper.vm.submitBooking()
+
+    expect(InertiaFormMock.post).toBeCalledTimes(1)
 })

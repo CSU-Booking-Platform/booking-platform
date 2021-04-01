@@ -177,12 +177,15 @@ export default {
       this.createBookingRequestForm.reservations.splice(pos,1)
     },
     createBookingRequest() {
+      this.setCreate(true);
       this.createBookingRequestForm.post("/bookings/create", {
         preserveScroll: true
       }).then(() => {
-        if (! this.createBookingRequestForm.hasErrors()) {
-          this.setCreate();
+        if (! this.createBookingRequestForm.hasErrors()) {       
           this.closeModal();
+        }
+        else{
+          this.setCreate(true);
         }
       });
     },
@@ -195,8 +198,8 @@ export default {
         this.createBookingRequestForm.reference.push(file);
       }
     },
-    setCreate() {
-      localStorage.create = true;
+    setCreate(val) {
+      localStorage.create = val;
     }
   },
   watch: {

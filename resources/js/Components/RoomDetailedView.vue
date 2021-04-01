@@ -17,6 +17,9 @@
             <div v-if="typeof(attribute) == 'number' || Number.isInteger(attribute)">
               <div class="text-center rounded-full py-2 px-4 bg-gray-300">{{attribute}}</div>
             </div>
+            <div v-if="typeof(attribute) == 'string'">
+              <div class="text-center rounded-full py-2 px-4 bg-gray-300">{{attribute}}</div>
+            </div>
           </div>
           <div>
             <jet-label :for="'room_type'" :value="'Room Type:'"></jet-label>

@@ -114,12 +114,12 @@ test('filter returns time', () => {
     expect(wrapper.vm.only_time(moment())).toBe(moment().format("LT"));
 })
 
-test('setCreate correctly sets value', () => {
-    wrapper.vm.setCreate(true);
-    expect(localStorage.create).toBe("true");
+test('setLocalIsCreating correctly sets value', () => {
+    wrapper.vm.setLocalIsCreating(true);
+    expect(localStorage.isCreatingBooking).toBe("true");
 
-    wrapper.vm.setCreate(false);
-    expect(localStorage.create).toBe("false");
+    wrapper.vm.setLocalIsCreating(false);
+    expect(localStorage.isCreatingBooking).toBe("false");
 })
 
 test('should not submit with form errors', () => {

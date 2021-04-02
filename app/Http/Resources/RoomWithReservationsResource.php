@@ -25,6 +25,15 @@ class RoomWithReservationsResource extends JsonResource
             'room_type' => $this->room_type,
             'reservations' => CalendarEntryResource::collection($this->whenLoaded('reservations')),
             'blackouts' => CalendarEntryResource::collection($this->whenLoaded('blackouts')),
+            'availabilities' => $this->whenLoaded('availabilities', function () {
+                return $this->availabilities->map(function ($open) {
+                    return [
+                        'id' => $open->id,
+                        'opening_hours' => $open->opening_hours,
+                        'closing_hours' => $open->closing_hours
+                    ];
+                });
+            })
         ];
     }
 }

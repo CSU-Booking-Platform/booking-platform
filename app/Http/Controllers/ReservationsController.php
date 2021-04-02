@@ -177,6 +177,11 @@ class ReservationsController extends Controller
         $rooms = Room::with([
             'reservations' => $callback,
             'blackouts' => $callback,
+            'availabilities' => function($query) use ($date) {
+                if ($date !== null) {
+                    $query->where('weekday', Carbon::parse($date)->englishDayOfWeek);
+                }
+            }
         ])->whereHas('reservations', $callback)->orWhereHas('reservations', $callback)->get();
 
         // technically can be paginates but we're only fetching for 1 day

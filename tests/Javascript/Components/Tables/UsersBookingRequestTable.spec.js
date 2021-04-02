@@ -8,7 +8,7 @@ import {InertiaForm} from 'laravel-jetstream'
 import BookingsTable from "@src/Components/Tables/BookingsTable";
 import {InertiaFormMock} from "@test/__mocks__/laravel-jetstream";
 import Index from "@src/Pages/Requestee/BookingsList";
-import {bookTest, mocked} from "@test/Components/Constants/UsersBookingRequestTableConstants.spec";
+import {bookTest, mocked} from "@test/Components/Constants/UsersBookingRequestTableConstants.js";
 
 let localVue;
 

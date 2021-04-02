@@ -52,7 +52,7 @@
       </li>
     </ul>
 
-    <table v-if="listViewSelected" class="table-auto responsive-spaced">
+    <table v-if="listViewSelected" class="table-auto responsive-spaced mt-4">
       <caption></caption>
       <thead>
         <tr>
@@ -167,7 +167,10 @@
       </tbody>
     </table>
 
-    <span v-if="!listViewSelected">Put your godamn table component here</span>
+
+    <div v-if="!listViewSelected">
+      <CalendarViewTable/>
+    </div>
 
     <CreateBookingRequestModal
       :room="roomBeingBooked"
@@ -424,6 +427,7 @@ import JetButton from "@src/Jetstream/Button";
 import JetLabel from "@src/Jetstream/Label";
 import JetInputError from "@src/Jetstream/InputError";
 import AvailabilitiesModal from "@src/Components/AvailabilitiesModal";
+import CalendarViewTable from "@src/Components/Tables/CalendarViewTable";
 import DateTimePicker from "@src/Components/Form/DateTimePicker";
 
 export default {
@@ -436,7 +440,7 @@ export default {
     },
   },
   components: {
-    DateTimePicker,
+      DateTimePicker,
       Input,
       Button,
       CreateBookingRequestModal,
@@ -450,7 +454,8 @@ export default {
       JetButton,
       JetLabel,
       JetInputError,
-      AvailabilitiesModal
+      AvailabilitiesModal,
+      CalendarViewTable
   },
   data() {
       return {

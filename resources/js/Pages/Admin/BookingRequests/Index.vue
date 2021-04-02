@@ -21,7 +21,7 @@ export default {
     components: {
         AppLayout,
         JetSectionBorder,
-        RoomTable
+        RoomTable,
     },
     props: {
         booking_requests: {

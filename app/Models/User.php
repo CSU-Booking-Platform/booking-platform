@@ -68,6 +68,15 @@ class User extends Authenticatable
     ];
 
     /**
+     * The relationship counts that should be eager loaded on every query.
+     *
+     * @var array
+     */
+    protected $withCount = [
+        'bookingsToReview'
+    ];
+
+    /**
      * Get all booking requests created by this user.
      */
     public function bookingRequests()

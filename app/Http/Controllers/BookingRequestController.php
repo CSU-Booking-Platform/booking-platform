@@ -72,7 +72,7 @@ class BookingRequestController extends Controller
         'min:30',
       ],
     ]);
- 
+
     $this->reservationValidate($request);
 
     Session::remove(self::RESERVATIONS_SESSION_KEY);
@@ -359,7 +359,7 @@ class BookingRequestController extends Controller
      * @param Request $request
      * @return JsonResponse|Response
      */
-    public function myFilter(Request $request)
+    public function filterUserBookings(Request $request)
     {
         // None of the request fields are mandatory, only
         // filter the ones provided from request

@@ -123,8 +123,9 @@ export default {
 
   methods: {
     getCalendarRooms() {
-      axios.post('/api/calendarRooms', { date: this.dateSelected })
-        .then((response)=>{
+      axios.get('/api/reservations/by-date', {
+        date: this.dateSelected
+      }).then((response)=>{
           this.calendarRooms = response.data;
         })
     },
@@ -157,6 +158,11 @@ export default {
   },
   computed: {
 
+  },
+  watch: {
+    dateSelected() {
+      this.getCalendarRooms();
+    }
   }
 };
 </script>

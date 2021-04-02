@@ -56,18 +56,14 @@
                 Edit
               </button>
             </a>
-              <a v-else-if="booking.status == 'review'" :href="'/bookings/'+booking.id+'/view'" style="cursor:pointer;">
-                <button aria-disabled="true" class="h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-500 rounded-lg focus:shadow-outline ">
+              <a v-else  :href="'/bookings/'+booking.id+'/view'" style="cursor:pointer;">
+                <button v-if="booking.status == 'review'" aria-disabled="true" class="h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-500 rounded-lg focus:shadow-outline ">
                   In Review
                 </button>
-              </a>
-              <a v-else-if="booking.status == 'refused'" :href="'/bookings/'+booking.id+'/view'" style="cursor:pointer;">
-                <button aria-disabled="true" class="h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-red-900 rounded-lg focus:shadow-outline">
+                <button v-else-if="booking.status == 'refused'" aria-disabled="true" class="h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-red-900 rounded-lg focus:shadow-outline">
                   Refused
                 </button>
-              </a>
-              <a v-else-if="booking.status == 'approved'" :href="'/bookings/'+booking.id+'/view'" style="cursor:pointer;">
-                <button aria-disabled="true" class="h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-green-500 rounded-lg focus:shadow-outline">
+                <button v-else-if="booking.status == 'approved'" aria-disabled="true" class="h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-green-500 rounded-lg focus:shadow-outline">
                   Approved
                 </button>
               </a>

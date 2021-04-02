@@ -144,6 +144,11 @@
               :active="$page.currentRouteName === 'bookings.review'"
             >
               Review
+              <span v-if="$page.user.bookings_to_review_count > 0"
+                class="px-2 py-1 ml-2 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full"
+              >
+                {{ $page.user.bookings_to_review_count }}
+              </span>
             </jet-nav-sub>
           </div>
           <div

@@ -97,6 +97,6 @@ class BookingRequest extends Model
     }
 
     public function scopePending(Builder $query) {
-        $query->where('status', 'review');
+        $query->where('status', 'review')->orWhere('status', 'pending');
     }
 }

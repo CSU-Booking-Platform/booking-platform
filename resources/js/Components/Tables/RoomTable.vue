@@ -16,7 +16,7 @@
       <div class="border mx-16">
       </div>
       <div class="mx-6">
-        <h3 class="font-black">ADVANCED</h3>
+        <h3 class="font-black">FILTER</h3>
       </div>
       <div class="mx-2 border shadow-md bg-yellow-300 min-w-24">
         <button @click="toggleAdvancedFilters()">
@@ -114,49 +114,28 @@
               &blacktriangledown;
             </span>
           </th>
-          <th  id="id_room_action">Action</th>
+          <th id="id_room_action">Actions</th>
         </tr>
       </thead>
       <tbody>
-         <tr v-for="room in filteredRooms" :key="room.id">
+         <tr v-for="room in filteredRooms" :key="room.id" :id="'room-item-' + room.id" :dusk="'room-item-' + room.id">
             <td class="text-center">{{room.name}}</td>
             <td class="text-center">{{room.room_type}}</td>
             <td class="text-center">{{room.building}}</td>
             <td class="text-center">{{room.number}}</td>
             <td class="text-center">{{room.floor}}</td>
-           <td class="text-center">{{room.attributes.capacity_sitting}}</td>
-            <td>
-             <div>
-               <jet-dropdown width="20">
-                 <template #trigger>
-                   <button
-                     class="flex text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out"
-                   >
-                     <div>Action</div>
-                   </button>
-                 </template>
+            <td class="text-center">{{room.attributes.capacity_sitting}}</td>
+            <td class="text-center space-x-2">
+              <jet-button id="create" :dusk="'room-select-' + room.id"
+                      @click.native="roomBeingBooked = room"
+              >
+                Create Booking
+              </jet-button>
 
-                 <template #content>
-                   <div class="text-md mx-3">
-                     <button
-                       class="cursor-pointer text-sm text-blue-800 focus:outline-none"
-                       @click="roomBeingBooked = room"
-                     >
-                       Create Booking
-                     </button>
-                   </div>
-                   <div class="text-md mx-3">
-                     <button
-                       class="cursor-pointer text-sm text-blue-800 focus:outline-none"
-                       @click="roomBeingInspected = room"
-                     >
-                       View Details
-                     </button>
-                   </div>
-                 </template>
-               </jet-dropdown>
-             </div>
-           </td>
+              <jet-button @click.native="roomBeingInspected = room">
+                View Details
+              </jet-button>
+            </td>
         </tr>
       </tbody>
     </table>

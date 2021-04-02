@@ -287,7 +287,7 @@ class ReservationControllerTest extends TestCase
 
         $response->assertStatus(302);
         $response->assertSessionHasErrorsIn('storeReservationsRequest');
-        $response->dumpSession();
+//        $response->dumpSession();
         $this->assertDatabaseCount('booking_requests', 0);
         $this->assertDatabaseCount('reservations', 0);
 

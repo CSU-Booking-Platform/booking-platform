@@ -2,6 +2,7 @@
 
 namespace Tests\Browser;
 
+use App\Models\Role;
 use App\Models\User;
 use Database\Seeders\RolesAndPermissionsSeeder;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -75,4 +76,39 @@ class UsersPageTest extends DuskTestCase
     });
     $this->assertDatabaseMissing('users', ['email' => $user->email]);
   }
+
+
+  public function testAdminCanAssociateRolesToUsers() {
+      $user = User::factory()->create();
+      $role = Role::factory()->create();
+
+      $this->browse(function (Browser $browser) use ($user, $role) {
+          $browser->loginAs($this->createUserWithPermissions(['users.update']));
+          $browser
+              ->visit(new Users)
+              ->updateUser($user, null, [$role->id], []);
+      });
+
+      $user->refresh();
+
+      $this->assertTrue($user->hasRole($role), "User should have the added role");
+  }
+
+    public function testAdminCanDisassociateRolesToUsers() {
+        $user = User::factory()->create();
+        $role = Role::factory()->create();
+        $user->assignRole($role);
+        $user->save();
+
+        $this->browse(function (Browser $browser) use ($user, $role) {
+            $browser->loginAs($this->createUserWithPermissions(['users.update']));
+            $browser
+                ->visit(new Users)
+                ->updateUser($user, null, [], [$role->id]);
+        });
+
+        $user->refresh();
+
+        $this->assertFalse($user->hasRole($role), "User should have the role removed");
+    }
 }

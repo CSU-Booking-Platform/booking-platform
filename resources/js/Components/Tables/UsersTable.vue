@@ -10,7 +10,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr v-for="user in Users" :key="user.id">
+      <tr :id="'user-row-'+user.id" v-for="user in Users" :key="user.id">
         <td class="text-center">{{ user.name }}</td>
         <td class="text-center">{{ user.email }}</td>
         <td class="text-center">

@@ -42,7 +42,7 @@
           <div class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-4">
             <div v-for="role in roles">
               <label class="flex items-center">
-                <input type="checkbox" class="form-checkbox" :value="role.name"
+                <input :dusk="'check-'+role.id" type="checkbox" class="form-checkbox" :value="role.name"
                        v-model="updateUserForm.roles">
                 <span class="ml-2 text-md text-black">{{ role.name }}</span>
                 <span class="ml-2 text-sm text-gray-600">{{ role.guard_name }}</span>

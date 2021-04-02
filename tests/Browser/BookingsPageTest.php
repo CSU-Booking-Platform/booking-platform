@@ -43,6 +43,7 @@ class BookingsPageTest extends DuskTestCase
             $browser->loginAs(User::first());
             $browser->visit(new Bookings)
                 ->clickLink("Edit", 'button')
+                ->pause(5000)
                 ->assertPathIs('/bookings/' . $bookings->id . '/edit');
             $browser->assertSee('Submit A Booking Request');
         });
@@ -59,6 +60,7 @@ class BookingsPageTest extends DuskTestCase
             $browser->loginAs(User::first());
             $browser->visit(new Bookings)
                 ->clickLink("Approved", 'button')
+                ->pause(5000)
                 ->assertPathIs('/bookings/' . $bookings->id . '/view');
             $browser->assertSee(ucfirst(BookingRequest::APPROVED));
         });
@@ -75,6 +77,7 @@ class BookingsPageTest extends DuskTestCase
             $browser->loginAs(User::first());
             $browser->visit(new Bookings)
                 ->clickLink("Refused", 'button')
+                ->pause(5000)
                 ->assertPathIs('/bookings/' . $bookings->id . '/view');
             $browser->assertSee(ucfirst(BookingRequest::REFUSED));
         });
@@ -91,6 +94,7 @@ class BookingsPageTest extends DuskTestCase
             $browser->loginAs(User::first());
             $browser->visit(new Bookings)
                 ->clickLink("In Review", 'button')
+                ->pause(5000)
                 ->assertPathIs('/bookings/' . $bookings->id . '/view');
             $browser->assertSee(ucfirst(BookingRequest::REVIEW));
         });

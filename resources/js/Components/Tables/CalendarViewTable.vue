@@ -20,7 +20,7 @@
         <h3 class="font-black">Hourly Range:</h3>
       </div>
       <div class="mx-6 m-auto">
-        <button @click="bumpCalendar('left')">
+        <button v-if="leftHourDelimiter >= 1" @click="bumpCalendar('left')">
           Left
         </button>
       </div>
@@ -34,7 +34,7 @@
         {{dailyHours[rightHourDelimiter]}}
       </div>
       <div  class="mx-6 m-auto">
-        <button @click="bumpCalendar('right')">
+        <button v-if="rightHourDelimiter <= 23" @click="bumpCalendar('right')">
           Right
         </button>
       </div>
@@ -53,26 +53,9 @@
       <tbody>
       <tr v-for="room in calendarRooms" :key="room.id">
         <td class="text-center">{{room.name}}</td>
-        <td v-for="(i, ctr) in 13">
+        <td v-for="(hour, ctr) in room.color_breakdown.slice(leftHourDelimiter, rightHourDelimiter)">
           <div class="flex flex-row justify-between">
-            <div
-              v-bind:class="[timeChunkBooked(room, ctr+leftHourDelimiter, ctr+leftHourDelimiter+0.25) ? 'bg-red-500 w-1/4 border-2' : 'bg-green-400 w-1/4 border-2']"
-            >
-              &nbsp;
-            </div>
-            <div
-              v-bind:class="[timeChunkBooked(room, ctr+leftHourDelimiter+0.25, ctr+leftHourDelimiter+0.5) ? 'bg-red-500 w-1/4 border-2' : 'bg-green-400 w-1/4 border-2']"
-            >
-              &nbsp;
-            </div>
-            <div
-              v-bind:class="[timeChunkBooked(room, ctr+leftHourDelimiter+0.5, ctr+leftHourDelimiter+0.75) ? 'bg-red-500 w-1/4 border-2' : 'bg-green-400 w-1/4 border-2']"
-            >
-              &nbsp;
-            </div>
-            <div
-              v-bind:class="[timeChunkBooked(room, ctr+leftHourDelimiter+0.75, ctr+leftHourDelimiter+1) ? 'bg-red-500 w-1/4 border-2' : 'bg-green-400 w-1/4 border-2']"
-            >
+            <div v-for="chunk in hour" :class="chunk.color" class="w-1/4 border-2">
               &nbsp;
             </div>
           </div>
@@ -107,17 +90,541 @@ export default {
         {
           name: 'Art Nook',
           id: 1,
-          reservations: [
-            {
-              start_time: "9:15",
-              end_time: "9:45"
-            }
-          ]
+          color_breakdown: [
+            [
+              {
+                start_time: "00:00",
+                end_time: "00:15",
+                color: "bg-red-500"
+              },
+              {
+                start_time: "00:15",
+                end_time: "00:30",
+                color: "bg-red-500"
+              },
+              {
+                start_time: "00:30",
+                end_time: "00:45",
+                color: "bg-red-500"
+              },
+              {
+                start_time: "00:45",
+                end_time: "01:00",
+                color: "bg-red-500"
+              }
+            ],
+            [
+              {
+                start_time: "00:00",
+                end_time: "00:15",
+                color: "bg-red-500"
+              },
+              {
+                start_time: "00:15",
+                end_time: "00:30",
+                color: "bg-red-500"
+              },
+              {
+                start_time: "00:30",
+                end_time: "00:45",
+                color: "bg-red-500"
+              },
+              {
+                start_time: "00:45",
+                end_time: "01:00",
+                color: "bg-red-500"
+              }
+            ],
+            [
+              {
+                start_time: "00:00",
+                end_time: "00:15",
+                color: "bg-red-500"
+              },
+              {
+                start_time: "00:15",
+                end_time: "00:30",
+                color: "bg-red-500"
+              },
+              {
+                start_time: "00:30",
+                end_time: "00:45",
+                color: "bg-red-500"
+              },
+              {
+                start_time: "00:45",
+                end_time: "01:00",
+                color: "bg-red-500"
+              }
+            ],
+            [
+              {
+                start_time: "00:00",
+                end_time: "00:15",
+                color: "bg-red-500"
+              },
+              {
+                start_time: "00:15",
+                end_time: "00:30",
+                color: "bg-red-500"
+              },
+              {
+                start_time: "00:30",
+                end_time: "00:45",
+                color: "bg-green-400"
+              },
+              {
+                start_time: "00:45",
+                end_time: "01:00",
+                color: "bg-gray-800"
+              }
+            ],
+            [
+              {
+                start_time: "00:00",
+                end_time: "00:15",
+                color: "bg-red-500"
+              },
+              {
+                start_time: "00:15",
+                end_time: "00:30",
+                color: "bg-red-500"
+              },
+              {
+                start_time: "00:30",
+                end_time: "00:45",
+                color: "bg-green-400"
+              },
+              {
+                start_time: "00:45",
+                end_time: "01:00",
+                color: "bg-gray-800"
+              }
+            ],
+            [
+              {
+                start_time: "00:00",
+                end_time: "00:15",
+                color: "bg-red-500"
+              },
+              {
+                start_time: "00:15",
+                end_time: "00:30",
+                color: "bg-red-500"
+              },
+              {
+                start_time: "00:30",
+                end_time: "00:45",
+                color: "bg-green-400"
+              },
+              {
+                start_time: "00:45",
+                end_time: "01:00",
+                color: "bg-gray-800"
+              }
+            ],
+            [
+              {
+                start_time: "00:00",
+                end_time: "00:15",
+                color: "bg-red-500"
+              },
+              {
+                start_time: "00:15",
+                end_time: "00:30",
+                color: "bg-red-500"
+              },
+              {
+                start_time: "00:30",
+                end_time: "00:45",
+                color: "bg-green-400"
+              },
+              {
+                start_time: "00:45",
+                end_time: "01:00",
+                color: "bg-gray-800"
+              }
+            ],
+            [
+              {
+                start_time: "00:00",
+                end_time: "00:15",
+                color: "bg-red-500"
+              },
+              {
+                start_time: "00:15",
+                end_time: "00:30",
+                color: "bg-red-500"
+              },
+              {
+                start_time: "00:30",
+                end_time: "00:45",
+                color: "bg-green-400"
+              },
+              {
+                start_time: "00:45",
+                end_time: "01:00",
+                color: "bg-gray-800"
+              }
+            ],
+            [
+              {
+                start_time: "00:00",
+                end_time: "00:15",
+                color: "bg-red-500"
+              },
+              {
+                start_time: "00:15",
+                end_time: "00:30",
+                color: "bg-red-500"
+              },
+              {
+                start_time: "00:30",
+                end_time: "00:45",
+                color: "bg-green-400"
+              },
+              {
+                start_time: "00:45",
+                end_time: "01:00",
+                color: "bg-gray-800"
+              }
+            ],
+            [
+              {
+                start_time: "00:00",
+                end_time: "00:15",
+                color: "bg-gray-800"
+              },
+              {
+                start_time: "00:15",
+                end_time: "00:30",
+                color: "bg-gray-800"
+              },
+              {
+                start_time: "00:30",
+                end_time: "00:45",
+                color: "bg-gray-800"
+              },
+              {
+                start_time: "00:45",
+                end_time: "01:00",
+                color: "bg-gray-800"
+              }
+            ],
+            [
+              {
+                start_time: "00:00",
+                end_time: "00:15",
+                color: "bg-red-500"
+              },
+              {
+                start_time: "00:15",
+                end_time: "00:30",
+                color: "bg-red-500"
+              },
+              {
+                start_time: "00:30",
+                end_time: "00:45",
+                color: "bg-green-400"
+              },
+              {
+                start_time: "00:45",
+                end_time: "01:00",
+                color: "bg-gray-800"
+              }
+            ],
+            [
+              {
+                start_time: "00:00",
+                end_time: "00:15",
+                color: "bg-red-500"
+              },
+              {
+                start_time: "00:15",
+                end_time: "00:30",
+                color: "bg-red-500"
+              },
+              {
+                start_time: "00:30",
+                end_time: "00:45",
+                color: "bg-green-400"
+              },
+              {
+                start_time: "00:45",
+                end_time: "01:00",
+                color: "bg-gray-800"
+              }
+            ],
+            [
+              {
+                start_time: "00:00",
+                end_time: "00:15",
+                color: "bg-red-500"
+              },
+              {
+                start_time: "00:15",
+                end_time: "00:30",
+                color: "bg-red-500"
+              },
+              {
+                start_time: "00:30",
+                end_time: "00:45",
+                color: "bg-green-400"
+              },
+              {
+                start_time: "00:45",
+                end_time: "01:00",
+                color: "bg-gray-800"
+              }
+            ],
+            [
+              {
+                start_time: "00:00",
+                end_time: "00:15",
+                color: "bg-red-500"
+              },
+              {
+                start_time: "00:15",
+                end_time: "00:30",
+                color: "bg-red-500"
+              },
+              {
+                start_time: "00:30",
+                end_time: "00:45",
+                color: "bg-green-400"
+              },
+              {
+                start_time: "00:45",
+                end_time: "01:00",
+                color: "bg-gray-800"
+              }
+            ],
+            [
+              {
+                start_time: "00:00",
+                end_time: "00:15",
+                color: "bg-red-500"
+              },
+              {
+                start_time: "00:15",
+                end_time: "00:30",
+                color: "bg-red-500"
+              },
+              {
+                start_time: "00:30",
+                end_time: "00:45",
+                color: "bg-green-400"
+              },
+              {
+                start_time: "00:45",
+                end_time: "01:00",
+                color: "bg-gray-800"
+              }
+            ],
+            [
+              {
+                start_time: "00:00",
+                end_time: "00:15",
+                color: "bg-red-500"
+              },
+              {
+                start_time: "00:15",
+                end_time: "00:30",
+                color: "bg-red-500"
+              },
+              {
+                start_time: "00:30",
+                end_time: "00:45",
+                color: "bg-green-400"
+              },
+              {
+                start_time: "00:45",
+                end_time: "01:00",
+                color: "bg-gray-800"
+              }
+            ],
+            [
+              {
+                start_time: "00:00",
+                end_time: "00:15",
+                color: "bg-red-500"
+              },
+              {
+                start_time: "00:15",
+                end_time: "00:30",
+                color: "bg-red-500"
+              },
+              {
+                start_time: "00:30",
+                end_time: "00:45",
+                color: "bg-green-400"
+              },
+              {
+                start_time: "00:45",
+                end_time: "01:00",
+                color: "bg-gray-800"
+              }
+            ],
+            [
+              {
+                start_time: "00:00",
+                end_time: "00:15",
+                color: "bg-red-500"
+              },
+              {
+                start_time: "00:15",
+                end_time: "00:30",
+                color: "bg-red-500"
+              },
+              {
+                start_time: "00:30",
+                end_time: "00:45",
+                color: "bg-green-400"
+              },
+              {
+                start_time: "00:45",
+                end_time: "01:00",
+                color: "bg-gray-800"
+              }
+            ],
+            [
+              {
+                start_time: "00:00",
+                end_time: "00:15",
+                color: "bg-red-500"
+              },
+              {
+                start_time: "00:15",
+                end_time: "00:30",
+                color: "bg-red-500"
+              },
+              {
+                start_time: "00:30",
+                end_time: "00:45",
+                color: "bg-green-400"
+              },
+              {
+                start_time: "00:45",
+                end_time: "01:00",
+                color: "bg-gray-800"
+              }
+            ],
+            [
+              {
+                start_time: "00:00",
+                end_time: "00:15",
+                color: "bg-red-500"
+              },
+              {
+                start_time: "00:15",
+                end_time: "00:30",
+                color: "bg-red-500"
+              },
+              {
+                start_time: "00:30",
+                end_time: "00:45",
+                color: "bg-green-400"
+              },
+              {
+                start_time: "00:45",
+                end_time: "01:00",
+                color: "bg-gray-800"
+              }
+            ],
+            [
+              {
+                start_time: "00:00",
+                end_time: "00:15",
+                color: "bg-red-500"
+              },
+              {
+                start_time: "00:15",
+                end_time: "00:30",
+                color: "bg-red-500"
+              },
+              {
+                start_time: "00:30",
+                end_time: "00:45",
+                color: "bg-green-400"
+              },
+              {
+                start_time: "00:45",
+                end_time: "01:00",
+                color: "bg-gray-800"
+              }
+            ],
+            [
+              {
+                start_time: "00:00",
+                end_time: "00:15",
+                color: "bg-red-500"
+              },
+              {
+                start_time: "00:15",
+                end_time: "00:30",
+                color: "bg-red-500"
+              },
+              {
+                start_time: "00:30",
+                end_time: "00:45",
+                color: "bg-green-400"
+              },
+              {
+                start_time: "00:45",
+                end_time: "01:00",
+                color: "bg-gray-800"
+              }
+            ],
+            [
+              {
+                start_time: "00:00",
+                end_time: "00:15",
+                color: "bg-red-500"
+              },
+              {
+                start_time: "00:15",
+                end_time: "00:30",
+                color: "bg-red-500"
+              },
+              {
+                start_time: "00:30",
+                end_time: "00:45",
+                color: "bg-green-400"
+              },
+              {
+                start_time: "00:45",
+                end_time: "01:00",
+                color: "bg-gray-800"
+              }
+            ],
+            [
+              {
+                start_time: "00:00",
+                end_time: "00:15",
+                color: "bg-red-500"
+              },
+                {
+                  start_time: "00:15",
+                  end_time: "00:30",
+                  color: "bg-red-500"
+                },
+                {
+                  start_time: "00:30",
+                  end_time: "00:45",
+                  color: "bg-green-400"
+                },
+                {
+                  start_time: "00:45",
+                  end_time: "01:00",
+                  color: "bg-gray-800"
+                }
+              ]
+          ],
         }
       ],
       dailyHours:
         ['00:00', '1:00', '2:00', '3:00', '4:00', '5:00', '6:00', '7:00', '8:00', '9:00', '10:00', '11:00',
-          '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00']
+          '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00', '24:00']
     }
   },
 
@@ -128,21 +635,6 @@ export default {
       }).then((response)=>{
           this.calendarRooms = response.data;
         })
-    },
-    timeToFloat(time){
-      const h = parseInt(time.split(':')[0]);
-      const m = parseInt(time.split(':')[1])/60;
-      return h + m;
-    },
-    timeChunkBooked(room, chunkStart, chunkEnd){
-      let booked = room.reservations.find(reservation => {
-        let start = this.timeToFloat(reservation.start_time);
-        let end = this.timeToFloat(reservation.end_time);
-        if(start <= chunkStart && end >= chunkEnd){
-          return true;
-        }
-      });
-      return booked !== undefined;
     },
     bumpCalendar(direction){
       if(direction == 'right'){

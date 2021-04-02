@@ -3,13 +3,12 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use Facade\Ignition\DumpRecorder\Dump;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Validation\ValidationException;
-use LaravelIdea\Helper\App\Models\_ReservationQueryBuilder;
 
 class Room extends Model
 {
@@ -61,12 +60,20 @@ class Room extends Model
     /**
      * Get the rooms that are part of the booking request.
      */
-    public function bookingRequests()
+    public function bookingRequests(): BelongsToMany
     {
         return $this->belongsToMany(BookingRequest::class,
             'reservations',
             'room_id',
             'booking_request_id');
+    }
+
+    /**
+     * The reservations associated with this room
+     */
+    public function reservations(): HasMany
+    {
+        return $this->hasMany(Reservation::class);
     }
 
     /**

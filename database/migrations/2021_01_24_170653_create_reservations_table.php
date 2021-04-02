@@ -44,6 +44,7 @@ class CreateReservationsTable extends Migration
     {
         Schema::dropIfExists('reservations');
 
+        \App\Models\BookingRequest::truncate();
         Schema::table('booking_requests', function (Blueprint $table) {
             $table->foreignId('room_id')->constrained();
             $table->datetime('start_time');

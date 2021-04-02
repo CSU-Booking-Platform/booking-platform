@@ -3,6 +3,8 @@
 namespace Tests\Browser;
 
 use App\Models\BookingRequest;
+use App\Models\Reservation;
+use App\Models\Room;
 use App\Models\User;
 use Database\Seeders\RolesAndPermissionsSeeder;
 use Database\Seeders\RoomSeeder;
@@ -14,7 +16,7 @@ use Tests\DuskTestCase;
 
 class BookingsPageTest extends DuskTestCase
 {
-  use DatabaseMigrations;
+    use DatabaseMigrations;
 
     public function setUp(): void
     {
@@ -35,13 +37,13 @@ class BookingsPageTest extends DuskTestCase
         $bookings = BookingRequest::factory()
             ->count(1)
             ->hasReservations(random_int(1, 3))
-            ->create(["status"=>BookingRequest::PENDING])->first();
+            ->create(["status" => BookingRequest::PENDING])->first();
 
         $this->browse(function (Browser $browser) use ($bookings) {
             $browser->loginAs(User::first());
             $browser->visit(new Bookings)
                 ->clickLink("Edit", 'button')
-                ->assertPathIs('/bookings/'.$bookings->id.'/edit');
+                ->assertPathIs('/bookings/' . $bookings->id . '/edit');
             $browser->assertSee('Submit A Booking Request');
         });
     }
@@ -51,43 +53,45 @@ class BookingsPageTest extends DuskTestCase
         $bookings = BookingRequest::factory()
             ->count(1)
             ->hasReservations(random_int(1, 3))
-            ->create(["status"=>BookingRequest::APPROVED])->first();
+            ->create(["status" => BookingRequest::APPROVED])->first();
 
         $this->browse(function (Browser $browser) use ($bookings) {
             $browser->loginAs(User::first());
             $browser->visit(new Bookings)
                 ->clickLink("Approved", 'button')
-                ->assertPathIs('/bookings/'.$bookings->id.'/view');
+                ->assertPathIs('/bookings/' . $bookings->id . '/view');
             $browser->assertSee(ucfirst(BookingRequest::APPROVED));
         });
     }
+
     public function testClickOnDeniedBooking()
     {
         $bookings = BookingRequest::factory()
             ->count(1)
             ->hasReservations(random_int(1, 3))
-            ->create(["status"=>BookingRequest::REFUSED])->first();
+            ->create(["status" => BookingRequest::REFUSED])->first();
 
         $this->browse(function (Browser $browser) use ($bookings) {
             $browser->loginAs(User::first());
             $browser->visit(new Bookings)
                 ->clickLink("Refused", 'button')
-                ->assertPathIs('/bookings/'.$bookings->id.'/edit');
+                ->assertPathIs('/bookings/' . $bookings->id . '/view');
             $browser->assertSee(ucfirst(BookingRequest::REFUSED));
         });
     }
+
     public function testClickOnReviewBooking()
     {
         $bookings = BookingRequest::factory()
             ->count(1)
             ->hasReservations(random_int(1, 3))
-            ->create(["status"=>BookingRequest::REVIEW])->first();
+            ->create(["status" => BookingRequest::REVIEW])->first();
 
         $this->browse(function (Browser $browser) use ($bookings) {
             $browser->loginAs(User::first());
             $browser->visit(new Bookings)
                 ->clickLink("In Review", 'button')
-                ->assertPathIs('/bookings/'.$bookings->id.'/edit');
+                ->assertPathIs('/bookings/' . $bookings->id . '/view');
             $browser->assertSee(ucfirst(BookingRequest::REVIEW));
         });
     }

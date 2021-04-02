@@ -23,7 +23,8 @@ class RoomWithReservationsResource extends JsonResource
             'floor' => $this->floor,
             'building' => $this->building,
             'room_type' => $this->room_type,
-            'reservations' => ReservationForCalendarResource::collection($this->whenLoaded('reservations')),
+            'reservations' => CalendarEntryResource::collection($this->whenLoaded('reservations')),
+            'blackouts' => CalendarEntryResource::collection($this->whenLoaded('blackouts')),
         ];
     }
 }

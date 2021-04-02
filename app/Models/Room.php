@@ -80,7 +80,7 @@ class Room extends Model
      * Get the blackouts on the room
     */
 
-    public function blackouts()
+    public function blackouts(): BelongsToMany
     {
         return $this->belongsToMany(Blackout::class);
     }
@@ -88,7 +88,7 @@ class Room extends Model
     /**
      * Get the availabilities for the room
      */
-    public function availabilities()
+    public function availabilities(): HasMany
     {
         return $this->hasMany(Availability::class);
     }

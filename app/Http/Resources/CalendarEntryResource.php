@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ReservationForCalendarResource extends JsonResource
+class CalendarEntryResource extends JsonResource
 {
     public static $wrap = null;
 
@@ -20,7 +20,7 @@ class ReservationForCalendarResource extends JsonResource
             'id' => $this->id,
             'start_time' => $this->start_time->format('h:i'),
             'end_time' => $this->end_time->format('h:i'),
-            'date' => $this->end_time->toDateString(),
+            'date' => $this->start_time->toDateString(),
         ];
     }
 }

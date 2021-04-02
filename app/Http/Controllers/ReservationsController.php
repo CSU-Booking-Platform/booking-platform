@@ -174,7 +174,10 @@ class ReservationsController extends Controller
             }
         };
 
-        $rooms = Room::with(['reservations' => $callback])->whereHas('reservations', $callback)->get();
+        $rooms = Room::with([
+            'reservations' => $callback,
+            'blackouts' => $callback,
+        ])->whereHas('reservations', $callback)->orWhereHas('reservations', $callback)->get();
 
         // technically can be paginates but we're only fetching for 1 day
         return new RoomWithReservationsCollection($rooms);

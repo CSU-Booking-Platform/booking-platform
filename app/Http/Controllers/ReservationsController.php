@@ -182,7 +182,7 @@ class ReservationsController extends Controller
                     $query->where('weekday', Carbon::parse($date)->englishDayOfWeek);
                 }
             }
-        ])->whereHas('reservations', $callback)->orWhereHas('reservations', $callback)->get();
+        ])->get();
 
         // technically can be paginates but we're only fetching for 1 day
         return new CalendarRoomCollection($rooms);

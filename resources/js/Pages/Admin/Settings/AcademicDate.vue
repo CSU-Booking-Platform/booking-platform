@@ -4,6 +4,10 @@
       {{ academicDate.semester }}
     </template>
 
+    <template #description>
+      Update the {{ academicDate.semester }} semester's start and end dates.
+    </template>
+
     <template #form>
       <jet-input id="label" type="hidden" class="mt-1 block w-full" value="app_name"/>
       <div class="col-span-12 sm:col-span-6">

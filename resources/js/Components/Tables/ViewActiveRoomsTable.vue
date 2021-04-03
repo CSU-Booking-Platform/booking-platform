@@ -93,6 +93,7 @@
     <update-room-form
         :room="roomBeingUpdated"
         :available-room-types="availableRoomTypes"
+        :available-buildings="availableBuildings"
         @close="roomBeingUpdated = null">
     </update-room-form>
 
@@ -245,6 +246,10 @@ export default {
     },
 
     availableRoomTypes: {
+      type: Array,
+      required: true
+    },
+    availableBuildings: {
       type: Array,
       required: true
     },

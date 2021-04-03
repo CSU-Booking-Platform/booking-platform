@@ -46,7 +46,7 @@ class Rooms extends Page
         $browser->type('#name', $room->name)
             ->type('#number', $room->number)
             ->type('#floor', $room->floor)
-            ->type('#building', $room->building)
+            ->select('#building', $room->building)
             ->click('#attributes')
             ->type('#stand_capacity', $room->attributes['capacity_standing'])
             ->type('#sit_capacity', $room->attributes['capacity_sitting'])

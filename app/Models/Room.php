@@ -41,8 +41,6 @@ class Room extends Model
         'attributes' => 'array',
     ];
 
-    public const ROOM_TYPES =['Lounge', 'Mezzanine', 'Conference'];
-
     /**
      * The roles restricted from this room.
      */

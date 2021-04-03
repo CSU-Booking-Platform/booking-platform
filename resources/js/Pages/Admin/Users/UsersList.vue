@@ -27,12 +27,12 @@
       <template #content>
         <div>
           <jet-label for="name" value="Name"/>
-          <jet-input id="name" type="text" class="mt-1 block w-full" v-model="updateUserForm.name" autofocus/>
+          <jet-input dusk="name" type="text" class="mt-1 block w-full" v-model="updateUserForm.name" autofocus/>
           <jet-input-error :message="updateUserForm.error('name')" class="mt-2"/>
         </div>
         <div>
           <jet-label for="email" value="Email"/>
-          <jet-input id="email" type="text" class="mt-1 block w-full" v-model="updateUserForm.email"/>
+          <jet-input dusk="email" type="text" class="mt-1 block w-full" v-model="updateUserForm.email"/>
           <jet-input-error :message="updateUserForm.error('email')" class="mt-2"/>
         </div>
         <!-- Permissions -->

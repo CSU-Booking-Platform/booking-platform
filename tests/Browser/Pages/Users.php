@@ -49,16 +49,18 @@ class Users extends Page
             ->press('#create');
     }
 
-    public function updateUser(Browser $browser, User $user, $name, array $rolesToAdd = [], array $rolesToRemove = [])
+    public function updateUser(Browser $browser, User $user, $name = null, $email = null, array $rolesToAdd = [], array $rolesToRemove = [])
     {
 
 
         $browser->with('#user-row-' . $user->id, function ($row) {
                 $row->press('Edit');
             });
-        $browser->with('.vue-portal-target', function ($modal) use ($name, $rolesToAdd, $rolesToRemove) {
+        $browser->with('.vue-portal-target', function ($modal) use ($name, $email, $rolesToAdd, $rolesToRemove) {
             if (isset($name))
-                $modal->type('#name', $name);
+                $modal->type('@name', $name);
+            if (isset($email))
+                $modal->type('@name', $email);
             foreach ($rolesToAdd as $role) {
                 $modal->check("@check-" . $role);
                 $modal->assertChecked("@check-" . $role);

@@ -132,7 +132,7 @@
               Search
             </jet-nav-sub>
             <jet-nav-sub
-              v-if="userHasOneOf(['bookings.create']) && userStartedCreate()"
+              v-if="userHasOneOf(['bookings.create']) && isCreatingBooking"
               href="/bookings/create"
               :active="$page.currentRouteName === 'bookings.create'"
             >
@@ -230,7 +230,18 @@ export default {
   data() {
     return {
       showingNavigationDropdown: false,
+      isCreatingBooking: false,
     };
+  },
+
+  mounted() {
+
+    if (localStorage.create == "true") {
+      this.isCreatingBooking = true;
+    }
+    else {
+      this.isCreatingBooking = false;
+    }
   },
 
   methods: {
@@ -281,12 +292,6 @@ export default {
     showBookingSubnav() {
       return this.userHasPermissionWithPrefix("bookings");
     },
-    userStartedCreate() {      
-      if (localStorage.create == "true") {
-        return true;
-      }
-      return false;
-    }
   }, 
 };
 </script>

@@ -24,7 +24,7 @@
                 </jet-nav-link>
                 <jet-nav-link
                   v-if="showBookingSubnav()"
-                  href="/bookings"
+                  :href="userHasOneOf(['bookings.approve']) ? '/bookings/review': '/bookings'"
                   :active="bookingSubnavIsActive()"
                 >
                   Bookings
@@ -141,7 +141,7 @@
             <jet-nav-sub
               v-if="userHasOneOf(['bookings.approve'])"
               href="/bookings/review"
-              :active="$page.currentRouteName === 'bookings.review'"
+              :active="$page.currentRouteName === 'bookings.reviews.index'"
             >
               Review
             </jet-nav-sub>
@@ -268,6 +268,8 @@ export default {
         case 'bookings.index':
         case 'bookings.create':
         case 'bookings.search':
+        case 'bookings.reviews.index':
+        case 'bookings.reviews.show':
           return true;
         default:
           return false

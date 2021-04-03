@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\BookingRequestUpdated;
-use App\Http\Resources\RoomWithReservationsCollection;
+use App\Http\Resources\CalendarRoomCollection;
 use App\Models\BookingRequest;
 use App\Models\Reservation;
 use App\Models\Room;
@@ -159,7 +159,7 @@ class ReservationsController extends Controller
      *
      * @param  Request  $request
      * @param  Room  $room
-     * @return RoomWithReservationsCollection
+     * @return CalendarRoomCollection
      */
     public function byDate(Request $request)
     {
@@ -185,7 +185,7 @@ class ReservationsController extends Controller
         ])->whereHas('reservations', $callback)->orWhereHas('reservations', $callback)->get();
 
         // technically can be paginates but we're only fetching for 1 day
-        return new RoomWithReservationsCollection($rooms);
+        return new CalendarRoomCollection($rooms);
 
     }
 

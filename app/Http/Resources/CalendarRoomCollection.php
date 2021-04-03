@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class RoomWithReservationsCollection extends RoomCollection
+class CalendarRoomCollection extends RoomCollection
 {
 
     /**
@@ -12,6 +12,6 @@ class RoomWithReservationsCollection extends RoomCollection
      *
      * @var string
      */
-    public $collects = RoomWithReservationsResource::class;
+    public $collects = CalendarRoomResource::class;
 
 }

@@ -18,8 +18,8 @@ class CalendarEntryResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'start_time' => $this->start_time->format('h:i'),
-            'end_time' => $this->end_time->format('h:i'),
+            'start_time' => $this->start_time->format('H:i'),
+            'end_time' => $this->end_time->format('H:i'),
             'date' => $this->start_time->toDateString(),
         ];
     }

@@ -115,7 +115,7 @@ class RoomsPageTest extends DuskTestCase
 
 
 
-    public function testWhenUpdateRoomRestrictions()
+    public function testWhenUpdateRoomDateRestrictions()
     {
         (new RolesAndPermissionsSeeder())->run();
 
@@ -139,5 +139,6 @@ class RoomsPageTest extends DuskTestCase
             'room_id' => $room->id,
         ]);
     }
+
 
 }

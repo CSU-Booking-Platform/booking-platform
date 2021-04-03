@@ -2,6 +2,7 @@
 
 namespace Tests\Browser\Pages;
 
+use App\Models\Role;
 use App\Models\Room;
 use Laravel\Dusk\Browser;
 
@@ -92,4 +93,15 @@ class Rooms extends Page
             ->press('#updateRoomRestrictions');
 
     }
+
+    public function restrictRoomDate(Browser $browser, Role $role, $min, $max)
+    {
+        $browser
+            ->press('Action')
+            ->press('Customize Role Date Restrictions')
+            ->type('#min_days_advance_'.$role->id, $min)
+            ->type('#max_days_advance_'.$role->id, $max);
+        $browser->press('#updateRoomDateRestrictions');
+    }
+
 }

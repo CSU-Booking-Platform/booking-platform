@@ -83,6 +83,7 @@
                 @click.native="setDuration(); createBookingRequest();"
                 :class="{ 'opacity-25': createBookingRequestForm.processing }"
                 :disabled="createBookingRequestForm.processing"
+                :id="'createBookingRequest'"
             >
                 Create
             </jet-button>

@@ -200,7 +200,8 @@
 
           <jet-button class="ml-2" @click.native="updateDateRestrictions"
                       :class="{ 'opacity-25': updateRoomDateRestrictionsForm.processing }"
-                      :disabled="updateRoomDateRestrictionsForm.processing">
+                      :disabled="updateRoomDateRestrictionsForm.processing"
+                      id="updateRoomDateRestrictions">
               Update
           </jet-button>
       </template>

@@ -114,4 +114,30 @@ class RoomsPageTest extends DuskTestCase
     }
 
 
+
+    public function testWhenUpdateRoomRestrictions()
+    {
+        (new RolesAndPermissionsSeeder())->run();
+
+        $room = Room::factory()->create();
+        $admin = User::factory()->create();
+        $admin->assignRole('super-admin');
+        $role = Role::where('name', 'super-admin')->first();
+        $this->browse(function (Browser $browser) use ($room, $admin, $role) {
+
+
+            $browser->loginAs($admin);
+            $browser->visit(new Rooms)
+                ->assertSee($room->name)
+                ->restrictRoomDate($role, 100, 101);
+            $browser->waitUntilMissingText('NEVERMIND');
+        });
+
+        $this->assertDatabaseCount('custom_date_restrictions', 1);
+        $this->assertDatabaseHas('custom_date_restrictions', [
+            'role_id' => $role->id,
+            'room_id' => $room->id,
+        ]);
+    }
+
 }

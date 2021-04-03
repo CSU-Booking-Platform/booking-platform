@@ -51,7 +51,7 @@
               </div>
             </td>
             <td class="text-center">
-            <a v-if="booking.status == 'pending'" :href="'/bookings/'+booking.id+'/edit'">
+            <a v-if="booking.status == 'pending'" :href="'/bookings/'+booking.id+'/edit'" >
               <button class="h-10 px-5 m-2 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800">
                 Edit
               </button>

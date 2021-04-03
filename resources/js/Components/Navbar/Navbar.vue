@@ -24,7 +24,7 @@
                 </jet-nav-link>
                 <jet-nav-link
                   v-if="showBookingSubnav()"
-                  href="/bookings"
+                  :href="userHasOneOf(['bookings.approve']) ? '/bookings/review': '/bookings'"
                   :active="bookingSubnavIsActive()"
                 >
                   Bookings

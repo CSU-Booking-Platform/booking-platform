@@ -18,7 +18,12 @@ class SettingsController extends Controller
      */
     public function index()
     {
-        $settings = Settings::all()->pluck('data', 'slug');
+        $settings = Settings::all()->pluck('data', 'slug')->map(function ($logo, $key) {
+            if ($key === 'app_logo') {
+                $logo['path'] = asset($logo['path']);
+            }
+            return $logo;
+        });
         if ($settings->isNotEmpty()) {
             return inertia('Admin/Settings/Index', [
                 'settings' => $settings,

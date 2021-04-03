@@ -137,7 +137,7 @@ export default {
     },
   },
   data() {
-    return {
+    return { 
       createBookingRequestForm: this.$inertia.form(
         {
           room_id: null,
@@ -182,11 +182,15 @@ export default {
       this.createBookingRequestForm.reservations.splice(pos,1)
     },
     createBookingRequest() {
+      this.setLocalIsCreating(true);
       this.createBookingRequestForm.post("/bookings/create", {
         preserveScroll: true
       }).then(() => {
-        if (! this.createBookingRequestForm.hasErrors()) {
+        if (! this.createBookingRequestForm.hasErrors()) {       
           this.closeModal();
+        }
+        else{
+          this.setLocalIsCreating(false);
         }
       });
     },
@@ -198,6 +202,9 @@ export default {
       for (let file of selectedFiles) {
         this.createBookingRequestForm.reference.push(file);
       }
+    },
+    setLocalIsCreating(val) {
+      localStorage.isCreatingBooking = val;
     },
     setDuration()
     {
@@ -214,7 +221,7 @@ export default {
         room(room) {
             this.createBookingRequestForm.room_id = room?.id;
             this.room_name = room?.name;
-        }
+        },
     }
 };
 </script>

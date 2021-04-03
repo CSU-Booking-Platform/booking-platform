@@ -43,7 +43,7 @@ class HandleInertiaRequests extends Middleware
       $logo = Settings::where('slug', 'app_logo')->first()->data['path'] ?? null;
 
         return array_merge(parent::share($request), [
-            'app_logo' => $logo,
+            'app_logo' => asset($logo),
             'app_name' => $name
         ]);
     }

@@ -1,7 +1,7 @@
 <x-guest-layout>
     <x-jet-authentication-card >
         <x-slot name="logo">
-        <img src="https://www.csu.qc.ca/wp-content/uploads/2020/01/CSU_logo_Colored.png" alt= "Csu logo">
+            <img src="{{ asset(config('app.logo')) }}" alt= "Csu logo">
         </x-slot>
 
         <x-jet-validation-errors class="mb-4" />
@@ -43,7 +43,7 @@
                     {{ __('Login') }}
                 </x-jet-button>
             </div>
-            
+
         </form>
         <form method="GET" action="{{ route('login/microsoft') }}">
             <div>

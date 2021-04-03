@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(RolesAndPermissionsSeeder::class);
         $this->call(AcademicDatesSeeder::class);
+        $this->call(SettingsSeeder::class);
 
         if (app()->environment('local') || app()->environment('staging')) {
             $this->call([

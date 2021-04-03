@@ -1,10 +1,11 @@
-<?php
+<?php /** @noinspection ALL */
 
 namespace Tests\Browser;
 
 use App\Models\Role;
 use Exception;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Tests\Browser\Pages\Roles;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
 
@@ -16,15 +17,13 @@ class AdminRolesTest extends DuskTestCase
     public function testAdminCanCreateRole()
     {
         $this->browse(function (Browser $browser) {
+            $role = new Role();
+            $role->name = "Demo Role Dusk";
+
             $browser->loginAs($this->createUserWithPermissions(['roles.create']));
-            $browser->visit('/admin/roles');
-            $browser->type('#name', 'Demo Role Dusk');
-            $browser->check('@check-users.select');
-            $browser->check('@check-users.create');
-            $browser->type('#number_of_bookings_per_period', '1');
-            $browser->type('#number_of_days_per_period', '2');
-            $browser->press('#create-role');
-            $browser->waitForText('Demo Role Dusk');
+            $page = $browser->visit(new Roles());
+            $page->createRole($role, ['users.select', 'users.create']);
+            $page->waitForText($role->name);
         });
 
         $role = Role::findByName('Demo Role Dusk');
@@ -42,19 +41,8 @@ class AdminRolesTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($role) {
             $browser->loginAs($this->createUserWithPermissions(['roles.update']));
-            $browser->visit('/admin/roles');
-            $browser->with('@role-' . $role->id, function ($row) {
-                $row->press('Action');
-                $row->waitForText('Update');
-                $row->press('Update');
-            });
-            $browser->waitForText('Update Role');
-            $browser->with('@update-role-modal', function ($modal) {
-                $modal->check('@check-users.select');
-                $modal->check('@check-users.create');
-                $modal->click('@update');
-            });
-            $browser->waitUntilMissing('@update-role-modal');
+            $page = $browser->visit(new Roles());
+            $page->updateRole($role, ['users.select', 'users.create']);
         });
 
         try {
@@ -79,23 +67,8 @@ class AdminRolesTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($role, $user) {
             $browser->loginAs($user);
-            $browser->visit('/admin/roles');
-            $browser->with('@role-' . $role->id, function ($row) {
-                $row->press('Action');
-                $row->waitForText('Update');
-                $row->press('Update');
-            });
-            $browser->waitForText('Update Role');
-            $browser->with('@update-role-modal', function ($modal) {
-                $modal->assertChecked('@check-users.select');
-                $modal->uncheck('@check-users.select');
-                $modal->assertNotChecked('@check-users.select');
-                $modal->assertChecked('@check-users.create');
-                $modal->uncheck('@check-users.create');
-                $modal->assertNotChecked('@check-users.create');
-                $modal->click('@update');
-            });
-            $browser->waitUntilMissing('@update-role-modal');
+            $page = $browser->visit(new Roles());
+            $page->updateRole($role, [], ['users.select', 'users.create']);
         });
 
         $role->refresh();
@@ -113,15 +86,8 @@ class AdminRolesTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($role, $user) {
             $browser->loginAs($user);
-            $browser->visit('/admin/roles');
-            $browser->with('@role-' . $role->id, function ($row) {
-                $row->press('Action');
-                $row->waitForText('Delete');
-                $row->press('Delete');
-            });
-            $browser->waitForText('Are you sure you would like to delete this role?');
-            $browser->press('DELETE');
-            $browser->waitUntilMissing('@role-'.$role->id);
+            $browser->visit(new Roles());
+            $browser->deleteRole($role);
         });
 
         $this->assertDeleted($role);

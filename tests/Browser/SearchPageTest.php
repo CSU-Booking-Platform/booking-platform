@@ -8,7 +8,6 @@ use App\Models\User;
 use Database\Seeders\RolesAndPermissionsSeeder;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
-use Tests\Browser\Pages\RoomSearch;
 use Tests\DuskTestCase;
 
 class SearchPageTest extends DuskTestCase
@@ -30,7 +29,7 @@ class SearchPageTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($room, $admin, $room2) {
             $browser->loginAs($admin);
-            $browser->visit(new RoomSearch)
+            $browser->visit('/bookings/search')
                 ->assertSee($room2->name)
                 ->assertDontSee($room->name);
         });

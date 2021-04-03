@@ -288,7 +288,7 @@ export default {
     },
     
     setIsCreatingBooking() {
-      if (localStorage.create == "true") {
+      if (localStorage.isCreatingBooking == "true") {
         this.isCreatingBooking = true;
       }
       else {

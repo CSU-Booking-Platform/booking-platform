@@ -89,6 +89,46 @@ jobs:
           environment:
             DOCKERIZE_VERSION: v0.3.0
       - run:
+          name: Wait for db
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: "Run migrations & seed"
+          command: php artisan migrate:fresh --seed
+      - run:
+          name: "Run Unit Tests"
+          command: php artisan test --filter Unit.
+      - run:
+          name: "Run Feature Tests"
+          command: php artisan test --filter Feature.
+      - store_test_results:
+          path: reports
+      - store_artifacts:
+          path: reports
+      - store_artifacts:
+          path: tests/Browser/screnshots
+      - store_artifacts:
+          path: tests/Browser/console
+      - store_artifacts:
+          path: storage/logs/laravel.log
+      - persist_to_workspace:
+          root: .
+          paths:
+            - reports
+  test-php-browser:
+    executor: ci-db
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: "Prepare Environment"
+          command: |
+            echo -e "xdebug.mode=coverage" | sudo tee /usr/local/etc/php/php.ini > /dev/null
+      - run:
+          name: install dockerize
+          command: wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && sudo tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+          environment:
+            DOCKERIZE_VERSION: v0.3.0
+      - run:
           name: "Install Dusk and Update Chrome Drivers"
           command: "php artisan dusk:update --detect"
       - run:
@@ -107,7 +147,7 @@ jobs:
           command: php artisan migrate:fresh --seed
       - run:
           name: "Run Tests"
-          command: php artisan test
+          command: php artisan test --filter Browser
       - store_test_results:
           path: reports
       - store_artifacts:
@@ -206,6 +246,9 @@ workflows:
       - test-php:
           requires:
             - build
+      - test-php-browser:
+          requires:
+            - build
       - test-js:
           requires:
             - build
@@ -217,7 +260,7 @@ workflows:
           filters:
             branches:
               # only from forks
-              only: 
+              only:
                 - /^pull\/.*$/
       - tag-and-release:
           requires:

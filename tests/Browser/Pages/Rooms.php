@@ -82,4 +82,14 @@ class Rooms extends Page
             ->press('Delete')
             ->press('#deleteRoom');
     }
+
+    public function restrictRoom(Browser $browser, Room $room, string $role)
+    {
+        $browser
+            ->press('Action')
+            ->press('Restricted Roles')
+            ->check('@restrict-1')
+            ->press('#updateRoomRestrictions');
+
+    }
 }

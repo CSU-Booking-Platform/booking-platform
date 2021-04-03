@@ -49,15 +49,15 @@ echo "Creating github.com release...OK"
 
 echo "Uploading static assets..."
 upload_release_file "app.css" public/css/app.css
-echo "app.css...OK"
+echo "Uploaded: app.css"
 upload_release_file "app.css.map" public/css/app.css.map
-echo "app.css...OK"
+echo "Uploaded: app.css.map "
 upload_release_file "app.js" public/js/app.js
-echo "app.css...OK"
+echo "Uploaded: app.js "
 upload_release_file "app.js.map" public/js/app.js.map
-echo "app.css...OK"
+echo "Uploaded: app.js.map "
 upload_release_file "app.js.LICENSE.txt" public/js/app.js.LICENSE.txt
-echo "app.css...OK"
+echo "Uploaded: app.js.LICENSE.txt "
 upload_release_file "mix-manifest.json" public/mix-manifest.json
-echo "app.css...OK"
+echo "Uploaded: mix-manifest.json "
 echo "Uploading static assets...OK"

@@ -106,5 +106,26 @@ class AdminRolesTest extends DuskTestCase
         }
     }
 
+    public function testAdminCanDeleteRole() {
+        $user = $this->createUserWithPermissions(['roles.delete']);
+        $role = Role::create(['name' => 'Demo Role Dusk']);
+        $role->save();
+
+        $this->browse(function (Browser $browser) use ($role, $user) {
+            $browser->loginAs($user);
+            $browser->visit('/admin/roles');
+            $browser->with('@role-' . $role->id, function ($row) {
+                $row->press('Action');
+                $row->waitForText('Delete');
+                $row->press('Delete');
+            });
+            $browser->waitForText('Are you sure you would like to delete this role?');
+            $browser->press('DELETE');
+            $browser->waitUntilMissing('@role-'.$role->id);
+        });
+
+        $this->assertDeleted($role);
+    }
+
 
 }

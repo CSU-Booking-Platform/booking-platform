@@ -55,7 +55,10 @@
         <td class="text-center">{{room.name}}</td>
         <td v-for="(hour, ctr) in room.color_breakdown.slice(leftHourDelimiter, rightHourDelimiter)">
           <div class="flex flex-row justify-between">
-            <div v-for="chunk in hour" :class="chunk.color" class="w-1/4 border-2">
+            <div
+              v-for="chunk in hour"
+              :class="[chunk.status == 'available' ? 'bg-green-400' : (chunk.status == 'booked' ? 'bg-red-500' : 'bg-grey-800')]"
+              class="w-1/4 border-2">
               &nbsp;
             </div>
           </div>
@@ -95,528 +98,528 @@ export default {
               {
                 start_time: "00:00",
                 end_time: "00:15",
-                color: "bg-red-500"
+                status: "booked"
               },
               {
                 start_time: "00:15",
                 end_time: "00:30",
-                color: "bg-red-500"
+                status: "booked"
               },
               {
                 start_time: "00:30",
                 end_time: "00:45",
-                color: "bg-red-500"
+                status: "booked"
               },
               {
                 start_time: "00:45",
                 end_time: "01:00",
-                color: "bg-red-500"
+                status: "booked"
               }
             ],
             [
               {
                 start_time: "00:00",
                 end_time: "00:15",
-                color: "bg-red-500"
+                status: "booked"
               },
               {
                 start_time: "00:15",
                 end_time: "00:30",
-                color: "bg-red-500"
+                status: "booked"
               },
               {
                 start_time: "00:30",
                 end_time: "00:45",
-                color: "bg-red-500"
+                status: "booked"
               },
               {
                 start_time: "00:45",
                 end_time: "01:00",
-                color: "bg-red-500"
+                status: "booked"
               }
             ],
             [
               {
                 start_time: "00:00",
                 end_time: "00:15",
-                color: "bg-red-500"
+                status: "booked"
               },
               {
                 start_time: "00:15",
                 end_time: "00:30",
-                color: "bg-red-500"
+                status: "booked"
               },
               {
                 start_time: "00:30",
                 end_time: "00:45",
-                color: "bg-red-500"
+                status: "booked"
               },
               {
                 start_time: "00:45",
                 end_time: "01:00",
-                color: "bg-red-500"
+                status: "booked"
               }
             ],
             [
               {
                 start_time: "00:00",
                 end_time: "00:15",
-                color: "bg-red-500"
+                status: "booked"
               },
               {
                 start_time: "00:15",
                 end_time: "00:30",
-                color: "bg-red-500"
+                status: "booked"
               },
               {
                 start_time: "00:30",
                 end_time: "00:45",
-                color: "bg-green-400"
+                status: "booked"
               },
               {
                 start_time: "00:45",
                 end_time: "01:00",
-                color: "bg-gray-800"
+                status: "blackout"
               }
             ],
             [
               {
                 start_time: "00:00",
                 end_time: "00:15",
-                color: "bg-red-500"
+                status: "booked"
               },
               {
                 start_time: "00:15",
                 end_time: "00:30",
-                color: "bg-red-500"
+                status: "booked"
               },
               {
                 start_time: "00:30",
                 end_time: "00:45",
-                color: "bg-green-400"
+                status: "booked"
               },
               {
                 start_time: "00:45",
                 end_time: "01:00",
-                color: "bg-gray-800"
+                status: "blackout"
               }
             ],
             [
               {
                 start_time: "00:00",
                 end_time: "00:15",
-                color: "bg-red-500"
+                status: "booked"
               },
               {
                 start_time: "00:15",
                 end_time: "00:30",
-                color: "bg-red-500"
+                status: "booked"
               },
               {
                 start_time: "00:30",
                 end_time: "00:45",
-                color: "bg-green-400"
+                status: "booked"
               },
               {
                 start_time: "00:45",
                 end_time: "01:00",
-                color: "bg-gray-800"
+                status: "blackout"
               }
             ],
             [
               {
                 start_time: "00:00",
                 end_time: "00:15",
-                color: "bg-red-500"
+                status: "booked"
               },
               {
                 start_time: "00:15",
                 end_time: "00:30",
-                color: "bg-red-500"
+                status: "booked"
               },
               {
                 start_time: "00:30",
                 end_time: "00:45",
-                color: "bg-green-400"
+                status: "booked"
               },
               {
                 start_time: "00:45",
                 end_time: "01:00",
-                color: "bg-gray-800"
+                status: "blackout"
               }
             ],
             [
               {
                 start_time: "00:00",
                 end_time: "00:15",
-                color: "bg-red-500"
+                status: "booked"
               },
               {
                 start_time: "00:15",
                 end_time: "00:30",
-                color: "bg-red-500"
+                status: "booked"
               },
               {
                 start_time: "00:30",
                 end_time: "00:45",
-                color: "bg-green-400"
+                status: "booked"
               },
               {
                 start_time: "00:45",
                 end_time: "01:00",
-                color: "bg-gray-800"
+                status: "blackout"
               }
             ],
             [
               {
                 start_time: "00:00",
                 end_time: "00:15",
-                color: "bg-red-500"
+                status: "booked"
               },
               {
                 start_time: "00:15",
                 end_time: "00:30",
-                color: "bg-red-500"
+                status: "booked"
               },
               {
                 start_time: "00:30",
                 end_time: "00:45",
-                color: "bg-green-400"
+                status: "booked"
               },
               {
                 start_time: "00:45",
                 end_time: "01:00",
-                color: "bg-gray-800"
+                status: "blackout"
               }
             ],
             [
               {
                 start_time: "00:00",
                 end_time: "00:15",
-                color: "bg-gray-800"
+                status: "blackout"
               },
               {
                 start_time: "00:15",
                 end_time: "00:30",
-                color: "bg-gray-800"
+                status: "blackout"
               },
               {
                 start_time: "00:30",
                 end_time: "00:45",
-                color: "bg-gray-800"
+                status: "blackout"
               },
               {
                 start_time: "00:45",
                 end_time: "01:00",
-                color: "bg-gray-800"
+                status: "blackout"
               }
             ],
             [
               {
                 start_time: "00:00",
                 end_time: "00:15",
-                color: "bg-red-500"
+                status: "booked"
               },
               {
                 start_time: "00:15",
                 end_time: "00:30",
-                color: "bg-red-500"
+                status: "booked"
               },
               {
                 start_time: "00:30",
                 end_time: "00:45",
-                color: "bg-green-400"
+                status: "booked"
               },
               {
                 start_time: "00:45",
                 end_time: "01:00",
-                color: "bg-gray-800"
+                status: "blackout"
               }
             ],
             [
               {
                 start_time: "00:00",
                 end_time: "00:15",
-                color: "bg-red-500"
+                status: "booked"
               },
               {
                 start_time: "00:15",
                 end_time: "00:30",
-                color: "bg-red-500"
+                status: "booked"
               },
               {
                 start_time: "00:30",
                 end_time: "00:45",
-                color: "bg-green-400"
+                status: "booked"
               },
               {
                 start_time: "00:45",
                 end_time: "01:00",
-                color: "bg-gray-800"
+                status: "blackout"
               }
             ],
             [
               {
                 start_time: "00:00",
                 end_time: "00:15",
-                color: "bg-red-500"
+                status: "booked"
               },
               {
                 start_time: "00:15",
                 end_time: "00:30",
-                color: "bg-red-500"
+                status: "booked"
               },
               {
                 start_time: "00:30",
                 end_time: "00:45",
-                color: "bg-green-400"
+                status: "booked"
               },
               {
                 start_time: "00:45",
                 end_time: "01:00",
-                color: "bg-gray-800"
+                status: "blackout"
               }
             ],
             [
               {
                 start_time: "00:00",
                 end_time: "00:15",
-                color: "bg-red-500"
+                status: "booked"
               },
               {
                 start_time: "00:15",
                 end_time: "00:30",
-                color: "bg-red-500"
+                status: "booked"
               },
               {
                 start_time: "00:30",
                 end_time: "00:45",
-                color: "bg-green-400"
+                status: "booked"
               },
               {
                 start_time: "00:45",
                 end_time: "01:00",
-                color: "bg-gray-800"
+                status: "blackout"
               }
             ],
             [
               {
                 start_time: "00:00",
                 end_time: "00:15",
-                color: "bg-red-500"
+                status: "booked"
               },
               {
                 start_time: "00:15",
                 end_time: "00:30",
-                color: "bg-red-500"
+                status: "booked"
               },
               {
                 start_time: "00:30",
                 end_time: "00:45",
-                color: "bg-green-400"
+                status: "booked"
               },
               {
                 start_time: "00:45",
                 end_time: "01:00",
-                color: "bg-gray-800"
+                status: "blackout"
               }
             ],
             [
               {
                 start_time: "00:00",
                 end_time: "00:15",
-                color: "bg-red-500"
+                status: "booked"
               },
               {
                 start_time: "00:15",
                 end_time: "00:30",
-                color: "bg-red-500"
+                status: "booked"
               },
               {
                 start_time: "00:30",
                 end_time: "00:45",
-                color: "bg-green-400"
+                status: "booked"
               },
               {
                 start_time: "00:45",
                 end_time: "01:00",
-                color: "bg-gray-800"
+                status: "blackout"
               }
             ],
             [
               {
                 start_time: "00:00",
                 end_time: "00:15",
-                color: "bg-red-500"
+                status: "booked"
               },
               {
                 start_time: "00:15",
                 end_time: "00:30",
-                color: "bg-red-500"
+                status: "booked"
               },
               {
                 start_time: "00:30",
                 end_time: "00:45",
-                color: "bg-green-400"
+                status: "booked"
               },
               {
                 start_time: "00:45",
                 end_time: "01:00",
-                color: "bg-gray-800"
+                status: "blackout"
               }
             ],
             [
               {
                 start_time: "00:00",
                 end_time: "00:15",
-                color: "bg-red-500"
+                status: "booked"
               },
               {
                 start_time: "00:15",
                 end_time: "00:30",
-                color: "bg-red-500"
+                status: "booked"
               },
               {
                 start_time: "00:30",
                 end_time: "00:45",
-                color: "bg-green-400"
+                status: "booked"
               },
               {
                 start_time: "00:45",
                 end_time: "01:00",
-                color: "bg-gray-800"
+                status: "blackout"
               }
             ],
             [
               {
                 start_time: "00:00",
                 end_time: "00:15",
-                color: "bg-red-500"
+                status: "booked"
               },
               {
                 start_time: "00:15",
                 end_time: "00:30",
-                color: "bg-red-500"
+                status: "booked"
               },
               {
                 start_time: "00:30",
                 end_time: "00:45",
-                color: "bg-green-400"
+                status: "booked"
               },
               {
                 start_time: "00:45",
                 end_time: "01:00",
-                color: "bg-gray-800"
+                status: "blackout"
               }
             ],
             [
               {
                 start_time: "00:00",
                 end_time: "00:15",
-                color: "bg-red-500"
+                status: "booked"
               },
               {
                 start_time: "00:15",
                 end_time: "00:30",
-                color: "bg-red-500"
+                status: "booked"
               },
               {
                 start_time: "00:30",
                 end_time: "00:45",
-                color: "bg-green-400"
+                status: "booked"
               },
               {
                 start_time: "00:45",
                 end_time: "01:00",
-                color: "bg-gray-800"
+                status: "blackout"
               }
             ],
             [
               {
                 start_time: "00:00",
                 end_time: "00:15",
-                color: "bg-red-500"
+                status: "booked"
               },
               {
                 start_time: "00:15",
                 end_time: "00:30",
-                color: "bg-red-500"
+                status: "booked"
               },
               {
                 start_time: "00:30",
                 end_time: "00:45",
-                color: "bg-green-400"
+                status: "booked"
               },
               {
                 start_time: "00:45",
                 end_time: "01:00",
-                color: "bg-gray-800"
+                status: "blackout"
               }
             ],
             [
               {
                 start_time: "00:00",
                 end_time: "00:15",
-                color: "bg-red-500"
+                status: "booked"
               },
               {
                 start_time: "00:15",
                 end_time: "00:30",
-                color: "bg-red-500"
+                status: "booked"
               },
               {
                 start_time: "00:30",
                 end_time: "00:45",
-                color: "bg-green-400"
+                status: "booked"
               },
               {
                 start_time: "00:45",
                 end_time: "01:00",
-                color: "bg-gray-800"
+                status: "blackout"
               }
             ],
             [
               {
                 start_time: "00:00",
                 end_time: "00:15",
-                color: "bg-red-500"
+                status: "booked"
               },
               {
                 start_time: "00:15",
                 end_time: "00:30",
-                color: "bg-red-500"
+                status: "available"
               },
               {
                 start_time: "00:30",
                 end_time: "00:45",
-                color: "bg-green-400"
+                status: "available"
               },
               {
                 start_time: "00:45",
                 end_time: "01:00",
-                color: "bg-gray-800"
+                status: "blackout"
               }
             ],
             [
               {
                 start_time: "00:00",
                 end_time: "00:15",
-                color: "bg-red-500"
+                status: "booked"
               },
                 {
                   start_time: "00:15",
                   end_time: "00:30",
-                  color: "bg-red-500"
+                  status: "booked"
                 },
                 {
                   start_time: "00:30",
                   end_time: "00:45",
-                  color: "bg-green-400"
+                  status: "booked"
                 },
                 {
                   start_time: "00:45",
                   end_time: "01:00",
-                  color: "bg-gray-800"
+                  status: "blackout"
                 }
               ]
           ],

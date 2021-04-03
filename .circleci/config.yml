@@ -56,22 +56,9 @@ jobs:
             else
               echo "export TAG=$(git mkver next -t)" >> $BASH_ENV
             fi
-      # Insert commands to build & publish app & assets
       - run:
-          name: Create Release
-          command: |
-            wget https://github.com/github-release/github-release/releases/download/v0.8.1/linux-amd64-github-release.bz2
-            bzip2 -d linux-amd64-github-release.bz2
-            chmod +x linux-amd64-github-release
-            mv linux-amd64-github-release ghr
-            git mkver tag
-            git push --tags
-            ./ghr release \
-              --tag $TAG \
-              --security-token $GITHUB_TOKEN \
-              --user $GITHUB_OWNER \
-              --repo $GITHUB_REPO
-
+          name: Tag And Release
+          command: .github/release.sh
       - slack/status:
           fail_only: true
   test-php:
@@ -104,10 +91,6 @@ jobs:
           path: reports
       - store_artifacts:
           path: reports
-      - store_artifacts:
-          path: tests/Browser/screnshots
-      - store_artifacts:
-          path: tests/Browser/console
       - store_artifacts:
           path: storage/logs/laravel.log
       - persist_to_workspace:
@@ -146,14 +129,14 @@ jobs:
           name: "Run migrations & seed"
           command: php artisan migrate:fresh --seed
       - run:
-          name: "Run Tests"
+          name: "Run Browser Tests"
           command: php artisan test --filter Browser
       - store_test_results:
           path: reports
       - store_artifacts:
           path: reports
       - store_artifacts:
-          path: tests/Browser/screnshots
+          path: tests/Browser/screenshots
       - store_artifacts:
           path: tests/Browser/console
       - store_artifacts:

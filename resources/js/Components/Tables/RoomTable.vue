@@ -16,7 +16,7 @@
       <div class="border mx-16">
       </div>
       <div class="mx-6">
-        <h3 class="font-black">ADVANCED</h3>
+        <h3 class="font-black">FILTER</h3>
       </div>
       <div class="mx-2 border shadow-md bg-yellow-300 min-w-24">
         <button @click="toggleAdvancedFilters()">

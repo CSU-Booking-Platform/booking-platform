@@ -56,7 +56,7 @@ class SearchPageTest extends DuskTestCase
             $this->typeDateTime($browser, '#start_time', Carbon::now()->addDays(40)->setTime(13,0));
             $this->typeDateTime($browser, '#end_time', Carbon::now()->addDays(40)->setTime(14,0));
             $browser->click("#createBookingRequest")
-                ->waitForText("book this room sooner")
+                ->waitForText("book this room sooner", 30)
                 ->assertSee("You can not book this room sooner than 31 days in advance");
         });
     }

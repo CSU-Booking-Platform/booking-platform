@@ -4,6 +4,10 @@
                 Application Logo
             </template>
 
+            <template #description>
+                Change the application logo here by providing an image file.
+            </template>
+
             <template #form >
                     <jet-input id="label" type="hidden" class="mt-1 block w-full" value="app_logo"/>
                 <div class="col-span-12 sm:col-span-6">

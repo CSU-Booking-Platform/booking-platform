@@ -45,13 +45,9 @@
 
                 <div class="m-6">
                     <jet-label for="building" value="Building" />
-                    <jet-input
-                        id="building"
-                        type="building"
-                        class="mt-1 block w-full"
-                        v-model="form.building"
-                        autofocus
-                    />
+                    <select v-model="form.building" class="mt-1 block w-full" name="building" id="buildingUpdate">
+                       <option v-for="building in availableBuildings" :key="building" :value="building" :selected="form.building===building">{{building}}</option>
+                    </select>
                     <jet-input-error
                         :message="form.error('building')"
                         class="mt-2"
@@ -295,6 +291,10 @@ export default {
         },
 
         availableRoomTypes: {
+            type: Array,
+            required: true
+        },
+        availableBuildings: {
             type: Array,
             required: true
         },

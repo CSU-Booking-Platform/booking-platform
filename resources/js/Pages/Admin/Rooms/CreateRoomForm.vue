@@ -24,7 +24,15 @@
                   </div>
                   <div class="mb-3 w-4/5">
                       <jet-label for="building" value="Building"/>
-                      <jet-input id="building" type="building" class="mt-1 block w-full" v-model="createRoomForm.building"/>
+                      <select
+                        v-model="createRoomForm.building"
+                        class="mt-1 block w-full"
+                        name="building"
+                        id="building"
+                      >
+                          <option value="" selected disabled hidden>Select Building Name</option>
+                          <option v-for="building in availableBuildings" :key="building" :value="building">{{ building }}</option>
+                      </select>
                       <jet-input-error :message="createRoomForm.error('building')" class="mt-2"/>
                   </div>
                   <div
@@ -250,6 +258,10 @@ export default {
 
   props: {
     availableRoomTypes: {
+      type: Array,
+      required: true
+    },
+    availableBuildings: {
       type: Array,
       required: true
     },

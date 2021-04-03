@@ -4,6 +4,7 @@ use App\Http\Controllers\AcademicDateController;
 use App\Http\Controllers\BlackoutController;
 use App\Http\Controllers\BookingRequestController;
 use App\Http\Controllers\BookingReviewController;
+use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\ReservationsController;
 use App\Http\Controllers\RestrictionsController;
 use App\Http\Controllers\RoleController;
@@ -194,6 +195,11 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
             Route::get('{booking}/review', [BookingReviewController::class, 'show'])->name('show');
             Route::post('{booking}/review', [BookingReviewController::class, 'review'])->name('update');
             Route::post('{booking}/assign', [BookingReviewController::class, 'assign'])->name('assign');
+        });
+
+        Route::name('comments.')->prefix('{booking}/comment')
+            ->middleware('permission:bookings.approve|bookings.create')->group(function () {
+            Route::post('/', [CommentsController::class, 'store'])->name('store');
         });
     });
 

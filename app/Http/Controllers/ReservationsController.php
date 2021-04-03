@@ -170,10 +170,10 @@ class ReservationsController extends Controller
         function ($attribute, $value, $fail) use ($request, $reservation){
           $user = $request->user();
           $room = Room::query()->findOrFail($request->room_id);
+          $room->minimunReservationTime($value['start_time'], $value['end_time'], $fail);
           $room->verifyDatesAreWithinRoomRestrictionsValidation($value['start_time'], $fail, $user);
           $room->verifyDatetimesAreWithinAvailabilitiesValidation($value['start_time'], $value['end_time'], $fail);
           $room->verifyRoomIsFreeValidation($value['start_time'], $value['end_time'], $fail, $reservation);
-
           if (!$user->canMakeAnotherBookingRequest($value['start_time'])) {
             $fail($attribute . ' Cannot make more than ' .
                 $user->getUserNumberOfBookingRequestPerPeriod() .

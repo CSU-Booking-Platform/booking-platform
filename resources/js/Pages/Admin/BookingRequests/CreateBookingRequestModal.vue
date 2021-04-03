@@ -137,7 +137,7 @@ export default {
     },
   },
   data() {
-    return {
+    return { 
       createBookingRequestForm: this.$inertia.form(
         {
           room_id: null,
@@ -186,6 +186,7 @@ export default {
         preserveScroll: true
       }).then(() => {
         if (! this.createBookingRequestForm.hasErrors()) {
+          this.setCreate();
           this.closeModal();
         }
       });
@@ -209,12 +210,15 @@ export default {
         reservation.duration = moment_end.diff(moment_start, 'minutes');
       }
     },
+    setCreate() {
+      localStorage.create = true;
+    }
   },
   watch: {
         room(room) {
             this.createBookingRequestForm.room_id = room?.id;
             this.room_name = room?.name;
-        }
+        },
     }
 };
 </script>

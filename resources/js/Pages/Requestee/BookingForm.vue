@@ -571,6 +571,7 @@ export default {
             }).then(response => {
                 this.form.processing = false;
                 if (this.form.recentlySuccessful) {
+                    this.setCreate();
                     this.form.reset();
                 }
             })
@@ -596,6 +597,9 @@ export default {
         },
         only_time(date) {
             return moment(date).format("LT");
+        },
+        setCreate() {
+            localStorage.create = false;
         },
     },
 

@@ -41,7 +41,7 @@ class BookingsPageTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($bookings) {
             $browser->loginAs(User::first());
-            $browser->visit(new Bookings)
+            $browser->visit('/bookings')
                 ->clickLink("Edit", 'button')
                 ->pause(5000)
                 ->assertPathIs('/bookings/' . $bookings->id . '/edit');
@@ -58,7 +58,7 @@ class BookingsPageTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($bookings) {
             $browser->loginAs(User::first());
-            $browser->visit(new Bookings)
+            $browser->visit('/bookings')
                 ->clickLink("Approved", 'button')
                 ->pause(5000)
                 ->assertPathIs('/bookings/' . $bookings->id . '/view');
@@ -75,7 +75,7 @@ class BookingsPageTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($bookings) {
             $browser->loginAs(User::first());
-            $browser->visit(new Bookings)
+            $browser->visit('/bookings')
                 ->clickLink("Refused", 'button')
                 ->pause(5000)
                 ->assertPathIs('/bookings/' . $bookings->id . '/view');
@@ -92,7 +92,7 @@ class BookingsPageTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($bookings) {
             $browser->loginAs(User::first());
-            $browser->visit(new Bookings)
+            $browser->visit('/bookings')
                 ->clickLink("In Review", 'button')
                 ->pause(5000)
                 ->assertPathIs('/bookings/' . $bookings->id . '/view');

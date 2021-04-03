@@ -49,17 +49,17 @@ class CalendarRoomResource extends JsonResource
                 $end = $date->clone()->setTimeFromTimeString($open->closing_hours);
                 return CarbonPeriod::create($start, $end);
             });
-        });
+        }, new Collection);
         $blackouts = $this->whenLoaded('blackouts', function () {
             return $this->blackouts->map(function ($blackout) {
                 return CarbonPeriod::create($blackout->start_time, $blackout->end_time);
             });
-        });
+        }, new Collection);
         $reservations = $this->whenLoaded('reservations', function () {
             return $this->reservations->map(function ($reservation) {
                 return CarbonPeriod::create($reservation->start_time, $reservation->end_time);
             });
-        });
+        }, new Collection);
 
         // generate a day breakdown, split by 15m
         $day = Collection::times(24 * 4, function ($index) use ($date, $availabilities, $blackouts, $reservations) {

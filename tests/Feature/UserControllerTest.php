@@ -90,4 +90,20 @@ class UserControllerTest extends TestCase
         $this->assertDatabaseMissing('users', ['name' => $user->name]);
         $this->assertDatabaseCount('users', 1);
     }
+
+    /**
+     * @test
+     */
+    public function testCanGetUserResetLink() {
+        $adminUser = $this->createUserWithPermissions(['users.update']);
+        $targetUser = User::factory()->create();
+
+        $response = $this->actingAs($adminUser)->post(route('api.admin.users.token', $targetUser));
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+           "link",
+           "token"
+        ]);
+    }
 }

@@ -362,7 +362,7 @@ class ReservationControllerTest extends TestCase
         $reservation = $this->createReservation($room, $booking_request, true);
         $this->createReservationAvailabilities($reservation->start_time, $room);
 
-        $response = $this->actingAs($this->createUserWithPermissions(['bookings.create']))->get(route('reservations.by-room', [
+        $response = $this->actingAs($this->createUserWithPermissions(['bookings.create']))->get(route('api.reservations.by-room', [
             'room' => $room,
             'date' => $reservation->start_time->format('Y-m-d')
         ]));
@@ -382,7 +382,7 @@ class ReservationControllerTest extends TestCase
         $reservation = $this->createReservation($room, $booking_request, true);
         $this->createReservationAvailabilities($reservation->start_time, $room);
 
-        $response = $this->actingAs($this->createUserWithPermissions(['bookings.create']))->get(route('reservations.by-room', $room));
+        $response = $this->actingAs($this->createUserWithPermissions(['bookings.create']))->get(route('api.reservations.by-room', $room));
 
         $response->assertJsonCount(0);
     }
@@ -399,7 +399,7 @@ class ReservationControllerTest extends TestCase
         $reservation = $this->createReservation($room, $booking_request, true);
         $this->createReservationAvailabilities($reservation->start_time, $room);
 
-        $response = $this->actingAs($user)->get(route('reservations.by-date', [
+        $response = $this->actingAs($user)->get(route('api.reservations.by-date', [
             'date' => $reservation->start_time->format('Y-m-d')
         ]));
 
@@ -451,7 +451,7 @@ class ReservationControllerTest extends TestCase
         $reservation = $this->createReservation($room, $booking_request, true);
         $this->createReservationAvailabilities($reservation->start_time, $room);
 
-        $response = $this->actingAs($user)->get(route('reservations.by-date'));
+        $response = $this->actingAs($user)->get(route('api.reservations.by-date'));
 
         $response->assertOk();
         $response->assertSessionHasNoErrors();

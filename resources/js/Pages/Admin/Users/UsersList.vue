@@ -15,9 +15,16 @@
             Delete
           </button>
 
+          <button class="cursor-pointer ml-6 text-sm text-red-500 focus:outline-none"
+                  @click="resetModalUser = user">
+            Reset link
+          </button>
+
         </div>
       </template>
     </user-table>
+
+    <reset-link-modal :user="resetModalUser" @close="resetModalUser = null" />
 
     <jet-confirmation-modal :show="userBeingUpdated != null" @close="userBeingUpdated = null">
       <template #title>
@@ -107,6 +114,7 @@ import JetLabel from "@src/Jetstream/Label"
 import Label from "@src/Jetstream/Label";
 import XSection from "@src/Components/XSection";
 import UserTable from "@src/Components/Tables/UsersTable";
+import ResetLinkModal from "@src/Pages/Admin/Users/ResetLinkModal";
 
 export default {
   props: {
@@ -139,7 +147,8 @@ export default {
     JetInput,
     JetLabel,
     JetInputError,
-    XSection
+    XSection,
+    ResetLinkModal
   },
 
   data() {
@@ -155,6 +164,7 @@ export default {
       }),
       userBeingDeleted: null,
       userBeingUpdated: null,
+      resetModalUser: null,
     }
   },
 
@@ -166,6 +176,10 @@ export default {
       }).then(() => {
         this.userBeingDeleted = null
       })
+    },
+
+    openResetModal(user) {
+      this.resetModalUser = user;
     },
 
     openUpdateModal(user) {

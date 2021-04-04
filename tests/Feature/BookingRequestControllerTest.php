@@ -23,17 +23,7 @@ use Illuminate\Support\Facades\Event;
 class BookingRequestControllerTest extends TestCase
 {
     use RefreshDatabase;
-
-    /**
-     * @var \Faker\Generator
-     */
-    public $faker;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-        $this->faker = Factory::create();
-    }
+    use WithFaker;
 
     /**
      * @test

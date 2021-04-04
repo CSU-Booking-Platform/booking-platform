@@ -68,7 +68,7 @@ class Rooms extends Page
 
         $browser
             ->press('ACTION MENU')
-            ->press('UPDATE')
+            ->press('Update')
             ->type('.vue-portal-target #name', $name)
             ->press('#updateRoom');
 
@@ -79,14 +79,14 @@ class Rooms extends Page
 
         $browser
             ->press('ACTION MENU')
-            ->press('DELETE')
+            ->press('Delete')
             ->press('#deleteRoom');
     }
 
     public function restrictRoom(Browser $browser, Room $room, string $role)
     {
         $browser
-            ->press('Action')
+            ->press('ACTION MENU')
             ->press('Restricted Roles')
             ->check('@restrict-1')
             ->press('#updateRoomRestrictions');

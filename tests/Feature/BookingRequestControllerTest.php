@@ -102,7 +102,7 @@ class BookingRequestControllerTest extends TestCase
         $this->createReservationAvailabilities($date, $room);
 
         $start = Carbon::parse($date);
-        $end = $start->copy()->addMinutes(4);
+        $end = $start->copy()->addMinutes(34);
 
         $response = $this->actingAs($user)->post('/bookings', [
             'room_id' => $room->id,
@@ -244,7 +244,7 @@ class BookingRequestControllerTest extends TestCase
         $this->assertDatabaseCount('reservations', 0);
 
         $start = Carbon::parse($date);
-        $end = $start->copy()->addMinutes(4);
+        $end = $start->copy()->addMinutes(34);
 
         $response = $this->actingAs($this->createUserWithPermissions(['bookings.create']))->post('/bookings', [
             'room_id' => $room->id,
@@ -285,7 +285,7 @@ class BookingRequestControllerTest extends TestCase
 
         $date = $this->faker->dateTimeInInterval('+' . $room->min_days_advance . ' days', '+' . ($room->max_days_advance - $room->min_days_advance) . ' days');
         $start = Carbon::parse($date);
-        $end = $start->copy()->addMinutes(4);
+        $end = $start->copy()->addMinutes(34);
 
         $this->assertDatabaseCount('booking_requests', 0);
 
@@ -483,7 +483,7 @@ class BookingRequestControllerTest extends TestCase
 
         $date = $this->faker->dateTimeInInterval('+' . $room->min_days_advance . ' days', '+' . ($room->max_days_advance - $room->min_days_advance) . ' days');
         $start = Carbon::parse($date);
-        $end = $start->copy()->addMinutes(4);
+        $end = $start->copy()->addMinutes(34);
 
         $this->createReservationAvailabilities($date, $room);
 
@@ -534,7 +534,7 @@ class BookingRequestControllerTest extends TestCase
         $room = Room::factory()->create(['status' => 'available']);
         $date = $this->faker->dateTimeInInterval('+' . $room->min_days_advance . ' days', '+' . ($room->max_days_advance - $room->min_days_advance) . ' days');
         $start = Carbon::parse($date);
-        $end = $start->copy()->addMinutes(4);
+        $end = $start->copy()->addMinutes(34);
 
         $this->createReservationAvailabilities($date, $room);
         $booking = $this->createBookingRequest(true, ['status' => BookingRequest::APPROVED]);
@@ -689,7 +689,7 @@ class BookingRequestControllerTest extends TestCase
     private function createReservationAvailabilities($start, $room)
     {
         $openingHours = Carbon::parse($start)->subMinutes(5)->toTimeString();
-        $closingHours = Carbon::parse($start)->addMinutes(10)->toTimeString();
+        $closingHours = Carbon::parse($start)->addMinutes(40)->toTimeString();
 
         Availability::create([
             'room_id' => $room->id,

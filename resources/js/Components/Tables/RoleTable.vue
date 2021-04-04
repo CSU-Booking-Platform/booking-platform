@@ -68,7 +68,7 @@
             <jet-danger-button class="ml-2" @click.native="deleteRole"
                                 :class="{ 'opacity-25': deleteRoleForm.processing }"
                                 :disabled="deleteRoleForm.processing">
-                Delete
+                Delete Role
             </jet-danger-button>
         </template>
     </jet-confirmation-modal>

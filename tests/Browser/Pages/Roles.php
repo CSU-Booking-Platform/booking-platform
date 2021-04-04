@@ -73,7 +73,7 @@ class Roles extends Page
             $row->press('DELETE');
         });
         $browser->waitForText('Delete Role');
-        $browser->press('DELETE');
+        $browser->press('DELETE ROLE');
         $browser->waitUntilMissingText('Delete Role');
 
         return $browser;

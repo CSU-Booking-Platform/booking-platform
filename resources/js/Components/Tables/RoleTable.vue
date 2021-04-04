@@ -31,34 +31,20 @@
           </td>
           <td>
             <div class="text-md mx-2">
-              <jet-dropdown width="48">
-                <template #trigger>
-                  <button
-                  class="flex text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out"
-                  >
-                    Action
-                  </button>
-                </template>
-
-                <template #content>
                   <div class="text-md mx-3">
                     <button
-                        class="cursor-pointer text-sm text-blue-800 focus:outline-none"
+                        class="cursor-pointer ml-6 text-sm inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray transition ease-in-out duration-150 cursor-pointer ml-6 text-sm focus:outline-none"
                         @click="roleBeingUpdated = role"
                     >
                         Update
                     </button>
-                  </div>
-                  <div class="text-md mx-3">
                     <button
-                        class="cursor-pointer text-sm text-red-800 focus:outline-none"
+                        class="cursor-pointer ml-6 text-sm text-red-500 inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray transition ease-in-out duration-150 cursor-pointer ml-6 text-sm focus:outline-none"
                         @click="roleBeingDeleted = role"
                     >
                         Delete
                     </button>
                   </div>
-                </template>
-              </jet-dropdown>
             </div>
           </td>
         </tr>
@@ -82,7 +68,7 @@
             <jet-danger-button class="ml-2" @click.native="deleteRole"
                                 :class="{ 'opacity-25': deleteRoleForm.processing }"
                                 :disabled="deleteRoleForm.processing">
-                Delete
+                Delete Role
             </jet-danger-button>
         </template>
     </jet-confirmation-modal>

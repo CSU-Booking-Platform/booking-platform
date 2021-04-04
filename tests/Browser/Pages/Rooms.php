@@ -67,8 +67,8 @@ class Rooms extends Page
     {
 
         $browser
-            ->press('Action')
-            ->press('Update')
+            ->press('ACTION MENU')
+            ->press('UPDATE')
             ->type('.vue-portal-target #name', $name)
             ->press('#updateRoom');
 
@@ -78,8 +78,8 @@ class Rooms extends Page
     {
 
         $browser
-            ->press('Action')
-            ->press('Delete')
+            ->press('ACTION MENU')
+            ->press('DELETE')
             ->press('#deleteRoom');
     }
 

@@ -40,9 +40,7 @@ class Roles extends Page
 
     public function openUpdateModalForRole(Browser $browser, Role $role) {
         $browser->with('@role-' . $role->id, function ($row) {
-            $row->press('Action');
-            $row->waitForText('Update');
-            $row->press('Update');
+            $row->press('UPDATE');
         });
         $browser->waitForText('Update Role');
 
@@ -72,9 +70,7 @@ class Roles extends Page
 
     public function deleteRole(Browser $browser, Role $role) {
         $browser->with('@role-' . $role->id, function ($row) {
-            $row->press('Action');
-            $row->waitForText('Delete');
-            $row->press('Delete');
+            $row->press('DELETE');
         });
         $browser->waitForText('Delete Role');
         $browser->press('DELETE');

@@ -27,10 +27,10 @@
                             CONTACT US
                         </div>
                         <div class="flex-1 py-3">
-                            contactus@csu.qc.ca
+                            <a href="mailto:contactus@csu.qc.ca">contactus@csu.qc.ca</a>
                         </div>
                         <div class="flex-1 py-3">
-                            514 848-7474
+                            <a href="tel:5148487474">514 848-7474</a>
                         </div>
                     </div>
                     <div class="flex flex-col flex-1">
@@ -38,13 +38,13 @@
                             CSU
                         </div>
                         <div class="flex-1 py-3">
-                            Our Mission
+                            <a href="https://www.csu.qc.ca/about-us/our-mission/">Our Mission</a>
                         </div>
                         <div class="flex-1 py-3">
-                            Contact
+                           <a href="https://www.csu.qc.ca/about-us/contact/">Contact</a>
                         </div>
                         <div class="flex-1 py-3">
-                            Jobs
+                            <a href="https://www.csu.qc.ca/about-us/jobs/">Jobs</a>
                         </div>
                     </div>
                     <div class="flex flex-col flex-1">
@@ -52,25 +52,25 @@
                             SOCIAL MEDIA
                         </div>
                         <div class="flex-1 py-3">
-                            <a href="https://www.facebook.com">
+                            <a href="https://www.facebook.com/csumtl/">
                                 <i class="fab fa-facebook pr-2"></i>
                                 Facebook
                             </a>
                         </div>
                         <div class="flex-1 py-3">
-                            <a href="https://www.instagram.com">
+                            <a href="https://www.instagram.com/csumtl/">
                                 <i class="fab fa-instagram pr-2"></i>
                                 Instagram
                             </a>
                         </div>
                         <div class="flex-1 py-3">
-                            <a href="https://www.twitter.com">
+                            <a href="https://twitter.com/csumtl">
                                 <i class="fab fa-twitter pr-2"></i>
                                 Twitter
                             </a>
                         </div>
                         <div class="flex-1 py-3">
-                            <a href="https://www.youtube.com">
+                            <a href="https://www.youtube.com/channel/UC14BOYjvdSqaCoCJfede9SA">
                                 <i class="fab fa-youtube pr-2"></i>
                                 YouTube
                             </a>

@@ -5,24 +5,24 @@
         Schedule a Blackout
       </template>
       <template #form>
-        <div class="overflow-y-auto max-h-96 w-full">
+        <div class="max-h-96 w-full">
           <div class="mb-3">
             <jet-input id="name" type="string" class="mt-1 block w-full" v-model="form.name" autofocus/>
             <jet-label for="name" value="Name"/>
             <jet-input-error :message="form.error('name')" class="mt-2"/>
           </div>
           <div class="mb-3">
-            <jet-input id="start" type="datetime-local" class="mt-1 block w-full" v-model="form.start" autofocus/>
+            <date-time-picker id="start" class="mt-1 block w-full" v-model="form.start" />
             <jet-label for="start" value="Start time"/>
             <jet-input-error :message="form.error('start')" class="mt-2"/>
           </div>
           <div class="mb-3">
-            <jet-input id="end" type="datetime-local" class="mt-1 block w-full" v-model="form.end"/>
+            <date-time-picker id="end" class="mt-1 block w-full" v-model="form.end" />
             <jet-label for="end" value="End Time"/>
             <jet-input-error :message="form.error('end')" class="mt-2"/>
           </div>
           <input v-if="room" type="hidden" id='room_id' v-model="form.room_id">
-          <div class="mb-3">
+          <div class="mb-8">
             <jet-label for="recurring" value="Recurring"/>
             <select v-model="form.recurring" class="mt-1 block w-full" name="recurring" id="recurring">
               <option value="null" selected>None</option>
@@ -54,7 +54,8 @@ import JetInput from '@src/Jetstream/Input'
 import JetActionMessage from '@src/Jetstream/ActionMessage'
 import FormSection from '@src/Components/FormSection'
 import JetInputError from '@src/Jetstream/InputError'
-import JetLabel from '@src/Jetstream/Label'
+import JetLabel from '@src/Jetstream/Label';
+import DateTimePicker from "@src/Components/Form/DateTimePicker";
 
 export default {
   components: {
@@ -63,7 +64,8 @@ export default {
     FormSection,
     JetActionMessage,
     JetInputError,
-    JetLabel
+    JetLabel,
+    DateTimePicker,
   },
 
   data() {

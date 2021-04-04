@@ -27,13 +27,13 @@
 
             <template #content>
                 <div>
-                     <jet-label for="start" value="Start time"/>
-                    <jet-input id="start" type="datetime-local" class="mt-1 block w-full" v-model="updateBlackoutForm.start" autofocus/>
+                    <jet-label for="start" value="Start time"/>
+                    <date-time-picker id="start" class="mt-1 block w-full" v-model="updateBlackoutForm.start" autofocus />
                     <jet-input-error :message="updateBlackoutForm.error('start')" class="mt-2"/>
                 </div>
                 <div>
                     <jet-label for="end" value="End Time"/>
-                    <jet-input id="end" type="datetime-local" class="mt-1 block w-full" v-model="updateBlackoutForm.end"/>
+                    <date-time-picker id="start" class="mt-1 block w-full" v-model="updateBlackoutForm.end" />
                     <jet-input-error :message="updateBlackoutForm.error('end')" class="mt-2"/>
                 </div>
             </template>
@@ -91,6 +91,7 @@ import JetInputError from "@src/Jetstream/InputError"
 import JetLabel from "@src/Jetstream/Label"
 import Label from "@src/Jetstream/Label";
 import BlackoutsTable from "@src/Components/Tables/BlackoutsTable"
+import DateTimePicker from "@src/Components/Form/DateTimePicker"
 
 export default {
     props: {
@@ -119,7 +120,8 @@ export default {
         JetInput,
         JetLabel,
         JetInputError,
-        BlackoutsTable
+        BlackoutsTable,
+        DateTimePicker,
     },
 
     data() {

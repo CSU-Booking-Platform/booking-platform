@@ -102,9 +102,8 @@
               <div><h2>Date Created</h2></div>
               <div class="flex flex-col">
                 <jet-label for="start_time" value="Before" />
-                <jet-input
+                <date-time-picker
                   id="start_time"
-                  type="datetime-local"
                   class="mt-1 block w-full"
                   v-model="jsonFilters.date_range_start"
                   autofocus
@@ -112,9 +111,8 @@
               </div>
               <div class="flex flex-col">
                 <jet-label for="end_time" value="After" />
-                <jet-input
+                <date-time-picker
                   id="end_time"
-                  type="datetime-local"
                   class="mt-1 block w-full"
                   v-model="jsonFilters.date_range_end"
                   autofocus
@@ -151,6 +149,7 @@ import JetLabel from "@src/Jetstream/Label";
 import JetResponsiveNavLink from "@src/Jetstream/ResponsiveNavLink"
 import JetInput from "@src/Jetstream/Input";
 import MultiSelect from "@src/Components/Form/MultiSelect";
+import DateTimePicker from "@src/Components/Form/DateTimePicker";
 
 export default {
   name: "AdminBookingRequestTable",
@@ -181,7 +180,8 @@ export default {
     JetSecondaryButton,
     JetLabel,
     JetInput,
-    MultiSelect
+    MultiSelect,
+    DateTimePicker,
   },
   data() {
     return {

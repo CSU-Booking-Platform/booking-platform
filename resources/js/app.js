@@ -7,14 +7,16 @@ import { InertiaApp } from '@inertiajs/inertia-vue';
 import { InertiaForm } from 'laravel-jetstream';
 import PortalVue from 'portal-vue';
 import Calendar from 'v-calendar/lib/components/calendar.umd'
-import DatePicker from 'v-calendar/lib/components/date-picker.umd'
 import DateFormatter from "@src/Plugins/date-formatter";
+
+import VueCtkDateTimePicker from 'vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.umd';
+import 'vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css';
 
 Vue.use(InertiaApp);
 Vue.use(InertiaForm);
 Vue.use(PortalVue);
 Vue.component('calendar', Calendar)
-Vue.component('date-picker', DatePicker)
+Vue.component('ctk-date-time-picker', VueCtkDateTimePicker)
 Vue.use(DateFormatter);
 
 const app = document.getElementById('app');

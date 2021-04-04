@@ -108,7 +108,6 @@ import Dropdown from "@src/Jetstream/Dropdown";
 import JetInput from "@src/Jetstream/Input";
 import JetInputError from "@src/Jetstream/InputError";
 import JetLabel from "@src/Jetstream/Label";
-import UpdateBookingRequestForm from "./UpdateBookingRequestForm";
 import ViewBookingRequestStatusModal from "./ViewBookingRequestStatusModal";
 import Label from "@src/Jetstream/Label";
 
@@ -144,7 +143,6 @@ export default {
     JetInput,
     JetLabel,
     JetInputError,
-    UpdateBookingRequestForm,
     ViewBookingRequestStatusModal
   },
 

@@ -13,17 +13,13 @@
 
 <script>
 import JetSectionBorder from '@src/Jetstream/SectionBorder'
-import CreateBookingRequestForm from './CreateBookingRequestForm';
-import BookingRequestsList from './BookingRequestsList';
 import AppLayout from '@src/Layouts/AppLayout';
 import RoomTable from '@src/Components/Tables/RoomTable';
 import axios from 'axios';
 
 export default {
     components: {
-        CreateBookingRequestForm,
         AppLayout,
-        BookingRequestsList,
         JetSectionBorder,
         RoomTable
     },

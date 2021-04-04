@@ -335,9 +335,8 @@
                 <div v-for="(dates, index) in jsonFilters.recurrences" :key="index">
                   <div class="m-6">
                     <jet-label for="start_time" value="Start Time" />
-                    <jet-input
+                    <date-time-picker
                       id="start_time"
-                      type="datetime-local"
                       class="mt-1 block w-full"
                       v-model="dates.start_time"
                       autofocus
@@ -346,9 +345,8 @@
 
                   <div class="m-6">
                     <jet-label for="end_time" value="End Time" />
-                    <jet-input
+                    <date-time-picker
                       id="end_time"
-                      type="datetime-local"
                       class="mt-1 block w-full"
                       v-model="dates.end_time"
                       autofocus
@@ -397,6 +395,7 @@ import JetButton from "@src/Jetstream/Button";
 import JetLabel from "@src/Jetstream/Label";
 import JetInputError from "@src/Jetstream/InputError";
 import AvailabilitiesModal from "@src/Components/AvailabilitiesModal";
+import DateTimePicker from "@src/Components/Form/DateTimePicker";
 
 export default {
   name: "RoomTable",
@@ -408,6 +407,7 @@ export default {
     },
   },
   components: {
+    DateTimePicker,
       Input,
       Button,
       CreateBookingRequestModal,

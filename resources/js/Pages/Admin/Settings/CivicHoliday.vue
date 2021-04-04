@@ -16,17 +16,17 @@
         </app-warning>
         <div class="mb-2">
           <jet-label for="start_date" value="Start date"/>
-          <jet-input id="start_date" name="start_date" type="datetime-local" class="mt-1 block w-full"
-                     v-model="form.start_date"
-                     :value="form.start_date"
-                     autofocus/>
+          <date-time-picker id="start_date" name="start_date" class="mt-1 block w-full"
+                            v-model="form.start_date"
+                            :value="form.start_date"
+          />
           <jet-input-error :message="form.error('start_date')" class="mt-2"/>
         </div>
         <jet-label for="end_date" value="End date"/>
-        <jet-input id="end_date" name="end_date" type="datetime-local" class="mt-1 block w-full"
-                   v-model="form.end_date"
-                   :value="form.end_date"
-                   autofocus/>
+        <date-time-picker id="end_date" name="end_date" class="mt-1 block w-full"
+                          v-model="form.end_date"
+                          :value="form.end_date"
+        />
         <jet-input-error :message="form.error('end_date')" class="mt-2"/>
       </div>
     </template>
@@ -52,6 +52,7 @@ import JetFormSection from '@src/Jetstream/FormSection'
 import JetInputError from '@src/Jetstream/InputError'
 import JetLabel from '@src/Jetstream/Label'
 import AppWarning from '@src/Components/Form/Warning';
+import DateTimePicker from "@src/Components/Form/DateTimePicker";
 
 export default {
   components: {
@@ -61,7 +62,8 @@ export default {
     JetActionMessage,
     JetInputError,
     JetLabel,
-    AppWarning
+    AppWarning,
+    DateTimePicker,
   },
   data() {
     return {

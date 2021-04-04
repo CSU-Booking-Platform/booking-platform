@@ -5,7 +5,7 @@ jest.mock('laravel-jetstream')
 import {createLocalVue, mount, shallowMount} from '@vue/test-utils'
 import {InertiaApp} from '@inertiajs/inertia-vue'
 import {InertiaForm} from 'laravel-jetstream'
-import Checkbox from '@src/Jetstream/Checkbox'
+import DateTimePicker from '@src/Components/Form/DateTimePicker'
 import regeneratorRuntime from "regenerator-runtime/runtime"
 
 let localVue
@@ -18,15 +18,15 @@ beforeEach(() => {
 });
 
 test('should mount without crashing', () => {
-    const wrapper = shallowMount(Checkbox, {localVue});
+    const wrapper = shallowMount(DateTimePicker, {localVue});
 
     expect(wrapper.text()).toBeDefined();
 })
 
 test('verify computed proxy field', async () => {
-    const wrapper = shallowMount(Checkbox, {localVue});
+    const wrapper = shallowMount(DateTimePicker, {localVue});
 
-    wrapper.vm.proxyChecked = true;
+    wrapper.vm.proxyValue = '2021-03-21';
 
     await wrapper.vm.$nextTick();
     expect(wrapper.emitted().change).toBeTruthy();

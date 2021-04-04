@@ -15,6 +15,7 @@ use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
@@ -59,12 +60,10 @@ class BookingRequestController extends Controller
       'reservations.*.start_time' => [
         'required',
         'date',
-        'date_format:Y-m-d\TH:i'
       ],
       'reservations.*.end_time' => [
         'required',
         'date',
-        'date_format:Y-m-d\TH:i',
       ],
       'reservations.*.duration' => [
         'required',
@@ -314,8 +313,8 @@ class BookingRequestController extends Controller
         // filter the ones provided from request
         $request->validate([
             'status_list.*' => ['boolean'],
-            'date_range_start' => ['string'],
-            'date_range_end' => ['string'],
+            'date_range_start' => ['date'],
+            'date_range_end' => ['date'],
             'data_reviewers' => ['array']
         ]);
 
@@ -336,11 +335,11 @@ class BookingRequestController extends Controller
 
 
         if($request->date_range_start){
-            $query->where('created_at', '<', $request->date_range_start);
+            $query->where('created_at', '>', $request->date_range_start);
         }
 
         if($request->date_range_end){
-            $query->where('created_at', '>', $request->date_range_end);
+            $query->where('created_at', '<', $request->date_range_end);
         }
 
         if($request->data_reviewers){
@@ -375,10 +374,10 @@ class BookingRequestController extends Controller
             $query = $query->where('status', $request->selectStatus);
         }
 
-        if ($request->dateCheck){
-            $query = $query->whereHas('reservations', function($q) use ($request)
-            {
-                $q->whereDate('start_time', $request->dateCheck);
+        if ($request->dateCheck) {
+            $query = $query->whereHas('reservations', function($q) use ($request) {
+                $date = Carbon::parse($request->dateCheck);
+                $q->whereDate('start_time', $date)->orWhereDate('end_time', $date);
             });
         }
 

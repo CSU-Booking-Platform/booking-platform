@@ -39,12 +39,12 @@ class ReservationControllerTest extends TestCase
         $reservation = $this->createReservation($room, $booking_request, false);
         $this->createReservationAvailabilities($reservation->start_time, $room);
         $reservation2 = $this->createReservationCopy($reservation, false);
-//    $reservation2->end_time = Carbon::parse($reservation2->end_time)->addDay()->format('Y-m-d\TH:i');
+//    $reservation2->end_time = Carbon::parse($reservation2->end_time)->addDay()->format('Y-m-d H:i');
         $response = $this->actingAs($this->createUserWithPermissions(['bookings.create']))->post('/reservation', [
             'room_id' => $room->id,
             'reservations' => [
-                ['start_time' => $reservation->start_time->format('Y-m-d\TH:i:00'), 'end_time' => $reservation->end_time->format('Y-m-d\TH:i:00')],
-                ['start_time' => $reservation2->start_time->format('Y-m-d\TH:i:00'), 'end_time' => $reservation2->end_time->format('Y-m-d\TH:i:00')],
+                ['start_time' => $reservation->start_time->format('Y-m-d H:i:00'), 'end_time' => $reservation->end_time->format('Y-m-d H:i:00')],
+                ['start_time' => $reservation2->start_time->format('Y-m-d H:i:00'), 'end_time' => $reservation2->end_time->format('Y-m-d H:i:00')],
             ]
         ]);
 
@@ -97,14 +97,14 @@ class ReservationControllerTest extends TestCase
         $this->assertDatabaseCount('booking_requests', 1);
         $this->assertDatabaseCount('reservations', 1);
         $reservationNew = $reservation->replicate();
-        $reservationNew->start_time = Carbon::parse($reservation->start_time)->addMinute()->format('Y-m-d\TH:i');
-        $reservationNew->end_time = Carbon::parse($reservation->end_time)->addMinute()->format('Y-m-d\TH:i');
+        $reservationNew->start_time = Carbon::parse($reservation->start_time)->addMinute()->format('Y-m-d H:i');
+        $reservationNew->end_time = Carbon::parse($reservation->end_time)->addMinute()->format('Y-m-d H:i');
         $response = $this->actingAs($this->createUserWithPermissions(['bookings.create']))->put('/reservation/' . $reservation->id, [
             'room_id' => $reservationNew->room_id,
             'reservations' => [
                 [
-                    'start_time' => $reservationNew->start_time->format('Y-m-d\TH:i:00'),
-                    'end_time' => $reservationNew->end_time->format('Y-m-d\TH:i:00'),
+                    'start_time' => $reservationNew->start_time->format('Y-m-d H:i:00'),
+                    'end_time' => $reservationNew->end_time->format('Y-m-d H:i:00'),
                 ]
             ],
         ]);
@@ -133,14 +133,14 @@ class ReservationControllerTest extends TestCase
         $this->assertDatabaseCount('booking_requests', 1);
         $this->assertDatabaseCount('reservations', 1);
         $reservationNew = $reservation->replicate();
-        $reservationNew->start_time = Carbon::parse($reservation->start_time)->subMinute()->format('Y-m-d\TH:i');
-        $reservationNew->end_time = Carbon::parse($reservation->start_time)->addMinute()->format('Y-m-d\TH:i');
+        $reservationNew->start_time = Carbon::parse($reservation->start_time)->subMinute()->format('Y-m-d H:i');
+        $reservationNew->end_time = Carbon::parse($reservation->start_time)->addMinute()->format('Y-m-d H:i');
         $response = $this->actingAs($this->createUserWithPermissions(['bookings.create']))->post('/reservation', [
             'room_id' => $reservationNew->room_id,
             'reservations' => [
                 [
-                    'start_time' => $reservationNew->start_time->format('Y-m-d\TH:i:00'),
-                    'end_time' => $reservationNew->end_time->format('Y-m-d\TH:i:00'),
+                    'start_time' => $reservationNew->start_time->format('Y-m-d H:i:00'),
+                    'end_time' => $reservationNew->end_time->format('Y-m-d H:i:00'),
                 ]
             ],
         ]);
@@ -169,14 +169,14 @@ class ReservationControllerTest extends TestCase
         $this->assertDatabaseCount('booking_requests', 1);
         $this->assertDatabaseCount('reservations', 1);
         $reservationNew = $reservation->replicate();
-        $reservationNew->start_time = Carbon::parse($reservation->end_time)->subMinute()->format('Y-m-d\TH:i');
-        $reservationNew->end_time = Carbon::parse($reservation->end_time)->addMinute()->format('Y-m-d\TH:i');
+        $reservationNew->start_time = Carbon::parse($reservation->end_time)->subMinute()->format('Y-m-d H:i');
+        $reservationNew->end_time = Carbon::parse($reservation->end_time)->addMinute()->format('Y-m-d H:i');
         $response = $this->actingAs($this->createUserWithPermissions(['bookings.create']))->post('/reservation', [
             'room_id' => $reservationNew->room_id,
             'reservations' => [
                 [
-                    'start_time' => $reservationNew->start_time->format('Y-m-d\TH:i:00'),
-                    'end_time' => $reservationNew->end_time->format('Y-m-d\TH:i:00'),
+                    'start_time' => $reservationNew->start_time->format('Y-m-d H:i:00'),
+                    'end_time' => $reservationNew->end_time->format('Y-m-d H:i:00'),
                 ]
             ],
         ]);
@@ -205,14 +205,14 @@ class ReservationControllerTest extends TestCase
         $this->assertDatabaseCount('booking_requests', 1);
         $this->assertDatabaseCount('reservations', 1);
         $reservationNew = $reservation->replicate();
-        $reservationNew->start_time = Carbon::parse($reservation->start_time)->subMinute()->format('Y-m-d\TH:i');
-        $reservationNew->end_time = Carbon::parse($reservation->end_time)->addMinute()->format('Y-m-d\TH:i');
+        $reservationNew->start_time = Carbon::parse($reservation->start_time)->subMinute()->format('Y-m-d H:i');
+        $reservationNew->end_time = Carbon::parse($reservation->end_time)->addMinute()->format('Y-m-d H:i');
         $response = $this->actingAs($this->createUserWithPermissions(['bookings.create']))->post('/reservation', [
             'room_id' => $reservationNew->room_id,
             'reservations' => [
                 [
-                    'start_time' => $reservationNew->start_time->format('Y-m-d\TH:i:00'),
-                    'end_time' => $reservationNew->end_time->format('Y-m-d\TH:i:00'),
+                    'start_time' => $reservationNew->start_time->format('Y-m-d H:i:00'),
+                    'end_time' => $reservationNew->end_time->format('Y-m-d H:i:00'),
                 ]
             ],
         ]);
@@ -241,14 +241,14 @@ class ReservationControllerTest extends TestCase
         $this->assertDatabaseCount('booking_requests', 1);
         $this->assertDatabaseCount('reservations', 1);
         $reservationNew = $reservation->replicate();
-        $reservationNew->start_time = Carbon::parse($reservation->start_time)->addMinute()->format('Y-m-d\TH:i');
-        $reservationNew->end_time = Carbon::parse($reservation->end_time)->subMinute()->format('Y-m-d\TH:i');
+        $reservationNew->start_time = Carbon::parse($reservation->start_time)->addMinute()->format('Y-m-d H:i');
+        $reservationNew->end_time = Carbon::parse($reservation->end_time)->subMinute()->format('Y-m-d H:i');
         $response = $this->actingAs($this->createUserWithPermissions(['bookings.create']))->post('/reservation', [
             'room_id' => $reservationNew->room_id,
             'reservations' => [
                 [
-                    'start_time' => $reservationNew->start_time->format('Y-m-d\TH:i:00'),
-                    'end_time' => $reservationNew->end_time->format('Y-m-d\TH:i:00'),
+                    'start_time' => $reservationNew->start_time->format('Y-m-d H:i:00'),
+                    'end_time' => $reservationNew->end_time->format('Y-m-d H:i:00'),
                 ]
             ],
         ]);
@@ -276,12 +276,12 @@ class ReservationControllerTest extends TestCase
         $reservation = $this->createReservation($room, $booking_request, false);
         $this->createReservationAvailabilities($reservation->start_time, $room);
         $reservation2 = $this->createReservationCopy($reservation, false);
-        $reservation2->end_time = Carbon::parse($reservation2->end_time)->addDay()->format('Y-m-d\TH:i');
+        $reservation2->end_time = Carbon::parse($reservation2->end_time)->addDay()->format('Y-m-d H:i');
         $response = $this->actingAs($this->createUserWithPermissions(['bookings.create']))->post('/reservation', [
             'room_id' => $room->id,
             'reservations' => [
-                ['start_time' => $reservation->start_time->format('Y-m-d\TH:i:00'), 'end_time' => $reservation->end_time->format('Y-m-d\TH:i:00')],
-                ['start_time' => $reservation2->start_time->format('Y-m-d\TH:i:00'), 'end_time' => $reservation2->end_time->format('Y-m-d\TH:i:00')],
+                ['start_time' => $reservation->start_time->format('Y-m-d H:i:00'), 'end_time' => $reservation->end_time->format('Y-m-d H:i:00')],
+                ['start_time' => $reservation2->start_time->format('Y-m-d H:i:00'), 'end_time' => $reservation2->end_time->format('Y-m-d H:i:00')],
             ]
         ]);
 
@@ -310,7 +310,7 @@ class ReservationControllerTest extends TestCase
         $response = $this->actingAs($this->createUserWithPermissions(['bookings.create']))->post('/reservation', [
             'room_id' => $room->id,
             'reservations' => [
-                ['start_time' => $reservation->start_time->format('Y-m-d\TH:i:00'), 'end_time' => $reservation->end_time->format('Y-m-d\TH:i:00')],
+                ['start_time' => $reservation->start_time->format('Y-m-d H:i:00'), 'end_time' => $reservation->end_time->format('Y-m-d H:i:00')],
             ]
         ]);
 
@@ -336,7 +336,7 @@ class ReservationControllerTest extends TestCase
         $response = $this->actingAs($this->createUserWithPermissions(['bookings.create']))->post('/reservation', [
             'room_id' => $room->id,
             'reservations' => [
-                ['start_time' => $reservation->start_time->format('Y-m-d\TH:i:00'), 'end_time' => $reservation->end_time->format('Y-m-d\TH:i:00')],
+                ['start_time' => $reservation->start_time->format('Y-m-d H:i:00'), 'end_time' => $reservation->end_time->format('Y-m-d H:i:00')],
             ]
         ]);
 
@@ -424,8 +424,8 @@ class ReservationControllerTest extends TestCase
         $data = [
             'room_id' => $room->id,
             'booking_request_id' => $bookingRequest->id,
-            'start_time' => Carbon::parse($date)->format('Y-m-d\TH:i'),
-            'end_time' => Carbon::parse($date)->addMinutes(30)->format('Y-m-d\TH:i'),
+            'start_time' => Carbon::parse($date)->format('Y-m-d H:i'),
+            'end_time' => Carbon::parse($date)->addMinutes(30)->format('Y-m-d H:i'),
         ];
         if ($create) {
             $reservation = Reservation::factory()->create($data);

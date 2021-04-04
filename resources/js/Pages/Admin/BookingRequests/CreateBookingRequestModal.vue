@@ -1,7 +1,7 @@
 <template>
     <jet-dialog-modal :show="room" @close="closeModal" max-width="">
         <template #content>
-          
+
           <div class="overflow-y-auto h-96">
             <h2 class="pb-1">Availabilities</h2>
             <Availabilities :room="room" />
@@ -25,9 +25,8 @@
               <jet-label  :value="index+1" />
               <div class="m-6">
                   <jet-label for="start_time" value="Start Time" />
-                  <jet-input
+                  <date-time-picker
                       id="start_time"
-                      type="datetime-local"
                       class="mt-1 block w-full"
                       v-model="dates.start_time"
                       autofocus
@@ -37,9 +36,8 @@
 
               <div class="m-6">
                   <jet-label for="end_time" value="End Time" />
-                  <jet-input
+                  <date-time-picker
                       id="end_time"
-                      type="datetime-local"
                       class="mt-1 block w-full"
                       v-model="dates.end_time"
                       autofocus
@@ -107,9 +105,11 @@ import JetSecondaryButton from "@src/Jetstream/SecondaryButton";
 import DialogModal from "@src/Jetstream/DialogModal";
 import Availabilities from "@src/Components/Availabilities";
 import moment from "moment"
+import DateTimePicker from "@src/Components/Form/DateTimePicker";
 
 export default {
   components: {
+    DateTimePicker,
     DialogModal,
     JetButton,
     JetInput,
@@ -137,7 +137,7 @@ export default {
     },
   },
   data() {
-    return { 
+    return {
       createBookingRequestForm: this.$inertia.form(
         {
           room_id: null,
@@ -186,7 +186,7 @@ export default {
       this.createBookingRequestForm.post("/bookings/create", {
         preserveScroll: true
       }).then(() => {
-        if (! this.createBookingRequestForm.hasErrors()) {       
+        if (! this.createBookingRequestForm.hasErrors()) {
           this.closeModal();
         }
         else{

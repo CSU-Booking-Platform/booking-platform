@@ -32,18 +32,18 @@
           <td>
             <div class="text-md mx-2">
                   <div class="text-md mx-3">
-                    <jet-button
-                        class="cursor-pointer ml-6 text-sm focus:outline-none"
+                    <button
+                        class="cursor-pointer ml-6 text-sm inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray transition ease-in-out duration-150 cursor-pointer ml-6 text-sm focus:outline-none"
                         @click="roleBeingUpdated = role"
                     >
                         Update
-                    </jet-button>
-                    <jet-button
-                        class="cursor-pointer ml-6 text-sm text-red-500 focus:outline-none"
+                    </button>
+                    <button
+                        class="cursor-pointer ml-6 text-sm text-red-500 inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray transition ease-in-out duration-150 cursor-pointer ml-6 text-sm focus:outline-none"
                         @click="roleBeingDeleted = role"
                     >
                         Delete
-                    </jet-button>
+                    </button>
                   </div>
             </div>
           </td>

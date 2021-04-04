@@ -207,6 +207,34 @@ test('Testing empty file upload', () => {
 
 })
 
+test('Testing setting booking duration', () => {
+
+    // Mount the component
+    const wrapper = shallowMount(CreateBookingRequestModal, {
+        localVue,
+        data() {
+            return {
+                createBookingRequestForm: {
+                  booking_request_id: null,
+                  room_id: null,
+                  reservations: [{
+                    start_time: "2021-04-09T09:00",
+                    end_time: "2021-04-09T10:00",
+                    duration: 0
+                  }],
+                  reference: [],
+                }
+            }
+        }
+    })
+
+    // Manually trigger the component’s onChange() method
+    wrapper.vm.setDuration()
+
+    expect(wrapper.vm.createBookingRequestForm.reservations[0].duration).toEqual(60)
+
+})
+
 // test('should filter properly', () => {
 
 //   const wrapper = shallowMount(RoomTable, {

@@ -41,6 +41,9 @@ class BookingResource extends JsonResource
                     'email' => $user->email,
                     'profile_photo_url' => $user->profile_photo_url,
                 ];
+            }),
+            'comments' => $this->comments->map(function ($comment) {
+                return new CommentResource($comment);
             })
         ]);
     }

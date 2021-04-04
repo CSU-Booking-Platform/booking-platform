@@ -4,6 +4,10 @@
       Civic Holidays
     </template>
 
+    <template #description>
+      A blackout period will be applied from the specified start date to the specified end date for every room.
+    </template>
+
     <template #form>
       <jet-input id="label" type="hidden" class="mt-1 block w-full" value="app_name"/>
       <div class="col-span-12 sm:col-span-6">

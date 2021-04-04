@@ -119,7 +119,8 @@ class BookingRequestControllerTest extends TestCase
             'reservations' => [
                 [
                     'start_time' => $start->format('Y-m-d\TH:i:00'),
-                    'end_time' => $end->format('Y-m-d\TH:i:00')
+                    'end_time' => $end->format('Y-m-d\TH:i:00'),
+                    'duration' => $this->faker->numberBetween(100)
                 ]
             ],
             'event' => [
@@ -171,7 +172,8 @@ class BookingRequestControllerTest extends TestCase
             'reservations' => [
                 [
                     'start_time' => $reservation->start_time->format('Y-m-d\TH:i:00'),
-                    'end_time' => $reservation->end_time->format('Y-m-d\TH:i:00')
+                    'end_time' => $reservation->end_time->format('Y-m-d\TH:i:00'),
+                    'duration' => $this->faker->numberBetween(100)
                 ]
             ],
             'event' => [
@@ -214,7 +216,8 @@ class BookingRequestControllerTest extends TestCase
                 'reservations' => [
                     [
                         'start_time' => $reservation->start_time->format('Y-m-d\TH:i:00'),
-                        'end_time' => $reservation->end_time->format('Y-m-d\TH:i:00')
+                        'end_time' => $reservation->end_time->format('Y-m-d\TH:i:00'),
+                        'duration' => $this->faker->numberBetween(100)
                     ]
                 ],
                 'event' => [
@@ -499,7 +502,8 @@ class BookingRequestControllerTest extends TestCase
             'reservations' => [
                 [
                     'start_time' => $start->format('Y-m-d\TH:i:00'),
-                    'end_time' => $end->format('Y-m-d\TH:i:00')
+                    'end_time' => $end->format('Y-m-d\TH:i:00'),
+                    'duration' => $this->faker->numberBetween(100)
                 ]
             ],
             'event' => [
@@ -611,7 +615,8 @@ class BookingRequestControllerTest extends TestCase
             'reservations' => [
                 [
                     'start_time' => $reservation->start_time->format('Y-m-d\TH:i:00'),
-                    'end_time' => $reservation->end_time->format('Y-m-d\TH:i:00')
+                    'end_time' => $reservation->end_time->format('Y-m-d\TH:i:00'),
+                    'duration' => $this->faker->numberBetween(100)
                 ]
             ],
             'event' => [

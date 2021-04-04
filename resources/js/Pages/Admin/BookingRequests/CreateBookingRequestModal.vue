@@ -48,6 +48,7 @@
                       :message="createBookingRequestForm.error('reservations.'+index+'.start_time')"
                       class="mt-2"
                   />
+                  <jet-input-error :message="createBookingRequestForm.error('reservations.'+index+'.duration')" class="mt-2" />
               </div>
               <jet-secondary-button v-if="numDates > 1" @click.native="removeDate(index)">
                 Remove this date
@@ -81,7 +82,7 @@
 
             <jet-button
                 class="ml-2"
-                @click.native="createBookingRequest"
+                @click.native="setDuration(); createBookingRequest();"
                 :class="{ 'opacity-25': createBookingRequestForm.processing }"
                 :disabled="createBookingRequestForm.processing"
             >
@@ -105,6 +106,7 @@ import JetNavLink from "@src/Components/Navbar/NavLink";
 import JetSecondaryButton from "@src/Jetstream/SecondaryButton";
 import DialogModal from "@src/Jetstream/DialogModal";
 import Availabilities from "@src/Components/Availabilities";
+import moment from "moment"
 
 export default {
   components: {
@@ -135,7 +137,7 @@ export default {
     },
   },
   data() {
-    return {
+    return { 
       createBookingRequestForm: this.$inertia.form(
         {
           room_id: null,
@@ -143,9 +145,10 @@ export default {
             {
               start_time: "",
               end_time: "",
+              duration: 0,
             }
           ],
-          reference: []
+          reference: [],
         },
         {
           bag: "createReservationsRequest",
@@ -162,6 +165,7 @@ export default {
           {
             start_time: "",
             end_time: "",
+            duration: 0,
           }
         ];
         this.createBookingRequestForm.reference = [];
@@ -171,17 +175,22 @@ export default {
       this.createBookingRequestForm.reservations.push({
         start_time: "",
         end_time: "",
+        duration: 0,
       })
     },
     removeDate(pos) {
       this.createBookingRequestForm.reservations.splice(pos,1)
     },
     createBookingRequest() {
+      this.setLocalIsCreating(true);
       this.createBookingRequestForm.post("/bookings/create", {
         preserveScroll: true
       }).then(() => {
-        if (! this.createBookingRequestForm.hasErrors()) {
+        if (! this.createBookingRequestForm.hasErrors()) {       
           this.closeModal();
+        }
+        else{
+          this.setLocalIsCreating(false);
         }
       });
     },
@@ -193,13 +202,26 @@ export default {
       for (let file of selectedFiles) {
         this.createBookingRequestForm.reference.push(file);
       }
-    }
+    },
+    setLocalIsCreating(val) {
+      localStorage.isCreatingBooking = val;
+    },
+    setDuration()
+    {
+      for (let reservation of this.createBookingRequestForm.reservations)
+      {
+        let moment_start = moment(reservation.start_time);
+        let moment_end = moment(reservation.end_time);
+
+        reservation.duration = moment_end.diff(moment_start, 'minutes');
+      }
+    },
   },
   watch: {
         room(room) {
             this.createBookingRequestForm.room_id = room?.id;
             this.room_name = room?.name;
-        }
+        },
     }
 };
 </script>

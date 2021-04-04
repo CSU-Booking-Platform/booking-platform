@@ -55,7 +55,8 @@
               Request Reviewers
             </dt>
             <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-              <booking-reviewers-field :reviewers="booking.reviewers" :booking_request_id="booking.id"
+              <booking-reviewers-field v-if="$page"
+                                       :reviewers="booking.reviewers" :booking_request_id="booking.id"
                                        :editing="(booking.status === 'Review' && this.$page.user.can.includes('bookings.approve')) || false" />
             </dd>
           </div>
@@ -541,7 +542,66 @@
       </div>
     </div>
 
+    <jet-section-border />
+
     <!-- history details go here -->
+    <div class="bg-grey shadow overflow-hidden sm:rounded-lg">
+      <div class="px-4 py-5 sm:px-6">
+        <h3 class="text-lg leading-6 font-medium text-gray-900">
+          Booking History
+        </h3>
+        <p class="mt-1 max-w-2xl text-sm text-gray-500">
+          User comments and work log
+        </p>
+      </div>
+      <div class="border-t border-gray-200">
+
+        <!-- comments thread -->
+        <div v-for="comment in booking.comments" class="px-0 mx-auto sm:px-4">
+          <div class="flex-col w-full py-4 mx-auto bg-white sm:px-4 sm:py-4 md:px-4">
+            <div class="flex flex-row">
+              <span class="relative">
+                <img class="object-cover w-12 h-12 border-2 border-gray-300 rounded-full"
+                     :alt="comment.user.id" :src="comment.user.profile_photo_url">
+                <svg v-if="!booking.system" class="absolute right-0 bottom-1 p-1 w-6 h-6 bg-gray-200 rounded-full"
+                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                </svg>
+              </span>
+              <div class="flex-col mt-1">
+                <div class="flex items-center flex-1 px-4 font-bold leading-tight">
+                  {{ comment.user.name }}
+                  <span class="ml-2 text-xs font-normal text-gray-500">{{ comment.created_diff }}</span>
+                </div>
+                <div v-html="comment.body" class="flex-1 px-2 ml-2 text-sm font-medium leading-loose text-gray-600"></div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- post comment -->
+        <div class="flex px-0 mx-auto my-4 sm:px-8 space-x-4">
+          <img v-if="$page" class="object-cover w-12 h-12 border-2 border-gray-300 rounded-full"
+               :alt="$page.user.id" :src="$page.user.profile_photo_url">
+
+
+          <div class="flex flex-col space-y-4 w-full">
+            <div class="flex space-x-2 w-full">
+              <RichTextEditor
+                class="w-full"
+                :editable="true"
+                :incomingText="''"
+                :onSave="saveComment"
+              />
+            </div>
+            <jet-input-error :message="form.error('comment')" class="mt-2"/>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -549,8 +609,13 @@
 import JetSectionBorder from '@src/Jetstream/SectionBorder'
 import JetActionSection from '@src/Jetstream/ActionSection'
 import JetFormSection from '@src/Jetstream/FormSection';
+import JetButton from '@src/Jetstream/Button';
+import JetLabel from '@src/Jetstream/Label';
+import JetInput from '@src/Jetstream/Input';
+import JetInputError from '@src/Jetstream/InputError';
 import AppWarning from '@src/Components/Form/Warning';
 import BookingReviewersField from "@src/Components/BookingReviewersField";
+import RichTextEditor from "@src/Components/RichTextEditor";
 
 export default {
   components: {
@@ -559,6 +624,11 @@ export default {
     JetSectionBorder,
     JetActionSection,
     JetFormSection,
+    JetButton,
+    JetLabel,
+    JetInput,
+    JetInputError,
+    RichTextEditor,
   },
 
   props: {
@@ -566,6 +636,29 @@ export default {
       type: Object,
       required: true,
     },
+  },
+
+  data() {
+    return {
+      form: this.$inertia.form({
+        comment: '',
+      }, {
+        bag: 'createComment',
+      })
+    }
+  },
+
+  methods: {
+    submitComment() {
+      this.form.post('/bookings/' + this.booking.id + '/comment', {
+        preserveState: true,
+      })
+    },
+    saveComment(comment) {
+      this.form.comment = comment;
+      this.submitComment();
+    }
+
   },
 
 }

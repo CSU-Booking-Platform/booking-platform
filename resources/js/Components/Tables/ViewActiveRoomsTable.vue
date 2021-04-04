@@ -8,7 +8,7 @@
         <input type="text" v-model="filter">
           <em class="fas fa-search ml-1 mr-2"></em>
         </input>
-      </div>   
+      </div>
     </div>
     <table class="table-auto responsive-spaced">
       <caption></caption>
@@ -93,6 +93,7 @@
     <update-room-form
         :room="roomBeingUpdated"
         :available-room-types="availableRoomTypes"
+        :available-buildings="availableBuildings"
         @close="roomBeingUpdated = null">
     </update-room-form>
 
@@ -136,7 +137,7 @@
               <div class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div v-for="role in roles">
                       <label class="flex items-center">
-                          <input type="checkbox" class="form-checkbox" :value="role.id"
+                          <input :dusk="'restrict-'+role.id" type="checkbox" class="form-checkbox" :value="role.id"
                                   v-model="updateRoomRestForm.restrictions">
                           <span class="ml-2 text-md text-black">{{ role.name }}</span>
                       </label>
@@ -152,7 +153,8 @@
 
           <jet-button class="ml-2" @click.native="updateRestrictions"
                       :class="{ 'opacity-25': updateRoomRestForm.processing }"
-                      :disabled="updateRoomRestForm.processing">
+                      :disabled="updateRoomRestForm.processing"
+                      id="updateRoomRestrictions">
               Update
           </jet-button>
       </template>
@@ -244,6 +246,10 @@ export default {
     },
 
     availableRoomTypes: {
+      type: Array,
+      required: true
+    },
+    availableBuildings: {
       type: Array,
       required: true
     },

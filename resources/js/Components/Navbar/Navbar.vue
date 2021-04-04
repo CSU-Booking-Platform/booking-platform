@@ -132,7 +132,7 @@
               Search
             </jet-nav-sub>
             <jet-nav-sub
-              v-if="userHasOneOf(['bookings.create'])"
+              v-if="userHasOneOf(['bookings.create']) && isCreatingBooking"
               href="/bookings/create"
               :active="$page.currentRouteName === 'bookings.create'"
             >
@@ -144,6 +144,11 @@
               :active="$page.currentRouteName === 'bookings.reviews.index'"
             >
               Review
+              <span v-if="$page.user.bookings_to_review_count > 0"
+                class="px-2 py-1 ml-2 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full"
+              >
+                {{ $page.user.bookings_to_review_count }}
+              </span>
             </jet-nav-sub>
           </div>
           <div
@@ -225,7 +230,12 @@ export default {
   data() {
     return {
       showingNavigationDropdown: false,
+      isCreatingBooking: false,
     };
+  },
+
+  mounted() {
+      this.setIsCreatingBooking();
   },
 
   methods: {
@@ -277,7 +287,16 @@ export default {
     },
     showBookingSubnav() {
       return this.userHasPermissionWithPrefix("bookings");
+    },
+    
+    setIsCreatingBooking() {
+      if (localStorage.isCreatingBooking == "true") {
+        this.isCreatingBooking = true;
+      }
+      else {
+        this.isCreatingBooking = false;
+      }
     }
-  },
+  }, 
 };
 </script>

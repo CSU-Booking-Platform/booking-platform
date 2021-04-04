@@ -2,7 +2,7 @@
 name: Acceptance Test #StoryID - Story Name
 about: Template for acceptance tests
 title: ''
-labels: story
+labels: acceptance-test
 assignees: ''
 
 ---

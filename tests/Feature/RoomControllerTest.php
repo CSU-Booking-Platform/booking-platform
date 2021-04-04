@@ -11,6 +11,8 @@ class RoomControllerTest extends TestCase
 {
     use RefreshDatabase;
 
+    const ROOM_TYPES = 'rooms.types';
+    const BUILDING_NAMES = 'rooms.buildings';
 
     /**
      * @test
@@ -189,9 +191,9 @@ class RoomControllerTest extends TestCase
             'name' => 'the room',
             'number' => '24',
             'floor' => '2009',
-            'building' => 'wiseau',
+            'building' => config(self::BUILDING_NAMES)[0],
             'status' => 'available',
-            'room_type' => 'Lounge',
+            'room_type' => config(self::ROOM_TYPES)[0],
             'capacity_standing' => '100',
             'capacity_sitting' => '80',
             'food' => 'true',
@@ -216,9 +218,9 @@ class RoomControllerTest extends TestCase
             'name' => 'the room',
             'number' => '24',
             'floor' => '2009',
-            'building' => 'wiseau',
+            'building' => config(self::BUILDING_NAMES)[0],
             'status' => 'available',
-            'room_type' => 'Lounge',
+            'room_type' => config(self::ROOM_TYPES)[0],
             'attributes' => json_encode([
                 'capacity_standing' => '100',
                 'capacity_sitting' => '80',
@@ -257,8 +259,9 @@ class RoomControllerTest extends TestCase
             'name' => 'the room',
             'number' => '24',
             'floor' => '2009',
-            'building' => 'wiseau',
+            'building' => config(self::BUILDING_NAMES)[0],
             'status' => 'available',
+            'room_type' => config(self::ROOM_TYPES)[0],
             'capacity_standing' => '100',
             'capacity_sitting' => '80',
             'food' => 'true',
@@ -275,7 +278,6 @@ class RoomControllerTest extends TestCase
             'ambiant_music' => 'true',
             'sale_for_profit' => 'false',
             'fundraiser' => 'false',
-            'room_type' => 'Lounge',
             'availabilities' => [
                 'Monday' => [
                     'opening_hours' => '12:00:00',
@@ -290,8 +292,9 @@ class RoomControllerTest extends TestCase
             'name' => 'the room',
             'number' => '24',
             'floor' => '2009',
-            'building' => 'wiseau',
+            'building' => config(self::BUILDING_NAMES)[0],
             'status' => 'available',
+            'room_type' => config(self::ROOM_TYPES)[0],
             'attributes' => json_encode([
                 'capacity_standing' => '100',
                 'capacity_sitting' => '80',
@@ -340,8 +343,9 @@ class RoomControllerTest extends TestCase
             'name' => 'the room',
             'number' => '24',
             'floor' => '2009',
-            'building' => 'wiseau',
+            'building' => config(self::BUILDING_NAMES)[0],
             'status' => 'available',
+            'room_type' => config(self::ROOM_TYPES)[0],
             'capacity_standing' => '100',
             'capacity_sitting' => '80',
             'food' => 'true',
@@ -358,7 +362,6 @@ class RoomControllerTest extends TestCase
             'ambiant_music' => 'true',
             'sale_for_profit' => 'false',
             'fundraiser' => 'false',
-            'room_type' => 'Lounge',
             'availabilities' => [
                 'Monday' => [
                     'opening_hours' => '12:00:00',
@@ -373,8 +376,9 @@ class RoomControllerTest extends TestCase
             'name' => 'the room',
             'number' => '24',
             'floor' => '2009',
-            'building' => 'wiseau',
+            'building' => config(self::BUILDING_NAMES)[0],
             'status' => 'available',
+            'room_type' => config(self::ROOM_TYPES)[0],
             'attributes' => json_encode([
                 'capacity_standing' => '100',
                 'capacity_sitting' => '80',
@@ -408,8 +412,9 @@ class RoomControllerTest extends TestCase
             'name' => 'the room',
             'number' => '24',
             'floor' => '2009',
-            'building' => 'wiseau',
+            'building' => config(self::BUILDING_NAMES)[0],
             'status' => 'available',
+            'room_type' => config(self::ROOM_TYPES)[0],
             'capacity_standing' => '100',
             'capacity_sitting' => '80',
             'food' => 'true',
@@ -426,7 +431,6 @@ class RoomControllerTest extends TestCase
             'ambiant_music' => 'true',
             'sale_for_profit' => 'false',
             'fundraiser' => 'false',
-            'room_type' => 'Lounge',
             'availabilities' => [
                 'Monday' => [
                     'opening_hours' => '13:00:00',

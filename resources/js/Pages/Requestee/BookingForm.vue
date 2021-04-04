@@ -566,12 +566,16 @@ export default {
 
     methods: {
         submitBooking() {
+            this.setLocalIsCreating(false);
             this.form.post('/bookings', {
                 preserveScroll: true,
             }).then(response => {
                 this.form.processing = false;
-                if (this.form.recentlySuccessful) {
+                if (this.form.recentlySuccessful) {                  
                     this.form.reset();
+                }
+                else{
+                    this.setLocalIsCreating(true);
                 }
             })
         },
@@ -596,6 +600,9 @@ export default {
         },
         only_time(date) {
             return moment(date).format("LT");
+        },
+        setLocalIsCreating(val) {
+            localStorage.isCreatingBooking = val;
         },
     },
 

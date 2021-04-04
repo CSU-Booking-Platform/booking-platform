@@ -2,6 +2,7 @@
 
 namespace Tests\Browser;
 
+use App\Models\Role;
 use App\Models\Room;
 use App\Models\User;
 use Database\Seeders\RolesAndPermissionsSeeder;
@@ -86,4 +87,31 @@ class RoomsPageTest extends DuskTestCase
 
     $this->assertDatabaseCount('rooms', 0);
   }
+
+    public function testWhenUpdateRoomRestrictions()
+    {
+        (new RolesAndPermissionsSeeder())->run();
+
+        $room = Room::factory()->create();
+        $admin = User::factory()->create();
+        $admin->assignRole('super-admin');
+        $role = Role::where('name', 'super-admin')->first();
+        $this->browse(function (Browser $browser) use ($room, $admin, $role) {
+
+
+            $browser->loginAs($admin);
+            $browser->visit(new Rooms)
+                ->assertSee($room->name)
+                ->restrictRoom($room, $role->id);
+            $browser->waitUntilMissingText('NEVERMIND');
+        });
+
+        $this->assertDatabaseCount('room_restrictions', 1);
+        $this->assertDatabaseHas('room_restrictions', [
+            'role_id' => $role->id,
+            'room_id' => $room->id
+        ]);
+    }
+
+
 }

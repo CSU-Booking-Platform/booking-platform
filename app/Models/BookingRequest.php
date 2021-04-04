@@ -97,6 +97,14 @@ class BookingRequest extends Model
     }
 
     public function scopePending(Builder $query) {
-        $query->where('status', 'review');
+        $query->where('status', 'review')->orWhere('status', 'pending');
+    }
+
+    /**
+     * Get the comments from the request.
+     */
+    public function comments(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Comment::class,'booking_id');
     }
 }

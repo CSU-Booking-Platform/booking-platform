@@ -11,16 +11,18 @@ use Database\Seeders\RolesAndPermissionsSeeder;
 use Database\Seeders\RoomSeeder;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
+use Tests\Browser\Components\DateTimePicker;
 use Tests\DuskTestCase;
 
 class SearchPageTest extends DuskTestCase
 {
 
-  use DatabaseMigrations;
-    private array $weekdays =['Monday', 'Tuesday', 'Wednesday','Thursday','Friday','Saturday','Sunday'];
+    use DatabaseMigrations;
+
+    private array $weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
 
-    public function testWhenUpdateRoomDateRestrictions()
+    public function testWhenBookRoomDateRestrictions()
     {
         (new RolesAndPermissionsSeeder())->run();
         $room = Room::factory()->create();
@@ -42,46 +44,49 @@ class SearchPageTest extends DuskTestCase
                 'room_id' => $room->id
             ]);
         }
-
         $this->browse(function (Browser $browser) use ($room, $admin) {
             $browser->loginAs($admin);
+
+
+            $startId = 'start_time_0';
+            $endId = 'end_time_0';
             $browser->visit('/bookings/search')
                 ->assertSee($room->name)
-                ->click('@room-select-'.$room->id);
-            $this->typeDateTime($browser, '#start_time', Carbon::now()->addDays(10)->setTime(13,0));
-            $this->typeDateTime($browser, '#end_time', Carbon::now()->addDays(10)->setTime(14,0));
-            $browser->click("#createBookingRequest")
-                ->waitForText("You can not book", 30)
-                ->assertSee("You can not book this room later than 30 days in advance");
-            $this->typeDateTime($browser, '#start_time', Carbon::now()->addDays(40)->setTime(13,0));
-            $this->typeDateTime($browser, '#end_time', Carbon::now()->addDays(40)->setTime(14,0));
-            $browser->click("#createBookingRequest")
-                ->waitForText("book this room sooner", 30)
-                ->assertSee("You can not book this room sooner than 31 days in advance");
+                ->click('@room-select-' . $room->id)
+                ->mouseover('@createBookingModal')
+                ->mouseover('#addAnotherDate');
+
+            $browser->within( new DateTimePicker($startId), function($browser) {
+                $browser->setDatetime(10,13);
+            })->pause(1000);
+
+            $browser->within( new DateTimePicker($endId), function($browser) {
+                $browser->setDatetime(10,14);
+            })->pause(1000);
+
+            $browser->click("#createBookingRequest")->pause(5000)
+                ->assertSee("later than 30 days");
+
+
+            $browser->within( new DateTimePicker($startId), function($browser) {
+                $browser->setDatetime(40,13);
+            })->pause(1000);
+
+            $browser->within( new DateTimePicker($endId), function($browser) {
+                $browser->setDatetime(40,14);
+            })->pause(1000);
+
+            $browser->click("#createBookingRequest")->pause(5000)
+                ->assertSee("sooner than 31 days");
         });
     }
-
-    public function typeDateTime(Browser $browser, $selector = 'input', $date = null)
-    {
-        $date = Carbon::parse($date);
-        $browser->keys($selector,
-            $date->format('Y'),
-            ['{right}', $date->format('m')],
-            $date->format('d'),
-            $date->format('h'),
-            $date->format('i'),
-            $date->format('A'),
-        );
-    }
-
-
 
     public function testWhenUpdateRoomRestrictions()
     {
         (new RolesAndPermissionsSeeder())->run();
 
-        $room = Room::factory()->create();
-        $room2 = Room::factory()->create();
+        $room = Room::factory()->create(['name'=>'qwertqwert']);
+        $room2 = Room::factory()->create(['name'=>'asdfasdf']);
         $admin = User::factory()->create();
         $admin->assignRole('super-admin');
         $role = Role::where('name', 'super-admin')->first();

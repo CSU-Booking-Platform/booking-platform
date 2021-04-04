@@ -1,5 +1,5 @@
 <template>
-  <ctk-date-time-picker v-model="proxyValue" :minute-interval="minuteInterval" :format="format">
+  <ctk-date-time-picker dusk="date-time-picker" :id="id" v-model="proxyValue" :minute-interval="minuteInterval" :format="format">
     <slot></slot>
   </ctk-date-time-picker>
 </template>
@@ -16,6 +16,9 @@ export default {
   props: {
     value: {
       default: null,
+    },
+    id: {
+      default: undefined,
     },
     minuteInterval: {
       default: 15,

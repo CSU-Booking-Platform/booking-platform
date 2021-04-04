@@ -2,7 +2,7 @@
     <jet-dialog-modal :show="room" @close="closeModal" max-width="">
         <template #content>
 
-          <div class="overflow-y-auto h-96">
+          <div :dusk="'createBookingModal'" class="overflow-y-auto h-96">
             <h2 class="pb-1">Availabilities</h2>
             <Availabilities :room="room" />
             <div class="pt-5 pb-5">
@@ -24,9 +24,9 @@
               <jet-input-error :message="createBookingRequestForm.error('reservations.'+index)" class="mt-2" />
               <jet-label  :value="index+1" />
               <div class="m-6">
-                  <jet-label for="start_time" value="Start Time" />
+                  <jet-label :for="'start_time_'+index" value="Start Time" />
                   <date-time-picker
-                      id="start_time"
+                      :id="'start_time_'+index"
                       class="mt-1 block w-full"
                       v-model="dates.start_time"
                       autofocus
@@ -37,7 +37,7 @@
               <div class="m-6">
                   <jet-label for="end_time" value="End Time" />
                   <date-time-picker
-                      id="end_time"
+                    :id="'end_time_'+index"
                       class="mt-1 block w-full"
                       v-model="dates.end_time"
                       autofocus
@@ -53,7 +53,7 @@
               </jet-secondary-button>
             </div>
           <div class="m-6">
-          <jet-secondary-button @click.native="addDate">
+          <jet-secondary-button  id="addAnotherDate" @click.native="addDate">
             Add Another date
           </jet-secondary-button>
           </div>

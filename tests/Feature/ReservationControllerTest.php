@@ -8,7 +8,6 @@ use App\Models\Reservation;
 use App\Models\Room;
 use App\Models\User;
 use Carbon\Carbon;
-use Faker\Factory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -16,17 +15,7 @@ use Tests\TestCase;
 class ReservationControllerTest extends TestCase
 {
     use RefreshDatabase;
-
-    /**
-     * @var \Faker\Generator
-     */
-    public $faker;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-        $this->faker = Factory::create();
-    }
+    use WithFaker;
 
     /**
      * @test
@@ -373,9 +362,10 @@ class ReservationControllerTest extends TestCase
         $reservation = $this->createReservation($room, $booking_request, true);
         $this->createReservationAvailabilities($reservation->start_time, $room);
 
-        $response = $this->actingAs($this->createUserWithPermissions(['bookings.create']))->post('/api/reservations/' . $room->id, [
-            'date' => $reservation->start_time
-        ]);
+        $response = $this->actingAs($this->createUserWithPermissions(['bookings.create']))->get(route('reservations.by-room', [
+            'room' => $room,
+            'date' => $reservation->start_time->format('Y-m-d')
+        ]));
 
         $response->assertJsonCount(1);
     }
@@ -392,9 +382,112 @@ class ReservationControllerTest extends TestCase
         $reservation = $this->createReservation($room, $booking_request, true);
         $this->createReservationAvailabilities($reservation->start_time, $room);
 
-        $response = $this->actingAs($this->createUserWithPermissions(['bookings.create']))->post('/api/reservations/' . $room->id);
+        $response = $this->actingAs($this->createUserWithPermissions(['bookings.create']))->get(route('reservations.by-room', $room));
 
         $response->assertJsonCount(0);
+    }
+
+    /**
+     * @test
+     */
+    public function retrieve_rooms_availabilities_by_date()
+    {
+        $user = $this->createUserWithPermissions(['bookings.create']);
+
+        $room = Room::factory()->create();
+        $booking_request = $this->createBookingRequest(true, ['status' => "approved"]);
+        $reservation = $this->createReservation($room, $booking_request, true);
+        $this->createReservationAvailabilities($reservation->start_time, $room);
+
+        $response = $this->actingAs($user)->get(route('reservations.by-date', [
+            'date' => $reservation->start_time->format('Y-m-d')
+        ]));
+
+        $response->assertOk();
+        $response->assertSessionHasNoErrors();
+        // 1 room
+        $response->assertJsonCount(1);
+        // room details
+        $response->assertJsonFragment([
+            'id' => $room->id,
+            'name' => $room->name,
+            'floor' => $room->floor,
+            'building' => $room->building,
+            'room_type' => $room->room_type,
+        ]);
+        // structure matches
+        $response->assertJsonStructure([
+            [
+                'id',
+                'name',
+                'floor',
+                'building',
+                'room_type',
+                'reservations',
+                'blackouts',
+                'availabilities',
+                'day_breakdown' => [
+                    [
+                        [
+                            'start_time',
+                            'end_time',
+                            'closed',
+                            'booked',
+                        ] // ... 4 blocks of 15m
+                    ], // ...24 hours
+                ]
+            ]
+        ]);
+    }
+    /**
+     * @test
+     */
+    public function retrieve_rooms_availabilities_for_today()
+    {
+        $user = $this->createUserWithPermissions(['bookings.create']);
+
+        $room = Room::factory()->create();
+        $booking_request = $this->createBookingRequest(true, ['status' => "approved"]);
+        $reservation = $this->createReservation($room, $booking_request, true);
+        $this->createReservationAvailabilities($reservation->start_time, $room);
+
+        $response = $this->actingAs($user)->get(route('reservations.by-date'));
+
+        $response->assertOk();
+        $response->assertSessionHasNoErrors();
+        // 1 room
+        $response->assertJsonCount(1);
+        // room details
+        $response->assertJsonFragment([
+            'id' => $room->id,
+            'name' => $room->name,
+            'floor' => $room->floor,
+            'building' => $room->building,
+            'room_type' => $room->room_type,
+        ]);
+        // structure matches
+        $response->assertJsonStructure([
+            [
+                'id',
+                'name',
+                'floor',
+                'building',
+                'room_type',
+                'reservations',
+                'blackouts',
+                'availabilities',
+                'day_breakdown' => [
+                    [
+                        [
+                            'start_time',
+                            'end_time',
+                            'closed',
+                            'booked',
+                        ] // ... 4 blocks of 15m
+                    ], // ...24 hours
+                ]
+            ]
+        ]);
     }
 
     /**

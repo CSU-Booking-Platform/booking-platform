@@ -25,7 +25,34 @@
       </div>
     </div>
 
-    <table class="table-auto responsive-spaced">
+    <ul class="list-reset flex border-b">
+      <li v-if="listViewSelected" class="-mb-px mr-1">
+        <a @click="listViewSelected = true"
+          class="bg-white inline-block border-l border-t border-r rounded-t py-2 px-4 text-blue-dark font-semibold"
+          href="#">List View</a
+        >
+      </li>
+      <li v-else class="mr-1">
+        <a @click="listViewSelected = true"
+          class="bg-white inline-block py-2 px-4 text-blue hover:text-blue-darker font-semibold"
+          href="#">List View</a
+        >
+      </li>
+      <li v-if="listViewSelected" class="mr-1">
+        <a @click="listViewSelected = false"
+          class="bg-white inline-block py-2 px-4 text-blue hover:text-blue-darker font-semibold"
+          href="#">Calendar View</a
+        >
+      </li>
+      <li v-else class="-mb-px mr-1">
+        <a @click="listViewSelected = false"
+          class="bg-white inline-block border-l border-t border-r rounded-t py-2 px-4 text-blue-dark font-semibold"
+          href="#">Calendar View</a
+        >
+      </li>
+    </ul>
+
+    <table v-if="listViewSelected" class="table-auto responsive-spaced mt-4">
       <caption></caption>
       <thead>
         <tr>
@@ -139,6 +166,11 @@
         </tr>
       </tbody>
     </table>
+
+
+    <div v-if="!listViewSelected">
+      <CalendarViewTable/>
+    </div>
 
     <CreateBookingRequestModal
       :room="roomBeingBooked"
@@ -395,6 +427,7 @@ import JetButton from "@src/Jetstream/Button";
 import JetLabel from "@src/Jetstream/Label";
 import JetInputError from "@src/Jetstream/InputError";
 import AvailabilitiesModal from "@src/Components/AvailabilitiesModal";
+import CalendarViewTable from "@src/Components/Tables/CalendarViewTable";
 import DateTimePicker from "@src/Components/Form/DateTimePicker";
 
 export default {
@@ -407,7 +440,7 @@ export default {
     },
   },
   components: {
-    DateTimePicker,
+      DateTimePicker,
       Input,
       Button,
       CreateBookingRequestModal,
@@ -421,7 +454,8 @@ export default {
       JetButton,
       JetLabel,
       JetInputError,
-      AvailabilitiesModal
+      AvailabilitiesModal,
+      CalendarViewTable
   },
   data() {
       return {
@@ -450,7 +484,8 @@ export default {
           },
         showFilterModal: false,
         currentSort: 'name',
-        currentSortDir: 'asc'
+        currentSortDir: 'asc',
+        listViewSelected: true
       }
   },
     computed: {

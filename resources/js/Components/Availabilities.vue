@@ -174,7 +174,7 @@ export default {
     fetchRoomReservations() {
       if (this.room) {
         axios
-          .post("/api/reservations/" + this.room.id, {
+          .get("/api/reservations/by-room/" + this.room.id, {
             date: this.dates[0]
           })
           .then(response => {

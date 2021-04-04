@@ -39,44 +39,44 @@
             <div class="text-md mx-2">
               <jet-dropdown width="48">
                 <template #trigger>
-                  <button
-                  class="flex text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out"
+                  <jet-button
+                  class="flex text-sm font-medium focus:outline-none transition duration-150 ease-in-out"
                   >
-                  <span>Action</span>
-                  </button>
+                  <span>Action Menu</span>
+                  </jet-button>
                 </template>
 
                 <template #content>
-                  <div class="text-md mx-3">
+                  <div class="text-md mx-2">
                     <button
-                        class="cursor-pointer text-sm text-blue-800 focus:outline-none"
+                        class="cursor-pointer text-sm text-blue-800 focus:outline-none text-left px-4"
                         @click="roomBeingUpdated = room"
                     >
-                        Update
+                      Update
                     </button>
                   </div>
-                  <div class="text-md mx-3">
+                  <div class="text-md mx-2">
                     <jet-dropdown-link :href="'/admin/rooms/'+room.id+'/blackouts'">
-                        <div class="cursor-pointer text-sm text-blue-800 focus:outline-none">
-                          Blackout
+                        <div class="cursor-pointer text-sm text-blue-800 focus:outline-none text-left">
+                          Update Blackout
                         </div>
                     </jet-dropdown-link>
                   </div>
                   <div class="text-md mx-2">
-                    <button class="cursor-pointer text-sm text-blue-800 focus:outline-none"
+                    <button class="cursor-pointer text-sm text-blue-800 focus:outline-none text-left px-4"
                             @click="openEditRestrictionsModal(room)">
                       Restricted Roles
                     </button>
                   </div>
                   <div class="text-md mx-2">
-                    <button class="cursor-pointer text-sm text-blue-800 focus:outline-none"
+                    <button class="cursor-pointer text-sm text-blue-800 focus:outline-none text-left px-4"
                             @click="openEditDateRestrictionsModal(room)">
                       Customize Role Date Restrictions
                     </button>
                   </div>
-                  <div class="text-md mx-3">
+                  <div class="text-md mx-2">
                     <button
-                        class="cursor-pointer text-sm text-red-800 focus:outline-none"
+                        class="cursor-pointer text-sm text-red-800 focus:outline-none text-left px-4"
                         @click="roomBeingDeleted = room"
                     >
                         Delete

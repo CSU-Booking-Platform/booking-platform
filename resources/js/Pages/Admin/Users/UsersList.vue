@@ -5,15 +5,15 @@
       <template v-slot:user="{ user }">
         <div class="flex items-center">
 
-          <button class="cursor-pointer ml-6 text-sm focus:outline-none"
+          <jet-button class="cursor-pointer ml-6 text-sm focus:outline-none"
                   @click="openUpdateModal(user)">
             Edit
-          </button>
+          </jet-button>
 
-          <button class="cursor-pointer ml-6 text-sm text-red-500 focus:outline-none"
+          <jet-button class="cursor-pointer ml-6 text-sm text-red-500 focus:outline-none"
                   @click="userBeingDeleted = user">
             Delete
-          </button>
+          </jet-button>
 
         </div>
       </template>

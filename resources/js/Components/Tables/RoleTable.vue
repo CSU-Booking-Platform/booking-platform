@@ -31,34 +31,20 @@
           </td>
           <td>
             <div class="text-md mx-2">
-              <jet-dropdown width="48">
-                <template #trigger>
-                  <button
-                  class="flex text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out"
-                  >
-                    Action
-                  </button>
-                </template>
-
-                <template #content>
                   <div class="text-md mx-3">
-                    <button
-                        class="cursor-pointer text-sm text-blue-800 focus:outline-none"
+                    <jet-button
+                        class="cursor-pointer ml-6 text-sm focus:outline-none"
                         @click="roleBeingUpdated = role"
                     >
                         Update
-                    </button>
-                  </div>
-                  <div class="text-md mx-3">
-                    <button
-                        class="cursor-pointer text-sm text-red-800 focus:outline-none"
+                    </jet-button>
+                    <jet-button
+                        class="cursor-pointer ml-6 text-sm text-red-500 focus:outline-none"
                         @click="roleBeingDeleted = role"
                     >
                         Delete
-                    </button>
+                    </jet-button>
                   </div>
-                </template>
-              </jet-dropdown>
             </div>
           </td>
         </tr>

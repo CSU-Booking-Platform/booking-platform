@@ -50,8 +50,8 @@
       <caption></caption>
       <thead>
       <tr>
-        <th class="font-bold w-1/8">Room Name</th>
-        <th class="text-center w-1/16" v-for="hour in dailyHours.slice(leftHourDelimiter, rightHourDelimiter)">{{hour}}</th>
+        <th id="room-name" class="font-bold w-1/8">Room Name</th>
+        <th id="room-delimiters" class="text-center w-1/16" v-for="hour in dailyHours.slice(leftHourDelimiter, rightHourDelimiter)">{{hour}}</th>
       </tr>
       </thead>
       <tbody>

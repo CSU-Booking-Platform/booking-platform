@@ -203,8 +203,8 @@ export default {
   },
   mounted(){
     const status_zip = {};
-    for (var i = 0; i < this.statuses.length; i++) {
-      status_zip[this.statuses[i]] = false;
+    for (let status of this.statuses) {
+      status_zip[this.status] = false;
     }
     this.jsonFilters.status_list = status_zip ?? {};
 

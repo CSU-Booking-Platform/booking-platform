@@ -103,13 +103,11 @@ import JetSecondaryButton from "@src/Jetstream/SecondaryButton";
 import JetDangerButton from "@src/Jetstream/DangerButton";
 import JetButton from "@src/Jetstream/Button";
 import JetModal from "@src/Jetstream/Modal";
-import Input from "@src/Jetstream/Input";
 import Dropdown from "@src/Jetstream/Dropdown";
 import JetInput from "@src/Jetstream/Input";
 import JetInputError from "@src/Jetstream/InputError";
 import JetLabel from "@src/Jetstream/Label";
 import ViewBookingRequestStatusModal from "./ViewBookingRequestStatusModal";
-import Label from "@src/Jetstream/Label";
 
 const moment= require('moment')
 
@@ -130,9 +128,7 @@ export default {
   },
 
   components: {
-    Label,
     Dropdown,
-    Input,
     JetSectionBorder,
     JetActionSection,
     JetButton,

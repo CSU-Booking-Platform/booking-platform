@@ -109,7 +109,6 @@ import JetDropdown from "@src/Jetstream/Dropdown";
 import JetDropdownLink from "@src/Jetstream/DropdownLink";
 import JetNavLink from "@src/Components/Navbar/NavLink";
 import JetSecondaryButton from "@src/Jetstream/SecondaryButton";
-import DialogModal from "@src/Jetstream/DialogModal";
 import Availabilities from "@src/Components/Availabilities";
 import JetDangerButton from "@src/Jetstream/DangerButton";
 import moment from "moment"
@@ -135,7 +134,6 @@ export default {
   components: {
     XSelect,
     DateTimePicker,
-    DialogModal,
     JetButton,
     JetInput,
     JetFormSection,

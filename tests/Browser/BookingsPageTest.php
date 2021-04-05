@@ -100,7 +100,7 @@ class BookingsPageTest extends DuskTestCase
         });
     }
 
-    public function testViewBookingStatus()
+    public function testUserCanViewABookingRequestStatus()
     {
         $bookings = BookingRequest::factory()
             ->count(1)
@@ -116,26 +116,29 @@ class BookingsPageTest extends DuskTestCase
         });
     }
 
-    public function testEditBooking()
+    public function testUserCanEditABooking()
     {
         $bookings = BookingRequest::factory()
             ->count(1)
-            ->hasReservations(random_int(1, 3))
-            ->create(["status" => BookingRequest::PENDING])->first();
-            
+            ->hasReservations(1)
+            ->create(["status" => BookingRequest::PENDING])->first();          
         $this->browse(function (Browser $browser) use ($bookings) {
+            $TimeFormat = 'H:i';
+            $amPM = strtolower(Reservation::first()->end_time->format('A'));
+            $startTime = trim(Reservation::first()->start_time->format($TimeFormat), ":");
+            $endTime = trim(Reservation::first()->end_time->format($TimeFormat), ":");
             $browser->loginAs(User::first());
             $browser->visit('/bookings')
                 ->clickLink("Edit", 'button')
                 ->pause(5000);
             $browser->assertSee('Submit A Booking Request')
-                ->type('@start', '0700pm')
-                ->type('@end', '0800pm')
-                ->type('@title', 'title')
+                ->type('@start', $startTime . $amPM)
+                ->type('@end', $endTime . $amPM)
+                ->type('@title', $endTime . $amPM)
                 ->type('@type', 'type')
                 ->type('#event_description', 'description')
                 ->type('#guest_speakers', 'speakers')
-                ->type('@numberAttending', '22');
+                ->type('@numberAttending', '2');
             $browser->check('div > main > form > div:nth-child(4) > div > div > input');
             $browser->press('SUBMIT')
                 ->pause(5000)

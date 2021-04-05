@@ -1,10 +1,10 @@
 <template>
     <app-layout>
-        <div class="flex flex-col lg:flex-row md:mx-auto md:w-11/12 ">
-            <div class="m-4 w-1/4 pt-12 pb-48">
+        <div class="flex flex-col lg:flex-row mx-auto lg:w-11/12 ">
+            <div class="m-4 p-2 lg:max-w-1/2">
                 <create-role-form :availablePermissions="permissions" />
             </div>
-            <div v-if="roles.length > 0" class="m-4 w-3/4">
+            <div v-if="roles.length > 0" class="m-4 flex-grow">
                 <div class="m-12">
                     <role-table :roles="roles" :permissions="permissions"/>
                 </div>

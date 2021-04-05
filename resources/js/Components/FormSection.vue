@@ -7,7 +7,7 @@
 
         <form @submit.prevent="$emit('submitted')">
             <slot name="form"></slot>
-        <div class="my-3"></div>
+        <div class="my-6"></div>
         <div class="flex items-center justify-end -m-6 px-6 py-4 bg-gray-50 text-right sm:px-6 rounded-md"
              v-if="hasActions">
             <slot name="actions"></slot>

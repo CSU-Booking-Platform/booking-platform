@@ -374,7 +374,7 @@
 
                         <!-- bake sale -->
                         <div class="col-span-6" v-if="room.room_type == 'Mezzanine'">
-                            <app-question v-model="form.event.bake_sale">
+                            <app-question :id="'bake-sale-checkbox'" v-model="form.event.bake_sale">
                                 <template #header>
                                     <jet-label value="Is the reservation for a bake sale?"/>
                                 </template>
@@ -425,7 +425,7 @@
 
             <!-- Terms & Conditions -->
             <div class="flex items-center justify-end py-3">
-                <app-question v-model="accept_terms">
+                <app-question v-model="accept_terms" :id="'terms-and-conditions'">
                     <template #after>
                         <jet-label>
                             I have read and agree to the CSU’s
@@ -451,7 +451,7 @@
                     </strong>
                 </app-warning>
 
-                <jet-button :class="{ 'opacity-25': (form.processing || !accept_terms) }" :disabled="form.processing || !accept_terms">
+                <jet-button id="submit-booking-create" :class="{ 'opacity-25': (form.processing || !accept_terms) }" :disabled="form.processing || !accept_terms">
                     Submit
                 </jet-button>
             </div>
@@ -571,7 +571,7 @@ export default {
                 preserveScroll: true,
             }).then(response => {
                 this.form.processing = false;
-                if (this.form.recentlySuccessful) {                  
+                if (this.form.recentlySuccessful) {
                     this.form.reset();
                 }
                 else{

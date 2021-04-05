@@ -150,11 +150,12 @@ class ReviewIndexPageTest extends DuskTestCase
                 $browser->assertSee(ucfirst(BookingRequest::PENDING));
                 $browser->assertDontSee(ucfirst(BookingRequest::APPROVED));
                 $browser->assertDontSee(ucfirst(BookingRequest::REFUSED));
-            $browser->click("#open-filter-button");
+            $browser->click("#open-filter-button")
+                ->pause(500);
 
             $browser->within( new DateTimePicker('start_time'), function($browser) {
                 $browser->setDatetime(10,13);
-            })->pause(1000);
+            })->pause(250);
 
             $browser->click('#submit-advanced-filter')->pause(2000);
             $browser->assertDontSee(ucfirst(BookingRequest::PENDING));

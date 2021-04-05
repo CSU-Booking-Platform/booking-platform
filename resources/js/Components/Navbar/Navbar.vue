@@ -245,8 +245,8 @@ export default {
       })
     },
     userHasOneOf(permissions) {
-      for (let i = 0; i < permissions.length; ++i)
-        if (this.$page.user.can.includes(permissions[i]))
+      for (let permission of permissions)
+        if (this.$page.user.can.includes(permission))
           return true;
 
       return false;

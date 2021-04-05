@@ -414,12 +414,9 @@
 <script>
 
 import CreateBookingRequestModal from "@src/Pages/Admin/BookingRequests/CreateBookingRequestModal";
-import Button from "@src/Jetstream/Button";
 import JetDialogModal from "@src/Jetstream/DialogModal";
 import JetSecondaryButton from "@src/Jetstream/SecondaryButton";
-import Label from "@src/Jetstream/Label";
 import JetInput from "@src/Jetstream/Input";
-import Input from "@src/Jetstream/Input";
 import JetDropdown from "@src/Jetstream/Dropdown";
 import JetDropdownLink from "@src/Jetstream/DropdownLink";
 import RoomDetailedView from "@src/Components/RoomDetailedView";
@@ -441,12 +438,9 @@ export default {
   },
   components: {
       DateTimePicker,
-      Input,
-      Button,
       CreateBookingRequestModal,
       JetDialogModal,
       JetSecondaryButton,
-      Label,
       JetInput,
       JetDropdown,
       JetDropdownLink,
@@ -503,8 +497,8 @@ export default {
         },
         missingDates: function(){
           if(this.numDates > 0){
-            for(let i = 0; i < this.jsonFilters.recurrences.length; i++){
-              if(!this.jsonFilters.recurrences[i].start_time || !this.jsonFilters.recurrences[i].end_time) {
+            for(let recurrence of this.jsonFilters.recurrences){
+              if(!recurrence.start_time || !recurrence.end_time) {
                 return true;
               }
             }

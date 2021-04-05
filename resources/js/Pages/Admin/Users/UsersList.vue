@@ -106,12 +106,10 @@ import JetSecondaryButton from '@src/Jetstream/SecondaryButton'
 import JetDangerButton from '@src/Jetstream/DangerButton'
 import JetButton from '@src/Jetstream/Button'
 import JetModal from '@src/Jetstream/Modal'
-import Input from "@src/Jetstream/Input";
 import Dropdown from "@src/Jetstream/Dropdown";
 import JetInput from "@src/Jetstream/Input"
 import JetInputError from "@src/Jetstream/InputError"
 import JetLabel from "@src/Jetstream/Label"
-import Label from "@src/Jetstream/Label";
 import XSection from "@src/Components/XSection";
 import UserTable from "@src/Components/Tables/UsersTable";
 import ResetLinkModal from "@src/Pages/Admin/Users/ResetLinkModal";
@@ -134,9 +132,7 @@ export default {
 
   components: {
     UserTable,
-    Label,
     Dropdown,
-    Input,
     JetSectionBorder,
     JetActionSection,
     JetButton,

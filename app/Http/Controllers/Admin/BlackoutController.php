@@ -15,7 +15,7 @@ use Illuminate\Validation\ValidationException;
 
 class BlackoutController extends Controller
 {
-
+    const AFTER_START = 'after:start';
   /**
    * Store a newly created resource in storage.
    *
@@ -28,7 +28,7 @@ class BlackoutController extends Controller
   {
     $request->validateWithBag('createBlackout', [
       'start' => ['required', 'date'],
-      'end' => ['required', 'date', "after:start"],
+      'end' => ['required', 'date', self::AFTER_START],
       'name' => ['required', 'string']
     ]);
 
@@ -102,7 +102,7 @@ class BlackoutController extends Controller
   {
     $request->validateWithBag('createBlackout', [
       'start' => ['required', 'date'],
-      'end' => ['required', 'date', "after:start"],
+      'end' => ['required', 'date', self::AFTER_START],
     ]);
 
     if ($request->start) {
@@ -144,7 +144,7 @@ class BlackoutController extends Controller
   {
       $request->validateWithBag('createBlackoutAll', [
           'start_date' => ['required', 'date'],
-          'end_date' => ['required', 'date', "after:start"],
+          'end_date' => ['required', 'date', self::AFTER_START],
       ]);
 
       foreach (Room::all() as $room){

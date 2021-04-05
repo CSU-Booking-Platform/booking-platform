@@ -25,6 +25,7 @@ class RoomController extends Controller
 
     const ROOM_TYPES = 'rooms.types';
     const BUILDING_NAMES = 'rooms.buildings';
+    const MAX_255 = 'max:255';
 
     /**
      * Display a listing of the resource.
@@ -61,11 +62,11 @@ class RoomController extends Controller
     {
 
         $request->validateWithBag('createRoom', [
-            'name' => ['required', 'string', 'max:255'],
-            'number' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', self::MAX_255],
+            'number' => ['required', 'string', self::MAX_255],
             'floor' => ['required', 'integer'],
             'building' => ['required', Rule::in(config(self::BUILDING_NAMES))],
-            'status' => ['required', 'string', 'max:255'],
+            'status' => ['required', 'string', self::MAX_255],
             'capacity_standing' => ['nullable', 'integer'],
             'capacity_sitting' => ['nullable', 'integer'],
             'food' => ['required', 'boolean'],
@@ -155,11 +156,11 @@ class RoomController extends Controller
     public function update(Request $request, Room $room)
     {
         $request->validateWithBag('updateRoom', [
-            'name' => ['required', 'string', 'max:255'],
-            'number' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', self::MAX_255],
+            'number' => ['required', 'string', self::MAX_255],
             'floor' => ['required', 'integer'],
             'building' => ['required', Rule::in(config(self::BUILDING_NAMES))],
-            'status' => ['required', 'string', 'max:255'],
+            'status' => ['required', 'string', self::MAX_255],
             'availabilities.Monday.opening_hours' => 'nullable|required_with:availabilities.Monday.closing_hours|before:availabilities.Monday.closing_hours',
             'availabilities.Monday.closing_hours' => 'nullable|required_with:availabilities.Monday.opening_hours|after:availabilities.Monday.opening_hours',
             'availabilities.Tuesday.opening_hours' => 'nullable|required_with:availabilities.Tuesday.closing_hours|before:availabilities.Tuesday.closing_hours',

@@ -11,6 +11,9 @@ use Illuminate\Http\Response;
 
 class RoleController extends Controller
 {
+    const ROLES_INDEX_ROUTE = 'admin.roles.index';
+    const BOOKING_PER_PERIOD_VALIDATION = 'integer|gt:0|nullable';
+
     /**
      * Display a listing of the resource.
      *
@@ -35,8 +38,8 @@ class RoleController extends Controller
         $request->validateWithBag('createRole', [
             'name' => 'required|string|max:255|unique:roles',
             'permissions' => 'array',
-            'number_of_bookings_per_period' => 'integer|gt:0|nullable',
-            'number_of_days_per_period' => 'integer|gt:0|nullable'
+            'number_of_bookings_per_period' => self::BOOKING_PER_PERIOD_VALIDATION,
+            'number_of_days_per_period' => self::BOOKING_PER_PERIOD_VALIDATION
         ]);
 
         $role = Role::create([
@@ -48,7 +51,7 @@ class RoleController extends Controller
 
         $role->syncPermissions($request->permissions);
 
-        return redirect(route('admin.roles.index'))->with('flash', ['new' => $role]);
+        return redirect(route(self::ROLES_INDEX_ROUTE))->with('flash', ['new' => $role]);
     }
 
     /**
@@ -63,8 +66,8 @@ class RoleController extends Controller
         $request->validateWithBag('updateRole', [
             'name' => 'required|string|max:255',
             'permissions' => 'required|array',
-            'number_of_bookings_per_period' => 'integer|gt:0|nullable',
-            'number_of_days_per_period' => 'integer|gt:0|nullable'
+            'number_of_bookings_per_period' => self::BOOKING_PER_PERIOD_VALIDATION,
+            'number_of_days_per_period' => self::BOOKING_PER_PERIOD_VALIDATION
         ]);
 
         $role->name = $request->name;
@@ -74,7 +77,7 @@ class RoleController extends Controller
         $role->save();
         $role->syncPermissions($request->permissions);
 
-        return redirect(route('admin.roles.index'))->with('flash', ['updated' => $role]);
+        return redirect(route(self::ROLES_INDEX_ROUTE))->with('flash', ['updated' => $role]);
     }
 
     /**
@@ -87,6 +90,6 @@ class RoleController extends Controller
     {
         $role->delete();
 
-        return redirect(route('admin.roles.index'));
+        return redirect(route(self::ROLES_INDEX_ROUTE));
     }
 }

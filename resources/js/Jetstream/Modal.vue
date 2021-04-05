@@ -20,7 +20,7 @@
                     leave-active-class="ease-in duration-200"
                     leave-class="opacity-100 translate-y-0 sm:scale-100"
                     leave-to-class="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
-          <div v-show="show" class="bg-white rounded-lg shadow-xl transform transition-all"
+          <div v-show="show" class="bg-white shadow-xl transform transition-all"
                :class="maxWidthClass">
             <slot></slot>
           </div>
@@ -90,6 +90,7 @@ export default {
         'lg': 'sm:w-full sm:max-w-lg',
         'xl': 'sm:w-full sm:max-w-xl',
         '2xl': 'sm:w-full sm:max-w-2xl',
+        '5/6': 'sm:max-w-5/6'
       }[this.maxWidth]
     }
   }

@@ -39,11 +39,10 @@ class BookingsSearchTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs($this->createUserWithPermissions(['bookings.create']))
                 ->visit('/bookings/search')
-                ->press('#create')
-                ->waitForText('Availabilities')
+                ->press('VIEW DETAILS')
+                ->waitForText('Detailed View of')
                 ->assertSee('07:00')
-                ->assertSee('23:00')
-                ->assertVisible('#availabilities-calendar');
+                ->assertSee('23:00');
         });
     }
 }

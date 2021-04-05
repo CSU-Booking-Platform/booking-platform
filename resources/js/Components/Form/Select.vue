@@ -1,5 +1,5 @@
 <template>
-    <select v-model="selected" v-bind="$attrs" class="form-select" :class="{ error: error }" ref="input">
+    <select v-model="selected" v-bind="$attrs" class="form-select form-input rounded-md shadow-sm" :class="{ error: error }" ref="input">
         <slot />
     </select>
 </template>

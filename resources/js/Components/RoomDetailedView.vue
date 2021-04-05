@@ -1,13 +1,16 @@
 <template>
   <div>
-    <jet-dialog-modal :show="room">
+    <jet-dialog-modal :show="room" max-width="5/6">
       <template #title>
         Detailed View of <span v-if="room">{{room.name}}</span>
       </template>
 
       <template #content>
-        <div class="overflow-y-auto h-96">
-          <div class="flex flex-wrap grid grid-cols-3 gap-4" v-if="room">
+        <Availabilities :room="room"/>
+        <div class="pt-5 pb-5">
+          <hr/>
+        </div>
+        <div class="flex flex-wrap grid grid-cols-3 gap-4" v-if="room">
           <div v-for="(attribute, key) in room.attributes" :key="attribute.id">
             <jet-label :for="convertVarToText(key)" :value="convertVarToText(key)+':'"></jet-label>
             <div v-if="typeof(attribute) == 'boolean'">
@@ -26,7 +29,6 @@
             <div class="text-center rounded-full py-2 px-4 bg-gray-300">{{room.room_type}}</div>
           </div>
         </div>
-        </div>
       </template>
 
       <template #footer>
@@ -43,6 +45,7 @@
 import JetSecondaryButton from "@src/Jetstream/SecondaryButton";
 import JetDialogModal from "@src/Jetstream/DialogModal";
 import JetLabel from "@src/Jetstream/Label";
+import Availabilities from "@src/Components/Availabilities";
 
 export default {
   props: {
@@ -51,21 +54,20 @@ export default {
       required: false
     }
   },
-  data(){
-    return{
-
-    }
+  data() {
+    return {}
   },
   components: {
     JetSecondaryButton,
     JetDialogModal,
-    JetLabel
+    JetLabel,
+    Availabilities
   },
   methods: {
     closeModal() {
       this.$emit("close");
     },
-    convertVarToText(variable){
+    convertVarToText(variable) {
       const no_spaces = variable.replace(/_/g, ' ');
       return no_spaces.toLowerCase()
         .split(' ')

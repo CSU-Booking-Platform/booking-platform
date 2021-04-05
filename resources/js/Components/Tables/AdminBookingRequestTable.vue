@@ -5,10 +5,10 @@
         <h3 class="font-black">All Booking Requests</h3>
       </div>
       <div class="border shadow-md">
-        <input type="text" v-model="filter" placeholder="Search requests..."/>
+        <input id="text-search-input" type="text" v-model="filter" placeholder="Search requests..."/>
       </div>
       <div class="bg-yellow-300 shadow-md">
-        <em class="fas fa-search m-2"></em>
+        <em id="text-search-button" class="fas fa-search m-2"></em>
       </div>
 
 
@@ -19,7 +19,7 @@
         <h3 class="font-black">FILTERS</h3>
       </div>
       <div class="mx-2 border shadow-md bg-yellow-300 min-w-24">
-        <button @click="toggleAdvancedFilters">
+        <button id="open-filter-button" @click="toggleAdvancedFilters">
           <em class="fas fa-filter mx-2 pt-2 max-w"></em>
         </button>
       </div>
@@ -57,6 +57,9 @@
           <span v-if="booking.status == 'Refused'" class="rounded-full py-2 px-6 text-white text-center font-bold bg-red-700">
             {{ booking.status }}
           </span>
+          <span v-if="booking.status == 'Pending'" class="rounded-full py-2 px-6 text-white text-center font-bold bg-yellow-500">
+            {{ booking.status }}
+          </span>
         </td>
         <td class="text-center">Created {{ booking.created_diff }}</td>
         <td class="text-center">Last Updated {{ booking.updated_diff }}</td>
@@ -83,7 +86,7 @@
             <div class="flex flex-col flex-1 py-2 px-3">
               <div><h2>Status</h2></div>
               <div v-for="status in statuses" class="flex flex-row">
-                <div><input type="checkbox" v-model="jsonFilters.status_list[status]"></div>
+                <div><input type="checkbox" :id="'status-'+status" v-model="jsonFilters.status_list[status]"></div>
                 <div class="capitalize text-sm text-gray-400 px-2">
                   {{status}}
                 </div>
@@ -92,7 +95,7 @@
             <div class="flex flex-col flex-1 py-2 px-3">
               <div><h2>Reviewers</h2></div>
               <div class="flex flex-row">
-                <multi-select :options="options" :selected-on-init="selected" @change="updateReviewers"/>
+                <multi-select id="advanced-filter-reviews" :options="options" :selected-on-init="selected" @change="updateReviewers"/>
               </div>
             </div>
           </div>
@@ -126,12 +129,13 @@
 
       <template #footer>
         <jet-button
+          id="submit-advanced-filter"
           class="ml-2"
           @click.native="advancedFilters()"
         >
           Filter
         </jet-button>
-        <jet-secondary-button @click.native="toggleAdvancedFilters">
+        <jet-secondary-button @click.native="toggleAdvancedFilters" id="close-advanced-filter">
           Close
         </jet-secondary-button>
       </template>

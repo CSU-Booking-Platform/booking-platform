@@ -236,5 +236,21 @@ class SearchPageTest extends DuskTestCase
                 ->assertDontSee($room->name);
         });
     }
+    public function testViewRoomDetails()
+    {
+        (new RolesAndPermissionsSeeder())->run();
+
+        $room = Room::factory()->create();
+        $admin = User::factory()->create();
+        $admin->assignRole('super-admin');
+
+        $this->browse(function (Browser $browser) use ($room, $admin) {
+            $browser->loginAs($admin);
+            $browser->visit('/bookings/search')
+                ->assertSee($room->name)
+                ->press('VIEW DETAILS')->pause(500)
+            ->assertSee("Detailed View of ".$room->name);
+        });
+    }
 
 }

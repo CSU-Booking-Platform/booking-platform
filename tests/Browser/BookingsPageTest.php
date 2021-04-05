@@ -49,7 +49,7 @@ class BookingsPageTest extends DuskTestCase
         });
     }
 
-    public function testClickOnApprovedBooking()
+    public function testClickOnApprovedBookingLockedBooking()
     {
         $bookings = BookingRequest::factory()
             ->count(1)
@@ -66,7 +66,7 @@ class BookingsPageTest extends DuskTestCase
         });
     }
 
-    public function testClickOnDeniedBooking()
+    public function testClickOnDeniedBookingLockedBooking()
     {
         $bookings = BookingRequest::factory()
             ->count(1)
@@ -83,7 +83,7 @@ class BookingsPageTest extends DuskTestCase
         });
     }
 
-    public function testClickOnReviewBooking()
+    public function testClickOnReviewBookingLockedBooking()
     {
         $bookings = BookingRequest::factory()
             ->count(1)
@@ -100,7 +100,7 @@ class BookingsPageTest extends DuskTestCase
         });
     }
 
-    public function testUserCanViewABookingRequestStatus()
+    public function testUserCanTrackBookingrequest()
     {
         $bookings = BookingRequest::factory()
             ->count(1)
@@ -121,7 +121,7 @@ class BookingsPageTest extends DuskTestCase
         $bookings = BookingRequest::factory()
             ->count(1)
             ->hasReservations(1)
-            ->create(["status" => BookingRequest::PENDING])->first();          
+            ->create(["status" => BookingRequest::PENDING])->first();
         $this->browse(function (Browser $browser) use ($bookings) {
             $browser->loginAs(User::first());
             $browser->visit('/bookings')

@@ -35,7 +35,7 @@ class BookRoomsTest extends DuskTestCase
      * Create booking at available time,
      * assert that user redirected to creation page
      */
-    public function testBookRoomForTimeIntervals()
+    public function testBookingRoomRequiresFillingOutAForm()
     {
         $this->browse(function (Browser $browser){
 

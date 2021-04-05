@@ -20,7 +20,7 @@ class SearchPageTest extends DuskTestCase
     private array $weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
 
-    public function testWhenBookRoomCustomDateRestrictions()
+    public function testDifferentTimeRestrictionForUserGroup()
     {
         (new RolesAndPermissionsSeeder())->run();
         $room = Room::factory()->create();
@@ -76,7 +76,7 @@ class SearchPageTest extends DuskTestCase
         });
     }
 
-    public function testWhenBookRoomDateFail()
+    public function testBookingPeriodRestrictions()
     {
         (new RolesAndPermissionsSeeder())->run();
         $room = Room::factory()->create(["min_days_advance"=> 2, "max_days_advance"  => 5]);
@@ -128,7 +128,7 @@ class SearchPageTest extends DuskTestCase
         });
     }
 
-        public function testWhenBookRoomTimefail()
+    public function testBookingTimeRestrionsPerDay()
     {
         (new RolesAndPermissionsSeeder())->run();
         $room = Room::factory()->create(["min_days_advance"=> 0, "max_days_advance"  => 5]);
@@ -210,7 +210,7 @@ class SearchPageTest extends DuskTestCase
         });
     }
 
-    public function testWhenUpdateRoomRestrictions()
+    public function testRestrictAccessOfUserRoleFromRoom()
     {
         (new RolesAndPermissionsSeeder())->run();
 
@@ -228,7 +228,8 @@ class SearchPageTest extends DuskTestCase
                 ->assertDontSee($room->name);
         });
     }
-    public function testViewRoomDetails()
+
+    public function testViewRoomDetailsAndAvailabilities()
     {
         (new RolesAndPermissionsSeeder())->run();
 
@@ -245,7 +246,24 @@ class SearchPageTest extends DuskTestCase
         });
     }
 
-    public function testWhenBookRoomMutlipleDatesSuccess()
+    public function testViewRooms()
+    {
+        (new RolesAndPermissionsSeeder())->run();
+
+        $room = Room::factory()->create();
+        $room2 = Room::factory()->create();
+        $admin = User::factory()->create();
+        $admin->assignRole('super-admin');
+
+        $this->browse(function (Browser $browser) use ($room, $admin, $room2) {
+            $browser->loginAs($admin);
+            $browser->visit('/bookings/search')
+                ->assertSee($room->name)
+                ->assertSee($room2->name);
+        });
+    }
+
+    public function testBookingCanBeRecurringAndOutOfSeries()
     {
         (new RolesAndPermissionsSeeder())->run();
         $room = Room::factory()->create(["min_days_advance"=> 2, "max_days_advance"  => 500]);

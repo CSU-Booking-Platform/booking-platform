@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Bookings;
 
+use App\Http\Controllers\Controller;
 use App\Models\AcademicDate;
 use Illuminate\Http\Request;
 

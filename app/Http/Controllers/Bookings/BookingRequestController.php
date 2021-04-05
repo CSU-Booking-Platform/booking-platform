@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Bookings;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateBookingRequest;
 use App\Http\Requests\UpdateBookingRequest;
 use App\Http\Resources\BookingResource;
@@ -283,6 +284,7 @@ class BookingRequestController extends Controller
         $request->validate(array(
             'reservations.*' => ['array', 'size:3',
                 function ($attribute, $value, $fail) use ($request) {
+                    unset($attribute);
                     $user =  $request->user();
                     $room = Room::query()->findOrFail($request->room_id);
                     $room->minimunReservationTime($value['start_time'], $value['end_time'], $fail);

@@ -61,7 +61,7 @@ class BookRoomsTest extends DuskTestCase
 
             $browser->press("@room-select-".$room->id);
 
-            $browser->mouseover('#addRecurrences');
+            $browser->mouseover('#add-recurences-button');
 
 
             $browser->within( new DateTimePicker('start_time_0'), function($browser) {
@@ -127,7 +127,7 @@ class BookRoomsTest extends DuskTestCase
 
             $browser->press("@room-select-".$room->id);
 
-            $browser->mouseover('#addRecurrences');
+            $browser->mouseover('#add-recurences-button');
 
             $browser->within( new DateTimePicker('start_time_0'), function($browser) {
                 $browser->setDatetime(10,02);
@@ -175,7 +175,7 @@ class BookRoomsTest extends DuskTestCase
 
             $browser->press("@room-select-".$room->id);
 
-            $browser->mouseover('#addRecurrences');
+            $browser->mouseover('#add-recurences-button');
 
             $browser->within( new DateTimePicker('start_time_0'), function($browser) {
                 $browser->setDatetime(10,13);

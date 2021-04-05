@@ -12,19 +12,19 @@
             <jet-input-error :message="form.error('name')" class="mt-2"/>
           </div>
           <div class="mb-3">
-            <date-time-picker id="start" class="mt-1 block w-full" v-model="form.start" />
+            <date-time-picker :id="'start'" class="mt-1 block w-full" v-model="form.start" />
             <jet-label for="start" value="Start time"/>
             <jet-input-error :message="form.error('start')" class="mt-2"/>
           </div>
           <div class="mb-3">
-            <date-time-picker id="end" class="mt-1 block w-full" v-model="form.end" />
+            <date-time-picker :id="'end'" class="mt-1 block w-full" v-model="form.end" />
             <jet-label for="end" value="End Time"/>
             <jet-input-error :message="form.error('end')" class="mt-2"/>
           </div>
           <input v-if="room" type="hidden" id='room_id' v-model="form.room_id">
           <div class="mb-8">
             <jet-label for="recurring" value="Recurring"/>
-            <select v-model="form.recurring" class="mt-1 block w-full" name="recurring" id="recurring">
+            <select v-model="form.recurring" class="mt-1 block w-full" name="recurring" id="recurring" dusk="recurring">
               <option value="null" selected>None</option>
               <option value="daily">Daily</option>
               <option value="weekly">Weekly</option>
@@ -39,7 +39,7 @@
           Created.
         </jet-action-message>
 
-        <jet-button :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+        <jet-button id="submit" dusk="submit" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
           Create
         </jet-button>
       </template>

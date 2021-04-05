@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Actions\Fortify\PasswordValidationRules;
+use App\Http\Controllers\Controller;
 use App\Models\Role;
 use App\Models\User;
 use Exception;
@@ -16,6 +17,8 @@ use Laravel\Fortify\Fortify;
 
 class UserController extends Controller
 {
+    const MAX_255 = 'max:255';
+
     use PasswordValidationRules;
 
     /**
@@ -40,9 +43,9 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request->validateWithBag('createUser', [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'max:255', 'confirmed'],
+            'name' => ['required', 'string', self::MAX_255],
+            'email' => ['required', 'string', 'email', self::MAX_255, 'unique:users'],
+            'password' => ['required', 'string', self::MAX_255, 'confirmed'],
         ]);
 
         User::create([
@@ -65,8 +68,8 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $request->validateWithBag('updateUser', [
-            'name' => ['nullable', 'string', 'max:255'],
-            'email' => ['nullable', 'string', 'email', 'max:255'],
+            'name' => ['nullable', 'string', self::MAX_255],
+            'email' => ['nullable', 'string', 'email', self::MAX_255],
             'roles' => ['array'],
         ]);
 

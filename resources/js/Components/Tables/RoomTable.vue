@@ -5,7 +5,7 @@
         <h3 class="font-black">ROOMS</h3>
       </div>
       <div class="border shadow-md">
-        <input type="text" v-model="filter"/>
+        <input id="search-rooms" type="text" v-model="filter"/>
       </div>
       <div class="bg-yellow-300 shadow-md">
         <em class="fas fa-search m-2"></em>
@@ -19,7 +19,7 @@
         <h3 class="font-black">FILTER</h3>
       </div>
       <div class="mx-2 border shadow-md bg-yellow-300 min-w-24">
-        <button @click="toggleAdvancedFilters()">
+        <button :dusk="'toggle-advanced-filters'" @click="toggleAdvancedFilters()">
           <em class="fas fa-filter mx-2 pt-2 max-w"></em>
         </button>
       </div>
@@ -271,25 +271,25 @@
                   <div class="flex flex-col flex-1 py-2 px-3">
                       <div><h2>Electronics</h2></div>
                       <div class="flex flex-row">
-                          <div><input type="checkbox"></div>
+                          <div><input type="checkbox" :dusk="'computers'"></div>
                           <div class="text-sm text-gray-400 px-2">
                               Computers
                           </div>
                       </div>
                       <div class="flex flex-row">
-                          <div><input type="checkbox"></div>
+                          <div><input type="checkbox" :dusk="'televisions'"></div>
                           <div class="text-sm text-gray-400 px-2">
                               Television
                           </div>
                       </div>
                       <div class="flex flex-row">
-                          <div><input type="checkbox" v-model="jsonFilters.whiteboard"></div>
+                          <div><input type="checkbox" :dusk="'whiteboards'" v-model="jsonFilters.whiteboard"></div>
                           <div class="text-sm text-gray-400 px-2">
                               Whiteboard
                           </div>
                       </div>
                       <div class="flex flex-row">
-                          <div><input type="checkbox" v-model="jsonFilters.projector"></div>
+                          <div><input type="checkbox" :dusk="'projectors'" v-model="jsonFilters.projector"></div>
                           <div class="text-sm text-gray-400 px-2">
                               Projector
                           </div>
@@ -298,13 +298,13 @@
                   <div class="flex flex-col flex-1 py-2 px-3">
                       <div><h2>Amenities Permitted</h2></div>
                       <div class="flex flex-row">
-                          <div><input type="checkbox" v-model="jsonFilters.food"></div>
+                          <div><input type="checkbox" :dusk="'food'" v-model="jsonFilters.food"></div>
                           <div class="text-sm text-gray-400 px-2">
                               Food
                           </div>
                       </div>
                       <div class="flex flex-row">
-                          <div><input type="checkbox" v-model="jsonFilters.alcohol"></div>
+                          <div><input type="checkbox" :dusk="'alcohol'" v-model="jsonFilters.alcohol"></div>
                           <div class="text-sm text-gray-400 px-2">
                               Alcohol
                           </div>
@@ -348,7 +348,7 @@
                       </h2>
                     </div>
                     <div class="m-2">
-                      <jet-secondary-button @click.native="addDate">
+                      <jet-secondary-button @click.native="addDate" id="filter-add-date">
                         Add Date
                       </jet-secondary-button>
                     </div>
@@ -368,7 +368,7 @@
                   <div class="m-6">
                     <jet-label for="start_time" value="Start Time" />
                     <date-time-picker
-                      id="start_time"
+                      :id="'start_time-'+index"
                       class="mt-1 block w-full"
                       v-model="dates.start_time"
                       autofocus
@@ -378,7 +378,7 @@
                   <div class="m-6">
                     <jet-label for="end_time" value="End Time" />
                     <date-time-picker
-                      id="end_time"
+                      :id="'end_time-'+index"
                       class="mt-1 block w-full"
                       v-model="dates.end_time"
                       autofocus
@@ -386,7 +386,7 @@
                   </div>
 
                   <div class="m-6">
-                    <jet-secondary-button v-if="numDates > 0" @click.native="removeDate(index)">
+                    <jet-secondary-button v-if="numDates > 0" @click.native="removeDate(index)" :id="'filter-remove-date-'+index">
                       Remove
                     </jet-secondary-button>
                   </div>
@@ -401,6 +401,7 @@
               <jet-button
                 class="ml-2"
                 @click.native="advancedFilters()"
+                id="filter-rooms"
               >
                   Filter
               </jet-button>

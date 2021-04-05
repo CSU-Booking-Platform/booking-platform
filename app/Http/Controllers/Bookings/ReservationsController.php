@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Bookings;
 
 use App\Events\BookingRequestUpdated;
+use App\Http\Controllers\Controller;
 use App\Http\Resources\CalendarRoomCollection;
 use App\Models\BookingRequest;
 use App\Models\Reservation;

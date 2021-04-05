@@ -11,9 +11,9 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\System\RoomController;
 use App\Http\Controllers\Bookings\RoomDateRestrictionsController;
 use App\Http\Controllers\Admin\SettingsController;
-use App\Http\Controllers\UserProfile\UserController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\System\DashboardController;
-use App\Http\Controllers\UserProfile\SocialLoginController;
+use App\Http\Controllers\System\SocialLoginController;
 use Illuminate\Support\Facades\Route;
 
 /*

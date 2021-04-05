@@ -209,6 +209,7 @@ class ReservationsController extends Controller
                     $room->verifyDatetimesAreWithinAvailabilitiesValidation($value['start_time'], $value['end_time'],
                         $fail);
                     $room->verifyRoomIsFreeValidation($value['start_time'], $value['end_time'], $fail, $reservation);
+                    $room->minimumReservationTime($value['start_time'], $value['end_time'], $fail);
 
                     if (!$user->canMakeAnotherBookingRequest($value['start_time'])) {
                         $fail($attribute.' Cannot make more than '.

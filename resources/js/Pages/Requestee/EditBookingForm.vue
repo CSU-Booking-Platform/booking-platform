@@ -571,7 +571,6 @@ export default {
             this.form.onsite_contact = (booking.onsite_contact.length === 0) ? {} : booking.onsite_contact;
             this.form.event = booking.event;
             this.form.notes = booking.notes ?? null;
-            //this.form.files= booking?.files;
         },
         toggleNullableForms() {
             if(this.form.event.show?.contact === false) {

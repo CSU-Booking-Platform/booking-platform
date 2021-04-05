@@ -1,13 +1,13 @@
 <?php
 
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserProfile\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\RoomController;
-use App\Http\Controllers\ReservationsController;
-use App\Http\Controllers\BookingReviewController;
-use App\Http\Controllers\BookingRequestController;
-use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\System\RoomController;
+use App\Http\Controllers\Bookings\ReservationsController;
+use App\Http\Controllers\Admin\BookingReviewController;
+use App\Http\Controllers\Bookings\BookingRequestController;
+use App\Http\Controllers\Admin\SettingsController;
 /*
 |--------------------------------------------------------------------------
 | API Routes

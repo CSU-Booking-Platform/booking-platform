@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\UserProfile;
 
 use App\Actions\Fortify\PasswordValidationRules;
+use App\Http\Controllers\Controller;
 use App\Models\Role;
 use App\Models\User;
 use Exception;

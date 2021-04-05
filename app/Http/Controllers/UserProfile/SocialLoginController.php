@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\UserProfile;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Settings;
@@ -41,12 +42,12 @@ class SocialLoginController extends Controller
         {
             $data = Settings::where('slug', 'app_config')->pluck('data')->toArray()[0];
             $config = new \SocialiteProviders\Manager\Config($data['id'], $data['secret'], $data['uri'], ['tenant' => $data['tenant']]);
-            
+
             $msUser = Socialite::driver('microsoft')->setConfig($config)->stateless()->user();
-        
+
             $isUser = User::where(['email' => $msUser->getEmail()])->first();
 
-            if($isUser) 
+            if($isUser)
             {
                 Auth::login($isUser);
                 return redirect('/dashboard');

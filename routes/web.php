@@ -1,19 +1,19 @@
 <?php
 
-use App\Http\Controllers\AcademicDateController;
-use App\Http\Controllers\BlackoutController;
-use App\Http\Controllers\BookingRequestController;
-use App\Http\Controllers\BookingReviewController;
-use App\Http\Controllers\CommentsController;
-use App\Http\Controllers\ReservationsController;
-use App\Http\Controllers\RestrictionsController;
-use App\Http\Controllers\RoleController;
-use App\Http\Controllers\RoomController;
-use App\Http\Controllers\RoomDateRestrictionsController;
-use App\Http\Controllers\SettingsController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\SocialLoginController;
+use App\Http\Controllers\Bookings\AcademicDateController;
+use App\Http\Controllers\Admin\BlackoutController;
+use App\Http\Controllers\Bookings\BookingRequestController;
+use App\Http\Controllers\Admin\BookingReviewController;
+use App\Http\Controllers\Admin\CommentsController;
+use App\Http\Controllers\Bookings\ReservationsController;
+use App\Http\Controllers\Admin\RestrictionsController;
+use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\System\RoomController;
+use App\Http\Controllers\Bookings\RoomDateRestrictionsController;
+use App\Http\Controllers\Admin\SettingsController;
+use App\Http\Controllers\UserProfile\UserController;
+use App\Http\Controllers\System\DashboardController;
+use App\Http\Controllers\UserProfile\SocialLoginController;
 use Illuminate\Support\Facades\Route;
 
 /*

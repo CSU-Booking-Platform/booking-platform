@@ -2,6 +2,7 @@
 
 namespace Tests\Browser\Pages;
 
+use App\Models\Role;
 use App\Models\Room;
 use Laravel\Dusk\Browser;
 
@@ -20,7 +21,7 @@ class Rooms extends Page
     /**
      * Assert that the browser is on the page.
      *
-     * @param  Browser  $browser
+     * @param Browser $browser
      * @return void
      */
     public function assert(Browser $browser)
@@ -36,46 +37,71 @@ class Rooms extends Page
     public function elements()
     {
         return [
-            '@element' => '#selector',
+//            '@element' => '#selector',
         ];
     }
 
-    public function createRoom(Browser $browser, Room $room) {
+    public function createRoom(Browser $browser, Room $room)
+    {
 
-      $browser->type('#name', $room->name)
-        ->type('#number', $room->number)
-        ->type('#floor', $room->floor)
-        ->type('#building', $room->building)
-        ->click('#attributes')
-        ->type('#stand_capacity', $room->attributes['capacity_standing'])
-        ->type('#sit_capacity', $room->attributes['capacity_sitting'])
-        ->check('#checkboxFood', $room->attributes['food'])
-        ->check('#checkboxAlcohol', $room->attributes['alcohol'])
-        ->check('#checkboxAV', $room->attributes['a_v_permitted'])
-        ->select('#status', $room->status)
-        ->select('#room_type', $room->room_type)
-        ->press('#availabilities')
-        ->type('#min_days_advance', $room->min_days_advance)
-        ->type('#max_days_advance', $room->max_days_advance)
-        ->press('#create');
+        $browser->type('#name', $room->name)
+            ->type('#number', $room->number)
+            ->type('#floor', $room->floor)
+            ->select('#building', $room->building)
+            ->click('#attributes')
+            ->type('#stand_capacity', $room->attributes['capacity_standing'])
+            ->type('#sit_capacity', $room->attributes['capacity_sitting'])
+            ->check('#checkboxFood', $room->attributes['food'])
+            ->check('#checkboxAlcohol', $room->attributes['alcohol'])
+            ->check('#checkboxAV', $room->attributes['a_v_permitted'])
+            ->select('#status', $room->status)
+            ->select('#room_type', $room->room_type)
+            ->press('#availabilities')
+            ->type('#min_days_advance', $room->min_days_advance)
+            ->type('#max_days_advance', $room->max_days_advance)
+            ->press('#create');
+
+    }
+
+    /** @noinspection PhpUnusedParameterInspection */
+    public function updateRoom(Browser $browser, Room $room, string $name)
+    {
+
+        $browser
+            ->press('ACTION MENU')
+            ->press('Update')
+            ->type('.vue-portal-target #name', $name)
+            ->press('#updateRoom');
 
     }
 
-  /** @noinspection PhpUnusedParameterInspection */
-  public function updateRoom(Browser $browser, Room $room, string $name) {
+    public function deleteRoom(Browser $browser)
+    {
 
-      $browser
-        ->press('Action')
-        ->press('Update')
-        ->type('.vue-portal-target #name', $name)
-        ->press('#updateRoom');
+        $browser
+            ->press('ACTION MENU')
+            ->press('Delete')
+            ->press('#deleteRoom');
+    }
+
+    public function restrictRoom(Browser $browser, Room $room, string $role)
+    {
+        $browser
+            ->press('ACTION MENU')
+            ->press('Restricted Roles')
+            ->check('@restrict-1')
+            ->press('#updateRoomRestrictions');
 
     }
-    public function deleteRoom(Browser $browser) {
 
-      $browser
-        ->press('Action')
-        ->press('Delete')
-        ->press('#deleteRoom');
+    public function restrictRoomDate(Browser $browser, Role $role, $min, $max)
+    {
+        $browser
+            ->press('ACTION MENU')
+            ->press('Customize Role Date Restrictions')
+            ->type('#min_days_advance_'.$role->id, $min)
+            ->type('#max_days_advance_'.$role->id, $max);
+        $browser->press('#updateRoomDateRestrictions');
     }
+
 }

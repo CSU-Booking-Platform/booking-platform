@@ -6,11 +6,11 @@
       <tr>
         <th id="id_user_name">Name</th>
         <th id="id_user_email">Email</th>
-        <th id="id_actions">Actions</th>
+        <th id="id_actions">Action</th>
       </tr>
       </thead>
       <tbody>
-      <tr v-for="user in Users" :key="user.id">
+      <tr :id="'user-row-'+user.id" v-for="user in Users" :key="user.id">
         <td class="text-center">{{ user.name }}</td>
         <td class="text-center">{{ user.email }}</td>
         <td class="text-center">

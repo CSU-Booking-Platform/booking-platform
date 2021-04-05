@@ -26,12 +26,9 @@ test('should mount without crashing', () => {
 test('verify computed proxy field', async () => {
     const wrapper = shallowMount(Checkbox, {localVue});
 
-    wrapper.setProps({checked: true});
-    wrapper.setChecked(true);
+    wrapper.vm.proxyChecked = true;
 
     await wrapper.vm.$nextTick();
     expect(wrapper.emitted().change).toBeTruthy();
-
-    expect(wrapper.vm.checked).toBe(true);
 
 })

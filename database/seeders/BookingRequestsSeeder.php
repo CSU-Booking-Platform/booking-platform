@@ -17,6 +17,7 @@ class BookingRequestsSeeder extends Seeder
         BookingRequest::factory()
             ->hasReservations(random_int(1, 3))
             ->hasReviewers(random_int(1, 3))
+            ->hasComments(random_int(0, 5))
             ->count(10)
             ->create();
     }

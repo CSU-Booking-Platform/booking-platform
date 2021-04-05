@@ -2,11 +2,16 @@
 
 namespace Tests\Browser;
 
+use App\Models\AcademicDate;
+use App\Models\Room;
 use App\Models\User;
+use Carbon\Carbon;
 use Database\Seeders\EasyUserSeeder;
 use Database\Seeders\RolesAndPermissionsSeeder;
+use Facebook\WebDriver\WebDriverKeys;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
+use Tests\Browser\Components\DateTimePicker;
 use Tests\DuskTestCase;
 
 class SettingsPageTest extends DuskTestCase
@@ -39,7 +44,6 @@ class SettingsPageTest extends DuskTestCase
         ->refresh()->pause(3000)
         ->assertSourceHas('<title>New Name</title>')
         ->assertSee('New Name');
-
     });
   }
 
@@ -47,13 +51,72 @@ class SettingsPageTest extends DuskTestCase
   {
     $this->browse(function (Browser $browser) {
       $browser->loginAs(User::first())->visit('/admin/settings')
-        ->assertSourceHas('<a href="/dashboard"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" class="block h-15 w-auto"><path d="M11.395 44.428C4.557 40.198 0 32.632 0 24 0 10.745 10.745 0 24 0a23.891 23.891 0 0113.997 4.502c-.2 17.907-11.097 33.245-26.602 39.926z" fill="#6875F5"></path> <path d="M14.134 45.885A23.914 23.914 0 0024 48c13.255 0 24-10.745 24-24 0-3.516-.756-6.856-2.115-9.866-4.659 15.143-16.608 27.092-31.75 31.751z" fill="#6875F5"></path></svg>')
+        ->assertSourceHas('<a href="/dashboard"><img src="' . config('app.logo'))
         ->assertSee('Settings')
         ->assertSee('Application Logo')
         ->attach('app_logo', __DIR__ . '/test.jpg')
         ->pressAndWaitFor('UPDATE APPLICATION LOGO', 3)
         ->refresh()->pause(3000)
-        ->assertSourceHas('<a href="/dashboard"><img src="/storage/logos/');
+        ->assertSourceHas('<a href="/dashboard"><img src="' . url('/storage/logos/'));
     });
+  }
+
+  public function testAdminCanEditYearlyAcademicDates()
+  {
+    AcademicDate::create([
+      'semester' => 'Fall',
+      'start_date' => '2020-01-01',
+      'end_date' => '2020-02-02'
+    ]);
+
+    $this->browse(function (Browser $browser) {
+      $startDate = Carbon::parse('2020-03-03');
+      $endDate = Carbon::parse('2020-04-04');
+
+      $browser->loginAs(User::first())->visit('/admin/settings')
+        ->keys(
+          '#Fall_start_date',
+          $startDate->format('Y'),
+          ['{right}', $startDate->format('m')],
+          $startDate->format('d')
+        )
+        ->keys(
+          '#Fall_end_date',
+          $endDate->format('Y'),
+          ['{right}', $endDate->format('m')],
+          $endDate->format('d')
+        )
+        ->press('#Fall_submit_button')
+        ->waitUntilMissingText("Updated.");
+    });
+
+    $this->assertDatabaseMissing('academic_dates', [
+      'semester' => 'Fall',
+      'start_date' => '2020-01-01',
+      'end_date' => '2020-02-02'
+    ]);
+  }
+
+  public function testAdminCanCreateCivicHolidays()
+  {
+    $numberOfRoomToCreate = 5;
+    Room::factory()->count($numberOfRoomToCreate)->create();
+
+    $this->browse(function (Browser $browser) {
+      $browser->loginAs(User::first())->visit('/admin/settings');
+
+      $browser->within(new DateTimePicker("civic_start_date"), function ($browser) {
+        $browser->setDatetime(10, 13);
+      })->pause(1000);
+
+      $browser->within(new DateTimePicker("civic_end_date"), function ($browser) {
+        $browser->setDatetime(10, 14);
+      })->pause(1000);
+
+      $browser->press('#civic_submit_button')
+        ->pause(3000);
+    });
+
+    $this->assertDatabaseCount('blackouts', $numberOfRoomToCreate);
   }
 }

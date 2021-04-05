@@ -16,7 +16,7 @@
       <div class="border mx-16">
       </div>
       <div class="mx-6">
-        <h3 class="font-black">ADVANCED</h3>
+        <h3 class="font-black">FILTER</h3>
       </div>
       <div class="mx-2 border shadow-md bg-yellow-300 min-w-24">
         <button @click="toggleAdvancedFilters()">
@@ -25,12 +25,39 @@
       </div>
     </div>
 
-    <table class="table-auto responsive-spaced">
+    <ul class="list-reset flex border-b">
+      <li v-if="listViewSelected" class="-mb-px mr-1">
+        <a @click="listViewSelected = true"
+          class="bg-white inline-block border-l border-t border-r rounded-t py-2 px-4 text-blue-dark font-semibold"
+          href="#">List View</a
+        >
+      </li>
+      <li v-else class="mr-1">
+        <a @click="listViewSelected = true"
+          class="bg-white inline-block py-2 px-4 text-blue hover:text-blue-darker font-semibold"
+          href="#">List View</a
+        >
+      </li>
+      <li v-if="listViewSelected" class="mr-1">
+        <a @click="listViewSelected = false"
+          class="bg-white inline-block py-2 px-4 text-blue hover:text-blue-darker font-semibold"
+          href="#">Calendar View</a
+        >
+      </li>
+      <li v-else class="-mb-px mr-1">
+        <a @click="listViewSelected = false"
+          class="bg-white inline-block border-l border-t border-r rounded-t py-2 px-4 text-blue-dark font-semibold"
+          href="#">Calendar View</a
+        >
+      </li>
+    </ul>
+
+    <table v-if="listViewSelected" class="table-auto responsive-spaced mt-4">
       <caption></caption>
       <thead>
         <tr>
           <th @click="sort('name')" id="id_room_id" class="cursor-pointer">
-            Room ID
+            Room Name
             <span v-if="currentSort == 'name'">
               <span v-if="currentSortDir == 'asc'">
                 &blacktriangle;
@@ -114,52 +141,36 @@
               &blacktriangledown;
             </span>
           </th>
-          <th  id="id_room_action">Action</th>
+          <th id="id_room_action">Action</th>
         </tr>
       </thead>
       <tbody>
-         <tr v-for="room in filteredRooms" :key="room.id">
+         <tr v-for="room in filteredRooms" :key="room.id" :id="'room-item-' + room.id" :dusk="'room-item-' + room.id">
             <td class="text-center">{{room.name}}</td>
             <td class="text-center">{{room.room_type}}</td>
             <td class="text-center">{{room.building}}</td>
             <td class="text-center">{{room.number}}</td>
             <td class="text-center">{{room.floor}}</td>
-           <td class="text-center">{{room.attributes.capacity_sitting}}</td>
-            <td>
-             <div>
-               <jet-dropdown width="20">
-                 <template #trigger>
-                   <button
-                     class="flex text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out"
-                   >
-                     <div>Action</div>
-                   </button>
-                 </template>
+            <td class="text-center">{{room.attributes.capacity_sitting}}</td>
+            <td class="text-center space-x-2">
+              <jet-button id="create" :dusk="'room-select-' + room.id"
+                      @click.native="roomBeingBooked = room"
+              >
+                Create Booking
+              </jet-button>
 
-                 <template #content>
-                   <div class="text-md mx-3">
-                     <button
-                       class="cursor-pointer text-sm text-blue-800 focus:outline-none"
-                       @click="roomBeingBooked = room"
-                     >
-                       Create Booking
-                     </button>
-                   </div>
-                   <div class="text-md mx-3">
-                     <button
-                       class="cursor-pointer text-sm text-blue-800 focus:outline-none"
-                       @click="roomBeingInspected = room"
-                     >
-                       View Details
-                     </button>
-                   </div>
-                 </template>
-               </jet-dropdown>
-             </div>
-           </td>
+              <jet-button @click.native="roomBeingInspected = room">
+                View Details
+              </jet-button>
+            </td>
         </tr>
       </tbody>
     </table>
+
+
+    <div v-if="!listViewSelected">
+      <CalendarViewTable/>
+    </div>
 
     <CreateBookingRequestModal
       :room="roomBeingBooked"
@@ -356,9 +367,8 @@
                 <div v-for="(dates, index) in jsonFilters.recurrences" :key="index">
                   <div class="m-6">
                     <jet-label for="start_time" value="Start Time" />
-                    <jet-input
+                    <date-time-picker
                       id="start_time"
-                      type="datetime-local"
                       class="mt-1 block w-full"
                       v-model="dates.start_time"
                       autofocus
@@ -367,9 +377,8 @@
 
                   <div class="m-6">
                     <jet-label for="end_time" value="End Time" />
-                    <jet-input
+                    <date-time-picker
                       id="end_time"
-                      type="datetime-local"
                       class="mt-1 block w-full"
                       v-model="dates.end_time"
                       autofocus
@@ -405,12 +414,9 @@
 <script>
 
 import CreateBookingRequestModal from "@src/Pages/Admin/BookingRequests/CreateBookingRequestModal";
-import Button from "@src/Jetstream/Button";
 import JetDialogModal from "@src/Jetstream/DialogModal";
 import JetSecondaryButton from "@src/Jetstream/SecondaryButton";
-import Label from "@src/Jetstream/Label";
 import JetInput from "@src/Jetstream/Input";
-import Input from "@src/Jetstream/Input";
 import JetDropdown from "@src/Jetstream/Dropdown";
 import JetDropdownLink from "@src/Jetstream/DropdownLink";
 import RoomDetailedView from "@src/Components/RoomDetailedView";
@@ -418,6 +424,8 @@ import JetButton from "@src/Jetstream/Button";
 import JetLabel from "@src/Jetstream/Label";
 import JetInputError from "@src/Jetstream/InputError";
 import AvailabilitiesModal from "@src/Components/AvailabilitiesModal";
+import CalendarViewTable from "@src/Components/Tables/CalendarViewTable";
+import DateTimePicker from "@src/Components/Form/DateTimePicker";
 
 export default {
   name: "RoomTable",
@@ -429,12 +437,10 @@ export default {
     },
   },
   components: {
-      Input,
-      Button,
+      DateTimePicker,
       CreateBookingRequestModal,
       JetDialogModal,
       JetSecondaryButton,
-      Label,
       JetInput,
       JetDropdown,
       JetDropdownLink,
@@ -442,7 +448,8 @@ export default {
       JetButton,
       JetLabel,
       JetInputError,
-      AvailabilitiesModal
+      AvailabilitiesModal,
+      CalendarViewTable
   },
   data() {
       return {
@@ -471,7 +478,8 @@ export default {
           },
         showFilterModal: false,
         currentSort: 'name',
-        currentSortDir: 'asc'
+        currentSortDir: 'asc',
+        listViewSelected: true
       }
   },
     computed: {
@@ -489,8 +497,8 @@ export default {
         },
         missingDates: function(){
           if(this.numDates > 0){
-            for(let i = 0; i < this.jsonFilters.recurrences.length; i++){
-              if(!this.jsonFilters.recurrences[i].start_time || !this.jsonFilters.recurrences[i].end_time) {
+            for(let recurrence of this.jsonFilters.recurrences){
+              if(!recurrence.start_time || !recurrence.end_time) {
                 return true;
               }
             }

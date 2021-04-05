@@ -3,7 +3,7 @@
     <template #title> Availabilities </template>
 
     <template #content>
-      <div class="overflow-y-auto h-96"><Availabilities :room="room" /></div>
+      <Availabilities :room="room" />
     </template>
   </jet-dialog-modal>
 </template>

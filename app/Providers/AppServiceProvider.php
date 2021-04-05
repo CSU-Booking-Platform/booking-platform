@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Settings;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Dusk\DuskServiceProvider;
 
@@ -31,6 +33,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        if (!$this->app->runningInConsole()){
+            $logo = Settings::where('slug', 'app_logo')->first()->data['path'] ?? 'img/default_app_logo.png';
+            Config::set('app.logo', $logo);
+        }
     }
 }

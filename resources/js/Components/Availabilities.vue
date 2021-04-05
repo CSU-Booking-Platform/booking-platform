@@ -15,13 +15,17 @@
       <tr>
         <td class="lt-grey p-3">Opening Hours</td>
         <template v-for="availability in availabilities">
-          <td class="lt-grey p-3">{{ availability.opening_hours }}</td>
+          <td class="lt-grey p-3">
+            {{ formatAvailability(availability.opening_hours) }}
+          </td>
         </template>
       </tr>
       <tr>
         <td class="lt-grey p-3">Closing Hours</td>
         <template v-for="availability in availabilities">
-          <td class="lt-grey p-3">{{ availability.closing_hours }}</td>
+          <td class="lt-grey p-3">
+            {{ formatAvailability(availability.closing_hours) }}
+          </td>
         </template>
       </tr>
     </table>
@@ -44,7 +48,13 @@
         <p><em class="fas fa-circle"></em> Blackbox</p>
       </div>
       <div>
-        <Calendar :attributes="attributes" @dayclick="onDayClick" trim-weeks />
+        <Calendar
+          id="availabilities-calendar"
+          dusk="availabilities-calendar"
+          :attributes="attributes"
+          @dayclick="onDayClick"
+          trim-weeks
+        />
       </div>
     </div>
     <hr />
@@ -174,7 +184,7 @@ export default {
     fetchRoomReservations() {
       if (this.room) {
         axios
-          .post("/api/reservations/" + this.room.id, {
+          .get("/api/reservations/by-room/" + this.room.id, {
             date: this.dates[0]
           })
           .then(response => {
@@ -258,6 +268,9 @@ export default {
       }
 
       return attributes;
+    },
+    formatAvailability(date) {
+      return moment(date, "HH:mm:ss").format("HH:mm");
     }
   },
   watch: {

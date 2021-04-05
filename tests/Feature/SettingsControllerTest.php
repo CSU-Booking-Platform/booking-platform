@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Settings;
 use App\Models\User;
 use Carbon\Carbon;
+use Database\Seeders\SettingsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -23,8 +24,11 @@ class SettingsControllerTest extends TestCase
      */
     public function testSettings()
     {
-        $user = User::factory()->make();
-        $response = $this->actingAs($this->createUserWithPermissions(['settings.edit']))->get('/admin/settings');
+        $user = $this->createUserWithPermissions(['settings.edit']);
+        $response = $this->actingAs($user)->get('/admin/settings');
+        $response->assertOk();
+        $this->seed(SettingsSeeder::class);
+        $response = $this->actingAs($user)->get('/admin/settings');
         $response->assertOk();
     }
 
@@ -124,7 +128,7 @@ class SettingsControllerTest extends TestCase
             'redirect_uri' => $random,
             'tenant' => $random
         ]);
-        
+
         $this->assertDatabaseCount('settings', 1);
 
         $this->assertDatabaseHas('settings', [
@@ -159,7 +163,7 @@ class SettingsControllerTest extends TestCase
             ]),
         ]);
     }
-    
+
         /**
      * @test
      */

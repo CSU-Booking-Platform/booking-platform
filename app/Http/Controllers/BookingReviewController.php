@@ -26,8 +26,7 @@ class BookingReviewController extends Controller
         if ($booking->status == BookingRequest::PENDING){
             $booking->update(['status' => BookingRequest::REVIEW]);
         }
-
-        $booking->loadMissing('requester', 'reviewers', 'reservations', 'reservations.room');
+        $booking->loadMissing('requester', 'reviewers', 'reservations', 'reservations.room', 'comments');
 
         return inertia('Approval/ReviewBooking', [
             'booking' => new BookingResource($booking)

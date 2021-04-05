@@ -4,6 +4,10 @@
                 Application Name
             </template>
 
+            <template #description>
+                Change the application name here.
+            </template>
+
             <template #form>
                     <jet-input id="label" type="hidden" class="mt-1 block w-full" value="app_name"/>
                 <div class="col-span-12 sm:col-span-6">
@@ -19,7 +23,8 @@
                     Updated.
                 </jet-action-message>
 
-                <jet-button :class="{ 'opacity-25': updateNameSettingform.processing }"
+                <jet-button name="update-app-name"
+                            :class="{ 'opacity-25': updateNameSettingform.processing }"
                             :disabled="updateNameSettingform.processing">
                     Update Application Name
                 </jet-button>

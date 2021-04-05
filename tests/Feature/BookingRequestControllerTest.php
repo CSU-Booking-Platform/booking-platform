@@ -23,25 +23,15 @@ use Illuminate\Support\Facades\Event;
 class BookingRequestControllerTest extends TestCase
 {
     use RefreshDatabase;
-
-    /**
-     * @var \Faker\Generator
-     */
-    public $faker;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-        $this->faker = Factory::create();
-    }
+    use WithFaker;
 
     /**
      * @test
      */
     public function user_can_view_booking_search()
     {
-        $response = $this->get(route('bookings.search'));
-        $response->assertRedirect();
+        $response = $this->actingAs($this->createUserWithPermissions(['bookings.create']))->get(route('bookings.search'));
+        $response->assertOk();
         $response->assertSessionHasNoErrors();
     }
 
@@ -50,8 +40,8 @@ class BookingRequestControllerTest extends TestCase
      */
     public function user_can_view_booking_index()
     {
-        $response = $this->get(route('bookings.index'));
-        $response->assertRedirect();
+        $response = $this->actingAs($this->createUserWithPermissions(['bookings.create']))->get(route('bookings.index'));
+        $response->assertOk();
         $response->assertSessionHasNoErrors();
     }
 
@@ -60,8 +50,8 @@ class BookingRequestControllerTest extends TestCase
      */
     public function user_can_view_booking_create()
     {
-        $response = $this->get(route('bookings.create'));
-        $response->assertRedirect();
+        $response = $this->actingAs($this->createUserWithPermissions(['bookings.create']))->get(route('bookings.create'));
+        $response->assertRedirect(); // redirect to search
         $response->assertSessionHasNoErrors();
     }
 
@@ -118,8 +108,9 @@ class BookingRequestControllerTest extends TestCase
             'room_id' => $room->id,
             'reservations' => [
                 [
-                    'start_time' => $start->format('Y-m-d\TH:i:00'),
-                    'end_time' => $end->format('Y-m-d\TH:i:00')
+                    'start_time' => $start->format('Y-m-d H:i:00'),
+                    'end_time' => $end->format('Y-m-d H:i:00'),
+                    'duration' => $this->faker->numberBetween(100)
                 ]
             ],
             'event' => [
@@ -170,8 +161,9 @@ class BookingRequestControllerTest extends TestCase
             'room_id' => $room->id,
             'reservations' => [
                 [
-                    'start_time' => $reservation->start_time->format('Y-m-d\TH:i:00'),
-                    'end_time' => $reservation->end_time->format('Y-m-d\TH:i:00')
+                    'start_time' => $reservation->start_time->format('Y-m-d H:i:00'),
+                    'end_time' => $reservation->end_time->format('Y-m-d H:i:00'),
+                    'duration' => $this->faker->numberBetween(100)
                 ]
             ],
             'event' => [
@@ -213,8 +205,9 @@ class BookingRequestControllerTest extends TestCase
                 'room_id' => $room->id,
                 'reservations' => [
                     [
-                        'start_time' => $reservation->start_time->format('Y-m-d\TH:i:00'),
-                        'end_time' => $reservation->end_time->format('Y-m-d\TH:i:00')
+                        'start_time' => $reservation->start_time->format('Y-m-d H:i:00'),
+                        'end_time' => $reservation->end_time->format('Y-m-d H:i:00'),
+                        'duration' => $this->faker->numberBetween(100)
                     ]
                 ],
                 'event' => [
@@ -257,8 +250,8 @@ class BookingRequestControllerTest extends TestCase
             'room_id' => $room->id,
             'reservations' => [
                 [
-                    'start_time' => $start->format('Y-m-d\TH:i:00'),
-                    'end_time' => $end->format('Y-m-d\TH:i:00')
+                    'start_time' => $start->format('Y-m-d H:i:00'),
+                    'end_time' => $end->format('Y-m-d H:i:00')
                 ]
             ],
             'event' => [
@@ -300,8 +293,8 @@ class BookingRequestControllerTest extends TestCase
       'room_id' => $room->id,
       'reservations' => [
         [
-          'start_time' => $start->format('Y-m-d\TH:i:00'),
-          'end_time' => $end->format('Y-m-d\TH:i:00')
+          'start_time' => $start->format('Y-m-d H:i:00'),
+          'end_time' => $end->format('Y-m-d H:i:00')
         ]
       ],
       'event' => [
@@ -498,8 +491,9 @@ class BookingRequestControllerTest extends TestCase
             'room_id' => $room->id,
             'reservations' => [
                 [
-                    'start_time' => $start->format('Y-m-d\TH:i:00'),
-                    'end_time' => $end->format('Y-m-d\TH:i:00')
+                    'start_time' => $start->format('Y-m-d H:i:00'),
+                    'end_time' => $end->format('Y-m-d H:i:00'),
+                    'duration' => $this->faker->numberBetween(100)
                 ]
             ],
             'event' => [
@@ -548,16 +542,16 @@ class BookingRequestControllerTest extends TestCase
         Reservation::create([
             'room_id' => $room->id,
             'booking_request_id' => $booking->id,
-            'start_time' => $date->format('Y-m-d\TH:i:00'),
-            'end_time' => Carbon::parse($date)->addMinutes(1)->toDateTime()->format('Y-m-d\TH:i:00'),
+            'start_time' => $date->format('Y-m-d H:i:00'),
+            'end_time' => Carbon::parse($date)->addMinutes(1)->toDateTime()->format('Y-m-d H:i:00'),
         ]);
 
         $response = $this->actingAs($user)->post('/bookings', [
             'room_id' => $room->id,
             'reservations' => [
                 [
-                    'start_time' => $start->format('Y-m-d\TH:i:00'),
-                    'end_time' => $end->format('Y-m-d\TH:i:00')
+                    'start_time' => $start->format('Y-m-d H:i:00'),
+                    'end_time' => $end->format('Y-m-d H:i:00')
                 ]
             ],
             'event' => [
@@ -610,8 +604,9 @@ class BookingRequestControllerTest extends TestCase
             'room_id' => $room->id,
             'reservations' => [
                 [
-                    'start_time' => $reservation->start_time->format('Y-m-d\TH:i:00'),
-                    'end_time' => $reservation->end_time->format('Y-m-d\TH:i:00')
+                    'start_time' => $reservation->start_time->format('Y-m-d H:i:00'),
+                    'end_time' => $reservation->end_time->format('Y-m-d H:i:00'),
+                    'duration' => $this->faker->numberBetween(100)
                 ]
             ],
             'event' => [
@@ -657,6 +652,7 @@ class BookingRequestControllerTest extends TestCase
         $data = [
             'room_id' => $room->id,
             'booking_request_id' => $bookingRequest->id,
+
             'start_time' => Carbon::parse($date)->format('Y-m-d\TH:i'),
             'end_time' => Carbon::parse($date)->addMinute(60)->format('Y-m-d\TH:i'),
         ];

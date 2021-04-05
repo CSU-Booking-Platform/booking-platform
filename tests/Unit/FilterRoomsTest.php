@@ -83,8 +83,8 @@ class FilterRoomsTest extends TestCase
 
         // Send valid date range of availability, assert that the room is found
         $valid_pair = [
-            'start_time' => Carbon::now()->addMinutes(1)->format('Y-m-d\TH:i'),
-            'end_time' => Carbon::now()->addMinutes(2)->format('Y-m-d\TH:i')
+            'start_time' => Carbon::now()->addMinutes(1)->format('Y-m-d H:i'),
+            'end_time' => Carbon::now()->addMinutes(2)->format('Y-m-d H:i')
         ];
 
         $valid_recurrences = ['recurrences' => [
@@ -99,8 +99,8 @@ class FilterRoomsTest extends TestCase
 
         // Send invalid date range of availability, assert that the room is not found
         $invalid_pair = [
-            'start_time' => Carbon::now()->addHours(8)->format('Y-m-d\TH:i'),
-            'end_time' => Carbon::now()->addHours(9)->format('Y-m-d\TH:i')
+            'start_time' => Carbon::now()->addHours(8)->format('Y-m-d H:i'),
+            'end_time' => Carbon::now()->addHours(9)->format('Y-m-d H:i')
         ];
 
         $invalid_recurrences = ['recurrences' => [

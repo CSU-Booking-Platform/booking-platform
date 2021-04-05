@@ -48,6 +48,7 @@ import JetFormSection from '@src/Jetstream/FormSection';
 import JetSecondaryButton from '@src/Jetstream/SecondaryButton'
 import JetDangerButton from '@src/Jetstream/DangerButton'
 import JetButton from '@src/Jetstream/Button';
+import JetSectionBorder from '@src/Jetstream/SectionBorder';
 import BookingDetailedView from "@src/Components/BookingDetailedView";
 
 export default {
@@ -60,6 +61,7 @@ export default {
     JetSecondaryButton,
     JetDangerButton,
     JetButton,
+    JetSectionBorder
   },
 
   props: {

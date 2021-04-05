@@ -52,7 +52,7 @@ class FilterBookingRequestsTest extends TestCase
             'id' => $booking->id,
         ]);
 
-        $response = $this->actingAs($user)->postJson('/api/filterBookingRequests', ['date_range_start' => Carbon::now()->addMinutes(5)]);
+        $response = $this->actingAs($user)->postJson('/api/filterBookingRequests', ['date_range_end' => Carbon::now()->addMinutes(5)]);
         $response
             ->assertStatus(200)
             ->assertSessionHasNoErrors();
@@ -61,14 +61,14 @@ class FilterBookingRequestsTest extends TestCase
         $this->assertContains($booking->id, $res_id);
 
 
-        $response2 = $this->actingAs($user)->postJson('/api/filterBookingRequests', ['date_range_start' => Carbon::now()->subDay()]);
+        $response2 = $this->actingAs($user)->postJson('/api/filterBookingRequests', ['date_range_end' => Carbon::now()->subDay()]);
         $response2
             ->assertStatus(200);
         $res_id_2 = collect($response2->json())->pluck('id');
         $this->assertNotContains($booking->id, $res_id_2);
 
 
-        $response3 = $this->actingAs($user)->postJson('/api/filterBookingRequests', ['date_range_end' => Carbon::now()->subDay()]);
+        $response3 = $this->actingAs($user)->postJson('/api/filterBookingRequests', ['date_range_start' => Carbon::now()->subDay()]);
         $response3
             ->assertStatus(200)
             ->assertSessionHasNoErrors();
@@ -77,7 +77,7 @@ class FilterBookingRequestsTest extends TestCase
         $this->assertContains($booking->id, $res_id_3);
 
 
-        $response4 = $this->actingAs($user)->postJson('/api/filterBookingRequests', ['date_range_end' => Carbon::now()->addMinutes(5)]);
+        $response4 = $this->actingAs($user)->postJson('/api/filterBookingRequests', ['date_range_start' => Carbon::now()->addMinutes(5)]);
         $response4
             ->assertStatus(200)
             ->assertSessionHasNoErrors();

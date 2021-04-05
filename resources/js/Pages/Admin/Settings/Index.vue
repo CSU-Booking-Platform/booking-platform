@@ -16,6 +16,9 @@
                 <app-config :settings="settings.app_config"/>
             </div>
             <div class="mb-5">
+              <CivicHoliday />
+            </div>
+            <div class="mb-5">
               <BookingInformations
                 :general_information="settings.general_information"
                 :event_description="settings.event_description"
@@ -24,7 +27,6 @@
             <div class="mb-5" v-for="academicDate in academic_dates">
               <AcademicDate :academicDate="academicDate"/>
             </div>
-            <CivicHoliday />
         </div>
     </app-layout>
 </template>

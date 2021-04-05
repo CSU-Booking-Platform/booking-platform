@@ -3,6 +3,9 @@
     <template #title>
       Bookings Description
     </template>
+    <template #description>
+      Change the default bookings description as seen by the users creating a booking.
+    </template>
     <template #form>
       <div class="col-span-12 sm:col-span-6">
         <div class="p-2">

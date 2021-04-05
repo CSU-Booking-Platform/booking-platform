@@ -9,8 +9,10 @@ use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 use Inertia\Response;
 use Inertia\ResponseFactory;
+use Laravel\Fortify\Fortify;
 
 class UserController extends Controller
 {
@@ -53,18 +55,6 @@ class UserController extends Controller
 
     }
 
-//
-//    /**
-//     * Display the specified resource.
-//     *
-//     * @param int $id
-//     * @return \Illuminate\Http\Response
-//     */
-//    public function show($id)
-//    {
-//        //
-//    }
-//
     /**
      * Update the specified resource in storage.
      *
@@ -106,6 +96,15 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
-        return back()->with('flash', ['we good']);
+        return back()->with('flash', ['User deleted successfully']);
+    }
+
+    public function getResetToken(User $user) {
+        Password::deleteToken($user);
+        $token = Password::createToken($user);
+        return \response()->json([
+            'token' => $token,
+            'link' => route('password.reset', $token)
+        ]);
     }
 }

@@ -15,8 +15,10 @@ use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Inertia\ResponseFactory;
 use ZipArchive;
@@ -52,19 +54,21 @@ class BookingRequestController extends Controller
 
   public function createInit(Request $request)
   {
-
     $data = $request->validate([
       'room_id' => ['integer', 'exists:rooms,id'],
       'reservations' => ['required'],
       'reservations.*.start_time' => [
         'required',
         'date',
-        'date_format:Y-m-d\TH:i'
       ],
       'reservations.*.end_time' => [
         'required',
         'date',
-        'date_format:Y-m-d\TH:i',
+      ],
+      'reservations.*.duration' => [
+        'required',
+        'integer',
+        'min:30',
       ],
     ]);
 
@@ -277,7 +281,7 @@ class BookingRequestController extends Controller
     private function reservationValidate(Request $request)
     {
         $request->validate(array(
-            'reservations.*' => ['array', 'size:2',
+            'reservations.*' => ['array', 'size:3',
                 function ($attribute, $value, $fail) use ($request) {
                     $user =  $request->user();
                     $room = Room::query()->findOrFail($request->room_id);
@@ -310,8 +314,8 @@ class BookingRequestController extends Controller
         // filter the ones provided from request
         $request->validate([
             'status_list.*' => ['boolean'],
-            'date_range_start' => ['string'],
-            'date_range_end' => ['string'],
+            'date_range_start' => ['date'],
+            'date_range_end' => ['date'],
             'data_reviewers' => ['array']
         ]);
 
@@ -332,11 +336,11 @@ class BookingRequestController extends Controller
 
 
         if($request->date_range_start){
-            $query->where('created_at', '<', $request->date_range_start);
+            $query->where('created_at', '>', $request->date_range_start);
         }
 
         if($request->date_range_end){
-            $query->where('created_at', '>', $request->date_range_end);
+            $query->where('created_at', '<', $request->date_range_end);
         }
 
         if($request->data_reviewers){
@@ -345,6 +349,40 @@ class BookingRequestController extends Controller
         }
 
         return response()->json(new BookingCollection($query->get()));
+    }
+
+
+
+    /**
+     * Filter booking requests by given json payload for a specific user
+     *
+     * @param Request $request
+     * @return JsonResponse|Response
+     */
+    public function filterUserBookings(Request $request)
+    {
+        // None of the request fields are mandatory, only
+        // filter the ones provided from request
+        $request->validate([
+            'dateCheck' => ['date','nullable'],
+            'selectStatus' => ['string','nullable', Rule::in(BookingRequest::STATUS_TYPES)],
+        ]);
+
+        $query = BookingRequest::with('requester', $this->reservationRoom)
+            ->where('user_id', auth()->user()->id);
+
+        if ($request->selectStatus){
+            $query = $query->where('status', $request->selectStatus);
+        }
+
+        if ($request->dateCheck) {
+            $query = $query->whereHas('reservations', function($q) use ($request) {
+                $date = Carbon::parse($request->dateCheck);
+                $q->whereDate('start_time', $date)->orWhereDate('end_time', $date);
+            });
+        }
+
+        return response()->json($query->get());
     }
 
 

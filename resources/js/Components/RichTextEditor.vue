@@ -177,3 +177,15 @@ export default {
   }
 };
 </script>
+<style>
+.ProseMirror {
+  border: 1.5px solid #eaeaea;
+  max-height: 75vh;
+  min-height: 75px;
+  overflow-y: scroll;
+}
+
+.ProseMirror:focus {
+  outline: none;
+}
+</style>

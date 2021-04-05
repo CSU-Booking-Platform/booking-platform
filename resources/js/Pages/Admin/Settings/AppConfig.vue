@@ -4,6 +4,11 @@
                 Application Office 365 Credentials
             </template>
 
+            <template #description>
+                Provide the Office 365 configuration here.
+                Register this application with your organization to obtain these credentials.
+            </template>
+
             <template #form>
                     
                 <div class="col-span-12 sm:col-span-6">

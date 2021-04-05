@@ -256,7 +256,7 @@ class BookingReviewControllerTest extends TestCase
 
         $response = $this->actingAs(
             $users->first()->givePermissionTo('bookings.approve') // temporarily give permission to fetch list
-        )->get(route('bookings.reviews.assignable'));
+        )->get(route('api.bookings.reviews.assignable'));
         // assert request was successful
         $response->assertSessionHasNoErrors();
         $response->assertOk();
@@ -270,7 +270,7 @@ class BookingReviewControllerTest extends TestCase
         $this->assertEquals($users->count(), User::permission('bookings.approve')->count());
         $this->assertEquals($users->pluck('id'), User::permission('bookings.approve')->pluck('id'));
 
-        $response = $this->actingAs($users->first())->get(route('bookings.reviews.assignable'));
+        $response = $this->actingAs($users->first())->get(route('api.bookings.reviews.assignable'));
         // assert request was successful
         $response->assertSessionHasNoErrors();
         $response->assertOk();

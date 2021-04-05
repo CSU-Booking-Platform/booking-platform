@@ -123,18 +123,12 @@ class BookingsPageTest extends DuskTestCase
             ->hasReservations(1)
             ->create(["status" => BookingRequest::PENDING])->first();          
         $this->browse(function (Browser $browser) use ($bookings) {
-            $TimeFormat = 'H:i';
-            $amPM = strtolower(Reservation::first()->end_time->format('A'));
-            $startTime = trim(Reservation::first()->start_time->format($TimeFormat), ":");
-            $endTime = trim(Reservation::first()->end_time->format($TimeFormat), ":");
             $browser->loginAs(User::first());
             $browser->visit('/bookings')
                 ->clickLink("Edit", 'button')
                 ->pause(5000);
             $browser->assertSee('Submit A Booking Request')
-                ->type('@start', $startTime . $amPM)
-                ->type('@end', $endTime . $amPM)
-                ->type('@title', $endTime . $amPM)
+                ->type('@title', 'title')
                 ->type('@type', 'type')
                 ->type('#event_description', 'description')
                 ->type('#guest_speakers', 'speakers')
@@ -142,7 +136,7 @@ class BookingsPageTest extends DuskTestCase
             $browser->check('div > main > form > div:nth-child(4) > div > div > input');
             $browser->press('SUBMIT')
                 ->pause(5000)
-                ->assertPathIs('/bookings');
+                ->assertSee('This booking cannot be submitted');
         });
     }
 

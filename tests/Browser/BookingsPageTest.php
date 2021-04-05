@@ -111,7 +111,7 @@ class BookingsPageTest extends DuskTestCase
             $browser->loginAs(User::first());
             $browser->visit('/bookings')
                 ->clickLink("View", 'button')
-                ->pause(5000);
+                ->pause(250);
             $browser->assertSee('Booking Request Status');
         });
     }
@@ -126,7 +126,7 @@ class BookingsPageTest extends DuskTestCase
             $browser->loginAs(User::first());
             $browser->visit('/bookings')
                 ->clickLink("Edit", 'button')
-                ->pause(5000);
+                ->pause(250);
             $browser->assertSee('Submit A Booking Request')
                 ->type('@title', 'title')
                 ->type('@type', 'type')
@@ -135,7 +135,7 @@ class BookingsPageTest extends DuskTestCase
                 ->type('@numberAttending', '2');
             $browser->check('div > main > form > div:nth-child(4) > div > div > input');
             $browser->press('SUBMIT')
-                ->pause(5000)
+                ->pause(800)
                 ->assertSee('This booking cannot be submitted');
         });
     }

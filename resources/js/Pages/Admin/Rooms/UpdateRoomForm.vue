@@ -198,6 +198,8 @@
                         type="time"
                         class="mt-1 block w-full"
                         v-model="value.opening_hours"
+                        :id="key + '_opening_hours'"
+                        :dusk="key + '_opening_hours'"
                     />
                     <jet-input-error
                         :message="form.error('availabilities.' + key + '.opening_hours')"
@@ -209,6 +211,8 @@
                         type="time"
                         class="mt-1 block w-full"
                         v-model="value.closing_hours"
+                        :id="key + '_closing_hours'"
+                        :dusk="key + '_closing_hours'"
                     />
                     <jet-input-error
                         :message="form.error('availabilities.' + key + '.closing_hours')"

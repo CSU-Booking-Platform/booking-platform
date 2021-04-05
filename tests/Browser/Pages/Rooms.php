@@ -2,6 +2,7 @@
 
 namespace Tests\Browser\Pages;
 
+use App\Models\Role;
 use App\Models\Room;
 use Laravel\Dusk\Browser;
 
@@ -67,7 +68,7 @@ class Rooms extends Page
     {
 
         $browser
-            ->press('Action')
+            ->press('ACTION MENU')
             ->press('Update')
             ->type('.vue-portal-target #name', $name)
             ->press('#updateRoom');
@@ -78,7 +79,7 @@ class Rooms extends Page
     {
 
         $browser
-            ->press('Action')
+            ->press('ACTION MENU')
             ->press('Delete')
             ->press('#deleteRoom');
     }
@@ -86,10 +87,21 @@ class Rooms extends Page
     public function restrictRoom(Browser $browser, Room $room, string $role)
     {
         $browser
-            ->press('Action')
+            ->press('ACTION MENU')
             ->press('Restricted Roles')
             ->check('@restrict-1')
             ->press('#updateRoomRestrictions');
 
     }
+
+    public function restrictRoomDate(Browser $browser, Role $role, $min, $max)
+    {
+        $browser
+            ->press('ACTION MENU')
+            ->press('Customize Role Date Restrictions')
+            ->type('#min_days_advance_'.$role->id, $min)
+            ->type('#max_days_advance_'.$role->id, $max);
+        $browser->press('#updateRoomDateRestrictions');
+    }
+
 }

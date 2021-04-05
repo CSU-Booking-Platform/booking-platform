@@ -5,19 +5,26 @@
       <template v-slot:user="{ user }">
         <div class="flex items-center">
 
-          <button class="cursor-pointer ml-6 text-sm focus:outline-none"
+          <button class="cursor-pointer ml-6 text-sm inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray transition ease-in-out duration-150 cursor-pointer ml-6 text-sm focus:outline-none"
                   @click="openUpdateModal(user)">
             Edit
           </button>
 
-          <button class="cursor-pointer ml-6 text-sm text-red-500 focus:outline-none"
+          <button class="cursor-pointer ml-6 text-sm inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray transition ease-in-out duration-150 cursor-pointer ml-6 text-sm focus:outline-none"
                   @click="userBeingDeleted = user">
             Delete
+          </button>
+
+          <button class="cursor-pointer ml-6 text-sm text-red-500 focus:outline-none"
+                  @click="resetModalUser = user">
+            Reset link
           </button>
 
         </div>
       </template>
     </user-table>
+
+    <reset-link-modal :user="resetModalUser" @close="resetModalUser = null" />
 
     <jet-confirmation-modal :show="userBeingUpdated != null" @close="userBeingUpdated = null">
       <template #title>
@@ -99,14 +106,13 @@ import JetSecondaryButton from '@src/Jetstream/SecondaryButton'
 import JetDangerButton from '@src/Jetstream/DangerButton'
 import JetButton from '@src/Jetstream/Button'
 import JetModal from '@src/Jetstream/Modal'
-import Input from "@src/Jetstream/Input";
 import Dropdown from "@src/Jetstream/Dropdown";
 import JetInput from "@src/Jetstream/Input"
 import JetInputError from "@src/Jetstream/InputError"
 import JetLabel from "@src/Jetstream/Label"
-import Label from "@src/Jetstream/Label";
 import XSection from "@src/Components/XSection";
 import UserTable from "@src/Components/Tables/UsersTable";
+import ResetLinkModal from "@src/Pages/Admin/Users/ResetLinkModal";
 
 export default {
   props: {
@@ -126,9 +132,7 @@ export default {
 
   components: {
     UserTable,
-    Label,
     Dropdown,
-    Input,
     JetSectionBorder,
     JetActionSection,
     JetButton,
@@ -139,7 +143,8 @@ export default {
     JetInput,
     JetLabel,
     JetInputError,
-    XSection
+    XSection,
+    ResetLinkModal
   },
 
   data() {
@@ -155,6 +160,7 @@ export default {
       }),
       userBeingDeleted: null,
       userBeingUpdated: null,
+      resetModalUser: null,
     }
   },
 
@@ -166,6 +172,10 @@ export default {
       }).then(() => {
         this.userBeingDeleted = null
       })
+    },
+
+    openResetModal(user) {
+      this.resetModalUser = user;
     },
 
     openUpdateModal(user) {

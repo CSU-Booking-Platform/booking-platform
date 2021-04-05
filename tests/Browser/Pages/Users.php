@@ -54,7 +54,7 @@ class Users extends Page
 
 
         $browser->with('#user-row-' . $user->id, function ($row) {
-                $row->press('Edit');
+                $row->press('EDIT');
             });
         $browser->with('.vue-portal-target', function ($modal) use ($name, $email, $rolesToAdd, $rolesToRemove) {
             if (isset($name))
@@ -77,7 +77,7 @@ class Users extends Page
     public function deleteUser(Browser $browser)
     {
 
-        $browser->press('Delete')
+        $browser->press('DELETE')
             ->press('.vue-portal-target #delete');
     }
 }

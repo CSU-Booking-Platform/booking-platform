@@ -144,7 +144,7 @@
                                 <div class="flex-1">
                                     <jet-label for="event_start" value="Start"/>
                                     <jet-input id="event_start" type="time" class="mt-1 block w-full"
-                                               v-model="form.event.start_time" autofocus/>
+                                               v-model="form.event.start_time" autofocus dusk="start"/>
                                     <jet-input-error :message="form.error('event.start_time')" class="mt-2"/>
                                 </div>
 
@@ -153,7 +153,7 @@
                                 <div class="flex-1">
                                     <jet-label for="event_end" value="Finish"/>
                                     <jet-input id="event_end" type="time" class="mt-1 block w-full"
-                                               v-model="form.event.end_time" autofocus/>
+                                               v-model="form.event.end_time" autofocus dusk="end"/>
                                     <jet-input-error :message="form.error('event.end_time')" class="mt-2"/>
                                 </div>
                             </div>
@@ -177,7 +177,7 @@
                         <!-- Title Of Event -->
                         <div class="col-span-6">
                             <jet-label for="event_title" value="Title Of Event"/>
-                            <jet-input id="event_title" type="text" class="mt-1 block w-full"
+                            <jet-input id="event_title" type="text" class="mt-1 block w-full" dusk="title"
                                        v-model="form.event.title" autofocus/>
                             <jet-input-error :message="form.error('event.title')" class="mt-2"/>
                         </div>
@@ -185,7 +185,7 @@
                         <!-- Type Of Event -->
                         <div class="col-span-6">
                             <jet-label for="event_type" value="Type Of Event"/>
-                            <jet-input id="event_type" type="text" class="mt-1 block w-full"
+                            <jet-input id="event_type" type="text" class="mt-1 block w-full" dusk="type"
                                        v-model="form.event.type" autofocus/>
                             <jet-input-error :message="form.error('event.type')" class="mt-2"/>
                         </div>
@@ -209,7 +209,7 @@
                         <!-- Number of Attendees -->
                         <div class="col-span-6">
                             <jet-label for="attendees" value="Number of Attendees"/>
-                            <jet-input id="attendees" type="number" class="mt-1 block w-full"
+                            <jet-input id="attendees" type="number" class="mt-1 block w-full" dusk="numberAttending"
                                        v-model="form.event.attendees" autofocus/>
                             <jet-input-error :message="form.error('event.attendees')" class="mt-2"/>
                         </div>
@@ -439,7 +439,7 @@
 
             <!-- Terms & Conditions -->
             <div class="flex items-center justify-end py-3">
-                <app-question v-model="accept_terms">
+                <app-question v-model="accept_terms" dusk="acceptTermsCheckbox">
                     <template #after>
                         <jet-label>
                             I have read and agree to the CSU’s
@@ -465,7 +465,7 @@
                     </strong>
                 </app-warning>
 
-                <jet-button :class="{ 'opacity-25': (form.processing || !accept_terms) }" :disabled="form.processing || !accept_terms">
+                <jet-button :class="{ 'opacity-25': (form.processing || !accept_terms) }" :disabled="form.processing || !accept_terms" dusk="submitButton">
                     Submit
                 </jet-button>
             </div>
@@ -571,7 +571,6 @@ export default {
             this.form.onsite_contact = (booking.onsite_contact.length === 0) ? {} : booking.onsite_contact;
             this.form.event = booking.event;
             this.form.notes = booking.notes ?? null;
-            //this.form.files= booking?.files;
         },
         toggleNullableForms() {
             if(this.form.event.show?.contact === false) {

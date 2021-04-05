@@ -39,44 +39,44 @@
             <div class="text-md mx-2">
               <jet-dropdown width="48">
                 <template #trigger>
-                  <button
-                  class="flex text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out"
+                  <jet-button
+                  class="flex text-sm font-medium focus:outline-none transition duration-150 ease-in-out"
                   >
-                  <span>Action</span>
-                  </button>
+                  <span>Action Menu</span>
+                  </jet-button>
                 </template>
 
                 <template #content>
-                  <div class="text-md mx-3">
+                  <div class="text-md mx-2">
                     <button
-                        class="cursor-pointer text-sm text-blue-800 focus:outline-none"
+                        class="cursor-pointer text-sm text-blue-800 focus:outline-none text-left px-4"
                         @click="roomBeingUpdated = room"
                     >
-                        Update
+                      Update
                     </button>
                   </div>
-                  <div class="text-md mx-3">
+                  <div class="text-md mx-2">
                     <jet-dropdown-link :href="'/admin/rooms/'+room.id+'/blackouts'">
-                        <div class="cursor-pointer text-sm text-blue-800 focus:outline-none">
-                          Blackout
+                        <div class="cursor-pointer text-sm text-blue-800 focus:outline-none text-left">
+                          Update Blackout
                         </div>
                     </jet-dropdown-link>
                   </div>
                   <div class="text-md mx-2">
-                    <button class="cursor-pointer text-sm text-blue-800 focus:outline-none"
+                    <button class="cursor-pointer text-sm text-blue-800 focus:outline-none text-left px-4"
                             @click="openEditRestrictionsModal(room)">
                       Restricted Roles
                     </button>
                   </div>
                   <div class="text-md mx-2">
-                    <button class="cursor-pointer text-sm text-blue-800 focus:outline-none"
+                    <button class="cursor-pointer text-sm text-blue-800 focus:outline-none text-left px-4"
                             @click="openEditDateRestrictionsModal(room)">
                       Customize Role Date Restrictions
                     </button>
                   </div>
-                  <div class="text-md mx-3">
+                  <div class="text-md mx-2">
                     <button
-                        class="cursor-pointer text-sm text-red-800 focus:outline-none"
+                        class="cursor-pointer text-sm text-red-800 focus:outline-none text-left px-4"
                         @click="roomBeingDeleted = room"
                     >
                         Delete
@@ -200,7 +200,8 @@
 
           <jet-button class="ml-2" @click.native="updateDateRestrictions"
                       :class="{ 'opacity-25': updateRoomDateRestrictionsForm.processing }"
-                      :disabled="updateRoomDateRestrictionsForm.processing">
+                      :disabled="updateRoomDateRestrictionsForm.processing"
+                      id="updateRoomDateRestrictions">
               Update
           </jet-button>
       </template>
@@ -217,13 +218,10 @@ import JetSecondaryButton from '@src/Jetstream/SecondaryButton'
 import JetDangerButton from '@src/Jetstream/DangerButton'
 import JetButton from '@src/Jetstream/Button'
 import JetModal from '@src/Jetstream/Modal'
-import Input from "@src/Jetstream/Input";
-import Dropdown from "@src/Jetstream/Dropdown";
 import JetInput from "@src/Jetstream/Input"
 import JetInputError from "@src/Jetstream/InputError"
 import JetLabel from "@src/Jetstream/Label"
 import UpdateRoomForm from "@src/Pages/Admin/Rooms/UpdateRoomForm";
-import Label from "@src/Jetstream/Label";
 import JetDropdown from "@src/Jetstream/Dropdown";
 import JetDropdownLink from "@src/Jetstream/DropdownLink";
 import AvailabilitiesModal from "@src/Components/AvailabilitiesModal";
@@ -256,9 +254,6 @@ export default {
   },
   components: {
     AvailabilitiesModal,
-        Label,
-        Dropdown,
-        Input,
         JetSectionBorder,
         JetActionSection,
         JetButton,

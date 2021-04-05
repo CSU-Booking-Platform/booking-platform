@@ -25,7 +25,34 @@
       </div>
     </div>
 
-    <table class="table-auto responsive-spaced">
+    <ul class="list-reset flex border-b">
+      <li v-if="listViewSelected" class="-mb-px mr-1">
+        <a @click="listViewSelected = true"
+          class="bg-white inline-block border-l border-t border-r rounded-t py-2 px-4 text-blue-dark font-semibold"
+          href="#">List View</a
+        >
+      </li>
+      <li v-else class="mr-1">
+        <a @click="listViewSelected = true"
+          class="bg-white inline-block py-2 px-4 text-blue hover:text-blue-darker font-semibold"
+          href="#">List View</a
+        >
+      </li>
+      <li v-if="listViewSelected" class="mr-1">
+        <a @click="listViewSelected = false"
+          class="bg-white inline-block py-2 px-4 text-blue hover:text-blue-darker font-semibold"
+          href="#">Calendar View</a
+        >
+      </li>
+      <li v-else class="-mb-px mr-1">
+        <a @click="listViewSelected = false"
+          class="bg-white inline-block border-l border-t border-r rounded-t py-2 px-4 text-blue-dark font-semibold"
+          href="#">Calendar View</a
+        >
+      </li>
+    </ul>
+
+    <table v-if="listViewSelected" class="table-auto responsive-spaced mt-4">
       <caption></caption>
       <thead>
         <tr>
@@ -114,7 +141,7 @@
               &blacktriangledown;
             </span>
           </th>
-          <th id="id_room_action">Actions</th>
+          <th id="id_room_action">Action</th>
         </tr>
       </thead>
       <tbody>
@@ -139,6 +166,11 @@
         </tr>
       </tbody>
     </table>
+
+
+    <div v-if="!listViewSelected">
+      <CalendarViewTable/>
+    </div>
 
     <CreateBookingRequestModal
       :room="roomBeingBooked"
@@ -335,9 +367,8 @@
                 <div v-for="(dates, index) in jsonFilters.recurrences" :key="index">
                   <div class="m-6">
                     <jet-label for="start_time" value="Start Time" />
-                    <jet-input
+                    <date-time-picker
                       id="start_time"
-                      type="datetime-local"
                       class="mt-1 block w-full"
                       v-model="dates.start_time"
                       autofocus
@@ -346,9 +377,8 @@
 
                   <div class="m-6">
                     <jet-label for="end_time" value="End Time" />
-                    <jet-input
+                    <date-time-picker
                       id="end_time"
-                      type="datetime-local"
                       class="mt-1 block w-full"
                       v-model="dates.end_time"
                       autofocus
@@ -384,12 +414,9 @@
 <script>
 
 import CreateBookingRequestModal from "@src/Pages/Admin/BookingRequests/CreateBookingRequestModal";
-import Button from "@src/Jetstream/Button";
 import JetDialogModal from "@src/Jetstream/DialogModal";
 import JetSecondaryButton from "@src/Jetstream/SecondaryButton";
-import Label from "@src/Jetstream/Label";
 import JetInput from "@src/Jetstream/Input";
-import Input from "@src/Jetstream/Input";
 import JetDropdown from "@src/Jetstream/Dropdown";
 import JetDropdownLink from "@src/Jetstream/DropdownLink";
 import RoomDetailedView from "@src/Components/RoomDetailedView";
@@ -397,6 +424,8 @@ import JetButton from "@src/Jetstream/Button";
 import JetLabel from "@src/Jetstream/Label";
 import JetInputError from "@src/Jetstream/InputError";
 import AvailabilitiesModal from "@src/Components/AvailabilitiesModal";
+import CalendarViewTable from "@src/Components/Tables/CalendarViewTable";
+import DateTimePicker from "@src/Components/Form/DateTimePicker";
 
 export default {
   name: "RoomTable",
@@ -408,12 +437,10 @@ export default {
     },
   },
   components: {
-      Input,
-      Button,
+      DateTimePicker,
       CreateBookingRequestModal,
       JetDialogModal,
       JetSecondaryButton,
-      Label,
       JetInput,
       JetDropdown,
       JetDropdownLink,
@@ -421,7 +448,8 @@ export default {
       JetButton,
       JetLabel,
       JetInputError,
-      AvailabilitiesModal
+      AvailabilitiesModal,
+      CalendarViewTable
   },
   data() {
       return {
@@ -450,7 +478,8 @@ export default {
           },
         showFilterModal: false,
         currentSort: 'name',
-        currentSortDir: 'asc'
+        currentSortDir: 'asc',
+        listViewSelected: true
       }
   },
     computed: {
@@ -468,8 +497,8 @@ export default {
         },
         missingDates: function(){
           if(this.numDates > 0){
-            for(let i = 0; i < this.jsonFilters.recurrences.length; i++){
-              if(!this.jsonFilters.recurrences[i].start_time || !this.jsonFilters.recurrences[i].end_time) {
+            for(let recurrence of this.jsonFilters.recurrences){
+              if(!recurrence.start_time || !recurrence.end_time) {
                 return true;
               }
             }

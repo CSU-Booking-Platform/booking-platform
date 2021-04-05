@@ -101,3 +101,29 @@ table.responsive-spaced tbody:before {
   width: 100%;
   text-align: center;
 }
+
+
+
+table.responsive-calendar {
+  width: 100%;
+}
+
+/* Table header aligning and padding */
+table.responsive-calendar th {
+  text-align: left;
+  border-bottom: 1.5px solid #eaeaea;
+}
+
+/* Table data aligning and padding */
+table.responsive-calendar td {
+  text-align: left;
+  border-bottom: 1.5px solid #eaeaea;
+}
+
+/* Table body spacing from headers */
+table.responsive-calendar tbody:before {
+  content: "_";
+  color: white;
+  display: block;
+}
+

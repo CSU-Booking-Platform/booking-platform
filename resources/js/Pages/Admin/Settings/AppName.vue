@@ -23,7 +23,8 @@
                     Updated.
                 </jet-action-message>
 
-                <jet-button :class="{ 'opacity-25': updateNameSettingform.processing }"
+                <jet-button name="update-app-name"
+                            :class="{ 'opacity-25': updateNameSettingform.processing }"
                             :disabled="updateNameSettingform.processing">
                     Update Application Name
                 </jet-button>

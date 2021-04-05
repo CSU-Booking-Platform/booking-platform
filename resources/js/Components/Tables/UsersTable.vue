@@ -6,7 +6,7 @@
       <tr>
         <th id="id_user_name">Name</th>
         <th id="id_user_email">Email</th>
-        <th id="id_actions">Actions</th>
+        <th id="id_actions">Action</th>
       </tr>
       </thead>
       <tbody>

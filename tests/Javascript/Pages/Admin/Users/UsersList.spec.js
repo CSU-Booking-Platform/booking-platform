@@ -57,6 +57,14 @@ test('deleteUser()', () => {
     expect(wrapper.vm.$data.userBeingDeleted).toBe(null)
 })
 
+test('openResetModal', () => {
+  let user = {
+    id: 69
+  }
+  const wrapper = shallowMount(UsersList, {localVue})
+  wrapper.vm.openResetModal(user)
+  expect(wrapper.vm.$data.resetModalUser).toBe(user);
+})
 
 test('openUpdateModal', () => {
     let user = {

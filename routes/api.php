@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoomController;
@@ -18,17 +19,32 @@ use App\Http\Controllers\SettingsController;
 |
 */
 
-Route::middleware(['auth:sanctum'])->group(function () {
-    Route::post('/filterBookingRequests', [BookingRequestController::class, 'filter'])->middleware(['permission:bookings.approve']);
-    Route::post('/filterMyBookingRequests', [BookingRequestController::class, 'filterUserBookings'])->middleware(['permission:bookings.create']);
-    Route::post('/filterRooms', [RoomController::class, 'filter'])->middleware(['permission:bookings.create']);
-    Route::post('/reservations/{room}', [ReservationsController::class, 'roomReservation'])->middleware(['permission:bookings.create']);
+Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
+    Route::post('/filterBookingRequests', [BookingRequestController::class, 'filter'])
+        ->middleware(['permission:bookings.approve']);
+
+    Route::post('/filterMyBookingRequests', [BookingRequestController::class, 'filterUserBookings'])
+        ->middleware(['permission:bookings.create']);
+
+    Route::post('/filterRooms', [RoomController::class, 'filter'])
+        ->middleware(['permission:bookings.create']);
+
+    Route::prefix('reservations')->name('reservations.')->group(function () {
+        Route::name('by-date')->get('by-date', [ReservationsController::class, 'byDate']);
+        Route::name('by-room')->get('by-room/{room}', [ReservationsController::class, 'byRoom']);
+    });
+
     Route::patch('/booking-setting', [SettingsController::class, 'storeBookingGeneralInformation']);
 
-    Route::name('bookings.reviews.assignable')->middleware(['permission:bookings.approve'])
-        ->get('/bookings/assignable', [BookingReviewController::class, 'assignable']);
-});
+    Route::post('/admin/users/{user}/reset-token', [UserController::class, 'getResetToken'])
+        ->name('admin.users.token')
+        ->middleware(['permission:users.update']);
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    Route::get('/bookings/assignable', [BookingReviewController::class, 'assignable'])
+        ->name('bookings.reviews.assignable')
+        ->middleware(['permission:bookings.approve']);
+
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
 });

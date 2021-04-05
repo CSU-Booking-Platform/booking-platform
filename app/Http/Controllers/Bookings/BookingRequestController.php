@@ -284,6 +284,7 @@ class BookingRequestController extends Controller
         $request->validate(array(
             'reservations.*' => ['array', 'size:3',
                 function ($attribute, $value, $fail) use ($request) {
+                    unset($attribute);
                     $user =  $request->user();
                     $room = Room::query()->findOrFail($request->room_id);
                     $room->verifyDatesAreWithinRoomRestrictionsValidation($value['start_time'], $fail, $user);//

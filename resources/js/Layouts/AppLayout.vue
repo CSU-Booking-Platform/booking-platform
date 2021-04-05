@@ -53,25 +53,25 @@
                         </div>
                         <div class="flex-1 py-3">
                             <a href="https://www.facebook.com/csumtl/">
-                                <i class="fab fa-facebook pr-2"></i>
+                                <em class="fab fa-facebook pr-2"></em>
                                 Facebook
                             </a>
                         </div>
                         <div class="flex-1 py-3">
                             <a href="https://www.instagram.com/csumtl/">
-                                <i class="fab fa-instagram pr-2"></i>
+                                <em class="fab fa-instagram pr-2"></em>
                                 Instagram
                             </a>
                         </div>
                         <div class="flex-1 py-3">
                             <a href="https://twitter.com/csumtl">
-                                <i class="fab fa-twitter pr-2"></i>
+                                <em class="fab fa-twitter pr-2"></em>
                                 Twitter
                             </a>
                         </div>
                         <div class="flex-1 py-3">
                             <a href="https://www.youtube.com/channel/UC14BOYjvdSqaCoCJfede9SA">
-                                <i class="fab fa-youtube pr-2"></i>
+                                <em class="fab fa-youtube pr-2"></em>
                                 YouTube
                             </a>
                         </div>

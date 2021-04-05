@@ -93,5 +93,15 @@ class AdminRolesTest extends DuskTestCase
         $this->assertDeleted($role);
     }
 
+    public function testRoleIsRestrictedFromBooking()
+    {
+        //User without bookings.create permissions is turned away with a 403 code
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs($this->createUserWithPermissions(['']));
+            $browser->visit('/bookings');
+            $browser->assertSee('403');
+            $browser->assertMissing('My Bookings');         
+        });
+    }
 
 }

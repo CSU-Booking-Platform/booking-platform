@@ -100,4 +100,47 @@ class BookingsPageTest extends DuskTestCase
         });
     }
 
+    public function testViewBookingStatus()
+    {
+        $bookings = BookingRequest::factory()
+            ->count(1)
+            ->hasReservations(random_int(1, 3))
+            ->create(["status" => BookingRequest::PENDING])->first();
+
+        $this->browse(function (Browser $browser) use ($bookings) {
+            $browser->loginAs(User::first());
+            $browser->visit('/bookings')
+                ->clickLink("View", 'button')
+                ->pause(5000);
+            $browser->assertSee('Booking Request Status');
+        });
+    }
+
+    public function testEditBooking()
+    {
+        $bookings = BookingRequest::factory()
+            ->count(1)
+            ->hasReservations(random_int(1, 3))
+            ->create(["status" => BookingRequest::PENDING])->first();
+            
+        $this->browse(function (Browser $browser) use ($bookings) {
+            $browser->loginAs(User::first());
+            $browser->visit('/bookings')
+                ->clickLink("Edit", 'button')
+                ->pause(5000);
+            $browser->assertSee('Submit A Booking Request')
+                ->type('@start', '0700pm')
+                ->type('@end', '0800pm')
+                ->type('@title', 'title')
+                ->type('@type', 'type')
+                ->type('#event_description', 'description')
+                ->type('#guest_speakers', 'speakers')
+                ->type('@numberAttending', '22');
+            $browser->check('div > main > form > div:nth-child(4) > div > div > input');
+            $browser->press('SUBMIT')
+                ->pause(5000)
+                ->assertPathIs('/bookings');
+        });
+    }
+
 }

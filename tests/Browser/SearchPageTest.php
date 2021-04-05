@@ -248,10 +248,9 @@ class SearchPageTest extends DuskTestCase
     public function testWhenBookRoomMutlipleDatesSuccess()
     {
         (new RolesAndPermissionsSeeder())->run();
-        $room = Room::factory()->create(["min_days_advance"=> 2, "max_days_advance"  => 5]);
+        $room = Room::factory()->create(["min_days_advance"=> 2, "max_days_advance"  => 500]);
         $admin = User::factory()->create();
         $admin->assignRole('super-admin');
-        $role = Role::where('name', 'super-admin')->first();
 
         foreach ($this->weekdays as $weekday) {
             Availability::create([
@@ -263,30 +262,20 @@ class SearchPageTest extends DuskTestCase
         }
         $this->browse(function (Browser $browser) use ($room, $admin) {
             $browser->loginAs($admin);
-            $browser->visit('/bookings/search')
-                ->assertSee($room->name)
-                ->click('@room-select-' . $room->id)
-                ->mouseover('@createBookingModal')
-                ->mouseover('#addAnotherDate');
+            $browser->visit('/bookings/search');
 
+            $browser->assertSee($room->name)
+                ->click('@room-select-' . $room->id)
+                ->mouseover('@createBookingModal');
             $browser->within( new DateTimePicker('start_time_0'), function($browser) {
                 $browser->setDatetime(3,13);
-            })->pause(1000);
+            })->pause(250);
 
             $browser->within( new DateTimePicker('end_time_0'), function($browser) {
                 $browser->setDatetime(3,14);
-            })->pause(1000);
+            })->pause(250);
 
-            $browser->click('#addAnotherDate')->pause(500);
-
-            $browser->within( new DateTimePicker('start_time_1'), function($browser) {
-                $browser->setDatetime(4,13);
-            })->pause(1000);
-
-            $browser->within( new DateTimePicker('end_time_1'), function($browser) {
-                $browser->setDatetime(4,14);
-            })->pause(1000);
-
+            $browser->click('#add-recurences-button')->pause(250);
 
             $browser->click("#createBookingRequest")->pause(5000)
                 ->assertpathis("/bookings/create");

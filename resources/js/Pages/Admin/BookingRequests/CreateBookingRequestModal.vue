@@ -60,7 +60,7 @@
           <option v-for="option in recurrenceOptions" :value="option.value"> {{ option.name }}</option>
         </x-select>
 
-        <jet-secondary-button id="addRecurrences" @click.native="addDates">
+        <jet-secondary-button id="add-recurences-button" @click.native="addDates">
           Add Recurrences
         </jet-secondary-button>
       </div>

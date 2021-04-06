@@ -141,9 +141,9 @@
             <jet-nav-sub
               v-if="userHasOneOf(['bookings.approve'])"
               href="/bookings/review"
-              :active="$page.currentRouteName === 'bookings.review'"
+              :active="$page.currentRouteName === 'bookings.reviews.index'"
             >
-              Review
+              <span>Review</span>
               <span v-if="$page.user.bookings_to_review_count > 0"
                 class="px-2 py-1 ml-2 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full"
               >
@@ -278,6 +278,8 @@ export default {
         case 'bookings.index':
         case 'bookings.create':
         case 'bookings.search':
+        case 'bookings.reviews.index':
+        case 'bookings.reviews.show':
           return true;
         default:
           return false
@@ -286,7 +288,7 @@ export default {
     showBookingSubnav() {
       return this.userHasPermissionWithPrefix("bookings");
     },
-    
+
     setIsCreatingBooking() {
       if (localStorage.isCreatingBooking == "true") {
         this.isCreatingBooking = true;
@@ -295,6 +297,6 @@ export default {
         this.isCreatingBooking = false;
       }
     }
-  }, 
+  },
 };
 </script>

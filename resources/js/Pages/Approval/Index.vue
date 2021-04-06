@@ -11,6 +11,7 @@
         :statuses="statuses"
         :reviewers="reviewers"
         @filterBookingRequestsJson="filterBookingRequestsJson($event)"
+        dusk="booking-requests-table"
       />
     </div>
 

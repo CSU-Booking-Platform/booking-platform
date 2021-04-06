@@ -20,7 +20,7 @@ class ReviewIndexPageTest extends DuskTestCase
 
     use DatabaseMigrations;
 
-    public function testWhenFilterBookingRequestReviewListText()
+    public function testFilterBookingRequestReviewListText()
     {
         (new RolesAndPermissionsSeeder())->run();
 
@@ -63,7 +63,7 @@ class ReviewIndexPageTest extends DuskTestCase
         });
     }
 
-    public function testWhenFilterBookingRequestReviewListApiStatus()
+    public function testFilterBookingRequestReviewListApiStatus()
     {
         (new RolesAndPermissionsSeeder())->run();
 
@@ -116,7 +116,7 @@ class ReviewIndexPageTest extends DuskTestCase
         });
     }
 
-    public function testWhenFilterBookingRequestReviewListApiDate()
+    public function testFilterBookingRequestReviewListApiDate()
     {
         (new RolesAndPermissionsSeeder())->run();
 

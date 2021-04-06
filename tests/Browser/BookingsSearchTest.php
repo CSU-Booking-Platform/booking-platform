@@ -22,7 +22,7 @@ class BookingsSearchTest extends DuskTestCase
         });
     }
 
-    public function testUserCanViewRoomsAvailabilities()
+    public function testUserCanViewRoomsAvailabilitiesCalender()
     {
         $room = Room::factory()->create();
         $weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];

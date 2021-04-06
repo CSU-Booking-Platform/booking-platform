@@ -20,7 +20,7 @@ class RoomsPageTest extends DuskTestCase
    *
    * @return void
    */
-  public function testWhenCreateNewRoomWithValidInformation()
+  public function testCreateRoom()
   {
     (new RolesAndPermissionsSeeder())->run();
 
@@ -45,7 +45,7 @@ class RoomsPageTest extends DuskTestCase
     ]);
   }
 
-  public function testWhenUpdateNewRoomWithValidInformation()
+  public function testSetRoomAttributes()
   {
     (new RolesAndPermissionsSeeder())->run();
 
@@ -69,7 +69,7 @@ class RoomsPageTest extends DuskTestCase
     ]);
   }
 
-  public function testWhenDeleteRoom()
+  public function testDeleteRoom()
   {
     (new RolesAndPermissionsSeeder())->run();
 
@@ -90,7 +90,7 @@ class RoomsPageTest extends DuskTestCase
     $this->assertDatabaseCount('rooms', 0);
   }
 
-  public function testWhenUpdateRoomRestrictions()
+  public function testSetRoomRestrictions()
   {
     (new RolesAndPermissionsSeeder())->run();
 
@@ -115,7 +115,7 @@ class RoomsPageTest extends DuskTestCase
     ]);
   }
 
-  public function testUpdateRoomAvailabilitiesWithValidInformation()
+  public function testEditRoomAvailabilitiesWithValidInformation()
   {
     (new RolesAndPermissionsSeeder())->run();
 
@@ -142,7 +142,7 @@ class RoomsPageTest extends DuskTestCase
     $this->assertDatabaseCount('availabilities', 1);
   }
 
-    public function testWhenUpdateRoomDateRestrictions()
+  public function testSetDifferentTimeRestrictionPerRole()
     {
         (new RolesAndPermissionsSeeder())->run();
 

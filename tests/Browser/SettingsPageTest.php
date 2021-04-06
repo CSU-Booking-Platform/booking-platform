@@ -32,7 +32,7 @@ class SettingsPageTest extends DuskTestCase
 
 
 
-  public function testAdminCanChangeSiteName()
+  public function testSettingsAdminCanChangeSiteName()
   {
     $this->browse(function (Browser $browser) {
       $browser->loginAs(User::first())->visit('/admin/settings')
@@ -47,7 +47,7 @@ class SettingsPageTest extends DuskTestCase
     });
   }
 
-  public function testAdminCanChangeSiteLogo()
+  public function testSettingsAdminCanChangeSiteLogo()
   {
     $this->browse(function (Browser $browser) {
       $browser->loginAs(User::first())->visit('/admin/settings')

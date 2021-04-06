@@ -19,7 +19,7 @@ class UsersPageTest extends DuskTestCase
    *
    * @return void
    */
-  public function testWhenCreateNewUserWithValidInformation()
+  public function testCreateNewUserWithValidInformation()
   {
     (new RolesAndPermissionsSeeder())->run();
 
@@ -39,7 +39,8 @@ class UsersPageTest extends DuskTestCase
 
     $this->assertDatabaseHas('users', ['email' => $user->email]);
   }
-  public function testWhenUpdateUserWithValidInformation()
+
+  public function testUpdateUserWithValidInformation()
   {
     (new RolesAndPermissionsSeeder())->run();
 
@@ -61,7 +62,7 @@ class UsersPageTest extends DuskTestCase
     $this->assertDatabaseHas('users', ['name' => $user->name]);
   }
 
-  public function testWhenDeleteNewUser()
+  public function testDeleteUser()
   {
     (new RolesAndPermissionsSeeder())->run();
     $user = User::factory()->create();
@@ -77,8 +78,7 @@ class UsersPageTest extends DuskTestCase
     $this->assertDatabaseMissing('users', ['email' => $user->email]);
   }
 
-
-  public function testAdminCanAssociateRolesToUsers() {
+  public function testAdminCanAssignRolesToUsers() {
       $user = User::factory()->create();
       $role = Role::factory()->create();
 
@@ -94,7 +94,7 @@ class UsersPageTest extends DuskTestCase
       $this->assertTrue($user->hasRole($role), "User should have the added role");
   }
 
-    public function testAdminCanDisassociateRolesToUsers() {
+    public function testAdminCanUnassignRolesToUsers() {
         $user = User::factory()->create();
         $role = Role::factory()->create();
         $user->assignRole($role);

@@ -169,7 +169,7 @@
 
 
     <div v-if="!listViewSelected">
-      <CalendarViewTable/>
+      <CalendarViewTable dusk="calendar-view-table" />
     </div>
 
     <CreateBookingRequestModal

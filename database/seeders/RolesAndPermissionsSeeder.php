@@ -48,11 +48,18 @@ class RolesAndPermissionsSeeder extends Seeder
             'settings.edit'
         ];
 
+        // Roles map, should map to relevant permissions for each specified role
+        $roles = [
+            'super-admin' => $permissions
+        ];
+
+        // Create or update permissions and roles
         foreach ($permissions as $permission) {
-            Permission::create(['name' => $permission]);
+            Permission::updateOrCreate(['name' => $permission]);
         }
 
-        // Create roles
-        Role::create(['name' => 'super-admin'])->givePermissionTo($permissions);
+        foreach ($roles as $role => $givenPermissions) {
+            Role::updateOrCreate(['name' => $role])->syncPermissions($givenPermissions);
+        }
     }
 }

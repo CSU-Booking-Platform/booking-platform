@@ -320,7 +320,7 @@
 
                         <!-- minor children involved -->
                         <div class="col-span-6" v-if="room.room_type == 'Lounge'">
-                            <app-question v-model="form.event.children">
+                            <app-question id="children-checkbox" v-model="form.event.children">
                                 <template #header>
                                     <jet-label value="Will there be minor children participating"/>
                                 </template>
@@ -337,7 +337,7 @@
 
                         <!-- appliances involved -->
                         <div class="col-span-6" v-if="room.room_type == 'Lounge'">
-                            <app-question v-model="form.event.appliances">
+                            <app-question id="appliances-checkbox" v-model="form.event.appliances">
                                 <template #header>
                                     <jet-label value="Will there be appliances involved"/>
                                 </template>
@@ -354,7 +354,7 @@
 
                         <!-- A/V needed -->
                         <div class="col-span-6" v-if="room.room_type == 'Lounge'">
-                            <app-question v-model="form.event.av">
+                            <app-question id="av-checkbox" v-model="form.event.av">
                                 <template #header>
                                     <jet-label value="Is A/V needed"/>
                                 </template>
@@ -363,7 +363,7 @@
 
                         <!-- furniture -->
                         <div class="col-span-6" v-if="room.room_type == 'Lounge'">
-                            <app-question v-model="form.event.furniture">
+                            <app-question id="furniture-checkbox" v-model="form.event.furniture">
                                 <template #header>
                                     <jet-label value="Is furniture needed"/>
                                 </template>
@@ -374,7 +374,7 @@
 
                         <!-- bake sale -->
                         <div class="col-span-6" v-if="room.room_type == 'Mezzanine'">
-                            <app-question :id="'bake-sale-checkbox'" v-model="form.event.bake_sale">
+                            <app-question id="bake-sale-checkbox" v-model="form.event.bake_sale">
                                 <template #header>
                                     <jet-label value="Is the reservation for a bake sale?"/>
                                 </template>
@@ -393,7 +393,7 @@
 
                         <!-- internal meeting -->
                         <div class="col-span-6" v-if="room.room_type == 'Conference'">
-                            <app-question v-model="form.event.internal_meeting">
+                            <app-question id="internal-meeting-checkbox" v-model="form.event.internal_meeting">
                                 <template #header>
                                     <jet-label value="Is the reservation for an internal meeting"/>
                                 </template>
@@ -425,7 +425,7 @@
 
             <!-- Terms & Conditions -->
             <div class="flex items-center justify-end py-3">
-                <app-question v-model="accept_terms" :id="'terms-and-conditions'">
+                <app-question v-model="accept_terms" id="terms-and-conditions">
                     <template #after>
                         <jet-label>
                             I have read and agree to the CSU’s

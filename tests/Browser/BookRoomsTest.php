@@ -11,6 +11,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
 use Tests\Browser\Components\DateTimePicker;
 use Tests\DuskTestCase;
+use App\Models\Blackout;
 
 class BookRoomsTest extends DuskTestCase
 {
@@ -143,6 +144,48 @@ class BookRoomsTest extends DuskTestCase
         });
     }
 
+     /**
+     * Create a blackout, and then attempts to book a room during that time
+     * assert that the page doesn't change to the booking creation. 
+     */
+    public function testCannotBookDuringBlackout()
+    {
+        $this->browse(function (Browser $browser){
+
+            $admin = User::first();
+            $blackout = Blackout::factory()->create();
+
+            if($admin === null) {
+
+                $admin = User::factory()->create();
+                $admin->assignRole('super-admin');
+            }
+
+            $browser->loginAs($admin);
+            $browser->visit('/bookings/search');
+
+            $browser
+                ->assertSourceHas('<title>CSU Booking Platform</title>');
+
+            $room = Room::inRandomOrder()->first();
+
+            $browser->press("@room-select-".$room->id);
+
+            $browser->mouseover('#add-recurences-button');
+
+            $browser->within( new DateTimePicker('start_time_0'), function($browser) {
+                $browser->setDatetime(10,02);
+            })->pause(250);
+
+            $browser->within( new DateTimePicker('end_time_0'), function($browser) {
+                $browser->setDatetime(10,03);
+            })->pause(250);
+
+            $browser->pressAndWaitFor('#createBookingRequest');
+
+            $browser->assertSee('Create a booking request');
+        });
+    }
 
     /**
      * Create booking and check off bake sale,

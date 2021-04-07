@@ -74,4 +74,77 @@ class BookingApprovalsTest extends DuskTestCase
         });
     }
 
+    /**
+     * #578 -> AT-464-1
+     * @test
+     */
+    public function testReviewersCanReassignBookingWhileItsInReview()
+    {
+        $this->browse(function (Browser $browser) {
+            $user = $this->createUserWithPermissions(['bookings.approve']);
+            $booking = BookingRequest::factory()
+                ->hasReservations(1)
+                ->hasReviewers(1)->create(["status" => BookingRequest::REVIEW]);
+
+            $browser->loginAs($user)->visitRoute('bookings.reviews.show', $booking);
+
+            $reviewer = $booking->reviewers->first();
+            $browser->assertSee($reviewer->name);
+            $browser->assertVue('editing', true, '@booking-reviewers-field');
+
+            $new = User::factory()->make();
+            $new->assignRole(['super-admin'])->save();
+
+            $this->assertEquals(2, User::permission(['bookings.approve'])->count());
+
+            $browser->click("#remove-$reviewer->id")->waitUntilMissingText($reviewer->name);
+            $browser->waitUntilVueIsNot('form.processing', true, '@booking-reviewers-field');
+
+            $browser->waitForText($new->name)->click("#select-$new->id");
+            $browser->waitUntilVueIsNot('form.processing', true, '@booking-reviewers-field');
+            $browser->clickAtPoint(1,1); // dismiss overlay
+
+
+        });
+    }
+
+    /**
+     * #578 -> AT-464-2
+     * @test
+     */
+    public function testReviewersCantChangeAfterBookingIsReviewed()
+    {
+        $this->browse(function (Browser $browser) {
+            $user = $this->createUserWithPermissions(['bookings.approve']);
+            $booking = BookingRequest::factory()
+                ->hasReservations(1)
+                ->hasReviewers(1)->create(["status" => BookingRequest::APPROVED]);
+
+            $browser->loginAs($user)->visitRoute('bookings.reviews.show', $booking);
+
+            $browser->assertVue('editing', false, '@booking-reviewers-field');
+            $browser->assertSee($booking->reviewers->first()->name);
+        });
+    }
+
+    /**
+     * #578 -> AT-464-3
+     * @test
+     */
+    public function testUsersCantChangeBookingReviewers()
+    {
+        $this->browse(function (Browser $browser) {
+            $booking = BookingRequest::factory()
+                ->hasReservations(1)
+                ->hasReviewers(1)
+                ->create(["status" => BookingRequest::REVIEW]);
+
+            $browser->loginAs($booking->requester)->visitRoute('bookings.view', $booking);
+            $browser->assertSee('This request is currently under review and cannot be modified');
+
+            $browser->assertVue('editing', false, '@booking-reviewers-field');
+            $browser->assertSee($booking->reviewers->first()->name);
+        });
+    }
+
 }

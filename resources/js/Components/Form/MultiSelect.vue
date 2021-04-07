@@ -18,8 +18,8 @@
               <div class="flex justify-center items-center m-1 py-1 px-2 space-x-2 rounded-full bg-yellow-300 border border-yellow-500">
                 <img v-if="option instanceof Object && 'icon' in option" class="h-8 w-8 rounded-full object-cover " :src="option.icon" :alt="option.text"/>
                 <div class="text-xs font-normal leading-none max-w-full flex-initial">{{ option instanceof String ? option : option.text }}</div>
-                <svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor"
-                      @click="remove(index)" class="h-6 w-6 cursor-pointer">
+                <svg :id="'remove-'+index" @click="remove(index)" class="h-6 w-6 cursor-pointer"
+                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </div>
@@ -28,7 +28,7 @@
 
           <!-- make it obvious this is a dropdown -->
           <div class="cursor-pointer text-gray-300 w-8 py-1 pl-2 pr-1 border-l flex items-center border-gray-200">
-            <button type="button" class="w-6 h-6 text-gray-600 outline-none focus:outline-none">
+            <button type="button" class="w-6 h-6 text-gray-600 outline-none focus:outline-none" dusk="select-dropdown">
               <svg class="fill-current h-4 w-4" viewBox="0 0 20 20">
                 <path d="M17.418,6.109c0.272-0.268,0.709-0.268,0.979,0s0.271,0.701,0,0.969l-7.908,7.83
                           c-0.27,0.268-0.707,0.268-0.979,0l-7.908-7.83c-0.27-0.268-0.27-0.701,0-0.969c0.271-0.268,0.709-0.268,0.979,0L10,13.25 L17.418,6.109z"
@@ -41,11 +41,12 @@
 
       <template #content>
         <div v-for="(option, index) in options" :key="index" class="cursor-pointer border-gray-100 rounded-t border-b hover:bg-yellow-100">
-            <div :class="{'border-orange-800 ': index in selected}" @click="select(index)"
+            <div :id="'select-'+index"  @click="select(index)"
+                 :class="{'border-orange-800 ': index in selected}"
                  class="flex space-x-2 items-center p-2 border-transparent border-l-4">
-              <div class="mx-2 leading-6">
+              <span class="mx-2 leading-6">
                 {{ option instanceof String ? option : option.text }}
-              </div>
+              </span>
           </div>
         </div>
       </template>

@@ -55,7 +55,7 @@
               Request Reviewers
             </dt>
             <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-              <booking-reviewers-field v-if="$page"
+              <booking-reviewers-field v-if="$page" dusk="booking-reviewers-field"
                                        :reviewers="booking.reviewers" :booking_request_id="booking.id"
                                        :editing="(booking.status === 'Review' && this.$page.user.can.includes('bookings.approve')) || false" />
             </dd>

@@ -60,8 +60,8 @@ class BlackoutsPageTest extends DuskTestCase
             $browser->assertVue('blackouts[0].start_time', $start->toJSON(), '@blackout-list');
             $browser->assertVue('blackouts[0].end_time', $end->toJSON(), '@blackout-list');
 
-            $browser->assertSeeIn('@blackout-list', $start->isoFormat('LLL'));
-            $browser->assertSeeIn('@blackout-list', $end->isoFormat('LLL'));
+            $browser->assertSeeIn('@blackout-list', $start->timezone(config('app.timezone'))->isoFormat('LLL'));
+            $browser->assertSeeIn('@blackout-list', $end->timezone(config('app.timezone'))->isoFormat('LLL'));
 
         });
     }

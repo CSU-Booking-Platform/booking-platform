@@ -4,7 +4,7 @@ namespace Tests\Browser;
 
 use App\Models\Availability;
 use App\Models\Room;
-use Database\Seeders\RoomSeeder;
+use Tests\Browser\Components\DateTimePicker;
 use Tests\DuskTestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
@@ -98,11 +98,10 @@ class BookingsSearchTest extends DuskTestCase
 
             // change date
             $tomorrow = today()->addDay();
-            $browser->keys('#date_selected',
-                ['{right}', ''],
-                ['{right}', ''],
-                $tomorrow->format('d'),
-            );
+            $browser->within(new DateTimePicker('date_selected'), function($browser) use ($tomorrow) {
+                $browser->selectDate($tomorrow);
+            });
+
             $browser->waitUntilVue('dateSelected', $tomorrow->toDateString(), '@calendar-view-table');
             $browser->waitUntilVue('calendarRooms[0].availabilities[0].id', $a2->id, '@calendar-view-table');
             // date should change to reflect tomorrow's availabilities

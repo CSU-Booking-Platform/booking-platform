@@ -5,13 +5,7 @@
         <h3 class="font-black">Current date selected:</h3>
       </div>
       <div class="mr-12">
-        <jet-input
-          id="date_selected"
-          type="date"
-          class="mt-1 block w-full"
-          v-model="dateSelected"
-          autofocus
-        />
+        <date-picker id="date_selected" class="mt-1 block w-full" v-model="dateSelected" :no-clear-button="true" />
       </div>
       <!--vertical line-->
       <div class="border mx-16">
@@ -78,6 +72,7 @@
 import JetInput from "@src/Jetstream/Input";
 import axios from "axios";
 import Button from "@src/Jetstream/Button";
+import DatePicker from "@src/Components/Form/DatePicker";
 import moment from 'moment';
 
 export default {
@@ -85,6 +80,7 @@ export default {
   },
 
   components: {
+    DatePicker,
     Button,
     JetInput
   },

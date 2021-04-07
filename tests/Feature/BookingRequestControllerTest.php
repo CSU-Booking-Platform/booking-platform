@@ -652,8 +652,8 @@ class BookingRequestControllerTest extends TestCase
         $data = [
             'room_id' => $room->id,
             'booking_request_id' => $bookingRequest->id,
-            'start_time' => Carbon::parse($date)->format('Y-m-d H:i'),
-            'end_time' => Carbon::parse($date)->addMinute()->format('Y-m-d H:i'),
+            'start_time' => Carbon::parse($date)->format('Y-m-d\TH:i'),
+            'end_time' => Carbon::parse($date)->addMinute(35)->format('Y-m-d\TH:i'),
         ];
         if ($create) {
             $reservation = Reservation::factory()->create($data);

@@ -146,14 +146,14 @@ class BookRoomsTest extends DuskTestCase
 
      /**
      * Create a blackout, and then attempts to book a room during that time
-     * assert that the page doesn't change to the booking creation. 
+     * assert that the page doesn't change to the booking creation.
      */
     public function testCannotBookDuringBlackout()
     {
         $this->browse(function (Browser $browser){
 
             $admin = User::first();
-            
+
 
             if($admin === null) {
 

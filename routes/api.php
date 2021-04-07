@@ -25,6 +25,9 @@ Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
 
     Route::post('/filterMyBookingRequests', [BookingRequestController::class, 'filterUserBookings'])
         ->middleware(['permission:bookings.create']);
+    
+    Route::post('/removeStoredReferenceFile/{booking}', [BookingRequestController::class, 'removeReferenceFile'])
+        ->middleware(['permission:bookings.create']);
 
     Route::post('/filterRooms', [RoomController::class, 'filter'])
         ->middleware(['permission:bookings.create']);

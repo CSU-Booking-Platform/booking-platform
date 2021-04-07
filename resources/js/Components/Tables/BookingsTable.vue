@@ -71,7 +71,7 @@
             <td class="text-center">
             <div class="text-md mx-3">
                   <a
-                    v-if="booking.reference && booking.reference.path"
+                    v-if="booking.reference"
                     @click="setReference(booking);"
                     class="cursor-pointer text-sm text-blue-800 focus:outline-none"
                     :href="href"
@@ -212,7 +212,8 @@ export default {
                 return moment(date).format('llll')
             },
               setReference(e) {
-                this.bookingReference = e.reference.path;
+                let referencePath = e.reference[0].substring(0,32);
+                this.bookingReference = referencePath;
               },
       },
         computed: {

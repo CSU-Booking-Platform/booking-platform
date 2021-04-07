@@ -27,7 +27,7 @@
                 </div>
             </div>
 
-            <template v-if="files.length > 0">
+            <template v-if="files.length > 0 || booking">
                 <div class="grid grid-cols-2 gap-4 mt-4 md:grid-cols-6" @drop.prevent="drop($event)"
                      @dragover.prevent="$event.dataTransfer.dropEffect = 'move'">
 
@@ -37,6 +37,7 @@
                          style="padding-top: 100%;"
                          :class="{'border-blue-600': fileDragging === index}" draggable="true"
                     >
+
                         <button class="absolute top-0 right-0 z-50 p-1 bg-white rounded-bl focus:outline-none" type="button" @click="remove(index)">
                             <svg class="w-4 h-4 text-gray-700" xmlns="http://www.w3.org/2000/svg" fill="none"
                                  viewBox="0 0 24 24" stroke="currentColor">
@@ -75,8 +76,35 @@
                         </div>
                     </div>
 
+                    <div v-if="booking.reference.length > 0"
+                         v-for="(storedFile, index) in booking.reference" :key="index"
+                         class="relative flex flex-col items-center overflow-hidden text-center bg-gray-100 border rounded cursor-move select-none"
+                         style="padding-top: 100%;"
+                         :class="{'border-blue-600': fileDragging === index}" draggable="true"
+                    >
+
+                        <button class="absolute top-0 right-0 z-50 p-1 bg-white rounded-bl focus:outline-none" type="button" @click="removeStoredFile(index)">
+                            <svg class="w-4 h-4 text-gray-700" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                 viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                        </button>
+
+                        <div class="absolute bottom-0 left-0 right-0 flex flex-col p-2 text-xs bg-white bg-opacity-50">
+                            <span class="w-full font-bold text-gray-900 truncate">{{storedFile.substr(32, storedFile.length)}}</span>
+                            <span class="text-xs text-gray-900">uploaded</span>
+                        </div>
+
+                        <div class="absolute inset-0 z-40 transition-colors duration-300"
+                             :class="{'bg-blue-200 bg-opacity-80': fileDropping === index && fileDragging !== index}"
+                        >
+                        </div>
+                    </div>
+
                 </div>
             </template>
+
         </div>
     </div>
 </template>
@@ -103,7 +131,10 @@ import createFileList from "create-file-list";
             message: {
                 type: String,
                 required: false,
-            }
+            },
+            booking: {
+                type: Array,
+            },
         },
         data() {
             return {
@@ -135,6 +166,14 @@ import createFileList from "create-file-list";
                     this.files = [];
                 }
                 this.$emit("change", this.files);
+            },
+            removeStoredFile(index) {  
+                let fileToDelete = '/' + this.booking.reference[index];
+                this.booking.reference.splice(index, 1);            
+                axios.post('/api/removeStoredReferenceFile/' + this.booking.id, {
+                    pathToDelete: fileToDelete,
+                    reference: this.booking.reference
+                })  
             },
             drop(e) {
                 let removed;

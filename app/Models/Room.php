@@ -215,4 +215,16 @@ class Room extends Model
       $endTime > $availabilityEnd->closing_hours;
   }
 
+ 
+
+  public function minimunReservationTime($startDate, $endDate, $fail)
+  {
+    $startTime = Carbon::parse($startDate);
+    $endTime = Carbon::parse($endDate);
+    if($endTime->diffInMinutes($startTime) < 30){
+       $fail('The room cannot be booked for less than 30 min');
+    }
+  }
+
+
 }

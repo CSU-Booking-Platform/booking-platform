@@ -64,19 +64,12 @@ class BookingsSearchTest extends DuskTestCase
                 'room_id' => $room->id
             ]);
 
-            $a2 = Availability::create([
-                'weekday' => today()->addDay()->englishDayOfWeek,
-                'opening_hours' => '09:00',
-                'closing_hours' => '10:00',
-                'room_id' => $room->id
-            ]);
-
             $browser->loginAs($this->createUserWithPermissions(['bookings.create']));
             $browser->visit('/bookings/search');
             $browser->clickLink('Calendar View');
 
             $browser->waitUntilVue('calendarRooms[0].name', $room->name, '@calendar-view-table');
-            $browser->assertVue('calendarRooms[0].availabilities[0].id', $a1->id, '@calendar-view-table');
+            $browser->waitUntilVue('calendarRooms[0].availabilities[0].id', $a1->id, '@calendar-view-table');
 
             // verify calendar navigation
             $leftDelimiter = 8;
@@ -96,8 +89,15 @@ class BookingsSearchTest extends DuskTestCase
             $browser->assertVue('calendarRooms[0].day_breakdown[6][0].closed', true, '@calendar-view-table');
             $browser->assertVue('calendarRooms[0].day_breakdown[8][0].closed', true, '@calendar-view-table');
 
-            // change date
+            // setup different availabilities for tomorrow
             $tomorrow = today()->addDay();
+            $a2 = Availability::create([
+                'weekday' => $tomorrow->englishDayOfWeek,
+                'opening_hours' => '09:00',
+                'closing_hours' => '10:00',
+                'room_id' => $room->id
+            ]);
+
             $browser->within(new DateTimePicker('date_selected'), function($browser) use ($tomorrow) {
                 $browser->selectDate($tomorrow);
             });

@@ -1,5 +1,15 @@
 <template>
-  <ctk-date-time-picker dusk="time-picker" :id="id" :only-time="true" v-model="proxyValue" :minute-interval="minuteInterval" :format="format">
+  <ctk-date-time-picker  dusk="date-time-picker" :id="id"
+                         :only-time="true"
+                         v-model="proxyValue"
+                         :minute-interval="minuteInterval"
+                         :format="format"
+                         :formatted="format"
+                         :noClearButton="noClearButton"
+                         :noHeader="noHeader"
+                         :noLabel="noLabel"
+                         :autoClose="autoClose"
+  >
     <slot></slot>
   </ctk-date-time-picker>
 </template>
@@ -25,6 +35,18 @@ export default {
     },
     format: {
       default: "HH:mm",
+    },
+    noClearButton: {
+      default: false,
+    },
+    noHeader: {
+      default: false,
+    },
+    noLabel: {
+      default: true,
+    },
+    autoClose: {
+      default: true,
     },
   },
 

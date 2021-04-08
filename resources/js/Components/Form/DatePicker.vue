@@ -1,5 +1,5 @@
 <template>
-  <ctk-date-time-picker dusk="date-picker" :id="id"
+  <ctk-date-time-picker dusk="date-time-picker" :id="id"
                         v-model="proxyValue"
                         :only-date="true"
                         :format="format"

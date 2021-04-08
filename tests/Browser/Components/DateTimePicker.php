@@ -46,10 +46,11 @@ class DateTimePicker extends BaseComponent
     {
         return [
             '@input' => "#$this->id-input",
+            '@controls' => "#$this->id-picker-container-DatePicker > .calendar > .datepicker-controls",
             '@year-button' => "#$this->id-picker-container-DatePicker > .calendar > .datepicker-controls > .datepicker-container-label > span:nth-child(2) > button",
             '@month-button' => "#$this->id-picker-container-DatePicker > .calendar > .datepicker-controls > .datepicker-container-label > span:nth-child(1) > button",
-            '@month-left' => "#$this->id-picker-container-DatePicker > .calendar > .datepicker-controls > .arrow-month:nth-child(1) > button",
-            '@month-right' => "#$this->id-picker-container-DatePicker > .calendar > .datepicker-controls > .arrow-month:nth-child(2) > button",
+            '@month-left' => "#$this->id-picker-container-DatePicker > .calendar > .datepicker-controls > div:nth-child(1) > button",
+            '@month-right' => "#$this->id-picker-container-DatePicker > .calendar > .datepicker-controls > div:nth-child(3) > button",
             '@year-month-container' => "#$this->id-picker-container-DatePicker > .calendar > .year-month-selector > div:nth-child(2)",
             '@day-container' => "#$this->id-picker-container-DatePicker > .calendar > .month-container > span > .datepicker-days",
             '@hours-column' => ".time-picker-column-hours",
@@ -64,10 +65,9 @@ class DateTimePicker extends BaseComponent
         $hour = $temp->hour + 2;
         $day1 = $temp->firstOfMonth()->dayOfWeek;
         $day = $day1 + $day2;
-        $newMonth = (int)Carbon::now()->format('m') != (int)$temp->format('m');
 
         $this->openPicker($browser);
-        if ($newMonth) {
+        if ($temp->isNextMonth()) {
             $browser->click('@month-right')->pause(500);
         }
         $browser->click('#' . $this->id . '-picker-container-DatePicker > div > div.month-container > span > div > button:nth-child(' . $day . ')');

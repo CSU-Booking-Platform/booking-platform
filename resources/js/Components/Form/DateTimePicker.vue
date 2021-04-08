@@ -26,6 +26,18 @@ export default {
     format: {
       default: "YYYY-MM-DD HH:mm",
     },
+    noClearButton: {
+      default: false,
+    },
+    noHeader: {
+      default: false,
+    },
+    noLabel: {
+      default: false,
+    },
+    autoClose: {
+      default: false,
+    },
   },
 
   computed: {

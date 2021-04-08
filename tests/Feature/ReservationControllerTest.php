@@ -3,11 +3,15 @@
 namespace Tests\Feature;
 
 use App\Models\Availability;
+use App\Models\Blackout;
 use App\Models\BookingRequest;
 use App\Models\Reservation;
+use App\Models\Role;
 use App\Models\Room;
 use App\Models\User;
 use Carbon\Carbon;
+use Database\Seeders\RolesAndPermissionsSeeder;
+use DateTime;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -106,6 +110,59 @@ class ReservationControllerTest extends TestCase
             'start_time' => $reservationNew->start_time->format('Y-m-d H:i:00'),
             'end_time' => $reservationNew->end_time->format('Y-m-d H:i:00'),
         ]);
+    }
+
+    /**
+     * @test
+     */
+    public function blocked_by_blackout()
+    {
+        (new RolesAndPermissionsSeeder())->run();
+        $room = Room::factory()->create(["min_days_advance"=> 0, "max_days_advance"  => 500]);
+        $admin = User::factory()->create();
+        $admin->assignRole('super-admin');
+
+        $startDatetime = Carbon::today()->setTime(12,0);
+        $endDatetime = Carbon::today()->setTime(13,0);
+
+        $beginLoop = new DateTime(Carbon::now()->format("Y-m-d"));
+        $endLoop = new DateTime(Carbon::now()->addDays(50));
+
+        for ($i = $beginLoop; $i <= $endLoop; $i->modify('+1 day')) {
+            Blackout::create([
+                'start_time' => $i->format("Y-m-d") . $startDatetime->toTimeString(),
+                'end_time' => $i->format("Y-m-d") . $endDatetime->toTimeString(),
+                'name' => 'lunch'
+            ])->rooms()->attach($room);
+        }
+
+
+        foreach (['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] as $weekday) {
+            Availability::create([
+                'weekday' => $weekday,
+                'opening_hours' => '07:00',
+                'closing_hours' => '23:00',
+                'room_id' => $room->id
+            ]);
+        }
+
+        $response = $this->actingAs($this->createUserWithPermissions(['bookings.create']))->post(route('bookings.createInit'), [
+            'room_id' => $room->id,
+            'reservations' => [
+                [
+                    'start_time' => Carbon::tomorrow()->addDay()->setTime(10,0)
+                        ->format('Y-m-d H:i:00'),
+                    'end_time' =>  Carbon::tomorrow()->addDay()->setTime(14,0)
+                        ->format('Y-m-d H:i:00'),
+                    'duration' => 60*4
+                ]
+            ],
+        ]);
+
+        $response->assertStatus(302);
+        $this->assertDatabaseCount('booking_requests', 0);
+        $this->assertDatabaseCount('reservations', 0);
+
     }
 
     /**

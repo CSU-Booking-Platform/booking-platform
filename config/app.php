@@ -67,7 +67,7 @@ return [
     |
     */
 
-    'timezone' => 'America/Toronto',
+    'timezone' => env('APP_TIMEZONE', 'America/Toronto'),
 
     /*
     |--------------------------------------------------------------------------
@@ -166,7 +166,7 @@ return [
          * Package Service Providers...
          */
         \SocialiteProviders\Manager\ServiceProvider::class,
-        
+
         /*
          * Application Service Providers...
          */

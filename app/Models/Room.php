@@ -178,12 +178,34 @@ class Room extends Model
     });
   }
 
+  private function verifyRoomBlackoutQuery($startDate, $endDate)
+  {
+    $query = $this->blackouts();
+
+    return $query->where(function ($query) use ($startDate, $endDate) {
+      $query->whereBetween('start_time', [$startDate, $endDate])
+        ->orWhereBetween('end_time', [$startDate, $endDate])
+        ->orWhere(function ($query) use ($startDate, $endDate) {
+          $query->where('start_time', '<', $startDate)->where('end_time', '>', $endDate);
+        });
+    });
+  }
+
   public function verifyRoomIsFreeValidation($startDate, $endDate, $fail, $reservation = null)
   {
     $conflict = $this->verifyRoomQuery($startDate, $endDate, $reservation)->first();
 
     if ($conflict) {
       $fail('The room cannot be booked at this time - Conflicting schedule');
+    }
+  }
+
+  public function verifyRoomIsNotBlackedOutValidation($startDate, $endDate, $fail)
+  {
+    $conflict = $this->verifyRoomBlackoutQuery($startDate, $endDate)->first();
+
+    if ($conflict) {
+      $fail('The room cannot be booked at this time - Blocked schedule');
     }
   }
 

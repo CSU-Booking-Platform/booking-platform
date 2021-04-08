@@ -68,10 +68,13 @@ class BookingsSearchTest extends DuskTestCase
             $browser->visit('/bookings/search');
             $browser->clickLink('Calendar View');
 
+            // verify that the loaded content is for today
             $browser->waitUntilVue('calendarRooms[0].name', $room->name, '@calendar-view-table');
             $browser->waitUntilVue('calendarRooms[0].availabilities[0].id', $a1->id, '@calendar-view-table');
+            $browser->assertVue('dateSelected', today()->toDateString(), '@calendar-view-table');
+            $browser->assertVue('calendarRooms[0].name', $room->name, '@calendar-view-table');
 
-            // verify calendar navigation
+            // verify calendar hours navigation is functional
             $leftDelimiter = 8;
             $rightDelimiter = 21;
             $browser->assertVue('leftHourDelimiter', $leftDelimiter, '@calendar-view-table');
@@ -82,9 +85,8 @@ class BookingsSearchTest extends DuskTestCase
             $browser->waitUntilVue('leftHourDelimiter', $leftDelimiter - 2,'@calendar-view-table');
             $browser->assertVue('rightHourDelimiter', $rightDelimiter - 2,'@calendar-view-table');
 
-            // verify that the loaded content is for today
-            $browser->assertVue('dateSelected', today()->toDateString(), '@calendar-view-table');
-            $browser->assertVue('calendarRooms[0].name', $room->name, '@calendar-view-table');
+            // verify that today's breakdown matches the expected availability
+            // closed = outside availability hours or during a blackout period
             $browser->assertVue('calendarRooms[0].day_breakdown[7][0].closed', false, '@calendar-view-table');
             $browser->assertVue('calendarRooms[0].day_breakdown[6][0].closed', true, '@calendar-view-table');
             $browser->assertVue('calendarRooms[0].day_breakdown[8][0].closed', true, '@calendar-view-table');
@@ -101,10 +103,11 @@ class BookingsSearchTest extends DuskTestCase
             $browser->within(new DateTimePicker('date_selected'), function($browser) use ($tomorrow) {
                 $browser->selectDate($tomorrow);
             });
-
+            // date should change to reflect tomorrow's availabilities
             $browser->waitUntilVue('dateSelected', $tomorrow->toDateString(), '@calendar-view-table');
             $browser->waitUntilVue('calendarRooms[0].availabilities[0].id', $a2->id, '@calendar-view-table');
-            // date should change to reflect tomorrow's availabilities
+            // verify that tomorrow's breakdown matches the expected availability
+            // closed = outside availability hours or during a blackout period
             $browser->assertVue('calendarRooms[0].day_breakdown[7][0].closed', true, '@calendar-view-table');
             $browser->assertVue('calendarRooms[0].day_breakdown[8][0].closed', true, '@calendar-view-table');
             $browser->assertVue('calendarRooms[0].day_breakdown[7][0].closed', true, '@calendar-view-table');

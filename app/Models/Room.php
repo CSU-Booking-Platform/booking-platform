@@ -202,8 +202,6 @@ class Room extends Model
 
   public function verifyRoomIsNotBlackedOutValidation($startDate, $endDate, $fail)
   {
-      $fail('The room cannot be booked at this time - Blocked schedule');
-      return;
     $conflict = $this->verifyRoomBlackoutQuery($startDate, $endDate)->first();
 
     if ($conflict) {

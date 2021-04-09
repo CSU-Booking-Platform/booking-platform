@@ -153,7 +153,7 @@ class BookRoomsTest extends DuskTestCase
         $this->browse(function (Browser $browser){
 
             $admin = User::first();
-            $blackout = Blackout::factory()->create();
+            
 
             if($admin === null) {
 
@@ -168,6 +168,8 @@ class BookRoomsTest extends DuskTestCase
                 ->assertSourceHas('<title>CSU Booking Platform</title>');
 
             $room = Room::inRandomOrder()->first();
+            $blackout=Blackout::factory()->create();
+            $blackout->rooms()->attach($room);
 
             $browser->press("@room-select-".$room->id);
 

@@ -6,8 +6,8 @@
             </div>
             <div v-if="blackouts.length > 0" class="m-4 w-3/4">
                 <div class="mx-24 mt-16">
-                    <blackout-list :blackouts="blackouts" :room="room" class="w-full"/>
-                </div>               
+                    <blackout-list :blackouts="blackouts" :room="room" class="w-full" dusk="blackout-list"/>
+                </div>
             </div>
         </div>
     </app-layout>

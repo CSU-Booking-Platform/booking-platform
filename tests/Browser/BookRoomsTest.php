@@ -144,48 +144,32 @@ class BookRoomsTest extends DuskTestCase
         });
     }
 
-     /**
+    /**
      * Create a blackout, and then attempts to book a room during that time
      * assert that the page doesn't change to the booking creation.
      */
     public function testCannotBookDuringBlackout()
     {
         $this->browse(function (Browser $browser){
-
-            $admin = User::first();
-
-
-            if($admin === null) {
-
-                $admin = User::factory()->create();
-                $admin->assignRole('super-admin');
-            }
-
-            $browser->loginAs($admin);
-            $browser->visit('/bookings/search');
-
-            $browser
-                ->assertSourceHas('<title>CSU Booking Platform</title>');
-
+            $user = $this->createUserWithPermissions(['bookings.create']);
             $room = Room::inRandomOrder()->first();
-            $blackout=Blackout::factory()->create();
-            $blackout->rooms()->attach($room);
-
-            $browser->press("@room-select-".$room->id);
-
+            $blackout = Blackout::factory()->create([
+                'start_time' => today(config('app.timezone'))->addDays(1)->setHour(12),
+                'end_time' => today(config('app.timezone'))->addDays(20)->setHour(13),
+            ]);
+            $room->blackouts()->attach($blackout);
+            $room->save();
+            $browser->loginAs($user)->visitRoute('bookings.search');
+            $browser->press("@room-select-$room->id");
             $browser->mouseover('#add-recurences-button');
-
-            $browser->within( new DateTimePicker('start_time_0'), function($browser) {
-                $browser->setDatetime(10,02);
+            $browser->within( new DateTimePicker('start_time_0'), function($browser) use ($blackout) {
+                $browser->setDatetime(15, $blackout->start_time->format('H'));
             })->pause(250);
-
-            $browser->within( new DateTimePicker('end_time_0'), function($browser) {
-                $browser->setDatetime(10,03);
+            $browser->within( new DateTimePicker('end_time_0'), function($browser) use ($blackout) {
+                $browser->setDatetime(15, $blackout->end_time->format('H'));
             })->pause(250);
-
             $browser->pressAndWaitFor('#createBookingRequest');
-
-            $browser->assertSee('Create a booking request');
+            $browser->assertSee("Blocked schedule");
         });
     }
 

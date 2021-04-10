@@ -113,7 +113,7 @@ class SearchPageTest extends DuskTestCase
                 $browser->setDatetime(1,14);
             })->pause(500);
 
-            $browser->click("#createBookingRequest")->pause(250)
+            $browser->click("#createBookingRequest")->pause(2000)
               ->assertSee("earlier than 2 days");
 
             $browser->within( new DateTimePicker($startId), function($browser) {
@@ -124,7 +124,7 @@ class SearchPageTest extends DuskTestCase
                 $browser->setDatetime(10,14);
             })->pause(500);
 
-            $browser->click("#createBookingRequest")->pause(250)
+            $browser->click("#createBookingRequest")->pause(2000)
               ->assertSee("later than 5 days");
 
         });

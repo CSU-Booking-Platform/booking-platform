@@ -36,6 +36,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'bookings.update',
             'bookings.approve', // view & respond
             'bookings.delete',
+            'bookings.restrictions.override', //added for future tests
 
             'rooms.create',
             'rooms.update',

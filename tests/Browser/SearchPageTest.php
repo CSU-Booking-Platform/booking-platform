@@ -33,6 +33,7 @@ class SearchPageTest extends DuskTestCase
                 'max_days_advance' => 31
             ]
         ]);
+        $role->revokePermissionTo('bookings.restrictions.override');
 
         foreach ($this->weekdays as $weekday) {
             Availability::create([
@@ -83,6 +84,7 @@ class SearchPageTest extends DuskTestCase
         $admin = User::factory()->create();
         $admin->assignRole('super-admin');
         $role = Role::where('name', 'super-admin')->first();
+        $role->revokePermissionTo('bookings.restrictions.override');
 
         foreach ($this->weekdays as $weekday) {
             Availability::create([

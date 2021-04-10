@@ -113,7 +113,7 @@ class SearchPageTest extends DuskTestCase
                 $browser->setDatetime(1,14);
             })->pause(500);
 
-            $browser->click("#createBookingRequest")->pause(5000)
+            $browser->click("#createBookingRequest")->pause(250)
               ->assertSee("earlier than 2 days");
 
             $browser->within( new DateTimePicker($startId), function($browser) {
@@ -124,9 +124,70 @@ class SearchPageTest extends DuskTestCase
                 $browser->setDatetime(10,14);
             })->pause(500);
 
-            $browser->click("#createBookingRequest")->pause(5000)
+            $browser->click("#createBookingRequest")->pause(250)
               ->assertSee("later than 5 days");
 
+        });
+    }
+
+    public function testPermissionIgnoresBookingPeriodRestrictions()
+    {
+        (new RolesAndPermissionsSeeder())->run();
+        //as you can see...impossible to make this work without permission.
+        $room = Room::factory()->create(["min_days_advance"=> 1000, "max_days_advance"  => 1]);
+        $admin = User::factory()->create();
+        $admin->assignRole('super-admin');
+        $role = Role::where('name', 'super-admin')->first();
+
+        foreach ($this->weekdays as $weekday) {
+            Availability::create([
+                'weekday' => $weekday,
+                'opening_hours' => '07:00',
+                'closing_hours' => '23:00',
+                'room_id' => $room->id
+            ]);
+        }
+        $this->browse(function (Browser $browser) use ($room, $admin) {
+            $browser->loginAs($admin);
+            $startId = 'start_time_0';
+            $endId = 'end_time_0';
+            $browser->visit('/bookings/search')
+                ->assertSee($room->name)
+                ->click('@room-select-' . $room->id)
+                ->mouseover('@createBookingModal');
+
+            $browser->within( new DateTimePicker($startId), function($browser) {
+                $browser->setDatetime(1,13);
+            })->pause(500);
+
+            $browser->within( new DateTimePicker($endId), function($browser) {
+                $browser->setDatetime(1,14);
+            })->pause(500);
+
+            $browser->click("#createBookingRequest")->pause(2000)
+                ->assertpathis("/bookings/create");
+        });
+        $role->revokePermissionTo('bookings.restrictions.override');
+        //Just to make sure it is not a fluke
+        $this->browse(function (Browser $browser) use ($room, $admin) {
+            $browser->loginAs($admin);
+            $startId = 'start_time_0';
+            $endId = 'end_time_0';
+            $browser->visit('/bookings/search')
+                ->assertSee($room->name)
+                ->click('@room-select-' . $room->id)
+                ->mouseover('@createBookingModal');
+
+            $browser->within( new DateTimePicker($startId), function($browser) {
+                $browser->setDatetime(1,13);
+            })->pause(500);
+
+            $browser->within( new DateTimePicker($endId), function($browser) {
+                $browser->setDatetime(1,14);
+            })->pause(500);
+
+            $browser->click("#createBookingRequest")->pause(2000)
+                ->assertSee("1000 days");
         });
     }
 

@@ -225,11 +225,10 @@ class BookingRequestControllerTest extends TestCase
         );
 
         $response->assertSessionHasNoErrors();
-        Storage::disk('public')->assertExists('\/bookings/' . $room->id . '_' . strtotime($reservation->start_time) . '_reference/testFile.pdf');
-
+        $booking_request = BookingRequest::first();
         //Test if the required file was downloaded through the browser
-        $response = $this->actingAs($user)->call('GET', '/bookings/download/bookings/' . "{$room->id}_" . strtotime($reservation->start_time) . '_reference');
-        $this->assertTrue($response->headers->get('content-disposition') == 'attachment; filename=' . $room->id . '_' . strtotime($reservation->start_time) . '_reference.zip');
+        $response = $this->actingAs($user)->get(route('bookings.download', $booking_request));
+        $this->assertTrue(Str::contains($response->headers->get('content-disposition'), ['attachment', '.zip', "Booking#$booking_request->id"]));
     }
 
     /**
@@ -410,12 +409,10 @@ class BookingRequestControllerTest extends TestCase
         $booking_request = $this->createBookingRequest(true, ['status'=>BookingRequest::PENDING]);
         $reservation = $this->createReservation($room, $booking_request);
         $this->createReservationAvailabilities($reservation->start_time, $room);
-
-        $booking_request->reference = ["{$room->id}_" . strtotime($reservation['start_time']) . '_reference'];
         $booking_request->save();
 
-        $files = [UploadedFile::fake()->create('testFile.pdf', 100)];
-        Storage::disk('public')->assertMissing($room->id . '_' . strtotime($reservation->start_time) . '_reference/testFile.pdf');
+        $files = [UploadedFile::fake()->create('test.pdf', 100)];
+        Storage::disk('public')->assertMissing("{$booking_request->referenceFolderName}/test.pdf");
         $this->assertDatabaseHas('booking_requests', [
             'id' => $booking_request->id,
             'reference' => json_encode($booking_request->reference)
@@ -435,11 +432,14 @@ class BookingRequestControllerTest extends TestCase
         ]);
 
         $response->assertSessionHasNoErrors();
-
-        Storage::disk('public')->assertExists('/bookings/' . $room->id . '_' . strtotime($reservation->start_time) . '_reference/testFile.pdf');
+        $booking_request->refresh();
+        Storage::disk('public')->assertExists($booking_request->reference[0]['path']);
         $this->assertDatabaseHas('booking_requests', [
             'id' => $booking_request->id,
-            'reference' => "[\"{$room->id}_" . strtotime($reservation['start_time']) . '_reference", "bookings/'. $room->id.'_'.strtotime($reservation->start_time) . "_reference/testFile.pdf\"]",
+            'reference' => json_encode([[
+                'name' => 'test.pdf',
+                'path' => Storage::disk('public')->path($booking_request->reference[0]['path']),
+            ]]),
         ]);
     }
 

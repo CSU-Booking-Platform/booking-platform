@@ -23,4 +23,12 @@ class Comment extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    /**
+     * Get the booking request.
+     */
+    public function booking()
+    {
+        return $this->belongsTo(BookingRequest::class, 'booking_id');
+    }
 }

@@ -37,30 +37,40 @@ test('closeModal should unset all properties and emit a close event', () => {
 })
 
 test('getNewLink should get the new link', async () => {
-  const wrapper = shallowMount(ResetLinkModal, {
-    localVue, propsData:
-      {
-        user: {
-          id: 69
-        }
-      }
-  })
-
   axios.post.mockImplementationOnce(() => Promise.resolve({
       status: 200,
       data: {
         link: "https://test.com/reset-password/abcdefgh123456789",
-        token: "abcdefgh123456789"
+        token: "abcdefgh123456789",
+        expires: "2020-05-10 02:00:00"
       }
     }
   ))
 
+  const wrapper = shallowMount(ResetLinkModal, {
+    localVue,
+    propsData:
+      {
+        user: {
+          id: 69
+        }
+      },
+    mocks: {
+      $calendar($time) {
+        expect($time).toBe("2020-05-10 02:00:00")
+      }
+    }
+  })
+
   wrapper.vm.getNewLink();
 
+  //.then()
   await wrapper.vm.$nextTick();
+  expect(wrapper.vm.$data.resetLink).toBe("https://test.com/reset-password/abcdefgh123456789")
 
-  expect(wrapper.vm.resetLink).toBe("https://test.com/reset-password/abcdefgh123456789")
-  expect(wrapper.vm.isProcessing).toBeFalsy()
+  //.finally()
+  await wrapper.vm.$nextTick();
+  expect(wrapper.vm.$data.isProcessing).toBeFalsy()
 })
 
 test('getNewLink should display nothing if the link isn\'t returned', async () => {
@@ -84,7 +94,8 @@ test('getNewLink should display nothing if the link isn\'t returned', async () =
   wrapper.vm.getNewLink();
 
   await wrapper.vm.$nextTick();
-
   expect(wrapper.vm.resetLink).toBe(null)
+
+  await wrapper.vm.$nextTick();
   expect(wrapper.vm.isProcessing).toBeFalsy()
 })

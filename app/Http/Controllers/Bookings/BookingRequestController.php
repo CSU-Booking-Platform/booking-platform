@@ -186,7 +186,7 @@ class BookingRequestController extends Controller
         }
 
         return inertia('Requestee/EditBookingForm', [
-            'booking' => $booking->load('requester', 'reservations', $this->reservationRoom),
+            'booking' => new BookingResource($booking->load('requester', 'reservations', $this->reservationRoom)),
             'bookings_general_information' => Settings::select('data')->where('slug', '=', 'general_information')->first(),
             'bookings_event_description' => Settings::select('data')->where('slug', '=', 'event_description')->first()
         ]);
@@ -291,17 +291,19 @@ class BookingRequestController extends Controller
                     $user =  $request->user();
                     $room = Room::query()->findOrFail($request->room_id);
                     $room->minimumReservationTime($value['start_time'], $value['end_time'], $fail);
-                    $room->verifyDatesAreWithinRoomRestrictionsValidation($value['start_time'], $fail, $user);//
+                    if (!$user->hasPermissionTo('bookings.restrictions.override')) {
+                        $room->verifyDatesAreWithinRoomRestrictionsValidation($value['start_time'], $fail, $user);//
+                        if (!$request->user()->canMakeAnotherBookingRequest($value['start_time'])) {
+                            $fail('You cannot have more than ' .
+                                $user->getUserNumberOfBookingRequestPerPeriod() .
+                                ' booking(s) in the next ' .
+                                $user->getUserNumberOfDaysPerPeriod() .
+                                ' days.');
+                        }
+                    }
                     $room->verifyDatetimesAreWithinAvailabilitiesValidation($value['start_time'], $value['end_time'], $fail);//
                     $room->verifyRoomIsNotBlackedOutValidation($value['start_time'], $value['end_time'], $fail);//
                     $room->verifyRoomIsFreeValidation($value['start_time'], $value['end_time'], $fail);
-                    if (!$request->user()->canMakeAnotherBookingRequest($value['start_time'])) {
-                        $fail('You cannot have more than ' .
-                            $user->getUserNumberOfBookingRequestPerPeriod() .
-                            ' booking(s) in the next ' .
-                            $user->getUserNumberOfDaysPerPeriod() .
-                            ' days.');
-                    }
                 }
             ]
         ));

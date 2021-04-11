@@ -13,6 +13,8 @@
       <div v-show="resetLink != null && !isProcessing">
         <p>Reset link generated:</p>
         <br/>
+        <p>The link will expire at {{ expirationTime }}</p>
+        <br/>
         <pre class="text-sm overflow-x-auto whitespace-pre-wrap break-all">{{ resetLink }}</pre>
       </div>
       <!-- Else, Display the warning text before continuing -->
@@ -27,8 +29,8 @@
       </jet-secondary-button>
 
       <jet-danger-button v-if="resetLink == null" class="ml-2" @click.native="getNewLink"
-                  :class="{ 'opacity-25':isProcessing }"
-                  :disabled="isProcessing">
+                         :class="{ 'opacity-25':isProcessing }"
+                         :disabled="isProcessing">
         Generate link
       </jet-danger-button>
     </template>
@@ -62,7 +64,8 @@ export default {
   data() {
     return {
       resetLink: null,
-      isProcessing: false
+      isProcessing: false,
+      expirationTime: ""
     }
   },
   methods: {
@@ -73,9 +76,14 @@ export default {
     getNewLink() {
       this.isProcessing = true;
       axios.post(`/api/admin/users/${this.user.id}/reset-token`).then((response) => {
-        if (response.data.hasOwnProperty("link"))
-          this.resetLink = response.data.link
-        this.isProcessing = false;
+        if (response.data.hasOwnProperty("link")) {
+          this.resetLink = response.data.link;
+        }
+        if (response.data.hasOwnProperty("expires")) {
+          this.expirationTime = this.$calendar(response.data.expires);
+        }
+      }).finally(() => {
+        this.isProcessing = false
       });
     },
   },

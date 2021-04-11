@@ -98,7 +98,7 @@ class BookingsPageTest extends DuskTestCase
         });
     }
 
-    public function testUserCanTrackBookingrequest()
+    public function testUserCanTrackBookingRequest()
     {
         $bookings = BookingRequest::factory()
             ->count(1)

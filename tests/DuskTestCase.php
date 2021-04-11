@@ -7,6 +7,7 @@ use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Laravel\Dusk\TestCase as BaseTestCase;
+use NoelDeMartin\LaravelDusk\Browser;
 
 abstract class DuskTestCase extends BaseTestCase
 {
@@ -48,5 +49,13 @@ abstract class DuskTestCase extends BaseTestCase
         return retry(5, function () use ($capabilities) {
             return RemoteWebDriver::create('http://localhost:9515', $capabilities, 60000, 60000);
         }, 50);
+    }
+
+    /**
+     * Add wrapper for browser object
+     */
+    protected function newBrowser($driver)
+    {
+        return new Browser($driver);
     }
 }

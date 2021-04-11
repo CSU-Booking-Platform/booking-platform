@@ -44,6 +44,10 @@ Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
         ->name('bookings.reviews.assignable')
         ->middleware(['permission:bookings.approve']);
 
+    Route::post('/bookings/{booking}/remove-file', [BookingRequestController::class, 'removeFile'])
+        ->name('bookings.remove-file')
+        ->middleware(['permission:bookings.update']);
+
     Route::get('/user', function (Request $request) {
         return $request->user();
     });

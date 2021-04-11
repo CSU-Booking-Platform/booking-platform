@@ -104,16 +104,6 @@ test('disabling question forms will save their state in the form', () => {
     expect(wrapper.vm.form.event.show).toStrictEqual({contact:false, fee: false, music: false});
 })
 
-test('filter returns date', () => {
-
-    expect(wrapper.vm.only_date(moment())).toBe(moment().format("dddd, Do MMMM YYYY"));
-})
-
-test('filter returns time', () => {
-
-    expect(wrapper.vm.only_time(moment())).toBe(moment().format("LT"));
-})
-
 test('setLocalIsCreating correctly sets value', () => {
     wrapper.vm.setLocalIsCreating(true);
     expect(localStorage.isCreatingBooking).toBe("true");

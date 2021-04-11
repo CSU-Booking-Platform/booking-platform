@@ -32,16 +32,12 @@
                 <div class="text-md mx-3">{{ $calendar(reservation.end_time) }}</div>
                 <div class="text-md mx-3">{{ booking_request.status }}</div>
                 <div class="text-md mx-3">
-                  <a
-                    v-if="booking_request.reference.path"
-                    @click="setReference(booking_request);"
-                    class="cursor-pointer text-sm text-blue-800 focus:outline-none"
-                    :href="href"
-                  >Download</a>
-                  <a
-                    v-else
-                    class="text-sm focus:outline-none"
-                  >No Files Submitted</a>
+                  <a v-if="booking_request.reference.path" :href="'/bookings/' + booking.id + '/download/'"
+                     class="cursor-pointer text-sm text-blue-800 focus:outline-none"
+                  >
+                    Download
+                  </a>
+                  <a v-else class="text-sm focus:outline-none">No Files Submitted</a>
                 </div>
                 <div class="text-md mx-2">
                   <button
@@ -50,10 +46,11 @@
                   >Update</button>
                 </div>
                 <div class="text-md mx-2">
-                  <button
+                  <button @click="bookingRequestBeingDeleted = reservation"
                     class="cursor-pointer text-sm text-blue-800 focus:outline-none"
-                    @click="bookingRequestBeingDeleted = reservation"
-                  >Delete</button>
+                  >
+                    Delete
+                  </button>
                 </div>
               </div>
             </div>
@@ -145,7 +142,6 @@ export default {
   data() {
     return {
       deleteBookingRequestForm: this.$inertia.form(),
-      bookingReference: '',
       bookingRequestToTrack: null,
       bookingRequestBeingUpdated: null,
       bookingRequestBeingDeleted: null
@@ -163,17 +159,11 @@ export default {
           this.bookingRequestBeingDeleted = null;
         });
     },
-    setReference(e) {
-      this.bookingReference = e.reference.path;
-    }
   },
   computed: {
         availableRooms: function () {
           return this.rooms.filter(room => room.status === "available");
         },
-        href () {
-          return '/bookings/download/' + this.bookingReference;
-        }
     }
 };
 </script>

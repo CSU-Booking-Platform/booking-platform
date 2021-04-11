@@ -21,24 +21,40 @@ beforeEach(() => {
 
 });
 
+let props = {
+  rooms: [{
+    id: 1,
+    name: "name",
+    building: "building",
+    number: "1",
+    floor: 1,
+    status: "unavailable"
+  }],
+  paginator: {
+    data:  [{
+      id: 1,
+      name: "name",
+      building: "building",
+      number: "1",
+      floor: 1,
+      status: "unavailable"
+    }]
+  }
+}
+
 test('should mount without crashing', () => {
-    const wrapper = shallowMount(Index, {localVue})
+    const wrapper = shallowMount(Index,
+      {
+        localVue,
+        propsData: props
+      })
 })
 
 
 test('should set dataRooms from props', () => {
     const wrapper = shallowMount(Index, {
         localVue,
-        propsData: {
-            rooms: [{
-                id: 1,
-                name: "name",
-                building: "building",
-                number: "1",
-                floor: 1,
-                status: "unavailable"
-            }]
-        }
+        propsData: props
     })
 
     expect(wrapper.vm.dataRooms).toStrictEqual(
@@ -56,19 +72,7 @@ test('should set dataRooms from props', () => {
 test('post sent to filterRooms route', () => {
     const wrapper = shallowMount(Index, {
         localVue,
-        propsData: {
-            rooms: [{
-                id: 1,
-                name: "name",
-                building: "building",
-                number: "1",
-                floor: 1,
-                status: "unavailable",
-                attributes: {
-                    food: true
-                }
-            }]
-        }
+        propsData: props
     });
     wrapper.vm.filterRoomsJson({"food": true});
     expect(wrapper.vm.dataRooms).toStrictEqual(
@@ -78,10 +82,7 @@ test('post sent to filterRooms route', () => {
             building: "building",
             number: "1",
             floor: 1,
-            status: "unavailable",
-            attributes: {
-                food: true
-            }
+            status: "unavailable"
         }]);
 
 })

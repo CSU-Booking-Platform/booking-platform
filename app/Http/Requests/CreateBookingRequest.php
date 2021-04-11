@@ -28,6 +28,16 @@ class CreateBookingRequest extends UpdateBookingRequest
             'reservations' => ['required'],
             'reservations.*.start_time' => ['required', 'date'],
             'reservations.*.end_time' => ['required', 'date'],
+
+            'files' => [
+                'required_if:event.food.self_catered,true',
+                'required_if:event.alcohol,true',
+                'required_if:event.children,true',
+                'required_if:event.appliances,true',
+                'required_if:event.bake_sale,true',
+                //'mimes:pdf,doc,docx',
+                'max:50000', // 50Mb
+            ],
         ]);
     }
 

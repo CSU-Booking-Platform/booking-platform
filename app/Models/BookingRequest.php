@@ -79,7 +79,7 @@ class BookingRequest extends Model
      */
     public function getReferenceFolderNameAttribute()
     {
-        return sha1("{$this->id}_{$this->created_at}");
+        return hash('sha512', "{$this->id}_{$this->created_at}");
     }
 
 

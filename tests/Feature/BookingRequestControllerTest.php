@@ -81,7 +81,10 @@ class BookingRequestControllerTest extends TestCase
      */
     public function user_can_view_booking_view()
     {
-        $booking = BookingRequest::factory()->create(['status'=>BookingRequest::REVIEW]);
+        $booking = BookingRequest::factory()->create([
+            'reference' => [['name' => 'file.pdf', 'path' => 'bookings/files/file.pdf']],
+            'status'=>BookingRequest::REVIEW
+        ]);
         $response = $this->actingAs($this->createUserWithPermissions(['bookings.update']))->get(route('bookings.view', $booking));
         $response->assertSessionHasNoErrors();
     }
@@ -190,6 +193,7 @@ class BookingRequestControllerTest extends TestCase
     public function user_can_download_reference_files_from_booking()
     {
         Storage::fake('public');
+        Storage::fake('local');
         $room = Room::factory()->create(['status' => 'available']);
         $user = $this->createUserWithPermissions(['bookings.create']);
         $booking_request = $this->createBookingRequest(false);
@@ -225,6 +229,7 @@ class BookingRequestControllerTest extends TestCase
         );
 
         $response->assertSessionHasNoErrors();
+        Storage::fake('local');
         $booking_request = BookingRequest::first();
         //Test if the required file was downloaded through the browser
         $response = $this->actingAs($user)->get(route('bookings.download', $booking_request));
@@ -434,6 +439,47 @@ class BookingRequestControllerTest extends TestCase
         $response->assertSessionHasNoErrors();
         $booking_request->refresh();
         Storage::disk('public')->assertExists($booking_request->reference[0]['path']);
+    }
+
+    /**
+     * @test
+     */
+    public function users_can_delete_reference_files_on_booking_request()
+    {
+        Storage::fake('public');
+        $user = $this->createUserWithPermissions(['bookings.update']);
+
+        $room = Room::factory()->create();
+        $booking_request = $this->createBookingRequest(true, ['status'=>BookingRequest::PENDING]);
+        $reservation = $this->createReservation($room, $booking_request);
+        $this->createReservationAvailabilities($reservation->start_time, $room);
+        $booking_request->save();
+
+        $files = [UploadedFile::fake()->create('test.pdf', 100)];
+
+        $response = $this->actingAs($user)->put('/bookings/' . $booking_request->id, [
+            'event' => [
+                'start_time' => $reservation->start_time->format('H:i'),
+                'end_time' => $reservation->end_time->format('H:i'),
+                'title' => $booking_request->event['title'],
+                'type' => $booking_request->event['type'],
+                'description' => $booking_request->event['description'],
+                'guest_speakers' => $booking_request->event['guest_speakers'],
+                'attendees' => $booking_request->event['attendees'],
+            ],
+            'files' => $files
+        ]);
+
+        $response->assertSessionHasNoErrors();
+        $booking_request->refresh();
+        Storage::disk('public')->assertExists($booking_request->reference[0]['path']);
+
+        $response = $this->actingAs($user)->post(route('api.bookings.remove-file', $booking_request), [
+            'filenames' => [$booking_request->reference[0]['name']]
+        ]);
+        $response->assertSessionHasNoErrors();
+
+        Storage::disk('public')->assertMissing($booking_request->reference[0]['path']);
     }
 
     /**

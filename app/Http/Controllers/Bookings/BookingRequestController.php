@@ -207,8 +207,6 @@ class BookingRequestController extends Controller
             return redirect()->route('bookings.view', ['booking' => $booking]);
         }
 
-        $reservation = $booking->reservations->first();
-
         $update = collect($request->validated())->except(['files']);
         $booking->fill($update->toArray());
         $booking->status = BookingRequest::PENDING;

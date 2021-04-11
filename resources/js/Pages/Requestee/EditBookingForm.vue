@@ -551,7 +551,6 @@ export default {
             this.form.files = files;
         },
         removeExistingFile(fileToDelete) {
-          console.log(fileToDelete);
             axios.post('/api/bookings/' + this.booking.id + '/remove-file', {
                 filenames: fileToDelete,
             })

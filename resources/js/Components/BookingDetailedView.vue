@@ -18,9 +18,9 @@
               Request Submitted At
             </dt>
             <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-              {{ booking.created_diff }}
+              {{ moment(booking.created_diff) }}
               <span class="text-xs text-gray-500">
-                ( {{ booking.created_at }} )
+                ( {{ moment(booking.created_at) }} )
               </span>
             </dd>
           </div>
@@ -29,9 +29,9 @@
               Request Last Updated At
             </dt>
             <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-              {{ booking.updated_diff }}
+              {{ moment(booking.updated_diff) }}
               <span class="text-xs text-gray-500">
-                ( {{ booking.updated_at }} )
+                ( {{ moment(booking.updated_at) }} )
               </span>
             </dd>
           </div>
@@ -560,21 +560,24 @@
         <div v-for="comment in booking.comments" class="px-0 mx-auto sm:px-4">
           <div class="flex-col w-full py-4 mx-auto bg-white sm:px-4 sm:py-4 md:px-4">
             <div class="flex flex-row">
-              <span class="relative">
-                <img class="object-cover w-12 h-12 border-2 border-gray-300 rounded-full"
-                     :alt="comment.user.id" :src="comment.user.profile_photo_url">
-                <svg v-if="!booking.system" class="absolute right-0 bottom-1 p-1 w-6 h-6 bg-gray-200 rounded-full"
-                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-                </svg>
-              </span>
-              <div class="flex-col mt-1">
-                <div class="flex items-center flex-1 px-4 font-bold leading-tight">
-                  {{ comment.user.name }}
-                  <span class="ml-2 text-xs font-normal text-gray-500">{{ comment.created_diff }}</span>
-                </div>
-                <div v-html="comment.body" class="flex-1 px-2 ml-2 text-sm font-medium leading-loose text-gray-600"></div>
-
+              <div class="flex flex-col mr-4">
+                <div class="grid grid-flow-col auto-cols-max">
+                  <span class="relative">
+                    <img class="object-cover relative w-12 h-12 border-2 border-gray-300 rounded-full"
+                        :alt="comment.user.id" :src="comment.user.profile_photo_url">
+                    <svg v-if="!booking.system" class="absolute top-7 left-7 bottom-1 p-1 w-6 h-6 bg-gray-200 rounded-full"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                    </svg>
+                  </span>
+                </div>             
+              </div>
+              <div class="flex flex-col">
+                  <div class="flex items-center flex-1 px-4 font-bold leading-tight">
+                    {{ comment.user.name }}
+                    <span class="ml-2 text-xs font-normal text-gray-500">{{ comment.created_diff }}</span>
+                  </div>
+                  <div v-html="comment.body" class="flex-1 px-2 w-4/5 ml-2 text-sm font-medium leading-loose text-gray-600"></div>
               </div>
             </div>
           </div>
@@ -616,6 +619,7 @@ import JetInputError from '@src/Jetstream/InputError';
 import AppWarning from '@src/Components/Form/Warning';
 import BookingReviewersField from "@src/Components/BookingReviewersField";
 import RichTextEditor from "@src/Components/RichTextEditor";
+import moment from "moment";
 
 export default {
   components: {
@@ -651,13 +655,16 @@ export default {
   methods: {
     submitComment() {
       this.form.post('/bookings/' + this.booking.id + '/comment', {
-        preserveState: true,
+        preserveScroll: true,
       })
     },
     saveComment(comment) {
       this.form.comment = comment;
       this.submitComment();
-    }
+    },
+    moment: function(date) {
+      return moment(date).format("HH:mm:ss");
+    },
 
   },
 

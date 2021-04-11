@@ -10,7 +10,7 @@
 
       <booking-detailed-view :booking="booking"></booking-detailed-view>
 
-      <div class="flex space-x-10 items-center justify-end py-3 text-right">
+      <div class="flex space-x-10 items-center justify-end py-3 text-right mt-12">
         <jet-action-message :on="form.recentlySuccessful" class="mr-3">
           Submitted.
         </jet-action-message>

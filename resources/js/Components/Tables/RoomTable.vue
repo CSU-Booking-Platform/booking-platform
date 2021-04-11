@@ -194,7 +194,7 @@
           </template>
 
           <template #content>
-            <div class="overflow-y-auto h-96">
+            <div class="overflow-y-auto">
               <div class="flex flex-row">
                   <div class="flex flex-col flex-1 py-2 px-3">
                       <div><h2>Capacity Standing</h2></div>
@@ -363,7 +363,7 @@
                 />
               </div>
               </div>
-              <div class="flex flex-wrap grid grid-cols-2 gap-4">
+              <div class="flex flex-wrap grid grid-cols-2 gap-4 max-h-72">
                 <div v-for="(dates, index) in jsonFilters.recurrences" :key="index">
                   <div class="m-6">
                     <jet-label for="start_time" value="Start Time" />

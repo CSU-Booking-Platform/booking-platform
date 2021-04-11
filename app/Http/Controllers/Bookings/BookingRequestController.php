@@ -186,7 +186,7 @@ class BookingRequestController extends Controller
         }
 
         return inertia('Requestee/EditBookingForm', [
-            'booking' => $booking->load('requester', 'reservations', $this->reservationRoom),
+            'booking' => new BookingResource($booking->load('requester', 'reservations', $this->reservationRoom)),
             'bookings_general_information' => Settings::select('data')->where('slug', '=', 'general_information')->first(),
             'bookings_event_description' => Settings::select('data')->where('slug', '=', 'event_description')->first()
         ]);

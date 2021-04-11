@@ -426,12 +426,15 @@
           Submitted.
         </jet-action-message>
 
-        <app-warning v-if="form.hasErrors()" class="pr-4">
-          This booking cannot be submitted.
-          <strong v-if="form.error('availabilities')">
-            {{form.error('availabilities')}}
-          </strong>
-        </app-warning>
+                <app-warning v-if="form.hasErrors()" class="pr-4">
+                    This booking cannot be submitted.
+                    <strong v-if="form.error('availabilities')">
+                        {{form.error('availabilities')}}
+                    </strong>
+                    <strong v-if="form.error('reservations.0')">
+                        {{form.error('reservations.0')}}
+                    </strong>
+                </app-warning>
 
         <jet-button id="submit-booking-create" :class="{ 'opacity-25': (form.processing || !accept_terms) }" :disabled="form.processing || !accept_terms">
           Submit

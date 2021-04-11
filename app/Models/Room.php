@@ -137,7 +137,7 @@ class Room extends Model
             throw ValidationException::withMessages(['booked_too_far' => 'You cannot book events farther than '.$max_days.' days from the event']);
         }
     }
-    public function verifyDatesAreWithinRoomRestrictionsValidation($startDate, $fail, User $user)
+    public function verifyDatesAreWithinRoomRestrictionsValidation($startDate, $alcohol , $food ,$fail, User $user)
     {
 
         $startTime = Carbon::parse($startDate)->toDateString();
@@ -147,6 +147,12 @@ class Room extends Model
         $special_min = $specialRules->pluck('min_days_advance')->max();
         $special_max = $specialRules->pluck('max_days_advance')->min();
         $min_days = $special_min ?? $this->min_days_advance;
+        if ($food == true && $min_days < 10){
+          $min_days = 10;
+        }
+        if ($alcohol  == true && $min_days < 20){
+          $min_days = 20;
+        }
         $max_days = $special_max ?? $this->max_days_advance;
 
         if (Carbon::today()->diffInDays($startTime) < $min_days) {
@@ -239,6 +245,7 @@ class Room extends Model
         $fail('The room cannot be booked for less than 30 min');
       }
   }
+
 
 
 }

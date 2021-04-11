@@ -390,7 +390,7 @@ class BookingRequestControllerTest extends TestCase
                 'attendees' => $booking_request->event['attendees'],
             ]
         ]);
-
+        $response->dumpSession();
         $response->assertSessionHasNoErrors();
         $response->assertRedirect("bookings/".$booking_request->id."/view");
         $this->assertEquals(BookingRequest::where('event->title', $old_title)->count(), 1);
@@ -434,13 +434,6 @@ class BookingRequestControllerTest extends TestCase
         $response->assertSessionHasNoErrors();
         $booking_request->refresh();
         Storage::disk('public')->assertExists($booking_request->reference[0]['path']);
-        $this->assertDatabaseHas('booking_requests', [
-            'id' => $booking_request->id,
-            'reference' => json_encode([[
-                'name' => 'test.pdf',
-                'path' => Storage::disk('public')->path($booking_request->reference[0]['path']),
-            ]]),
-        ]);
     }
 
     /**

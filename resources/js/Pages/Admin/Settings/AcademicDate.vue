@@ -21,7 +21,7 @@
             :for="academicDate.semester + '_start_date'"
             value="Start date"
           />
-          <jet-input
+          <date-time-picker
             :id="academicDate.semester + '_start_date'"
             :dusk="academicDate.semester + '_start_date'"
             name="start_date"
@@ -40,7 +40,7 @@
           :for="academicDate.semester + '_end_date'"
           value="End date"
         />
-        <jet-input
+        <date-time-picker
           :id="academicDate.semester + '_end_date'"
           :dusk="academicDate.semester + '_end_date'"
           name="end_date"
@@ -83,6 +83,8 @@ import JetActionMessage from "@src/Jetstream/ActionMessage";
 import JetFormSection from "@src/Jetstream/FormSection";
 import JetInputError from "@src/Jetstream/InputError";
 import JetLabel from "@src/Jetstream/Label";
+import AppWarning from "@src/Components/Form/Warning";
+import DateTimePicker from "@src/Components/Form/DateTimePicker";
 
 export default {
   components: {
@@ -91,7 +93,9 @@ export default {
     JetFormSection,
     JetActionMessage,
     JetInputError,
-    JetLabel
+    JetLabel,
+    AppWarning,
+    DateTimePicker
   },
   data() {
     return {

@@ -4,11 +4,11 @@
       <div class="mx-6 m-auto">
         <h3 class="font-black">Current date selected:</h3>
       </div>
-      <div class="mr-12">
+      <div class="mr-6">
         <date-picker id="date_selected" class="mt-1 block w-full" v-model="dateSelected" :no-clear-button="true" />
       </div>
       <!--vertical line-->
-      <div class="border mx-16">
+      <div class="border mx-4">
       </div>
       <div class="mx-6 m-auto">
         <h3 class="font-black">Hourly Range:</h3>
@@ -20,13 +20,13 @@
           </svg>
         </button>
       </div>
-      <div class="mx-6 m-auto">
+      <div class="mx-3 m-auto">
         {{dailyHours[leftHourDelimiter]}}
       </div>
-      <div class="mx-6 m-auto">
+      <div class="mx-3 m-auto">
         -
       </div>
-      <div class="mx-6 m-auto">
+      <div class="mx-3 m-auto">
         {{dailyHours[rightHourDelimiter]}}
       </div>
       <div  class="mx-6 m-auto mt-4">
@@ -36,7 +36,29 @@
           </svg>
         </button>
       </div>
-
+      <!--vertical line-->
+      <div class="border mx-4">
+      </div>
+      <div class="flex flex-row space-x-2 items-center">
+        <div class="flex flex-row space-x-2">
+          <span>Not Bookable = </span>
+          <div class="bg-gray-800 w-5 h-6 border-2">
+            &nbsp;
+          </div>
+        </div>
+        <div class="flex flex-row space-x-2">
+          <span>Booked = </span>
+          <div class="bg-red-500 w-5 h-6 border-2">
+            &nbsp;
+          </div>
+        </div>
+        <div class="flex flex-row space-x-2">
+          <span>Available = </span>
+          <div class="bg-green-400 w-5 h-6 border-2">
+            &nbsp;
+          </div>
+        </div>
+      </div>
 
     </div>
 
@@ -104,11 +126,11 @@ export default {
         })
     },
     bumpCalendar(direction){
-      if(direction == 'right'){
+      if(direction === 'right'){
         this.leftHourDelimiter += 1;
         this.rightHourDelimiter += 1;
       }
-      if(direction == 'left'){
+      if(direction === 'left'){
         this.leftHourDelimiter -= 1;
         this.rightHourDelimiter -= 1;
       }

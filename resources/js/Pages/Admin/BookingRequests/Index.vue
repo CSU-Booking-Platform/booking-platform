@@ -41,7 +41,7 @@ export default {
 
     },
     mounted(){
-        this.dataRooms = this.rooms ?? [];
+        this.dataRooms = this.paginator.data ?? [];
     },
     data() {
         return {

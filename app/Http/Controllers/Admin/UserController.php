@@ -6,6 +6,7 @@ use App\Actions\Fortify\PasswordValidationRules;
 use App\Http\Controllers\Controller;
 use App\Models\Role;
 use App\Models\User;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -13,7 +14,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Inertia\Response;
 use Inertia\ResponseFactory;
-use Laravel\Fortify\Fortify;
 
 class UserController extends Controller
 {
@@ -109,7 +109,8 @@ class UserController extends Controller
         $token = Password::createToken($user);
         return \response()->json([
             'token' => $token,
-            'link' => route('password.reset', $token)
+            'link' => route('password.reset', $token),
+            'expires' => Carbon::now()->addMinutes(config('auth.passwords.users.expire'))->toDateTimeLocalString()
         ]);
     }
 }

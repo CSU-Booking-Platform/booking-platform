@@ -202,6 +202,6 @@ test('should sort rooms based on sorting component data', () => {
   expect(wrapper.vm.currentSort).toBe('attributes.capacity_sitting');
   expect(wrapper.vm.currentSortDir).toBe('desc');
 
-  expect(wrapper.vm.sortedRooms).toStrictEqual(globPropsDataMultiRoom.paginator.data);
+  expect(wrapper.vm.sortedRooms).toStrictEqual(globPropsDataMultiRoom.paginator.data.reverse());
 
 })

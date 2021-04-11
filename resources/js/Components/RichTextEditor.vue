@@ -68,19 +68,23 @@
 
         <button @click="commands.redo">
           <em class="fas fa-redo"></em>
-        </button>
-
-        <button @click="saveText()">
-          <em class="fas fa-paper-plane"></em>
-        </button>
+        </button>     
       </div>
     </editor-menu-bar>
 
     <editor-content class="editor__content" :editor="editor" />
+    <div class="flex space-x-10 items-center justify-end py-3 text-right mt-1">
+        <jet-button
+            @click.native="saveText()"
+        >
+          Submit
+        </jet-button>
+    </div>
   </div>
 </template>
 
 <script>
+import JetButton from '@src/Jetstream/Button';
 import { Editor, EditorContent, EditorMenuBar } from "tiptap";
 import {
   Blockquote,
@@ -104,7 +108,8 @@ import {
 export default {
   components: {
     EditorContent,
-    EditorMenuBar
+    EditorMenuBar,
+    JetButton,
   },
   props: {
     editable: {
@@ -136,6 +141,7 @@ export default {
     saveText() {
       this.editor.setContent(this.currentText);
       this.onSave(this.currentText);
+      this.editor.setContent('');
     },
     mountEditor() {
       this.editor = new Editor({

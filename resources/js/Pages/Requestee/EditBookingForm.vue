@@ -585,9 +585,8 @@ export default {
             return this.booking.reservations[0];
         },
         attachedFiles() {
-            let fff = this.booking.reference ?? [];
-            return fff.map(function(file) {
-              return file['name'];
+            return Object.values(this.booking.reference ?? []).map(function(file) {
+                return file['name'];
             });
         },
         isRecurring() {

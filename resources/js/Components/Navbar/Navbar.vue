@@ -129,7 +129,7 @@
               href="/bookings/search"
               :active="$page.currentRouteName === 'bookings.search'"
             >
-              Search
+              Create
             </jet-nav-sub>
             <jet-nav-sub
               v-if="userHasOneOf(['bookings.create']) && isCreatingBooking"

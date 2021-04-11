@@ -69,16 +69,12 @@
         </td>
         <td class="text-center">
           <div class="text-md mx-3">
-            <a
-              v-if="booking.reference"
-              @click="setReference(booking);"
-              class="cursor-pointer text-sm text-blue-800 focus:outline-none"
-              :href="href"
-            >Download</a>
-            <a
-              v-else
-              class="text-sm focus:outline-none"
-            >No Files Submitted</a>
+            <a v-if="booking.reference" :href="'/bookings/' + booking.id + '/download/'"
+               class="cursor-pointer text-sm text-blue-800 focus:outline-none"
+            >
+              Download
+            </a>
+            <a v-else class="text-sm focus:outline-none">No Files Submitted</a>
           </div>
         </td>
       </tr>
@@ -175,7 +171,6 @@ export default {
     return {
       filter: '',
       bookingRequestToTrack: null,
-      bookingReference: '',
       showFilterModal: false,
       jsonForm:{
         selectStatus: "",
@@ -206,10 +201,6 @@ export default {
     formatDateMonthRobust2(date) {
       return moment(date).format('llll')
     },
-    setReference(e) {
-      let referencePath = e.reference[0].substring(0,32);
-      this.bookingReference = referencePath;
-    },
   },
   computed: {
     uniqueStatuses: function (){
@@ -221,9 +212,6 @@ export default {
         }
       });
       return output;
-    },
-    href () {
-      return '/bookings/download/' + this.bookingReference;
     },
     filteredBookings() {
       return this.bookings.filter(booking => {

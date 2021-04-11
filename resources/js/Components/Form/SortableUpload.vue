@@ -175,7 +175,7 @@ import createFileList from "create-file-list";
             },
             removeStoredFile(index) {
                 let removed = this.storedFiles.splice(index, 1);
-                this.$emit("remove-existing-file", removed);
+                this.$emit("remove", removed);
             },
             drop(e) {
                 let removed;

@@ -397,7 +397,7 @@
                                accept="application/pdf, application/msword"
                                :existing-files="attachedFiles"
                                @change="uploadedFiles($event)"
-                               @remove-existing-file="removeExistingFile($event)"
+                               @remove="removeExistingFile($event)"
                            />
                            <jet-input-error :message="form.error('files')" class="mt-2"/>
                        </div>

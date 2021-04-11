@@ -97,6 +97,14 @@ test('should change when remove', () => {
     expect(wrapper.emitted().change).toBeTruthy();
 })
 
+test('should fire event on remove-existing-file', () => {
+
+  wrapper.vm.removeStoredFile(1);
+
+  expect(wrapper.emitted().remove).toBeTruthy();
+})
+
+
 test('should change when drop', () => {
 
     wrapper.vm.drop();

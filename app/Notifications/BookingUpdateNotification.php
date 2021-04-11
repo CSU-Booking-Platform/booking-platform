@@ -45,7 +45,8 @@ class BookingUpdateNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('Your booking has been '.$this->booking->status)
+                    ->line('Your booking status has been updated!')
+                    ->line('Your booking is now: '.$this->booking->status)
                     ->line('Thank you for using our application!');
     }
 

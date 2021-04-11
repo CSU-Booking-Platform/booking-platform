@@ -92,7 +92,7 @@
                         </button>
 
                         <div class="absolute bottom-0 left-0 right-0 flex flex-col p-2 text-xs bg-white bg-opacity-50">
-                            <span class="w-full font-bold text-gray-900 truncate">{{storedFile.substr(32, storedFile.length)}}</span>
+                            <span class="w-full font-bold text-gray-900 truncate">{{storedFile}}</span>
                             <span class="text-xs text-gray-900">uploaded</span>
                         </div>
 

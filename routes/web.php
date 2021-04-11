@@ -188,7 +188,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
             ->name('search')
             ->middleware(['permission:bookings.create']);
 
-        Route::get('download/bookings/{folder}', [BookingRequestController::class, 'downloadReferenceFiles'])->name('download');
+        Route::get('/{booking}/download', [BookingRequestController::class, 'download'])
+            ->name('download')
+            ->middleware('permission:bookings.approve|bookings.create');
 
         Route::name('reviews.')->middleware('permission:bookings.approve')->group(function () {
             Route::get('review', [BookingReviewController::class, 'index'])->name('index');

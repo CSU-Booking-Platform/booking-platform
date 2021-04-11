@@ -552,9 +552,8 @@ export default {
         },
         removeExistingFile(fileToDelete) {
           console.log(fileToDelete);
-            axios.post('/api/removeStoredReferenceFile/' + this.booking.id, {
-                pathToDelete: '/' + fileToDelete,
-                reference: this.booking.reference
+            axios.post('/api/bookings/' + this.booking.id + '/remove-file', {
+                filenames: fileToDelete,
             })
         },
         updateForm(booking) {
@@ -587,7 +586,10 @@ export default {
             return this.booking.reservations[0];
         },
         attachedFiles() {
-            return this.booking.reference ?? [];
+            let fff = this.booking.reference ?? [];
+            return fff.map(function(file) {
+              return file['name'];
+            });
         },
         isRecurring() {
             return Object.keys(this.booking.reservations).length > 1;

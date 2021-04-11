@@ -74,6 +74,14 @@ class BookingRequest extends Model
         return $this->rooms()->first();
     }
 
+    /**
+     * Get the rooms that are part of the booking request.
+     */
+    public function getReferenceFolderNameAttribute()
+    {
+        return sha1("{$this->id}_{$this->created_at}");
+    }
+
 
     /**
      * Get the rooms that are part of the booking request.

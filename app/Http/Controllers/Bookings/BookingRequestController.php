@@ -11,7 +11,7 @@ use App\Models\Reservation;
 use App\Models\Room;
 use App\Events\BookingRequestUpdated;
 use App\Models\Settings;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -122,22 +122,8 @@ class BookingRequestController extends Controller
         $reservation = $data['reservations'][0];
         $room = Room::findOrFail($data['room_id']);
 
-        $referenceFolder = null;
-        $referenceFiles = [];
-
-        if (array_key_exists('files', $data)) {
-            // save the uploaded files
-            $referenceFolder = "bookings/{$room->id}_".strtotime($reservation['start_time']).'_reference';
-
-            foreach($data['files'] as $file) {                
-                $name = $file->getClientOriginalName();
-                array_push($referenceFiles, $referenceFolder . '/' . $name);
-                Storage::disk('public')->putFileAs($referenceFolder. '/', $file, $name);
-            }
-        }
         DB::beginTransaction();
 
-        // store booking in db
         $booking = BookingRequest::create([
             'user_id' => $request->user()->id,
             'start_time' => $reservation['start_time'],
@@ -146,9 +132,7 @@ class BookingRequestController extends Controller
             'event' => $data['event'],
             'onsite_contact' => $data['onsite_contact'] ?? [],
             'notes' => $data['notes'] ?? '',
-            'reference' => $referenceFiles,
         ]);
-
 
         foreach ($data['reservations'] as $reservation) {
             Reservation::create([
@@ -157,6 +141,20 @@ class BookingRequestController extends Controller
                 'start_time' => $reservation['start_time'],
                 'end_time' => $reservation['end_time'],
             ]);
+        }
+
+        if ($request->hasFile('files')) {
+            $files = collect();
+
+            foreach ($request->file('files') as $file) {
+                $files->add([
+                    'name' => $file->getClientOriginalName(),
+                    'path' => $file->store("bookings/$booking->referenceFolderName", 'public'),
+                ]);
+            }
+
+            $booking->reference = $files;
+            $booking->save();
         }
 
         DB::commit();
@@ -221,21 +219,16 @@ class BookingRequestController extends Controller
             BookingRequestUpdated::dispatch($booking, $log);
         }
 
-        if ($request->file()) {
+        if ($request->hasFile('files')) {
+            $files = collect($booking->reference);
 
-            $referenceFolder = "bookings/{$reservation->room_id}_".strtotime($reservation->start_time).'_reference';
-            $referenceFiles = $booking->reference;      
-            
-            // save the uploaded files
-            foreach($request->allFiles()['files'] as $file) {
-                $name = $file->getClientOriginalName();
-                array_push($referenceFiles, $referenceFolder . '/' . $name);
-                Storage::disk('public')->putFileAs($referenceFolder. '/', $file, $name);
+            foreach ($request->file('files') as $file) {
+                $files->add([
+                    'name' => $file->getClientOriginalName(),
+                    'path' => $file->store("bookings/$booking->referenceFolderName", 'public'),
+                ]);
             }
-            $booking->fill(['reference' => $referenceFiles])->save();
-            
-            $log = '[' . date(self::DATE_FORMAT). '] - Updated booking request reference files';
-            BookingRequestUpdated::dispatch($booking, $log);
+            $booking->fill(['reference' => $files])->save();
         }
 
         return redirect(route('bookings.index'))
@@ -261,25 +254,22 @@ class BookingRequestController extends Controller
         return redirect()->back();
     }
 
-    public function downloadReferenceFiles($folder)
+    public function download(BookingRequest $booking)
     {
-        
-        $folderPath = 'bookings/' . $folder;   
-        $path = Storage::disk('public')->path($folderPath);
         $zip = new ZipArchive;
 
-        $fileName = $folder . '.zip';
+        $fileName = "Booking#{$booking->id} " . now()->toDateTimeString() . '.zip';
 
-        $zip->open(Storage::disk('public')->path($fileName), ZipArchive::CREATE);
-        $files = File::files($path);
-
-        foreach ($files as $file) {
-            $relativeNameInZipFile = basename($file);
-            $zip->addFile($file, $relativeNameInZipFile);
+        if($zip->open(Storage::path($fileName), ZipArchive::CREATE) === true) {
+            foreach ($booking->reference as $file){
+                $name = $file['name'];
+                $path = Storage::disk('public')->path($file['path']);
+                $zip->addFile($path, $name);
+            }
+            $zip->close();
         }
-        $zip->close();
 
-        return response()->download(Storage::disk('public')->path($fileName))->deleteFileAfterSend(true);
+        return response()->download(Storage::path($fileName))->deleteFileAfterSend();
 
     }
 
@@ -367,16 +357,27 @@ class BookingRequestController extends Controller
         return response()->json(new BookingCollection($query->get()));
     }
 
-    public function removeReferenceFile(Request $request, BookingRequest $booking)
+    public function removeFile(Request $request, BookingRequest $booking)
     {
         $request->validate([
-            'pathToDelete' => ['required'],
-            'reference' => ['array']
+            'filenames' => ['required'],
         ]);
 
-        $booking->fill(['reference' => $request->reference])->save();
+        $toDelete = collect($request->filenames);
 
-        Storage::disk('public')->delete($request->pathToDelete); 
+        $booking->reference = collect($booking->reference)->filter(function ($file) use ($toDelete) {
+            $exists = $toDelete->contains($file['name']);
+
+            if ($exists) {
+                Storage::disk('public')->delete($file['path']);
+            }
+
+            return !$exists;
+        });
+
+        $booking->save();
+
+        return response()->json(new BookingResource($booking));
     }
 
     /**

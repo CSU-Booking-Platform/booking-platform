@@ -20,10 +20,12 @@ class BookingResource extends JsonResource
             'status' => ucfirst($this->status),
             'created_diff' => $this->created_at->diffForHumans(),
             'updated_diff' => $this->updated_at->diffForHumans(),
-            'reference' => collect($this->reference)->map(function ($file) {
+            'reference' => collect($this->reference)->filter(function ($file) {
+                return isset($file['name'], $file['path']);
+            })->map(function ($file) {
                 return [
-                    'name' => collect(explode('/', $file))->last(),
-                    'link' => url("storage/$file"),
+                    'name' => $file['name'],
+                    'link' => url('storage/'. $file['path']),
                 ];
             }),
             'reservations' => $this->reservations->map(function ($r) {

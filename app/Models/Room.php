@@ -150,9 +150,9 @@ class Room extends Model
         $max_days = $special_max ?? $this->max_days_advance;
 
         if (Carbon::today()->diffInDays($startTime) < $min_days) {
-            $fail('You can not book this room earlier than ' . $min_days . ' days in advance');
+            $fail('This room must be booked at least ' . $min_days . ' days in advance');
         } elseif (Carbon::today()->diffInDays($startTime) > $max_days) {
-            $fail('You can not book this room later than ' . $max_days . ' days in advance');
+            $fail('This room cannot be booked more than ' . $max_days . ' days in advance');
         }
     }
 

@@ -349,7 +349,7 @@ class BookingRequestControllerTest extends TestCase
                 'attendees' => $booking_request->event['attendees'],
             ]
         ]);
-
+        $response->dumpSession();
         $response->assertSessionHasNoErrors();
 
         $updatedBooking = BookingRequest::find($booking_request->id);
@@ -558,7 +558,7 @@ class BookingRequestControllerTest extends TestCase
                 'attendees' => $this->faker->numberBetween(100),
             ]
         ]);
-
+        $response->dumpSession();
         $response->assertSessionHasErrors();
         $response->assertStatus(302);
         $this->assertDatabaseCount('booking_requests', 1);

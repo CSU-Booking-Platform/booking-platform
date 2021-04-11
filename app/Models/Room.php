@@ -209,14 +209,6 @@ class Room extends Model
     }
   }
 
-  //TODO:: check - might be a dead function
-  public function verifyRoomIsFree($startDate, $endDate, $reservation = null)
-  {
-    if ($this->verifyRoomQuery($startDate, $endDate, $reservation)->count() > 0) {
-      throw ValidationException::withMessages(['time_conflict' => "This is blocked by another reservation."]);
-    }
-  }
-
   private function notWithinAvailabilities($startDate, $endDate)
   {
     $startTime = Carbon::parse($startDate)->toTimeString();

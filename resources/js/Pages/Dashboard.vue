@@ -16,8 +16,10 @@
                   <DashboardMetrics :metrics="users" />
                   </h3>
                 </div>
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-8 items-center" v-else>
-                  <h3>Welcome!</h3>
+                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-8 items-center content-center" v-else>
+                  <jet-application-mark class="block h-40 w-auto"/>
+                  <h2>Welcome to the CSU Booking application!</h2>
+                  <h3>If you are unable to see the pages you need in the Navbar above, please contact  <a class="text-yellow-300" href="mailto:it@csu.qc.ca">it@csu.qc.ca</a></h3>
                 </div>
             </div>
         </div>
@@ -27,6 +29,7 @@
 <script>
 import AppLayout from "@src/Layouts/AppLayout";
 import DashboardMetrics from "@src/Components/DashboardMetrics";
+import JetApplicationMark from "@src/Components/ApplicationMark";
 
 export default {
   props: {
@@ -50,6 +53,7 @@ export default {
   components: {
     AppLayout,
     DashboardMetrics,
+    JetApplicationMark
   },
   methods: {
     userHasPermissionWithPrefix(prefix) {
@@ -59,7 +63,7 @@ export default {
     },
     showAdvancedDash() {
       return this.userHasPermissionWithPrefix("users")||
-      this.userHasPermissionWithPrefix("bookings")
+      this.userHasPermissionWithPrefix("roles")
     },
     showSpecificDash(role)
     {

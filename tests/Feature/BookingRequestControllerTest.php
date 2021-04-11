@@ -435,7 +435,6 @@ class BookingRequestControllerTest extends TestCase
             ],
             'files' => $files
         ]);
-
         $response->assertSessionHasNoErrors();
         $booking_request->refresh();
         Storage::disk('public')->assertExists($booking_request->reference[0]['path']);
@@ -660,7 +659,6 @@ class BookingRequestControllerTest extends TestCase
             ]
         ]);
 
-//    dump(session()->all());
         $response->assertSessionHasNoErrors();
 
         Event::assertDispatched(BookingRequestUpdated::class);

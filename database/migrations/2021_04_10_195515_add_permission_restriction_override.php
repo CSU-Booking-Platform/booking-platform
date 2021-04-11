@@ -1,5 +1,6 @@
 <?php
 
+use Database\Seeders\RolesAndPermissionsSeeder;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,7 +15,7 @@ class AddPermissionRestrictionOverride extends Migration
      */
     public function up()
     {
-        Permission::updateOrCreate(['name' => 'bookings.restrictions.override']);
+        (new RolesAndPermissionsSeeder())->run();
     }
 
     /**

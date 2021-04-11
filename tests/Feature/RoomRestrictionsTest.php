@@ -27,7 +27,6 @@ class RoomRestrictionsTest extends TestCase
         $roles = Role::factory()->count(5)->create();
 
         //Give test user permission to update rooms.
-        Permission::create(['name'=>'bookings.approve', 'guard_name'=> 'web']);
         $this->user = User::factory()->create();
         $role = $roles->first();
         $role->givePermissionTo('bookings.approve');

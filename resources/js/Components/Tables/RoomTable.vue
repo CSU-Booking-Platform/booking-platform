@@ -517,7 +517,7 @@ export default {
           }
         },
         sortedRooms:function() {
-          return this.paginator.data.sort((a,b) => {
+          return this.rooms.sort((a,b) => {
             let modifier = 1;
             if(this.currentSortDir === 'desc') modifier = -1;
             if(this.currentSort.includes('attributes')){

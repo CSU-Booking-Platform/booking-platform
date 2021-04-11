@@ -10,7 +10,7 @@
 </style>
 
 <article>
-    <h1><img src="img/default_app_logo.png"></h1>
+    <h1><img src="img/default_app_logo.png" alt="CSU Logo"></h1>
     <div>
         <p>The booking service is temporarily unavailable. We'll be back soon! If this page persists, please contact us at <a href="mailto:it@csu.qc.ca">it@csu.qc.ca</a>. Otherwise we&rsquo;ll be back shortly!</p>
         <p>&mdash; Concordia Student Union</p>

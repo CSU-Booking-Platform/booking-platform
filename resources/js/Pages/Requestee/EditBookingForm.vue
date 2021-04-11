@@ -205,69 +205,69 @@
               </app-question>
             </div>
 
-            <!-- Music -->
-            <div class="col-span-6" v-if="typeof form.event.show.music !== undefined">
-              <app-question v-model="form.event.show.music" @change="toggleNullableForms">
-                <template #header>
-                  <jet-label value="Will there be music or sound on site?"/>
-                </template>
-                <jet-label for="music" value="Please specify"/>
-                <jet-input id="music" type="text" class="mt-1 block w-full"
-                           v-model="form.event.music" autofocus/>
-                <jet-input-error :message="form.error('event.music')" class="mt-2"/>
-              </app-question>
-            </div>
+                        <!-- Music -->
+                        <div class="col-span-6" v-if="typeof form.event.show.music !== undefined">
+                            <app-question v-model="form.event.show.music" @change="toggleNullableForms">
+                                <template #header>
+                                    <jet-label value="Will there be music or sound on site?"/>
+                                </template>
+                                <jet-label for="music" value="Please specify"/>
+                                <jet-input id="music" type="text" class="mt-1 block w-full"
+                                       v-model="form.event.music" autofocus/>
+                                <jet-input-error :message="form.error('event.music')" class="mt-2"/>
+                            </app-question>
+                        </div>
 
 
-            <!-- Food -->
-            <div class="col-span-6">
-              <app-question v-if="reservation.room.attributes.food" :checked="form.event.food.high_risk == true || form.event.food.low_risk == true">
-                <template #header>
-                  <jet-label value="Will there be any food?"/>
-                </template>
+                        <!-- Food -->
+                        <div class="col-span-6">
+                          <app-question v-if="reservation.room.attributes.food" :checked="form.event.food.high_risk == true || form.event.food.low_risk == true">
+                            <template #header>
+                              <jet-label value="Will there be any food?"/>
+                            </template>
 
-                <div class="ml-4">
-                  <!-- Food Type -->
-                  <div class="flex space-x-2 py-2">
-                    <jet-label value="High Risk Food"/>
-                    <jet-checkbox v-model="form.event.food.high_risk"/>
+                            <div class="ml-4">
+                              <!-- Food Type -->
+                              <div class="flex space-x-2 py-2">
+                                <jet-label value="High Risk Food"/>
+                                <jet-checkbox v-model="form.event.food.high_risk"/>
 
-                    <!-- Low Risk Food -->
-                    <jet-label class="pl-8" value="Lower Risk Food"/>
-                    <jet-checkbox v-model="form.event.food.low_risk"/>
-                  </div>
+                                <!-- Low Risk Food -->
+                                <jet-label class="pl-8" value="Lower Risk Food"/>
+                                <jet-checkbox v-model="form.event.food.low_risk"/>
+                              </div>
 
-                  <!-- High Risk Food -->
-                  <div v-if="form.event.food.high_risk">
-                    <div class="flex space-x-2 py-2">
-                      <jet-label value="Will the event be self catered?"/>
-                      <jet-checkbox v-model="form.event.food.self_catered"/>
-                      <span v-if="form.event.food.self_catered" class="text-md text-black">Yes</span>
-                      <span v-else class="text-md text-black">No</span>
-                    </div>
+                              <!-- High Risk Food -->
+                              <div v-if="form.event.food.high_risk">
+                                <div class="flex space-x-2 py-2">
+                                  <jet-label value="Will the event be self catered?"/>
+                                  <jet-checkbox v-model="form.event.food.self_catered"/>
+                                  <span v-if="form.event.food.self_catered" class="text-md text-black">Yes</span>
+                                  <span v-else class="text-md text-black">No</span>
+                                </div>
 
-                    <app-warning v-if="form.event.food.self_catered" class="text-indigo-600">
-                      <template #icon>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                        </svg>
-                      </template>
-                      Please remember to attach a filled out "Food Waiver" to the document section.
-                    </app-warning>
-                    <div v-else>
-                      <jet-label for="caterer" value="Specify the catering company"/>
-                      <jet-input id="caterer" type="text" class="mt-1 block w-full"
-                                 v-model="form.event.food.caterer" autofocus/>
-                      <jet-input-error :message="form.error('event.food.caterer')" class="mt-2"/>
-                    </div>
-                  </div>
-                </div>
+                                <app-warning v-if="form.event.food.self_catered" class="text-indigo-600">
+                                  <template #icon>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                    </svg>
+                                  </template>
+                                  Please remember to attach a filled out "Food Waiver" to the document section.
+                                </app-warning>
+                                <div v-else>
+                                  <jet-label for="caterer" value="Specify the catering company"/>
+                                  <jet-input id="caterer" type="text" class="mt-1 block w-full"
+                                             v-model="form.event.food.caterer" autofocus/>
+                                  <jet-input-error :message="form.error('event.food.caterer')" class="mt-2"/>
+                                </div>
+                              </div>
+                            </div>
 
-              </app-question>
-              <app-warning v-else>
-                Please be aware that food is prohibited at the requested location.
-              </app-warning>
-            </div>
+                          </app-question>
+                          <app-warning v-else>
+                            Please be aware that food is prohibited at the requested location.
+                          </app-warning>
+                        </div>
 
             <!-- Alcohol -->
             <div class="col-span-6">
@@ -294,28 +294,26 @@
               </app-warning>
             </div>
 
+                        <!-- Lounge room dependent fillables -->
 
-            <!-- Lounge room dependent fillables -->
-
-            <!-- minor children involved -->
-            <div class="col-span-6" v-if="booking.room.room_type == 'Lounge'">
-              <div class="flex-column">
-                <div class="flex items-center space-x-2">
-                  <jet-label value="Will there be appliances involved?"/>
-                  <jet-checkbox v-model="form.event.children"/>
-                  <span v-if="form.event.children" class="text-md text-black">Yes</span>
-                </div>
-                <app-warning class="py-2 text-indigo-600" v-if="form.event.children">
-                  <template #icon>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                    </svg>
-                  </template>
-                  Please remember to attach a filled out "Parental Waiver" to the document section.
-                </app-warning>
-              </div>
-            </div>
-          </div>
+                        <!-- minor children involved -->
+                        <div class="col-span-6" v-if="booking.room.room_type == 'Lounge'">
+                            <div class="flex-column">
+                                <div class="flex items-center space-x-2">
+                                    <jet-label value="Will there be appliances involved?"/>
+                                    <jet-checkbox v-model="form.event.children"/>
+                                    <span v-if="form.event.children" class="text-md text-black">Yes</span>
+                                </div>
+                                <app-warning class="py-2 text-indigo-600" v-if="form.event.children">
+                                    <template #icon>
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                        </svg>
+                                    </template>
+                                    Please remember to attach a filled out "Parental Waiver" to the document section.
+                                </app-warning>
+                            </div>
+                        </div>
 
           <!-- appliances involved -->
           <div class="col-span-6" v-if="booking.room.room_type == 'Lounge'">
@@ -336,27 +334,27 @@
             </div>
           </div>
 
-          <!-- A/V needed -->
-          <div class="col-span-6" v-if="booking.room.room_type == 'Lounge'">
-            <div class="flex-column">
-              <div class="flex items-center space-x-2">
-                <jet-label value="Is A/V needed?"/>
-                <jet-checkbox v-model="form.event.av"/>
-                <span v-if="form.event.av" class="text-md text-black">Yes</span>
-              </div>
-            </div>
-          </div>
+                        <!-- A/V needed -->
+                        <div class="col-span-6" v-if="booking.room.room_type == 'Lounge'">
+                                  <div class="flex-column">
+                                  <div class="flex items-center space-x-2">
+                                  <jet-label value="Is A/V needed?"/>
+                                 <jet-checkbox v-model="form.event.av"/>
+                                  <span v-if="form.event.av" class="text-md text-black">Yes</span>
+                                  </div>
+                              </div>
+                          </div>
 
-          <!-- furniture -->
-          <div class="col-span-6" v-if="booking.room.room_type == 'Lounge'">
-            <div class="flex-column">
-              <div class="flex items-center space-x-2">
-                <jet-label value="Is Furniture needed?"/>
-                <jet-checkbox v-model="form.event.furniture"/>
-                <span v-if="form.event.furniture" class="text-md text-black">Yes</span>
-              </div>
-            </div>
-          </div>
+                        <!-- furniture -->
+                        <div class="col-span-6" v-if="booking.room.room_type == 'Lounge'">
+                            <div class="flex-column">
+                                <div class="flex items-center space-x-2">
+                                    <jet-label value="Is Furniture needed?"/>
+                                    <jet-checkbox v-model="form.event.furniture"/>
+                                    <span v-if="form.event.furniture" class="text-md text-black">Yes</span>
+                                </div>
+                            </div>
+                        </div>
 
           <!-- Mezzanine booking.room dependent fillables -->
 
@@ -393,16 +391,16 @@
           </div>
 
                         <!-- Upload File Storage -->
-                        <div class="col-span-6">
-                            <jet-label for="files" value="Document Storage"/>
-                            <app-sortable-upload
-                                id="files"
-                                accept="application/pdf, application/msword"
-                                :booking="booking"
-                                @change="uploadedFiles($event)"
-                            />
-                            <jet-input-error :message="form.error('files')" class="mt-2"/>
-                        </div>
+                       <div class="col-span-6">
+                           <jet-label for="files" value="Document Storage"/>
+                           <app-sortable-upload id="files"
+                               accept="application/pdf, application/msword"
+                               :existing-files="attachedFiles"
+                               @change="uploadedFiles($event)"
+                               @remove-existing-file="removeExistingFile($event)"
+                           />
+                           <jet-input-error :message="form.error('files')" class="mt-2"/>
+                       </div>
 
           <!-- Additional Info -->
           <div class="col-span-6">
@@ -511,15 +509,11 @@ export default {
         bookings_event_description: {
           type: Object,
         },
-        storedFiles: {
-          type: Array,
-        }
     },
 
     data() {
         return {
             accept_terms: false,
-            dataStoredFiles: [],
             form: this.$inertia.form({
                 '_method': 'PUT',
                 onsite_contact: {},
@@ -556,7 +550,13 @@ export default {
         uploadedFiles(files) {
             this.form.files = files;
         },
-
+        removeExistingFile(fileToDelete) {
+          console.log(fileToDelete);
+            axios.post('/api/removeStoredReferenceFile/' + this.booking.id, {
+                pathToDelete: '/' + fileToDelete,
+                reference: this.booking.reference
+            })
+        },
         updateForm(booking) {
             this.form.onsite_contact = (booking.onsite_contact.length === 0) ? {} : booking.onsite_contact;
             this.form.event = booking.event;
@@ -586,6 +586,9 @@ export default {
         reservation() {
             return this.booking.reservations[0];
         },
+        attachedFiles() {
+            return this.booking.reference ?? [];
+        },
         isRecurring() {
             return Object.keys(this.booking.reservations).length > 1;
         },
@@ -599,7 +602,7 @@ export default {
 
     watch: {
         booking(booking) {
-            this.updateForm(this.booking)
+            this.updateForm(this.booking);
         }
     }
 }

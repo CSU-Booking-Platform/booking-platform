@@ -27,7 +27,7 @@
                 </div>
             </div>
 
-            <template v-if="files.length > 0 || booking">
+            <template v-if="files.length > 0 || storedFiles.length > 0">
                 <div class="grid grid-cols-2 gap-4 mt-4 md:grid-cols-6" @drop.prevent="drop($event)"
                      @dragover.prevent="$event.dataTransfer.dropEffect = 'move'">
 
@@ -76,8 +76,8 @@
                         </div>
                     </div>
 
-                    <div v-if="booking.reference.length > 0"
-                         v-for="(storedFile, index) in booking.reference" :key="index"
+                    <div v-if="storedFiles.length > 0"
+                         v-for="(storedFile, index) in storedFiles" :key="index"
                          class="relative flex flex-col items-center overflow-hidden text-center bg-gray-100 border rounded cursor-move select-none"
                          style="padding-top: 100%;"
                          :class="{'border-blue-600': fileDragging === index}" draggable="true"
@@ -104,7 +104,6 @@
 
                 </div>
             </template>
-
         </div>
     </div>
 </template>
@@ -132,12 +131,19 @@ import createFileList from "create-file-list";
                 type: String,
                 required: false,
             },
-            booking: {
+            existingFiles: {
                 type: Array,
+                default: function() {
+                  return [];
+                },
             },
+        },
+        mounted() {
+            this.storedFiles = this.existingFiles;
         },
         data() {
             return {
+                storedFiles: [],
                 files: [],
                 fileDragging: null,
                 fileDropping: null,
@@ -167,13 +173,9 @@ import createFileList from "create-file-list";
                 }
                 this.$emit("change", this.files);
             },
-            removeStoredFile(index) {  
-                let fileToDelete = '/' + this.booking.reference[index];
-                this.booking.reference.splice(index, 1);            
-                axios.post('/api/removeStoredReferenceFile/' + this.booking.id, {
-                    pathToDelete: fileToDelete,
-                    reference: this.booking.reference
-                })  
+            removeStoredFile(index) {
+                let removed = this.storedFiles.splice(index, 1);
+                this.$emit("remove-existing-file", removed);
             },
             drop(e) {
                 let removed;

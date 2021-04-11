@@ -385,7 +385,6 @@
                             <app-sortable-upload
                                 id="files"
                                 accept="application/pdf, application/msword"
-                                :booking="booking"
                                 @change="uploadedFiles($event)"
                             />
                             <jet-input-error :message="form.error('files')" class="mt-2"/>
@@ -507,7 +506,6 @@ export default {
     data() {
         return {
             accept_terms: false,
-            booking: [],
             form: this.$inertia.form({
                 onsite_contact: {},
                 event: {

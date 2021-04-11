@@ -66,11 +66,6 @@ class UpdateBookingRequest extends FormRequest
 
             'notes' => ['nullable','string', 'max:500'],
             'files' => [
-                'required_if:event.food.self_catered,true',
-                'required_if:event.alcohol,true',
-                'required_if:event.children,true',
-                'required_if:event.appliances,true',
-                'required_if:event.bake_sale,true',
                 //'mimes:pdf,doc,docx',
                 'max:50000', // 50Mb
             ],

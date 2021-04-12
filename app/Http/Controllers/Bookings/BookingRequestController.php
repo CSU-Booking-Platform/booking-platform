@@ -282,13 +282,24 @@ class BookingRequestController extends Controller
 
     private function reservationValidate(Request $request)
     {
+      
         $request->validate(array(
             'reservations.*' => ['array', 'size:3',
                 function ($attribute, $value, $fail) use ($request) {
+                    if(!$request->has('event'))
+                    {
+                        $alcohol  = false;
+                        $food = false;
+                    }
+                    else {
+                        $alcohol  = $request->input('event.alcohol') ?? false;
+                        $food = ($request->input('event.food.low_risk') || $request->input('event.food.high_risk'));
+                    }
                     unset($attribute);
                     $user =  $request->user();
                     $room = Room::query()->findOrFail($request->room_id);
                     $room->minimumReservationTime($value['start_time'], $value['end_time'], $fail);
+                    $room->verifyDatesAreWithinRoomRestrictionsValidation($value['start_time'], $alcohol, $food, $fail, $user);
                     if (!$user->hasPermissionTo('bookings.restrictions.override')) {
                         $room->verifyDatesAreWithinRoomRestrictionsValidation($value['start_time'], $fail, $user);//
                         if (!$request->user()->canMakeAnotherBookingRequest($value['start_time'])) {
@@ -297,8 +308,8 @@ class BookingRequestController extends Controller
                                 ' booking(s) in the next ' .
                                 $user->getUserNumberOfDaysPerPeriod() .
                                 ' days.');
-                        }
                     }
+                        }
                     $room->verifyDatetimesAreWithinAvailabilitiesValidation($value['start_time'], $value['end_time'], $fail);//
                     $room->verifyRoomIsNotBlackedOutValidation($value['start_time'], $value['end_time'], $fail);//
                     $room->verifyRoomIsFreeValidation($value['start_time'], $value['end_time'], $fail);
@@ -306,7 +317,6 @@ class BookingRequestController extends Controller
             ]
         ));
     }
-
 
     /**
      * Filter booking requests by given json payload

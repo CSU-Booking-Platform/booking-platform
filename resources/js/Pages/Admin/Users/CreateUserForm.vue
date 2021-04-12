@@ -7,25 +7,25 @@
 
             <template #form>
                 <div class="mb-3">
-                    <jet-input id="name" type="text" class="mt-1 block w-full" v-model="createUserForm.name" autofocus/>
-                    <jet-label for="name" value="Name"/>
+                  <jet-label for="name" value="Name"/>
+                  <jet-input id="name" type="text" class="mt-1 block w-full" v-model="createUserForm.name" autofocus/>
                     <jet-input-error :message="createUserForm.error('name')" class="mt-2"/>
                 </div>
                 <div class="mb-3">
-                    <jet-input id="email" type="email" class="mt-1 block w-full" v-model="createUserForm.email"/>
-                    <jet-label for="email" value="Email"/>
+                  <jet-label for="email" value="Email"/>
+                  <jet-input id="email" type="email" class="mt-1 block w-full" v-model="createUserForm.email"/>
                     <jet-input-error :message="createUserForm.error('email')" class="mt-2"/>
                 </div>
                 <div class="mb-3">
-                    <jet-input id="password" type="password" class="mt-1 block w-full"
+                  <jet-label for="password" value="Password"/>
+                  <jet-input id="password" type="password" class="mt-1 block w-full"
                                v-model="createUserForm.password"/>
-                    <jet-label for="password" value="Password"/>
                     <jet-input-error :message="createUserForm.error('password')" class="mt-2"/>
                 </div>
                 <div class="mb-3">
-                    <jet-input id="password_confirmation" type="password" class="mt-1 block w-full"
+                  <jet-label for="password_confirmation" value="Password Confirmation"/>
+                  <jet-input id="password_confirmation" type="password" class="mt-1 block w-full"
                                v-model="createUserForm.password_confirmation"/>
-                    <jet-label for="password_confirmation" value="Password Confirmation"/>
                     <jet-input-error :message="createUserForm.error('password_confirmation')" class="mt-2"/>
                 </div>
             </template>

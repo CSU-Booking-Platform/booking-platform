@@ -12,6 +12,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
 use Inertia\Response;
 use Inertia\ResponseFactory;
 
@@ -44,16 +45,28 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validateWithBag('createUser', [
-            'name' => ['required', 'string', self::MAX_255],
-            'email' => ['required', 'string', 'email', self::MAX_255, 'unique:users'],
-            'password' => ['required', 'string', self::MAX_255, 'confirmed'],
-        ]);
+        // Randomly creates a temporary password when it is not set.
+        // The user can login using a reset link.
+        $password = $request->password;
+        if (!$password) {
+            $password = Str::random(20);
+
+            $request->validateWithBag('createUser', [
+                'name' => ['required', 'string', self::MAX_255],
+                'email' => ['required', 'string', 'email', self::MAX_255, 'unique:users']
+            ]);
+        } else {
+            $request->validateWithBag('createUser', [
+                'name' => ['required', 'string', self::MAX_255],
+                'email' => ['required', 'string', 'email', self::MAX_255, 'unique:users'],
+                'password' => ['required', 'string', self::MAX_255, 'confirmed', 'min:8'],
+            ]);
+        }
 
         User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'password' => Hash::make($password),
         ]);
 
         return back()->with('flash', ['we good']);

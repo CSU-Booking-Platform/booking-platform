@@ -4,8 +4,8 @@ namespace Tests\Feature;
 
 use App\Models\Role;
 use App\Models\User;
-use Database\Seeders\RolesAndPermissionsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Tests\TestCase;
@@ -48,6 +48,27 @@ class UserControllerTest extends TestCase
         ]);
 
         $this->assertTrue(Hash::check($random, User::whereEmail($user->email)->first()->password));
+    }
+
+    public function testFormCreatesUserGivenNoPassword()
+    {
+        $user = User::factory()->make();
+        $this->actingAs($this->createUserWithPermissions(['users.create']))
+            ->post('/admin/users', [
+                'name' => $user->name,
+                'email' => $user->email,
+                'password' => null,
+                'password_confirmation' => null
+            ]);
+
+        $this->assertDatabaseCount('users', 2);
+
+        $this->assertDatabaseHas('users', [
+            'name' => $user->name,
+            'email' => $user->email,
+        ]);
+        // Check if hash exists
+        $this->assertTrue(strlen(DB::table('users')->get()->toArray()[1]->password) > 5, "Password hash must be present.");
     }
 
     public function testUpdateUser()

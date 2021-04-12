@@ -8,6 +8,7 @@
                         :noHeader="noHeader"
                         :noLabel="noLabel"
                         :autoClose="autoClose"
+                        color="#252f3f" button-color="#252f3f"
   >
     <slot></slot>
   </ctk-date-time-picker>

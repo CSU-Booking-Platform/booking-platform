@@ -91,8 +91,11 @@ class DateTimePicker extends BaseComponent
         $this->openPicker($browser);
 
         $this->selectYear($browser, $date);
+        $browser->pause(250);
         $this->selectMonth($browser, $date);
+        $browser->pause(250);
         $this->selectDay($browser, $date);
+        $browser->pause(250);
     }
 
     /**

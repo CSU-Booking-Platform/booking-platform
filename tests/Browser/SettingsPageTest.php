@@ -73,27 +73,33 @@ class SettingsPageTest extends DuskTestCase
             $startDate = Carbon::parse('2020-03-03');
             $endDate = Carbon::parse('2020-04-04');
 
-            $browser->loginAs(User::first())->visit('/admin/settings')
-                ->keys(
-                    '#Fall_start_date',
-                    $startDate->format('Y'),
-                    ['{right}', $startDate->format('m')],
-                    $startDate->format('d')
-                )
-                ->keys(
-                    '#Fall_end_date',
-                    $endDate->format('Y'),
-                    ['{right}', $endDate->format('m')],
-                    $endDate->format('d')
-                )
-                ->press('#Fall_submit_button')
-                ->waitUntilMissingText("Updated.");
+
+            $browser->loginAs(User::first())->visit('/admin/settings');
+            $browser->scrollIntoView('#Fall_submit_button');
+
+                $browser->within(new DateTimePicker('Fall_start_date'), function($browser) use ($startDate) {
+                    $browser->selectDate($startDate);
+
+
+                })->pause(250);
+                
+                $browser->within(new DateTimePicker('Fall_end_date'), function($browser) use ($endDate) {
+                    $browser->selectDate($endDate);
+                })->pause(250);
+
+                $browser->press('#Fall_submit_button')
+                ->pause(1000);
         });
 
         $this->assertDatabaseMissing('academic_dates', [
             'semester' => 'Fall',
             'start_date' => '2020-01-01',
             'end_date' => '2020-02-02'
+        ]);
+        $this->assertDatabaseHas('academic_dates', [
+            'semester' => 'Fall',
+            'start_date' => '2020-03-03',
+            'end_date' => '2020-04-04'
         ]);
     }
 

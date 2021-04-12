@@ -339,57 +339,7 @@ class ReservationControllerTest extends TestCase
 
     }
 
-    /**
-     * @test
-     */
-    public function storing_too_early()
-    {
-        $user = User::factory()->create();
-        $room = Room::factory()->create();
-        $this->assertDatabaseCount('booking_requests', 0);
-        $this->assertDatabaseCount('reservations', 0);
-        $booking_request = $this->createBookingRequest(false);
-        $reservation = $this->createReservation($room, $booking_request, false);
-        $this->createReservationAvailabilities($reservation->start_time, $room);
-        Carbon::setTestNow(now()->subDays($room->max_days_advance + 1));
 
-        $response = $this->actingAs($this->createUserWithPermissions(['bookings.create']))->post('/reservation', [
-            'room_id' => $room->id,
-            'reservations' => [
-                ['start_time' => $reservation->start_time->format('Y-m-d H:i:00'), 'end_time' => $reservation->end_time->format('Y-m-d H:i:00')],
-            ]
-        ]);
-
-        $response->assertStatus(302);
-        $this->assertDatabaseCount('booking_requests', 0);
-        $this->assertDatabaseCount('reservations', 0);
-    }
-
-    /**
-     * @test
-     */
-    public function storing_too_late()
-    {
-        $user = User::factory()->create();
-        $room = Room::factory()->create(['min_days_advance' => 10, 'max_days_advance' => 100,]);
-        $this->assertDatabaseCount('booking_requests', 0);
-        $this->assertDatabaseCount('reservations', 0);
-        $booking_request = $this->createBookingRequest(false);
-        $reservation = $this->createReservation($room, $booking_request, false);
-        $this->createReservationAvailabilities($reservation->start_time, $room);
-        Carbon::setTestNow(Carbon::parse($reservation->start_time)->subDays(1));
-
-        $response = $this->actingAs($this->createUserWithPermissions(['bookings.create']))->post('/reservation', [
-            'room_id' => $room->id,
-            'reservations' => [
-                ['start_time' => $reservation->start_time->format('Y-m-d H:i:00'), 'end_time' => $reservation->end_time->format('Y-m-d H:i:00')],
-            ]
-        ]);
-
-        $response->assertStatus(302);
-        $this->assertDatabaseCount('booking_requests', 0);
-        $this->assertDatabaseCount('reservations', 0);
-    }
 
     /**
      * @test

@@ -147,10 +147,10 @@ class Room extends Model
         $special_min = $specialRules->pluck('min_days_advance')->max();
         $special_max = $specialRules->pluck('max_days_advance')->min();
         $min_days = $special_min ?? $this->min_days_advance;
-        if ($food == true && $min_days < 10){
+        if ($food && $min_days < 10){
           $min_days = 10;
         }
-        if ($alcohol  == true && $min_days < 20){
+        if ($alcohol && $min_days < 20){
           $min_days = 20;
         }
         $max_days = $special_max ?? $this->max_days_advance;

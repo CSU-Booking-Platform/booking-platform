@@ -300,7 +300,6 @@ class BookingRequestController extends Controller
                     $room = Room::query()->findOrFail($request->room_id);
                     $room->minimumReservationTime($value['start_time'], $value['end_time'], $fail);
                     $room->verifyDatesAreWithinRoomRestrictionsValidation($value['start_time'], $alcohol, $food, $fail, $user);
-                    $room->verifyDatesAreWithinRoomRestrictionsValidation($value['start_time'], $alcohol, $food, $fail, $user);
                     if (!$user->hasPermissionTo('bookings.restrictions.override')) {
                         $room->verifyDatesAreWithinRoomRestrictionsValidation($value['start_time'], $fail, $user);//
                         if (!$request->user()->canMakeAnotherBookingRequest($value['start_time'])) {

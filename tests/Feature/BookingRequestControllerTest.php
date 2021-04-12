@@ -177,7 +177,7 @@ class BookingRequestControllerTest extends TestCase
                 'description' => $this->faker->paragraph,
                 'guest_speakers' => $this->faker->name,
                 'attendees' => $this->faker->numberBetween(100),
-                'alcohol' => true,
+                'alcohol' => false,
             ],
             'files' => $files
         ]);
@@ -187,7 +187,7 @@ class BookingRequestControllerTest extends TestCase
 
     }
 
-    /**
+    /** 
      * @test
      */
     public function user_can_download_reference_files_from_booking()
@@ -222,7 +222,7 @@ class BookingRequestControllerTest extends TestCase
                     'description' => $this->faker->paragraph,
                     'guest_speakers' => $this->faker->name,
                     'attendees' => $this->faker->numberBetween(100),
-                    'alcohol' => true,
+                    'alcohol' => false,
                 ],
                 'files' => $files,
             ]

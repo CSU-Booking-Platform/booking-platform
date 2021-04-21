@@ -47,14 +47,14 @@ class SocialLoginController extends Controller
         try
         {
             $msUser = Socialite::driver('microsoft')->setConfig($config)->stateless()->user();
+            $isUser = User::where(['email' => $msUser->getEmail()])->first();
         }
         catch(\Exception $e)
         {
             $msUser = null;
+            $isUser = null;
         }
         
-        $isUser = User::where(['email' => $msUser->getEmail()])->first();
-
         if($isUser)
         {
             Auth::login($isUser);

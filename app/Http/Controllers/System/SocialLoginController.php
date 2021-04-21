@@ -44,7 +44,14 @@ class SocialLoginController extends Controller
         
         $config = new \SocialiteProviders\Manager\Config($data['id'], $data['secret'], $data['uri'], ['tenant' => $data['tenant']]);
 
-        $msUser = Socialite::driver('microsoft')->setConfig($config)->stateless()->user();
+        try
+        {
+            $msUser = Socialite::driver('microsoft')->setConfig($config)->stateless()->user();
+        }
+        catch(\Exception $e)
+        {
+            $msUser = null;
+        }
         
         $isUser = User::where(['email' => $msUser->getEmail()])->first();
 
@@ -60,18 +67,24 @@ class SocialLoginController extends Controller
             // The user can login using a reset link.
             $password = Str::random(20);
 
-            $isUser = User::create([
-                'name' => $msUser->getName(),
-                'email' => $msUser->getEmail(),
-                'password' => Hash::make($password),
-            ]);
+            try
+            {
+                $isUser = User::create([
+                    'name' => $msUser->getName(),
+                    'email' => $msUser->getEmail(),
+                    'password' => Hash::make($password),
+                ]);
 
-            $isUser->assignRole('booking-user');
+                $isUser->assignRole('booking-user');
 
-            Auth::login($isUser);
-            return redirect('/dashboard');
+                Auth::login($isUser);
+                return redirect('/dashboard');
+            }
+            catch(\Exception $e)
+            {
+                return redirect('/');
+            }
+            
         }
-        
-        return redirect('/');
     }
 }

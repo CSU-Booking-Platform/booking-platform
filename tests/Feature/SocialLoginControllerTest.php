@@ -91,6 +91,6 @@ class SocialLoginControllerTest extends TestCase
         Socialite::shouldReceive('driver->user')->andReturn($abstractUser);
 
         $response = $this->get('/login/microsoft/callback');
-           $response->assertStatus(302);
+           $response->assertStatus(500);
     }
 }

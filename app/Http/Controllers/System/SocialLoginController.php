@@ -64,12 +64,14 @@ class SocialLoginController extends Controller
                 // Randomly creates a temporary password when it is not set.
                 // The user can login using a reset link.
                 $password = Str::random(20);
-                
+
                 $isUser = User::create([
                     'name' => $msUser->getName(),
                     'email' => $msUser->getEmail(),
                     'password' => Hash::make($password),
                 ]);
+
+                $isUser->assignRole('booking-user');
 
                 Auth::login($isUser);
                 return redirect('/dashboard');
